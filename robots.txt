@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://suda-morris.github.io/sitemap.xml 
