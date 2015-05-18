@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: others | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/others/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-05-18T14:49:18+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hey!WenRis]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/05/18/hey-wenris/"/>
+    <updated>2015-05-18T13:09:30+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/05/18/hey-wenris</id>
+    <content type="html"><![CDATA[<h2>Hello! This is WenRis</h2>
+
+<pre><code class="C Hello WenRis for C language http://suda-morris.github.io author">#include &lt;stdio.h&gt;
+int main()
+{
+    printf("Hello WenRis\n");
+    return 0;
+}
+</code></pre>
+
+<p><figure class='code'><figcaption><span>Hello WenRis for Java language <a href="http://suda-morris.github.io">http://suda-morris.github.io</a> author </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">WenRis</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">Hello</span> <span class="n">WenRis</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+]]></content>
+  </entry>
+  
+</feed>
