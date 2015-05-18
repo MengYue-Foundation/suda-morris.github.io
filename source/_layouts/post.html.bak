@@ -7,7 +7,6 @@ single: true
 {% unless page.sharing == false %}
 	{% include post/sharing.html %}
 {% endunless %}
-
 {% if site.duoshuo_comment == true %}
 <section id="comment">
     <h2 class="title">Comments</h2>
