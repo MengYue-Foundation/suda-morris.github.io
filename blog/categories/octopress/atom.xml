@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-18T14:55:52+08:00</updated>
+  <updated>2015-05-18T16:19:00+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,13 +18,51 @@
     <link href="http://suda-morris.github.io/blog/2015/05/18/think-in-octopress/"/>
     <updated>2015-05-18T13:22:49+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/05/18/think-in-octopress</id>
-    <content type="html"><![CDATA[<h2>常用命令</h2>
+    <content type="html"><![CDATA[<h2>Windows下环境搭建</h2>
+
+<ol>
+<li>安装好Git，配置Git全局参数
 
 <ul>
-<li>新建博客      <code>rake new_post['New Blog']</code></li>
-<li>新建单页面       <code>rake new_page['New Page']</code></li>
-<li>编译生成网页    <code>rake generate</code></li>
-<li>发布网页      <code>rake deploy</code></li>
+<li><code>git config --global user.name "suda-morris"</code></li>
+<li><code>git config --global user.email "362953310@qq.com"</code></li>
+<li><code>git config --global --list</code></li>
+</ul>
+</li>
+<li>生成SSH密钥并与github关联
+
+<ul>
+<li><code>ssh-keygen -t rsa -C "362953310@qq.com"</code></li>
+<li><code>将id_rsa.pub里面的内容拷贝到github中新建的SSH密钥中保存</code></li>
+<li>测试是否关联成功<code>ssh -T git@github.com</code></li>
+</ul>
+</li>
+<li>安装Ruby，安装时选择将Ruby添加到系统环境变量中</li>
+<li>安装Ruby后测试是否成功,终端下使用命令<code>ruby -v</code></li>
+<li>安装DevKit，进入DevKit文件夹下运行<code>ruby dk.rb init</code>和<code>ruby dk.rb install</code></li>
+<li>安装Octopress源码并且设置默认主题
+
+<ul>
+<li><code>git clone git://github.com/imathis/octopress.git Octopress</code></li>
+<li>修改gem的软件源<code>gem sources -a http://ruby.taobao.org</code></li>
+<li>移除原始gem软件源<code>gem sources -r http://rubygems.org</code></li>
+<li>打开Octopress文件夹下的Gemfile文件，将里面<code>source "http://rubygems.org"</code>修改为<code>source "http://ruby.taobao.org"</code></li>
+<li>安装bundler<code>gem install bundler</code></li>
+<li>安装bundler里面的软件包<code>bundle install</code></li>
+</ul>
+</li>
+<li>安装默认主题<code>rake install</code></li>
+</ol>
+
+
+<h2>常用命令</h2>
+
+<ul>
+<li>新建博客                      <code>rake new_post['New Blog']</code></li>
+<li>新建单页面                       <code>rake new_page['New Page']</code></li>
+<li>编译生成网页                    <code>rake generate</code></li>
+<li>本地服务器预览（默认4000端口）   <code>rake preview</code></li>
+<li>发布网页                      <code>rake deploy</code></li>
 </ul>
 
 
@@ -40,6 +78,22 @@
 <li>列表            <code>*</code>或者<code>-</code></li>
 <li>图片            <code>！[图片的描述](链接地址)</code></li>
 </ul>
+
+
+<h2>优化</h2>
+
+<ul>
+<li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
+<li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
+</ul>
+
+
+<h2>参考文献</h2>
+
+<ol>
+<li><a href="http://www.appinn.com/markdown/">MarkDown中文语法详解</a></li>
+<li><a href="http://wenku.baidu.com/view/1e250851240c844769eaeec6">极客学院Octopress课件</a></li>
+</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
