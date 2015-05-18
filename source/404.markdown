@@ -1,7 +1,9 @@
 ---
 layout: page
-title: "404 Not Found"
+title: "啊欧~没有耶"
 date: 2015-05-17 13:55:58 +0800
 comments: false
 ---
 <iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/Home/Distribute/ad404/key/176393' width='654' height='470' style='display:block;'></iframe>
+
+![suda-morris](http://i.imgur.com/Nn7Krru.gif)
