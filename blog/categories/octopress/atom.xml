@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[WenRis Blog]]></title>
-  <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: octopress | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
   <updated>2015-05-18T14:19:48+08:00</updated>
   <id>http://suda-morris.github.io/</id>
@@ -42,29 +42,6 @@
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Hey!WenRis]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/18/hey-wenris/"/>
-    <updated>2015-05-18T13:09:30+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/18/hey-wenris</id>
-    <content type="html"><![CDATA[<h2>Hello! This is WenRis</h2>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
-</span><span class='line'>int main()
-</span><span class='line'>{
-</span><span class='line'>  printf("Hello World\n");
-</span><span class='line'>  return 0;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
