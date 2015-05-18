@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-18T14:19:48+08:00</updated>
+  <updated>2015-05-18T14:38:42+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -38,6 +38,7 @@
 <li>加粗            <code>**内容**</code></li>
 <li>斜体            <code>*内容*</code></li>
 <li>列表            <code>*</code>或者<code>-</code></li>
+<li>图片            <code>！[图片的描述](链接地址)</code></li>
 </ul>
 
 
