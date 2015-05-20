@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nuvotonm451 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/nuvotonm451/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-20T18:12:53+08:00</updated>
+  <updated>2015-05-20T18:20:36+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -26,7 +26,7 @@
 <li>定时器计数模式：one-shot(单周期),periodic(多周期),toggle-output(翻转输出)和continuous counting(连续计数)计数模式</li>
 <li>可以选择Tx管脚上的信号作为计数器CNT的时钟(外部事件计数模式)，输入事件的频率必须小于1/8PCLK。此外，Tx管脚还可作为toggle-output模式下的输出引脚</li>
 <li>事件捕捉功能是当检测到Tx_EXT管脚边沿有变化时，当时的CNT值会送到CAPDAT中。Tx_EXT管脚的信号变化率必须小于1/8PCLK。如果CPU不清除CAPIF状态标志，定时器会保持TIMERx_CAP寄存器的值不变，且不会保存新的捕捉值。</li>
-<li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK</li>
+<li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK;CAPFUNCS为0对应事件捕捉，为1对应事件复位，即会复位CNT的值</li>
 </ul>
 </blockquote>
 
