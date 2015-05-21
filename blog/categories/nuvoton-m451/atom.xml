@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nuvoton-m451 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/nuvoton-m451/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-21T13:58:57+08:00</updated>
+  <updated>2015-05-21T15:29:33+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -27,6 +27,7 @@
 <li>可以选择Tx管脚上的信号作为计数器CNT的时钟(外部事件计数模式)，输入事件的频率必须小于1/8PCLK。此外，Tx管脚还可作为toggle-output模式下的输出引脚</li>
 <li>事件捕捉功能是当检测到Tx_EXT管脚边沿有变化时，当时的CNT值会送到CAPDAT中。Tx_EXT管脚的信号变化率必须小于1/8PCLK。如果CPU不清除CAPIF状态标志，定时器会保持TIMERx_CAP寄存器的值不变，且不会保存新的捕捉值。</li>
 <li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK;CAPFUNCS为0对应事件捕捉，为1对应事件复位，即会复位CNT的值</li>
+<li>注意当使用事件计数功能时候，定时器的工作模式不能设置为TIMER_TOGGLE_MODE</li>
 <li>超时溢出周期 = (定时器输入时钟周期) * (8-bit PSC + 1) * (24-bit CMPDAT)</li>
 </ul>
 </blockquote>
@@ -68,6 +69,16 @@
 <li><code>TIMER_GetModuleClock(TIMER_T *timer)</code></li>
 </ul>
 
+
+<blockquote><ul>
+<li>TIMER_T *timer的取值有<code>TIMER0</code>,<code>TIMER1</code>,<code>TIMER2</code>,<code>TIMER3</code></li>
+<li>u32ToutSel的取值有<code>TIMER_TOUT_PIN_FROM_TX</code>,<code>TIMER_TOUT_PIN_FROM_TX_EXT</code></li>
+<li>u32CapMode的取值有<code>TIMER_CAPTURE_FREE_COUNTING_MODE</code>,<code>TIMER_CAPTURE_COUNTER_RESET_MODE</code></li>
+<li>u32Edge的取值有<code>TIMER_CAPTURE_FALLING</code>,<code>TIMER_CAPTURE_RISING_EDGE</code>,<code>TIMER_CAPTURE_FALLING_AND_RISING_EDGE</code></li>
+<li>u32Edge的取值有<code>TIMER_COUNTER_FALLING_EDGE</code>,<code>TIMER_COUNTER_RISING_EDGE</code></li>
+<li>u32Mode的取值有<code>TIMER_ONESHOT_MODE</code>,<code>TIMER_PERIODIC_MODE</code>,<code>TIMER_TOGGLE_MODE</code>,<code>TIMER_CONTINUOUS_MODE</code></li>
+</ul>
+</blockquote>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
