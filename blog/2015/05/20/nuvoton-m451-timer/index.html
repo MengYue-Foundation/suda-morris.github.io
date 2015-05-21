@@ -157,18 +157,20 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
+<span class='line-number'>13</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with PCLK0*/</span>
 </span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
 </span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR0SEL_PCLK0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 </span><span class='line'><span class="cm">/*Reset TMR0 Module*/</span>
 </span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
 </span><span class='line'><span class="cm">/*Open TMR0 Module, working at continuous mode, with Freq=1Hz*/</span>
-</span><span class='line'><span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_PERIODIC_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer0_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_PERIODIC_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 </span><span class='line'><span class="cm">/*Enable Int for TMR0 Module*/</span>
 </span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
 </span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR0_IRQn</span><span class="p">);</span>
 </span><span class='line'><span class="cm">/*Start TMR0 Module*/</span>
 </span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
+</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR0 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer0_freq</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

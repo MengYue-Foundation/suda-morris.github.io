@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-21T22:55:01+08:00</updated>
+  <updated>2015-05-21T23:15:00+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -88,12 +88,13 @@
     /*Reset TMR0 Module*/
     SYS_ResetModule(TMR0_MODULE);
     /*Open TMR0 Module, working at continuous mode, with Freq=1Hz*/
-    TIMER_Open(TIMER0,TIMER_PERIODIC_MODE,1);
+    uint32_t real_timer0_freq = TIMER_Open(TIMER0,TIMER_PERIODIC_MODE,1);
     /*Enable Int for TMR0 Module*/
     TIMER_EnableInt(TIMER0);
     NVIC_EnableIRQ(TMR0_IRQn);
     /*Start TMR0 Module*/
     TIMER_Start(TIMER0);
+    printf("Real TMR0 Freq=%dHz\n",real_timer0_freq);
 </code></pre>
 
 <pre><code class="C TMR0中断程序 http://suda-morris.github.io author">/**
