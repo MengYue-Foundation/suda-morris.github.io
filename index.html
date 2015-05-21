@@ -151,9 +151,9 @@
 </ul>
 </blockquote>
 
-<h2>简单配置实例</h2>
+<h2>配置TMR0为周期性中断</h2>
 
-<figure class='code'><figcaption><span>配置TMR0为周期性终端，频率2Hz</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>配置TMR0为周期性中断，频率2Hz</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -165,18 +165,18 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with HCLK*/</span>
-</span><span class='line'>  <span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_CLKOSEL_HCLK</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>  <span class="cm">/*Reset TMR0 Module*/</span>
-</span><span class='line'>  <span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'>  <span class="cm">/*Open TMR0 Module, working at continuous mode, with Freq=2Hz*/</span>
-</span><span class='line'>  <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_PERIODIC_MODE</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-</span><span class='line'>  <span class="cm">/*Enable Int for TMR0 Module*/</span>
-</span><span class='line'>  <span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR0_IRQn</span><span class="p">);</span>
-</span><span class='line'>  <span class="cm">/*Start TMR0 Module*/</span>
-</span><span class='line'>  <span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with PCLK0*/</span>
+</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
+</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR0SEL_PCLK0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Reset TMR0 Module*/</span>
+</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Open TMR0 Module, working at continuous mode, with Freq=1Hz*/</span>
+</span><span class='line'><span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_PERIODIC_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Enable Int for TMR0 Module*/</span>
+</span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
+</span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR0_IRQn</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Start TMR0 Module*/</span>
+</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
