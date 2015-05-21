@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-21T10:09:09+08:00</updated>
+  <updated>2015-05-21T13:58:57+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -27,8 +27,47 @@
 <li>可以选择Tx管脚上的信号作为计数器CNT的时钟(外部事件计数模式)，输入事件的频率必须小于1/8PCLK。此外，Tx管脚还可作为toggle-output模式下的输出引脚</li>
 <li>事件捕捉功能是当检测到Tx_EXT管脚边沿有变化时，当时的CNT值会送到CAPDAT中。Tx_EXT管脚的信号变化率必须小于1/8PCLK。如果CPU不清除CAPIF状态标志，定时器会保持TIMERx_CAP寄存器的值不变，且不会保存新的捕捉值。</li>
 <li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK;CAPFUNCS为0对应事件捕捉，为1对应事件复位，即会复位CNT的值</li>
+<li>超时溢出周期 = (定时器输入时钟周期) * (8-bit PSC + 1) * (24-bit CMPDAT)</li>
 </ul>
 </blockquote>
+
+<h2>API</h2>
+
+<ul>
+<li><code>TIMER_SET_CMP_VALUE(timer,u32Value)</code></li>
+<li><code>TIMER_SET_PRESCALE_VALUE(timer,u32Value)</code></li>
+<li><code>TIMER_IS_ACTIVE(timer)</code></li>
+<li><code>TIMER_SELECT_TOUT_PIN(timer,u32ToutSel)</code></li>
+<li><code>TIMER_Start(TIMER_T *timer)</code></li>
+<li><code>TIMER_Stop(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableWakeup(TIMER_T *timer)</code></li>
+<li><code>TIMER_DisableWakeup(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableCaptureDebounce(TIMER_T *timer)</code></li>
+<li><code>TIMER_DisableCaptureDebounce(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableEventCounterDebounce(TIMER_T *timer)</code></li>
+<li><code>TIMER_DisableEventCounterDebounce(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableInt(TIMER_T *timer)</code></li>
+<li><code>TIMER_DisableInt(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableCaptureInt(TIMER_T *timer)</code></li>
+<li><code>TIMER_DisableCaptureInt(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetIntFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_ClearIntFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetCaptureIntFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_ClearCaptureIntFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetWakeupFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_ClearWakeupFlag(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetCaptureData(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetCounter(TIMER_T *timer)</code></li>
+<li><code>TIMER_Open(TIMER_T *timer,uint32_t u32Mode,uint32_t u32Freq)</code></li>
+<li><code>TIMER_Close(TIMER_T *timer)</code></li>
+<li><code>TIMER_Delay(TIMER_t *timer)</code></li>
+<li><code>TIMER_EnableCapture(TIMER_T *timer,uint32_t u32CapMode,uint32_t u32Edge)</code></li>
+<li><code>TIMER_DisableCapture(TIMER_T *timer)</code></li>
+<li><code>TIMER_EnableEventCounter(TIMER_T *timer,uint32_t u32Edge)</code></li>
+<li><code>TIMER_DisableEventCounter(TIMER_T *timer)</code></li>
+<li><code>TIMER_GetModuleClock(TIMER_T *timer)</code></li>
+</ul>
+
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
