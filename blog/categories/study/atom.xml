@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-21T15:29:33+08:00</updated>
+  <updated>2015-05-21T16:10:16+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -79,6 +79,22 @@
 <li>u32Mode的取值有<code>TIMER_ONESHOT_MODE</code>,<code>TIMER_PERIODIC_MODE</code>,<code>TIMER_TOGGLE_MODE</code>,<code>TIMER_CONTINUOUS_MODE</code></li>
 </ul>
 </blockquote>
+
+<h2>简单配置实例</h2>
+
+<pre><code class="C ">/*Enable TMR0 ClK Source with HCLK*/
+    CLK_EnableModuleClock(TMR0_MODULE);
+    CLK_SetModuleClock(TMR0_MODULE,CLK_CLKSEL1_CLKOSEL_HCLK,0);
+    /*Reset TMR0 Module*/
+    SYS_ResetModule(TMR0_MODULE);
+    /*Open TMR0 Module, working at continuous mode, with Freq=2Hz*/
+    TIMER_Open(TIMER0,TIMER_PERIODIC_MODE,2);
+    /*Enable Int for TMR0 Module*/
+    TIMER_EnableInt(TIMER0);
+    NVIC_EnableIRQ(TMR0_IRQn);
+    /*Start TMR0 Module*/
+    TIMER_Start(TIMER0);
+</code></pre>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
