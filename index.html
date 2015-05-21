@@ -153,7 +153,7 @@
 
 <h2>简单配置实例</h2>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>配置TMR0为周期性终端，频率2Hz</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -177,6 +177,45 @@
 </span><span class='line'>  <span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR0_IRQn</span><span class="p">);</span>
 </span><span class='line'>  <span class="cm">/*Start TMR0 Module*/</span>
 </span><span class='line'>  <span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>TMR0中断程序</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * @brief       Timer0 IRQ</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * @param       None</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * @return      None</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * @details     The Timer0 default IRQ, declared in startup_M451Series.s.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">TMR0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetIntFlag</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/* Clear Timer0 time-out interrupt flag */</span>
+</span><span class='line'>        <span class="n">TIMER_ClearIntFlag</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;TMR0 Interrupt occured</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
