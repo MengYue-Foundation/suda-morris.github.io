@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-22T21:12:01+08:00</updated>
+  <updated>2015-05-22T21:15:24+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -117,7 +117,7 @@ void TMR0_IRQHandler(void)
 }
 </code></pre>
 
-<h2>配置TMR2为事件计数模式</h2>
+<h2>配置TMR2为事件计数器</h2>
 
 <pre><code class="C 配置TMR2为事件计数模式，技术引脚为PD3">    /*Enable TMR2 Clk Source with PCLK1*/
     CLK_EnableModuleClock(TMR2_MODULE);

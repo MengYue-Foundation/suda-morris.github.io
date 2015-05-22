@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-22T21:12:01+08:00</updated>
+  <updated>2015-05-22T21:15:24+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -150,7 +150,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>配置TMR2为事件计数模式</h2>
+<h2>配置TMR2为事件计数器</h2>
 
 <figure class='code'><figcaption><span>配置TMR2为事件计数模式，技术引脚为PD3</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
