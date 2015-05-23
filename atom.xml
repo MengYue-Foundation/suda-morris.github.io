@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-23T18:08:10+08:00</updated>
+  <updated>2015-05-23T20:28:32+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -89,9 +89,9 @@
 </ul>
 </blockquote>
 
-<h2>配置TMR0为周期性中断</h2>
+<h2>配置TMR0:toggle-output模式，频率1000Hz(PD4实际产生的方波频率500Hz)，关闭中断</h2>
 
-<figure class='code'><figcaption><span>配置TMR0为周期性中断，频率1Hz</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>定时器TMR0的配置程序</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -104,23 +104,33 @@
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with PCLK0*/</span>
 </span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
 </span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR0SEL_PCLK0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 </span><span class='line'><span class="cm">/*Reset TMR0 Module*/</span>
 </span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR0 Module, working at continuous mode, with Freq=1Hz*/</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer0_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_PERIODIC_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Int for TMR0 Module*/</span>
-</span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
-</span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR0_IRQn</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Open TMR0 Module, working at toggle mode, with Freq=1000Hz*/</span>
+</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer0_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Set PD4[PIN18] Multifuntion Pin as T0*/</span>
+</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD4MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD4MFP_T0</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
+</span><span class='line'><span class="c">/*Enable Int for TMR0 Module*/</span>
+</span><span class='line'><span class="c">TIMER_EnableInt(TIMER0);</span>
+</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR0_IRQn);</span>
+</span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'><span class="cm">/*Start TMR0 Module*/</span>
 </span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
 </span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR0 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer0_freq</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><figcaption><span>TMR0中断程序</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<h2>配置TMR3：toggle-output模式，频率2Hz(PD11实际产生的方波频率2Hz)，关闭中断</h2>
+
+<figure class='code'><figcaption><span>定时器TMR3的配置程序</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -137,109 +147,23 @@
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * @brief       Timer0 IRQ</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @param       None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @return      None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @details     The Timer0 default IRQ, declared in startup_M451Series.s.</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">TMR0_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetIntFlag</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer0 time-out interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearIntFlag</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;TMR0 Interrupt occured</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>配置TMR2为事件计数器</h2>
-
-<figure class='code'><figcaption><span>配置TMR2为事件计数模式，技术引脚为PD3</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR2 Clk Source with PCLK1*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR2SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR2 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR2 Module,working at continuous mode,with Freq=1Hz*/</span>
-</span><span class='line'><span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_CONTINUOUS_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Event Counter for TMR2*/</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounter</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_COUNTER_FALLING_EDGE</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounterDebounce</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_PRESCALE_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_CMP_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD3[PIN17] Multifuntion Pin as T2*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD3MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD3MFP_T2</span><span class="p">;</span>
-</span><span class='line'><span class="cm">/*Enable Int for TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR2_IRQn</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Start TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>TMR2中断程序</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * @brief       Timer2 IRQ</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @param       None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @return      None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @details     The Timer2 default IRQ, declared in startup_M451Series.s.</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">TMR2_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer2 time-out interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;TMR2 Time-Out Interrupt occured</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR3 ClK Source with PCLK1*/</span>
+</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
+</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR3SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Reset TMR3 Module*/</span>
+</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Open TMR3 Module, working at toggle mode, with Freq=2Hz*/</span>
+</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer3_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/*Set PD11[PIN27] Multifuntion Pin as T3*/</span>
+</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPH_PD11MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPH_PD11MFP_T3</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
+</span><span class='line'><span class="c">/*Enable Int for TMR3 Module*/</span>
+</span><span class='line'><span class="c">TIMER_EnableInt(TIMER3);</span>
+</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR3_IRQn);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cm">/*Start TMR3 Module*/</span>
+</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">);</span>
+</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR3 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer3_freq</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
