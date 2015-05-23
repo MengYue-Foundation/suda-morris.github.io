@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-23T20:30:31+08:00</updated>
+  <updated>2015-05-23T20:41:12+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -98,7 +98,7 @@
     SYS_ResetModule(TMR0_MODULE);
     /*Open TMR0 Module, working at toggle mode, with Freq=1000Hz*/
     uint32_t real_timer0_freq = TIMER_Open(TIMER0,TIMER_TOGGLE_MODE,1000);
-    /*Set PD4[PIN18] Multifuntion Pin as T0*/
+    /*Set PD4[PIN18] Multifuntion Pin as T0 for Toggle Output*/
     SYS-&gt;GPD_MFPL = (SYS-&gt;GPD_MFPL &amp; ~SYS_GPD_MFPL_PD4MFP_Msk) | SYS_GPD_MFPL_PD4MFP_T0;
 #if 0
     /*Enable Int for TMR0 Module*/
@@ -119,7 +119,7 @@
     SYS_ResetModule(TMR3_MODULE);
     /*Open TMR3 Module, working at toggle mode, with Freq=2Hz*/
     uint32_t real_timer3_freq = TIMER_Open(TIMER3,TIMER_TOGGLE_MODE,2);
-    /*Set PD11[PIN27] Multifuntion Pin as T3*/
+    /*Set PD11[PIN27] Multifuntion Pin as T3 for Toggle Output*/
     SYS-&gt;GPD_MFPH = (SYS-&gt;GPD_MFPH &amp; ~SYS_GPD_MFPH_PD11MFP_Msk) | SYS_GPD_MFPH_PD11MFP_T3;
 #if 0
     /*Enable Int for TMR3 Module*/
@@ -129,6 +129,64 @@
     /*Start TMR3 Module*/
     TIMER_Start(TIMER3);
     printf("Real TMR3 Freq=%dHz\n",real_timer3_freq);
+</code></pre>
+
+<h2>定时器TMR2的配置程序</h2>
+
+<pre><code class="C 配置TMR2: continuous模式，开启事件计数器功能(PD3)，开启捕获功能(PA5)，开启捕获中断 http://suda-morris.github.io author">    /*Enable TMR2 Clk Source with PCLK1*/
+    CLK_EnableModuleClock(TMR2_MODULE);
+    CLK_SetModuleClock(TMR2_MODULE,CLK_CLKSEL1_TMR2SEL_PCLK1,0);
+    /*Reset TMR2 Module*/
+    SYS_ResetModule(TMR2_MODULE);
+    /*Open TMR2 Module,working at continuous mode,with Freq=1Hz*/
+    TIMER_Open(TIMER2,TIMER_CONTINUOUS_MODE,1);
+    /*Enable Event Counter for TMR2, Enable Event Counter Debounce*/
+    TIMER_EnableEventCounter(TIMER2,TIMER_COUNTER_FALLING_EDGE);
+    TIMER_EnableEventCounterDebounce(TIMER2);
+    TIMER_SET_PRESCALE_VALUE(TIMER2,0);
+    TIMER_SET_CMP_VALUE(TIMER2,0xFFFFFF);
+    /*Enable Capture Counting for TMR2, Enable Capture Debounce*/
+    TIMER_EnableCapture(TIMER2,TIMER_CAPTURE_FREE_COUNTING_MODE,TIMER_CAPTURE_FALLING_EDGE);
+    TIMER_EnableCaptureDebounce(TIMER2);
+    /*Set PD3[PIN17] Multifuntion Pin as T2 for Event Counter*/
+    SYS-&gt;GPD_MFPL = (SYS-&gt;GPD_MFPL &amp; ~SYS_GPD_MFPL_PD3MFP_Msk) | SYS_GPD_MFPL_PD3MFP_T2;
+    /*Set PA5[PIN61] Multifuntion Pin as T2_EXT for Capture*/
+    SYS-&gt;GPA_MFPL = (SYS-&gt;GPA_MFPL &amp; ~SYS_GPA_MFPL_PA5MFP_Msk) | SYS_GPA_MFPL_PA5MFP_T2_EXT;
+    /*Enable Int for TMR2 Module*/
+    TIMER_EnableInt(TIMER2);
+    TIMER_EnableCaptureInt(TIMER2);
+    NVIC_EnableIRQ(TMR2_IRQn);
+    /*Start TMR2 Module*/
+    TIMER_Start(TIMER2);
+</code></pre>
+
+<h2>定时器TMR2中断程序</h2>
+
+<pre><code class="C TMR2中断程序 http://suda-morris.github.io author">/**
+ * @brief       Timer2 IRQ
+ *
+ * @param       None
+ *
+ * @return      None
+ *
+ * @details     The Timer2 default IRQ, declared in startup_M451Series.s.
+ */
+uint32_t capCount = 0;
+void TMR2_IRQHandler(void)
+{
+    if(TIMER_GetIntFlag(TIMER2) == 1)
+    {
+        /* Clear Timer2 time-out interrupt flag */
+        TIMER_ClearIntFlag(TIMER2);
+        printf("TMR2 Time-Out Interrupt occured\n");
+    }
+    if(TIMER_GetCaptureIntFlag(TIMER2) == 1)
+    {
+        /* Clear Timer2 capture trigger interrupt flag */
+        TIMER_ClearCaptureIntFlag(TIMER2);
+        capCount++;
+    }
+}
 </code></pre>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
