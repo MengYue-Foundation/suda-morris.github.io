@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-23T20:41:12+08:00</updated>
+  <updated>2015-05-23T20:45:19+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -273,6 +273,35 @@
 </span><span class='line'>        <span class="n">TIMER_ClearCaptureIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
 </span><span class='line'>      <span class="n">capCount</span><span class="o">++</span><span class="p">;</span>
 </span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>主函数测试代码</h2>
+
+<figure class='code'><figcaption><span>main函数主要测试代码,测试结果为500</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">uint32_t</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span>
+</span><span class='line'><span class="kt">uint32_t</span> <span class="n">initCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">capCount</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">capCount</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="n">initCount</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">TIMER_GetCaptureData</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;diff=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>      <span class="n">initCount</span> <span class="o">=</span> <span class="n">capCount</span><span class="o">%</span><span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
