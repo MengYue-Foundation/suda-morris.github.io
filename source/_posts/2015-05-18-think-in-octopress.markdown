@@ -4,6 +4,8 @@ title: "Octopress学习手记"
 date: 2015-05-18 13:22:49 +0800
 comments: true
 categories: [Study,Octopress]
+description: "Octopress学习手记"
+keywords: Octopress
 ---
 ##Windows下环境搭建
 1. 安装好Git，配置Git全局参数

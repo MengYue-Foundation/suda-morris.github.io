@@ -69,10 +69,12 @@ github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
 
+# Weibo
+weibo_user: 1724634694
 
 # Twitter
-twitter_user: Morris1106com
-twitter_tweet_button: true
+twitter_user:
+twitter_tweet_button: false
 
 # Google +1
 google_plus_one: false
