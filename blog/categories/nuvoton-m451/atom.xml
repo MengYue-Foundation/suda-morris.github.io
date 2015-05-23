@@ -4,7 +4,7 @@
   <title><![CDATA[Category: nuvoton-m451 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/nuvoton-m451/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-23T20:28:32+08:00</updated>
+  <updated>2015-05-23T20:30:31+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -89,9 +89,9 @@
 </ul>
 </blockquote>
 
-<h2>配置TMR0:toggle-output模式，频率1000Hz(PD4实际产生的方波频率500Hz)，关闭中断</h2>
+<h2>定时器TMR0的配置程序</h2>
 
-<pre><code class="C 定时器TMR0的配置程序 http://suda-morris.github.io author">    /*Enable TMR0 ClK Source with PCLK0*/
+<pre><code class="C 配置TMR0:toggle-output模式，频率1000Hz(PD4实际产生的方波频率500Hz)，关闭中断 http://suda-morris.github.io author">    /*Enable TMR0 ClK Source with PCLK0*/
     CLK_EnableModuleClock(TMR0_MODULE);
     CLK_SetModuleClock(TMR0_MODULE,CLK_CLKSEL1_TMR0SEL_PCLK0,0);
     /*Reset TMR0 Module*/
@@ -110,9 +110,9 @@
     printf("Real TMR0 Freq=%dHz\n",real_timer0_freq);
 </code></pre>
 
-<h2>配置TMR3：toggle-output模式，频率2Hz(PD11实际产生的方波频率2Hz)，关闭中断</h2>
+<h2>定时器TMR3的配置程序</h2>
 
-<pre><code class="C 定时器TMR3的配置程序">    /*Enable TMR3 ClK Source with PCLK1*/
+<pre><code class="C 配置TMR3：toggle-output模式，频率2Hz(PD11实际产生的方波频率2Hz)，关闭中断 http://suda-morris.github.io author">    /*Enable TMR3 ClK Source with PCLK1*/
     CLK_EnableModuleClock(TMR3_MODULE);
     CLK_SetModuleClock(TMR3_MODULE,CLK_CLKSEL1_TMR3SEL_PCLK1,0);
     /*Reset TMR3 Module*/
