@@ -95,9 +95,24 @@
 	<div class="entry-content">
 		<h2>新唐CortexM4内核芯片M451学习之&mdash;-模数转换EADC</h2>
 
+<blockquote><ul>
+<li>包含一个12位带16个外部输入通道或者8对差分模拟输入通道和3个内部通道的SAR-ADC(逐次逼近型模数转换器)</li>
+<li>可以通过软件触发，PWM0/1触发，timer0~3溢出脉冲触发，ADINT0，ADINT1中断EOC(转换结束)脉冲触发和外部管脚(STADC)输入信号来启动转换</li>
+<li>Vref最大5V，12位分辨率，保证10位精度</li>
+<li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
+<li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
+<li>最大ADC时钟频率是20MHz</li>
+<li>高达1Msps转换率</li>
+<li>内部采样时间可配置</li>
+<li>双缓存用于采样控制逻辑模块0~3</li>
+<li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
+<li>支持PDMA
+
 <h2>API</h2>
 
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
+</ul>
+</blockquote>
 
 		
 		
