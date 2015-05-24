@@ -95,7 +95,39 @@
 	<div class="entry-content">
 		<h2>Ubuntu-Mate14.04.2-LTS安装</h2>
 
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+<ol>
+<li><a href="https://ubuntu-mate.org/">进入Ubutnu-Mate官网下载ISO镜像后安装到虚拟机</a></li>
+<li>安装结束后，打开自带的软件中心，进入->编辑->软件源，选择访问速度最快的国内镜像站(软件可以自动选取速度最快的站点)</li>
+<li>依次安装以下软件，安装命令为:<code>sudo apt-get install</code>
+
+<ul>
+<li>文本编辑器:gedit vim</li>
+<li>基本开发工具：build-essential</li>
+<li>生成工程Makefile的工具：autoconf automake</li>
+<li>词法扫描分析工具：flex bison</li>
+<li>C语言函数用户手册：manpages-dev</li>
+<li>其他程序的用户手册：binutils-doc cpp-doc gcc-doc glib-doc stl-manual</li>
+<li>串口工具：minicom</li>
+<li>Ubuntu-Tweak工具安装：
+
+<ul>
+<li>添加tweak源：sudo add-apt-repository ppa:tualatrix/ppa</li>
+<li>更新：sudo apt-get update</li>
+<li>安装ubuntu-tweak：sudo apt-get install ubuntu-tweak</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>VirtualBox安装增强工具
+
+<ul>
+<li>进入VirtualBox设备->安装增强工具</li>
+<li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装
+<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
+</ul>
+</li>
+</ol>
+
 
 		
 		
@@ -153,6 +185,7 @@
 <li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
 <li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
 <li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位</li>
+<li>触发延时时间=<code>TRGDLYCNT*ADC_CLK*n</code>(n=1,2,4,16来自TRGDLYDIV设置).</li>
 </ul>
 </blockquote>
 

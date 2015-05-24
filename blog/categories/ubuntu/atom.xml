@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ubuntu | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-24T20:04:27+08:00</updated>
+  <updated>2015-05-24T21:24:51+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -20,7 +20,39 @@
     <id>http://suda-morris.github.io/blog/2015/05/24/ubuntu-mate-14-04-2-lts-install</id>
     <content type="html"><![CDATA[<h2>Ubuntu-Mate14.04.2-LTS安装</h2>
 
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+<ol>
+<li><a href="https://ubuntu-mate.org/">进入Ubutnu-Mate官网下载ISO镜像后安装到虚拟机</a></li>
+<li>安装结束后，打开自带的软件中心，进入->编辑->软件源，选择访问速度最快的国内镜像站(软件可以自动选取速度最快的站点)</li>
+<li>依次安装以下软件，安装命令为:<code>sudo apt-get install</code>
+
+<ul>
+<li>文本编辑器:gedit vim</li>
+<li>基本开发工具：build-essential</li>
+<li>生成工程Makefile的工具：autoconf automake</li>
+<li>词法扫描分析工具：flex bison</li>
+<li>C语言函数用户手册：manpages-dev</li>
+<li>其他程序的用户手册：binutils-doc cpp-doc gcc-doc glib-doc stl-manual</li>
+<li>串口工具：minicom</li>
+<li>Ubuntu-Tweak工具安装：
+
+<ul>
+<li>添加tweak源：sudo add-apt-repository ppa:tualatrix/ppa</li>
+<li>更新：sudo apt-get update</li>
+<li>安装ubuntu-tweak：sudo apt-get install ubuntu-tweak</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>VirtualBox安装增强工具
+
+<ul>
+<li>进入VirtualBox设备->安装增强工具</li>
+<li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装
+<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
+</ul>
+</li>
+</ol>
+
 ]]></content>
   </entry>
   
