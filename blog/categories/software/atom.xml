@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-24T21:29:05+08:00</updated>
+  <updated>2015-05-24T23:00:50+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -41,6 +41,7 @@
 <li>安装ubuntu-tweak：sudo apt-get install ubuntu-tweak</li>
 </ul>
 </li>
+<li>超强vim配置文件：wget -qO- <a href="https://raw.github.com/ma6174/vim/master/setup.sh">https://raw.github.com/ma6174/vim/master/setup.sh</a> | sh -x</li>
 </ul>
 </li>
 <li>VirtualBox安装增强工具
@@ -48,6 +49,19 @@
 <ul>
 <li>进入VirtualBox设备->安装增强工具</li>
 <li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>常见问题及解决方法</h2>
+
+<ol>
+<li>在Ubuntu登陆界面输入密码之后，黑屏一闪后，又跳转到登录界面。
+
+<ul>
+<li>原因：主目录下的.Xauthority文件拥有者变成了root，从而以用户登陆的时候无法都取.Xauthority文件。</li>
+<li>方法：将.Xauthority的拥有者改为登陆用户。开机后在登陆界面按下shift + ctrl + F1进入tty命令行终端登陆后输入: sudo chown 用户名:用户名 .Xauthority</li>
 </ul>
 </li>
 </ol>
