@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-23T22:55:06+08:00</updated>
+  <updated>2015-05-24T16:32:15+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -27,13 +27,13 @@
 <li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
 <li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
 <li>最大ADC时钟频率是20MHz</li>
-<li>高达1Msps转换率</li>
+<li>高达1Msps采样频率</li>
 <li>内部采样时间可配置</li>
 <li>双缓存用于采样控制逻辑模块0~3</li>
 <li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
-<li>支持PDMA
-
-<h2>API</h2>
+<li>支持PDMA</li>
+<li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
+<li><h2>API</h2>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
 </ul>
