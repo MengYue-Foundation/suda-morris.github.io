@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ubuntu | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-24T21:24:51+08:00</updated>
+  <updated>2015-05-24T21:29:05+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -47,12 +47,13 @@
 
 <ul>
 <li>进入VirtualBox设备->安装增强工具</li>
-<li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装
-<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
+<li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装</li>
 </ul>
 </li>
 </ol>
 
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
