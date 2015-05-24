@@ -108,11 +108,18 @@
 <li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
 <li>支持PDMA</li>
 <li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
-<li><h2>API</h2>
+<li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
+<li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位
 
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
+<h2>中断源</h2>
+
+<img src="http://i.imgur.com/xDtUVIS.png" alt="Nuvoton-M451-EADC中断源" />
+
+<h2>API</h2></li>
 </ul>
 </blockquote>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 
 		
 		
