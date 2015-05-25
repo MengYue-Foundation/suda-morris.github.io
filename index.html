@@ -161,9 +161,11 @@
 <li>文本编辑器:gedit vim</li>
 <li>基本开发工具：build-essential</li>
 <li>生成工程Makefile的工具：autoconf automake</li>
-<li>词法扫描分析工具：flex bison</li>
-<li>C语言函数用户手册：manpages-dev</li>
+<li>词法扫描分析工具：flex bison texinfo git-core gnupg gperf valgrind</li>
+<li>C语言函数用户手册：manpages-dev libncurses-dev libsdl-dev libesd0-dev libwxgtk2.6-dev ncurses-dev</li>
 <li>其他程序的用户手册：binutils-doc cpp-doc gcc-doc glib-doc stl-manual</li>
+<li>压缩工具： zip</li>
+<li>网络工具: curl</li>
 <li>串口工具：minicom</li>
 <li>Ubuntu-Tweak工具安装：
 
@@ -211,6 +213,7 @@
 <ul>
 <li><code>sudo apt-get install libc6:i386</code></li>
 <li><code>sudo apt-get install gcc-multilib g++-multilib</code></li>
+<li><code>sudo apt-get install lib32z1 lib32ncurses5 lib32bz2-1.0 libgtk2.0-0:i386 libpangox-1.0-0:i386 libpangoxft-1.0-0:i386 libidn11:i386 gstreamer0.10-pulseaudio:i386 gstreamer0.10-plugins-base:i386 gstreamer0.10-plugins-good:i386</code></li>
 </ul>
 </li>
 <li>注意，在13.10后Ubuntu不提供ia32-libs的套件了，但是还是可以这样来安装：</li>
