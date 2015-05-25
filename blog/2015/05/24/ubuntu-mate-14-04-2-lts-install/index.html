@@ -149,22 +149,22 @@
 <li><code>sudo apt-get install gcc-multilib g++-multilib</code></li>
 </ul>
 </li>
-<li>注意，在13.10后Ubuntu不提供ia32-libs的套件了，但是还是可以这样来安装：
-<code>Shell
-sudo -i
-cd /etc/apt/sources.list.d
-echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" &gt;ia32-libs-raring.list
-apt-get update
-apt-get install ia32-libs
-rm /etc/apt/sources.list.d/ia32-libs-raring.list
-apt-get update
-exit
-sudo apt-get install gcc-multilib
-</code>
+<li>注意，在13.10后Ubuntu不提供ia32-libs的套件了，但是还是可以这样来安装：</li>
+</ul>
+
+
+<pre><code class="`Shell"> sudo -i
+ cd /etc/apt/sources.list.d
+ echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" &gt;ia32-libs-raring.list
+ apt-get update
+ apt-get install ia32-libs
+ rm /etc/apt/sources.list.d/ia32-libs-raring.list
+ apt-get update
+ exit
+ sudo apt-get install gcc-multilib
+</code></pre>
 
 <h2>常见问题及解决方法</h2></li>
-</ul>
-</li>
 <li>在Ubuntu登陆界面输入密码之后，黑屏一闪后，又跳转到登录界面。
 
 <ul>
