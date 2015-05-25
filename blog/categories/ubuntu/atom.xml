@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ubuntu | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T15:10:44+08:00</updated>
+  <updated>2015-05-25T17:09:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -55,6 +55,15 @@
 <li>修改最大连接数为16</li>
 </ul>
 </li>
+<li>输入法工具安装：fcitx:
+
+<ul>
+<li><code>sudo apt-get install fcitx-table-wbpy</code></li>
+<li>进入<code>语言支持</code>->把<code>键盘输入方式系统</code>改为<code>fcitx</code>，重启系统</li>
+</ul>
+</li>
+<li>用WPS替换掉Ubuntu自带的Office</li>
+<li>去<a href="http://www.qt.io/download/">Qt官网</a>下载QtCreator</li>
 </ul>
 </li>
 <li>VirtualBox安装增强工具
