@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ubuntu | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T17:09:11+08:00</updated>
+  <updated>2015-05-25T17:59:41+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -74,7 +74,21 @@
 </ul>
 </li>
 <li>设置root密码：<code>sudo passwd root</code></li>
-<li>64位兼容32位的方法
+</ol>
+
+
+<h2>常见问题及解决方法</h2>
+
+<ol>
+<li>在Ubuntu登陆界面输入密码之后，黑屏一闪后，又跳转到登录界面。
+
+<ul>
+<li>原因：主目录下的.Xauthority文件拥有者变成了root，从而以用户登陆的时候无法都取.Xauthority文件。</li>
+<li>方法1：将.Xauthority的拥有者改为登陆用户。开机后在登陆界面按下shift + ctrl + F1进入tty命令行终端登陆后输入: sudo chown 用户名:用户名 .Xauthority</li>
+<li>方法2：命令行输入：dpkg-reconfigure lightdm重新配置登陆器，重启</li>
+</ul>
+</li>
+<li>如何在64位系统上编译32位可执行程序
 
 <ul>
 <li>确认当前架构为64位的内核
@@ -117,18 +131,7 @@
  apt-get update
  exit
  sudo apt-get install gcc-multilib
-</code></pre>
-
-<h2>常见问题及解决方法</h2></li>
-<li>在Ubuntu登陆界面输入密码之后，黑屏一闪后，又跳转到登录界面。
-
-<ul>
-<li>原因：主目录下的.Xauthority文件拥有者变成了root，从而以用户登陆的时候无法都取.Xauthority文件。</li>
-<li>方法1：将.Xauthority的拥有者改为登陆用户。开机后在登陆界面按下shift + ctrl + F1进入tty命令行终端登陆后输入: sudo chown 用户名:用户名 .Xauthority</li>
-<li>方法2：命令行输入：dpkg-reconfigure lightdm重新配置登陆器，重启</li>
-</ul>
-</li>
-<li>如何在64位系统上编译32位可执行程序</li>
+</code></pre></li>
 </ol>
 
 
