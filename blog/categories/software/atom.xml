@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T12:48:23+08:00</updated>
+  <updated>2015-05-25T12:49:37+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -85,7 +85,7 @@
 </ul>
 
 
-<pre><code class="`Shell"> sudo -i
+<pre><code class="`shell"> sudo -i
  cd /etc/apt/sources.list.d
  echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" &gt;ia32-libs-raring.list
  apt-get update
