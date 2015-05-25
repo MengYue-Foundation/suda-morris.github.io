@@ -4,7 +4,7 @@
   <title><![CDATA[Category: practise | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/practise/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T10:47:20+08:00</updated>
+  <updated>2015-05-25T12:47:02+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,21 @@
     <link href="http://suda-morris.github.io/blog/2015/05/25/microsoft-office-word-skills/"/>
     <updated>2015-05-25T10:45:43+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/05/25/microsoft-office-word-skills</id>
-    <content type="html"><![CDATA[<h2>Office2013使用技巧之&mdash;Word</h2>
+    <content type="html"><![CDATA[<h2>从任意页开始设置页码</h2>
+
+<ol>
+<li>将鼠标光标点击到开始编页码的前一页末尾</li>
+<li>点击菜单栏的<code>页面布局</code></li>
+<li>在<code>页面布局</code>栏目下，点击分隔符后面的倒三角</li>
+<li>弹出分隔符的相关功能栏目，点击<code>下一页</code></li>
+<li>双击页眉的位置，激活页眉编辑</li>
+<li>在需要开始编页码的那页页眉处点击<code>链接到前一页页眉</code></li>
+<li>移动光标到本页的页脚，并激活页脚编辑</li>
+<li>在同一页（即需要开始编页码的那页）的页脚处点击<code>链接到前一页页眉</code></li>
+<li>然后在需要开始编页码的页脚处点击<code>页码</code>->设置页码格式，将起始页设置为1</li>
+<li>点击进入<code>插入</code>菜单栏，选择<code>页码</code>,选择喜欢的页码格式</li>
+</ol>
+
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>

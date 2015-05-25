@@ -119,12 +119,52 @@
 <li>在Ubuntu中，进入挂在的CD(一般在media下)，运行sudo ./VBoxLinuxAdditions.run后等待完成安装</li>
 </ul>
 </li>
-</ol>
+<li>设置root密码：<code>sudo passwd root</code></li>
+<li>64位兼容32位的方法
 
+<ul>
+<li>确认当前架构为64位的内核
 
-<h2>常见问题及解决方法</h2>
+<ul>
+<li>打开终端输入<code>dpkg --print-architecture</code>,如果看到amd64表示已经拥有了64位架构的内核</li>
+</ul>
+</li>
+<li>确认打开了多核架构的支持功能
 
-<ol>
+<ul>
+<li>打开终端输入<code>dpkg --print-foreign-architecture</code>,如果看到输出i386表示已经打开了多架构支持</li>
+<li>如果没有打开，使用如下方法：
+
+<ul>
+<li>下载更新然后运行：<code>sudo dpkg --add-architecture i386</code>，然后<code>sudo apt-get update</code></li>
+<li>输入<code>sudo apt-get -f dist-upgrade</code>检查已经拥有的库文件是否有更新版本</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>安装兼容包
+
+<ul>
+<li><code>sudo apt-get install libc6:i386</code></li>
+<li><code>sudo apt-get install gcc-multilib g++-multilib</code></li>
+</ul>
+</li>
+<li>注意，在13.10后Ubuntu不提供ia32-libs的套件了，但是还是可以这样来安装：
+<code>Shell
+sudo -i
+cd /etc/apt/sources.list.d
+echo "deb http://archive.ubuntu.com/ubuntu/ raring main restricted universe multiverse" &gt;ia32-libs-raring.list
+apt-get update
+apt-get install ia32-libs
+rm /etc/apt/sources.list.d/ia32-libs-raring.list
+apt-get update
+exit
+sudo apt-get install gcc-multilib
+</code>
+
+<h2>常见问题及解决方法</h2></li>
+</ul>
+</li>
 <li>在Ubuntu登陆界面输入密码之后，黑屏一闪后，又跳转到登录界面。
 
 <ul>
@@ -133,6 +173,7 @@
 <li>方法2：命令行输入：dpkg-reconfigure lightdm重新配置登陆器，重启</li>
 </ul>
 </li>
+<li>如何在64位系统上编译32位可执行程序</li>
 </ol>
 
 
