@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T15:43:10+08:00</updated>
+  <updated>2015-05-28T16:12:05+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -91,7 +91,12 @@
 <h2>将博客包装成App</h2>
 
 <ol>
-<li><a href="">搭建Corvoda开发环境</a></li>
+<li><a href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/">搭建Corvoda开发环境</a></li>
+<li><code>cordova create WenRisBlog com.morris.blog WenRisBlog</code></li>
+<li>进入到新建的项目目录中，<code>cordova platform add android</code>,增加对安卓平台的支持</li>
+<li>用eclipse将文件夹下面的platforms目录下的android项目导入(不要拷贝到工作空间)，一定要先clean一下后编译</li>
+<li>然后进入项目目下，执行<code>cordova build</code>进行编译，该编译会把www文件夹下的资源添加到项目中，因此在www文件夹下面的改动需要执行该命令才能生效</li>
+<li>在eclipse运行该项目或者在项目目录下执行命令<code>corvoda run --device</code></li>
 </ol>
 
 

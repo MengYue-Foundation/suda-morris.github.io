@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T15:43:10+08:00</updated>
+  <updated>2015-05-28T16:12:05+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -21,13 +21,33 @@
     <content type="html"><![CDATA[<h2>Cordova环境部署</h2>
 
 <ul>
-<li><a href="https://nodejs.org">安装nodejs</a></li>
+<li><a href="https://nodejs.org">安装nodejs</a>,注意添加到环境变量PATH中</li>
 <li>安装Cordova CLI： npm install -g cordova</li>
-<li><a href="http://java.oracle.com">安装Java JDK</a></li>
-<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a></li>
-<li><a href="http://ant.apache.org/">安装Ant</a></li>
+<li><a href="http://java.oracle.com">安装Java JDK</a>,注意添加环境变量CLASSPATH，和PATH</li>
+<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a>，注意把platform-tools和tools添加到PATH环境变量</li>
+<li><a href="http://ant.apache.org/">安装Ant</a>,注意把bin目录添加到PATH环境变量中</li>
+<li>测试：
+
+<ol>
+<li>npm -v</li>
+<li>java -version</li>
+<li>adb version</li>
+<li>ant -v</li>
+<li>cordova -v</li>
+</ol>
+</li>
+<li>cordova常用命令：
+
+<ol>
+<li><code>cordova creat 项目名称 包名 APP显示名称</code></li>
+<li><code>cordova build</code></li>
+<li><code>cordova run --device</code></li>
+</ol>
+</li>
 </ul>
 
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
@@ -341,7 +361,12 @@ void TMR2_IRQHandler(void)
 <h2>将博客包装成App</h2>
 
 <ol>
-<li><a href="">搭建Corvoda开发环境</a></li>
+<li><a href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/">搭建Corvoda开发环境</a></li>
+<li><code>cordova create WenRisBlog com.morris.blog WenRisBlog</code></li>
+<li>进入到新建的项目目录中，<code>cordova platform add android</code>,增加对安卓平台的支持</li>
+<li>用eclipse将文件夹下面的platforms目录下的android项目导入(不要拷贝到工作空间)，一定要先clean一下后编译</li>
+<li>然后进入项目目下，执行<code>cordova build</code>进行编译，该编译会把www文件夹下的资源添加到项目中，因此在www文件夹下面的改动需要执行该命令才能生效</li>
+<li>在eclipse运行该项目或者在项目目录下执行命令<code>corvoda run --device</code></li>
 </ol>
 
 
