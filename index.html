@@ -110,11 +110,11 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 </pre></td><td class='code'><pre><code class='Python'><span class='line'><span class="k">class</span> <span class="nc">_const</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">class</span> <span class="nc">ConstError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span><span class="k">pass</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">ConstError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span> <span class="k">pass</span>
 </span><span class='line'>  
 </span><span class='line'>  <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
 </span><span class='line'>      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-</span><span class='line'>          <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span><span class='line'>          <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConstError</span><span class="p">,</span><span class="s">&quot;Can&#39;t rebind const(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">name</span>
 </span><span class='line'>      <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
@@ -124,6 +124,11 @@
 </span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
 </span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">_const</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>把以上代码变成const.py文件放到Python安装目录的Lib文件夹下</li>
+</ul>
 
 
 		
