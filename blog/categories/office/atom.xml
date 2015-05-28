@@ -4,7 +4,7 @@
   <title><![CDATA[Category: office | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/office/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T16:12:05+08:00</updated>
+  <updated>2015-05-28T16:39:32+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -31,6 +31,16 @@
 <li>在同一页（即需要开始编页码的那页）的页脚处点击<code>链接到前一页页眉</code></li>
 <li>然后在需要开始编页码的页脚处点击<code>页码</code>->设置页码格式，将起始页设置为1</li>
 <li>点击进入<code>插入</code>菜单栏，选择<code>页码</code>,选择喜欢的页码格式</li>
+</ol>
+
+
+<h2>公式居中标号居右</h2>
+
+<ol>
+<li>在视图工具栏中打开标尺</li>
+<li>公式先居中，在标尺上记录下此时公式的位置，根据标号长度大于预估距离页边的距离，并在标尺上做标记(此时应该有两个标记)，设置标记属性(只要在其中一个标记上双击即可)，将公式标号的位置属性设置为【右对齐】</li>
+<li>将公式靠左对齐，紧跟其后写上标号。</li>
+<li>光标紧跟公式前面，按下Tab键，公式即可跳到标尺上的第一个标记处。光标置于公式标号前，再按下Tab键，公式标号跳到靠近标尺末尾处，此时鼠标拖动第二个标记至标尺最右端，公式标号保证靠右对齐！</li>
 </ol>
 
 
