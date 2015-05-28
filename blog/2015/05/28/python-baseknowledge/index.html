@@ -135,6 +135,16 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 <li>把以上代码变成const.py文件放到Python安装目录的Lib文件夹下</li>
 </ul>
 
+
+<h2>引号的使用与区别</h2>
+
+<ol>
+<li>单引号与双引号可以交叉使用，即双引号中的单引号维持原样，单引号中的双引号维持原样</li>
+<li>三引号里面不能使用单引号和双引号，三引号中的格式维持不变，该回车就回车，该空格就空格</li>
+<li>当需要把转义字符原样输出的时候可以使用自然字符串，即在字符串前面加r</li>
+<li></li>
+</ol>
+
 </div>
 
 
