@@ -116,6 +116,19 @@
 </ul>
 
 
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
+
+
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 </div>
 

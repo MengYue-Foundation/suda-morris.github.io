@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T16:39:32+08:00</updated>
+  <updated>2015-05-28T21:48:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python-BaseKnowledge]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/05/28/python-baseknowledge/"/>
+    <updated>2015-05-28T21:42:24+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/05/28/python-baseknowledge</id>
+    <content type="html"><![CDATA[<h2>Python中的常量</h2>
+
+<figure class='code'><figcaption><span>常量定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='Python'><span class='line'><span class="k">class</span> <span class="nc">_const</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">ConstError</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span><span class="k">pass</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+</span><span class='line'>      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span><span class='line'>          <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+</span><span class='line'>      <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">):</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+</span><span class='line'>          <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">ConstError</span><span class="p">,</span><span class="s">&quot;Can&#39;t unbind const(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</span><span class='line'>      <span class="k">raise</span> <span class="ne">NameError</span><span class="p">,</span> <span class="n">name</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">sys</span>
+</span><span class='line'><span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">_const</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cordova-Startup]]></title>
@@ -45,6 +85,19 @@
 </ol>
 </li>
 </ul>
+
+
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T16:39:32+08:00</updated>
+  <updated>2015-05-28T21:48:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Python-BaseKnowledge]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/05/28/python-baseknowledge/"/>
+    <updated>2015-05-28T21:42:24+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/05/28/python-baseknowledge</id>
+    <content type="html"><![CDATA[<h2>Python中的常量</h2>
+
+<pre><code class="Python 常量定义">class _const(object)
+    class ConstError(TypeError):pass
+
+    def __setattr__(self,name,value):
+        if self.__dict__.has_key(name):
+            raise self.__dict__.has_key(name):
+        self.__dict__[name] = value
+
+    def __delattr__(self,name):
+        if name in self.__dict__:
+            raise self.ConstError,"Can't unbind const(%s)" % name
+        raise NameError, name
+import sys
+sys.modules[__name__] = _const()
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cordova-Startup]]></title>
@@ -45,6 +70,19 @@
 </ol>
 </li>
 </ul>
+
+
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
@@ -278,105 +316,6 @@ void TMR2_IRQHandler(void)
         }
     }
 </code></pre>
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress学习手记]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/18/think-in-octopress/"/>
-    <updated>2015-05-18T13:22:49+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/18/think-in-octopress</id>
-    <content type="html"><![CDATA[<h2>Windows下环境搭建</h2>
-
-<ol>
-<li>安装好Git，配置Git全局参数
-
-<ul>
-<li><code>git config --global user.name "suda-morris"</code></li>
-<li><code>git config --global user.email "362953310@qq.com"</code></li>
-<li><code>git config --global --list</code></li>
-</ul>
-</li>
-<li>生成SSH密钥并与github关联
-
-<ul>
-<li><code>ssh-keygen -t rsa -C "362953310@qq.com"</code></li>
-<li><code>将id_rsa.pub里面的内容拷贝到github中新建的SSH密钥中保存</code></li>
-<li>测试是否关联成功<code>ssh -T git@github.com</code></li>
-</ul>
-</li>
-<li>安装Ruby，安装时选择将Ruby添加到系统环境变量中</li>
-<li>安装Ruby后测试是否成功,终端下使用命令<code>ruby -v</code></li>
-<li>安装DevKit，进入DevKit文件夹下运行<code>ruby dk.rb init</code>和<code>ruby dk.rb install</code></li>
-<li>安装Octopress源码并且设置默认主题
-
-<ul>
-<li><code>git clone git://github.com/imathis/octopress.git Octopress</code></li>
-<li>修改gem的软件源<code>gem sources -a http://ruby.taobao.org</code></li>
-<li>移除原始gem软件源<code>gem sources -r http://rubygems.org</code></li>
-<li>打开Octopress文件夹下的Gemfile文件，将里面<code>source "http://rubygems.org"</code>修改为<code>source "http://ruby.taobao.org"</code></li>
-<li>安装bundler<code>gem install bundler</code></li>
-<li>安装bundler里面的软件包<code>bundle install</code></li>
-</ul>
-</li>
-<li>安装默认主题<code>rake install</code></li>
-</ol>
-
-
-<h2>常用命令</h2>
-
-<ul>
-<li>新建博客                      <code>rake new_post['New Blog']</code></li>
-<li>新建单页面                       <code>rake new_page['New Page']</code></li>
-<li>编译生成网页                    <code>rake generate</code></li>
-<li>本地服务器预览（默认4000端口）   <code>rake preview</code></li>
-<li>发布网页                      <code>rake deploy</code></li>
-</ul>
-
-
-<h2>基本语法</h2>
-
-<ul>
-<li>一级标题      <code>#</code></li>
-<li>二级标题      <code>##</code></li>
-<li>三级标题      <code>###</code></li>
-<li>引用            <code>&gt;</code></li>
-<li>加粗            <code>**内容**</code></li>
-<li>斜体            <code>*内容*</code></li>
-<li>列表            <code>*</code>或者<code>-</code></li>
-<li>图片            <code>！[图片的描述](链接地址)</code></li>
-</ul>
-
-
-<h2>优化</h2>
-
-<ul>
-<li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
-<li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
-</ul>
-
-
-<h2>将博客包装成App</h2>
-
-<ol>
-<li><a href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/">搭建Corvoda开发环境</a></li>
-<li><code>cordova create WenRisBlog com.morris.blog WenRisBlog</code></li>
-<li>进入到新建的项目目录中，<code>cordova platform add android</code>,增加对安卓平台的支持</li>
-<li>用eclipse将文件夹下面的platforms目录下的android项目导入(不要拷贝到工作空间)，一定要先clean一下后编译</li>
-<li>然后进入项目目下，执行<code>cordova build</code>进行编译，该编译会把www文件夹下的资源添加到项目中，因此在www文件夹下面的改动需要执行该命令才能生效</li>
-<li>在eclipse运行该项目或者在项目目录下执行命令<code>corvoda run --device</code></li>
-</ol>
-
-
-<h2>参考文献</h2>
-
-<ol>
-<li><a href="http://www.appinn.com/markdown/">MarkDown中文语法详解</a></li>
-<li><a href="http://wenku.baidu.com/view/1e250851240c844769eaeec6">极客学院Octopress课件</a></li>
-</ol>
-
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>

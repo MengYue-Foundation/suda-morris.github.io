@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cordova | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/cordova/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-28T16:39:32+08:00</updated>
+  <updated>2015-05-28T21:48:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -45,6 +45,19 @@
 </ol>
 </li>
 </ul>
+
+
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
