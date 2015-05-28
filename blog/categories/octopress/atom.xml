@@ -4,7 +4,7 @@
   <title><![CDATA[Category: octopress | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T17:59:41+08:00</updated>
+  <updated>2015-05-28T15:43:10+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -86,6 +86,13 @@
 <li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
 <li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
 </ul>
+
+
+<h2>将博客包装成App</h2>
+
+<ol>
+<li><a href="">搭建Corvoda开发环境</a></li>
+</ol>
 
 
 <h2>参考文献</h2>

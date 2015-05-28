@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T17:59:41+08:00</updated>
+  <updated>2015-05-28T15:43:10+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Cordova-Startup]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/"/>
+    <updated>2015-05-28T10:43:48+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/05/28/cordova-startup</id>
+    <content type="html"><![CDATA[<h2>Cordova环境部署</h2>
+
+<ul>
+<li><a href="https://nodejs.org">安装nodejs</a></li>
+<li>安装Cordova CLI： npm install -g cordova</li>
+<li><a href="http://java.oracle.com">安装Java JDK</a></li>
+<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a></li>
+<li><a href="http://ant.apache.org/">安装Ant</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Nuvoton-M451-EADC]]></title>
@@ -318,6 +336,13 @@ void TMR2_IRQHandler(void)
 <li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
 <li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
 </ul>
+
+
+<h2>将博客包装成App</h2>
+
+<ol>
+<li><a href="">搭建Corvoda开发环境</a></li>
+</ol>
 
 
 <h2>参考文献</h2>

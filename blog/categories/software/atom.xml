@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-25T17:59:41+08:00</updated>
+  <updated>2015-05-28T15:43:10+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -64,6 +64,17 @@
 </li>
 <li>用WPS替换掉Ubuntu自带的Office</li>
 <li>去<a href="http://www.qt.io/download/">Qt官网</a>下载QtCreator</li>
+<li>安装Lua5.3：
+
+<ul>
+<li><a href="http://www.lua.org/ftp">下载安装源码</a></li>
+<li>安装库文件：<code>sudo apt-get install libreadline</code>和<code>sudo apt-get install libreadline-gplv2-dev</code></li>
+<li>进入源码顶层目录，修改Makefile里面的软件安装地址</li>
+<li>修改完成后，<code>make linux</code>然后<code>make install</code></li>
+</ul>
+</li>
+<li>编译crosstool-ng需要的安装环境
+  <code>sudo apt-get install bison flex texinfo automake libtool cvs patch curl gcj subversion gawk cvsd gperf</code></li>
 </ul>
 </li>
 <li>VirtualBox安装增强工具

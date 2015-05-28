@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cordova | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/cordova/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-05-28T15:43:10+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cordova-Startup]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/"/>
+    <updated>2015-05-28T10:43:48+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/05/28/cordova-startup</id>
+    <content type="html"><![CDATA[<h2>Cordova环境部署</h2>
+
+<ul>
+<li><a href="https://nodejs.org">安装nodejs</a></li>
+<li>安装Cordova CLI： npm install -g cordova</li>
+<li><a href="http://java.oracle.com">安装Java JDK</a></li>
+<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a></li>
+<li><a href="http://ant.apache.org/">安装Ant</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
