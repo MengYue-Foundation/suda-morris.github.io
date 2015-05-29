@@ -4,7 +4,7 @@
   <title><![CDATA[Category: python | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-29T11:47:07+08:00</updated>
+  <updated>2015-05-29T14:18:44+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -91,6 +91,13 @@ sys.modules[__name__] = _const()
 <li>lista=[&ldquo;mingyue&rdquo;,&ldquo;jishi&rdquo;,&ldquo;you&rdquo;]</li>
 <li>listb=pickle.dumps(lista)#序列化</li>
 <li>listc=pickle.loads(listb)#将对象原样恢复</li>
+<li>group1=(&ldquo;bajiu&rdquo;,&ldquo;wen&rdquo;,&ldquo;qingtian&rdquo;)</li>
+<li>f1=file(&lsquo;1.pkl&rsquo;,&lsquo;wb&rsquo;)</li>
+<li>pickle.dump(group1,f1,True)</li>
+<li>f1.close()</li>
+<li>f2=file(&lsquo;1.pkl&rsquo;,&lsquo;rb&rsquo;)</li>
+<li>t=pickle.load(f2)</li>
+<li>f2.close()</li>
 </ul>
 </li>
 </ol>

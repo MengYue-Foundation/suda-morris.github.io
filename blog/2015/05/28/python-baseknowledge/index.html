@@ -186,6 +186,13 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 <li>lista=[&ldquo;mingyue&rdquo;,&ldquo;jishi&rdquo;,&ldquo;you&rdquo;]</li>
 <li>listb=pickle.dumps(lista)#序列化</li>
 <li>listc=pickle.loads(listb)#将对象原样恢复</li>
+<li>group1=(&ldquo;bajiu&rdquo;,&ldquo;wen&rdquo;,&ldquo;qingtian&rdquo;)</li>
+<li>f1=file(&lsquo;1.pkl&rsquo;,&lsquo;wb&rsquo;)</li>
+<li>pickle.dump(group1,f1,True)</li>
+<li>f1.close()</li>
+<li>f2=file(&lsquo;1.pkl&rsquo;,&lsquo;rb&rsquo;)</li>
+<li>t=pickle.load(f2)</li>
+<li>f2.close()</li>
 </ul>
 </li>
 </ol>

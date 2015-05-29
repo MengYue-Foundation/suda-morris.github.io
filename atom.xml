@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-05-29T11:47:07+08:00</updated>
+  <updated>2015-05-29T14:18:44+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -106,6 +106,13 @@
 <li>lista=[&ldquo;mingyue&rdquo;,&ldquo;jishi&rdquo;,&ldquo;you&rdquo;]</li>
 <li>listb=pickle.dumps(lista)#序列化</li>
 <li>listc=pickle.loads(listb)#将对象原样恢复</li>
+<li>group1=(&ldquo;bajiu&rdquo;,&ldquo;wen&rdquo;,&ldquo;qingtian&rdquo;)</li>
+<li>f1=file(&lsquo;1.pkl&rsquo;,&lsquo;wb&rsquo;)</li>
+<li>pickle.dump(group1,f1,True)</li>
+<li>f1.close()</li>
+<li>f2=file(&lsquo;1.pkl&rsquo;,&lsquo;rb&rsquo;)</li>
+<li>t=pickle.load(f2)</li>
+<li>f2.close()</li>
 </ul>
 </li>
 </ol>
@@ -271,6 +278,24 @@
 </ul>
 </li>
 <li>设置root密码：<code>sudo passwd root</code></li>
+<li>修改Ubuntu默认JDK配置
+
+<ol>
+<li>将要添加的JDK加入Java菜单选项
+
+<ul>
+<li><code>update-alternatives --install /usr/bin/java java /usr/lib/jvm/java/jdk1.6.0_12/bin/java 300</code></li>
+<li><code>update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java/jdk1.6.0_12/bin/javac 300</code></li>
+</ul>
+</li>
+<li>修改默认JDK
+
+<ul>
+<li><code>sudo update-alternatives --config java</code></li>
+</ul>
+</li>
+</ol>
+</li>
 </ol>
 
 

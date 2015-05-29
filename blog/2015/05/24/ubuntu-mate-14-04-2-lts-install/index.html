@@ -153,6 +153,24 @@
 </ul>
 </li>
 <li>设置root密码：<code>sudo passwd root</code></li>
+<li>修改Ubuntu默认JDK配置
+
+<ol>
+<li>将要添加的JDK加入Java菜单选项
+
+<ul>
+<li><code>update-alternatives --install /usr/bin/java java /usr/lib/jvm/java/jdk1.6.0_12/bin/java 300</code></li>
+<li><code>update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java/jdk1.6.0_12/bin/javac 300</code></li>
+</ul>
+</li>
+<li>修改默认JDK
+
+<ul>
+<li><code>sudo update-alternatives --config java</code></li>
+</ul>
+</li>
+</ol>
+</li>
 </ol>
 
 
