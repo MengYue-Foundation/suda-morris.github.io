@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: develop | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-06-08T22:36:39+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[WenRisOS-DevEnv]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv/"/>
+    <updated>2015-06-08T22:30:05+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv</id>
+    <content type="html"><![CDATA[<h2>开发环境搭建</h2>
+
+<blockquote><ol>
+<li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
+<li>使用的开发板是友善出品的Tiny6410</li>
+<li>开发板ip地址：192.168.1.230，网关192.168.1.1</li>
+<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1</li>
+<li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
+<li></li>
+</ol>
+</blockquote>
+]]></content>
+  </entry>
+  
+</feed>
