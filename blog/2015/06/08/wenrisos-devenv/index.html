@@ -7,10 +7,8 @@
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="开发环境搭建 所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04
-使用的开发板是友善出品的Tiny6410
-开发板ip地址：192.168.1.230，网关192.168.1.1
-虚拟机ip地址：192.168.1.88，网关192.168.1.1 &hellip;">
+	<meta name="description" content="需要知道的知识点 ext4文件系统是Linux在PC机上最常用的磁盘文件系统，在嵌入式设备上则常用jffs2文件系统和yaffs2文件系统
+在Linux操作系统中。对于SCSI磁盘。用sd*来表示，第一个磁盘x为a，第二个磁盘x为b，以此类推。磁盘上的第1个分区编号为1，第2个分区编号为2， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -87,7 +85,14 @@
 
 	<div id="content" class="inner"><article class="post">
 	<h2 class="title">WenRisOS-DevEnv</h2>
-	<div class="entry-content"><h2>开发环境搭建</h2>
+	<div class="entry-content"><h2>需要知道的知识点</h2>
+
+<ol>
+<li>ext4文件系统是Linux在PC机上最常用的磁盘文件系统，在嵌入式设备上则常用jffs2文件系统和yaffs2文件系统</li>
+<li>在Linux操作系统中。对于SCSI磁盘。用sd*来表示，第一个磁盘x为a，第二个磁盘x为b，以此类推。磁盘上的第1个分区编号为1，第2个分区编号为2，以此类推。</li>
+<li>swap分区用于Linux在运行期间的虚拟内存使用，其作用类似Windows中的交换文件pagefile.sys
+
+<h2>开发环境搭建</h2>
 
 <blockquote><ol>
 <li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
@@ -97,7 +102,11 @@
 <li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
 <li></li>
 </ol>
-</blockquote>
+</blockquote></li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 </div>
 
 

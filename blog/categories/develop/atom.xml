@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-08T22:36:39+08:00</updated>
+  <updated>2015-06-09T17:55:37+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,14 @@
     <link href="http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv/"/>
     <updated>2015-06-08T22:30:05+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv</id>
-    <content type="html"><![CDATA[<h2>开发环境搭建</h2>
+    <content type="html"><![CDATA[<h2>需要知道的知识点</h2>
+
+<ol>
+<li>ext4文件系统是Linux在PC机上最常用的磁盘文件系统，在嵌入式设备上则常用jffs2文件系统和yaffs2文件系统</li>
+<li>在Linux操作系统中。对于SCSI磁盘。用sd*来表示，第一个磁盘x为a，第二个磁盘x为b，以此类推。磁盘上的第1个分区编号为1，第2个分区编号为2，以此类推。</li>
+<li>swap分区用于Linux在运行期间的虚拟内存使用，其作用类似Windows中的交换文件pagefile.sys
+
+<h2>开发环境搭建</h2>
 
 <blockquote><ol>
 <li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
@@ -28,7 +35,11 @@
 <li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
 <li></li>
 </ol>
-</blockquote>
+</blockquote></li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   

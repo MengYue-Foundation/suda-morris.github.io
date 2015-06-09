@@ -102,7 +102,7 @@
 <li>其他程序的用户手册：binutils-doc cpp-doc gcc-doc glib-doc stl-manual</li>
 <li>压缩工具： zip</li>
 <li>网络工具: curl</li>
-<li>串口工具：minicom</li>
+<li>串口工具：minicom，完了以后修改minicom的配置权限：<code>sudo chown morris：morris /etc/minicom/minirc.dfl</code></li>
 <li>Ubuntu-Tweak工具安装：
 
 <ul>
@@ -171,7 +171,82 @@
 </li>
 </ol>
 </li>
+<li>NFS远程文件系统
+
+<ol>
+<li>安装NFS服务器：<code>sudo apt-get install nfs-kernel-server portmap</code></li>
+<li>配置远程主机共享目录：
+
+<ul>
+<li>设置一个共享目录的方法是修改/etc/exports文件，增加一行例如:<code>/embeded/WenRisOS/NFS_doc *(rw,sync,no_root_squash)</code></li>
+</ul>
+</li>
+<li>重启服务:<code>sudo /etc/init.d/nfs-kernel-server restart</code></li>
+<li>检测NFS服务是否设置正常：<code>showmount -e</code></li>
+<li>目标板挂载远程主机：mount -o nolock -t nfs 192.168.1.88:/embeded/WenRisOS/NFS_doc /mnt</li>
+<li>使用uboot的nfs命令下载远程主机文件到开发板内存：<code>nfs 0x32000000 192.168.1.11:/work/system/linux/arch/arm/boot/uImage</code></li>
 </ol>
+</li>
+<li>FTP服务器软件配置：
+
+<ol>
+<li>安装FTP服务：<code>sudo apt-get install vsftpd</code></li>
+<li>修改FTP服务配置文件:<code>sudo vim /etc/vsftpd.conf</code>
+
+<ul>
+<li>使能listen,local_enable,write_enable</li>
+</ul>
+</li>
+<li>重启FTP服务
+
+<ul>
+<li><code>sudo /etc/init.d/vsftpd restart</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>JLink安装
+
+<ul>
+<li><a href="https://www.segger.com/jlink-software.html">官网下载J-Link安装压缩包</a></li>
+<li>注意选择Linux安装包的时候匹配操作系统的位数，这里下载了64位Linux系统的TGA压缩包，版本5.0</li>
+<li>下载好的压缩包解压缩，打开里面的README.txt,按照其要求作相应的操作，各个本版可能要求不同，拿5.0来说，这里需要执行命令：<code>sudo cp 99-jlink.rules /etc/udev/rules.d/</code></li>
+<li>最后接入JLink的USB接口，打开软件：<code>./JLinkExe</code>,如果显示usb连接不上，请检查USB是否连接可靠，虚拟机是否已经从实体机那获得了该JLink接口，多插拔几次，在该软件中使用命令usb可以尝试再次连接usb接口，如果成功，会出现类似如下的文字：</li>
+</ul>
+</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>J-Link&gt;usb
+</span><span class='line'>Connecting to J-Link via USB (Port: 0)
+</span><span class='line'>DLL version V5.00, compiled Jun  8 2015 21:14:03
+</span><span class='line'>Firmware: J-Link ARM V8 compiled Nov 28 2014 13:44:46
+</span><span class='line'>Hardware: V8.00
+</span><span class='line'>S/N: 158000503 
+</span><span class='line'>Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFull 
+</span><span class='line'>VTarget = 3.319V
+</span><span class='line'>Info: TotalIRLen = 9, IRPrint = 0x0011
+</span><span class='line'>Found 2 JTAG devices, Total IRLen = 5:
+</span><span class='line'>  #0 Id: 0x2B900F0F, IRLen: 04, IRPrint: 0x0, ARM ETB
+</span><span class='line'>  #1 Id: 0x07B76F0F, IRLen: 05, IRPrint: 0x1, ARM1176 Core
+</span><span class='line'>ARM11 identified.
+</span><span class='line'>Target interface speed: 100 kHz
+</span><span class='line'>J-Link&gt;</span></code></pre></td></tr></table></div></figure>
 
 
 <h2>常见问题及解决方法</h2>
