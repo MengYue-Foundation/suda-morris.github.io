@@ -97,13 +97,39 @@
 <blockquote><ol>
 <li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
 <li>使用的开发板是友善出品的Tiny6410</li>
-<li>开发板ip地址：192.168.1.230，网关192.168.1.1</li>
-<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1</li>
 <li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
-<li></li>
+<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1
+
+<h2>UBoot烧写</h2></li>
+<li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
+<li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：</li>
 </ol>
 </blockquote></li>
 </ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>#for SDHC Card,total sectors=15523840
+</span><span class='line'>#dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798
+</span><span class='line'>#dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030
+</span><span class='line'>
+</span><span class='line'>#for SD Card,total sectors=1961984
+</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
+</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
+</span><span class='line'>sync
+</span><span class='line'>#BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16
+</span><span class='line'>#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-09T17:55:37+08:00</updated>
+  <updated>2015-06-10T17:42:01+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -30,14 +30,37 @@
 <blockquote><ol>
 <li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
 <li>使用的开发板是友善出品的Tiny6410</li>
-<li>开发板ip地址：192.168.1.230，网关192.168.1.1</li>
-<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1</li>
 <li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
-<li></li>
+<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1
+
+<h2>UBoot烧写</h2></li>
+<li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
+<li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：
+```
+
+<h1>!/bin/sh</h1>
+
+<h1>for SDHC Card,total sectors=15523840</h1>
+
+<h1>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798</h1>
+
+<h1>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030</h1></li>
 </ol>
 </blockquote></li>
 </ol>
 
+
+<h1>for SD Card,total sectors=1961984</h1>
+
+<p>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
+dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
+sync</p>
+
+<h1>BL1:total sectors - 2 - 1024(if your SD Card Size > 2G) -16</h1>
+
+<h1>BL2:total sectors - 2 - 1024(if your SD Card Size > 2G) -16 - 512 - 256</h1>
+
+<p>```</p>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
