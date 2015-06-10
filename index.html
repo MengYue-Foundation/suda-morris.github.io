@@ -112,13 +112,13 @@
 </ol>
 
 
-<h2>UBoot烧写</h2>
+<h2>系统烧写</h2>
 
-<blockquote><ol>
+<ol>
 <li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
 <li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：</li>
 </ol>
-</blockquote>
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -144,11 +144,53 @@
 </span><span class='line'>#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256</span></code></pre></td></tr></table></div></figure>
 
 
-<blockquote><ol>
+<ol>
 <li>进入Uboot后，测试能否ping通虚拟主机：ping 192.168.1.88。在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内，使用UBoot下的命令：pri</li>
-<li></li>
+<li>使用nfs命令获取虚拟主机上的uboot二进制文件供烧写(次UBoot是用来从NandFlash启动的，不能错选从SD卡启动的UBoot),成功以后会提示用户该文件的大小，这里记为filesize(切记要使用十六进制表示的数字)
+
+<ul>
+<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/u-boot.bin</li>
+</ul>
+</li>
+<li>烧写uboot至NandFlash中
+
+<ul>
+<li>nand write.i 50000000 0 $(filesize)   从0地址开始烧写UBoot</li>
+</ul>
+</li>
+<li>使用nfs命令获取虚拟主机上的kernel文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
+
+<ul>
+<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/Image</li>
+</ul>
+</li>
+<li>烧写kernel到NandFlash中
+
+<ul>
+<li>nand write.i 50000000 80000 $(filesize)</li>
+</ul>
+</li>
+<li>使用nfs命令获取虚拟主机上的根文件系统文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
+
+<ul>
+<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/yaff2.img</li>
+</ul>
+</li>
+<li>烧写根文件系统到NandFlash中
+
+<ul>
+<li>nand write.yaffs 50000000 580000 $(filesize)</li>
+</ul>
+</li>
+<li>根据需要修改启动参数并保存,例如
+
+<ul>
+<li>setenv bootargs root=/dev/mtdblock2 console=ttySAC0,115200</li>
+<li>saveenv</li>
+</ul>
+</li>
 </ol>
-</blockquote>
+
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 
