@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-10T18:03:47+08:00</updated>
+  <updated>2015-06-12T14:19:20+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[WenRisOS-DevEnv]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv/"/>
+    <link href="http://suda-morris.github.io/blog/2015/06/08/kdm-devenv/"/>
     <updated>2015-06-08T22:30:05+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/08/wenrisos-devenv</id>
+    <id>http://suda-morris.github.io/blog/2015/06/08/kdm-devenv</id>
     <content type="html"><![CDATA[<h2>需要知道的知识点</h2>
 
 <ol>
