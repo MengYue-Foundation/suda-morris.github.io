@@ -88,6 +88,1426 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/13/start-dot-s/">
+		
+			start.S</a>
+	</h2>
+	<div class="entry-content">
+		<figure class='code'><figcaption><span>start.S</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+<span class='line-number'>347</span>
+<span class='line-number'>348</span>
+<span class='line-number'>349</span>
+<span class='line-number'>350</span>
+<span class='line-number'>351</span>
+<span class='line-number'>352</span>
+<span class='line-number'>353</span>
+<span class='line-number'>354</span>
+<span class='line-number'>355</span>
+<span class='line-number'>356</span>
+<span class='line-number'>357</span>
+<span class='line-number'>358</span>
+<span class='line-number'>359</span>
+<span class='line-number'>360</span>
+<span class='line-number'>361</span>
+<span class='line-number'>362</span>
+<span class='line-number'>363</span>
+<span class='line-number'>364</span>
+<span class='line-number'>365</span>
+<span class='line-number'>366</span>
+<span class='line-number'>367</span>
+<span class='line-number'>368</span>
+<span class='line-number'>369</span>
+<span class='line-number'>370</span>
+<span class='line-number'>371</span>
+<span class='line-number'>372</span>
+<span class='line-number'>373</span>
+<span class='line-number'>374</span>
+<span class='line-number'>375</span>
+<span class='line-number'>376</span>
+<span class='line-number'>377</span>
+<span class='line-number'>378</span>
+<span class='line-number'>379</span>
+<span class='line-number'>380</span>
+<span class='line-number'>381</span>
+<span class='line-number'>382</span>
+<span class='line-number'>383</span>
+<span class='line-number'>384</span>
+<span class='line-number'>385</span>
+<span class='line-number'>386</span>
+<span class='line-number'>387</span>
+<span class='line-number'>388</span>
+<span class='line-number'>389</span>
+<span class='line-number'>390</span>
+<span class='line-number'>391</span>
+<span class='line-number'>392</span>
+<span class='line-number'>393</span>
+<span class='line-number'>394</span>
+<span class='line-number'>395</span>
+<span class='line-number'>396</span>
+<span class='line-number'>397</span>
+<span class='line-number'>398</span>
+<span class='line-number'>399</span>
+<span class='line-number'>400</span>
+<span class='line-number'>401</span>
+<span class='line-number'>402</span>
+<span class='line-number'>403</span>
+<span class='line-number'>404</span>
+<span class='line-number'>405</span>
+<span class='line-number'>406</span>
+<span class='line-number'>407</span>
+<span class='line-number'>408</span>
+<span class='line-number'>409</span>
+<span class='line-number'>410</span>
+<span class='line-number'>411</span>
+<span class='line-number'>412</span>
+<span class='line-number'>413</span>
+<span class='line-number'>414</span>
+<span class='line-number'>415</span>
+<span class='line-number'>416</span>
+<span class='line-number'>417</span>
+<span class='line-number'>418</span>
+<span class='line-number'>419</span>
+<span class='line-number'>420</span>
+<span class='line-number'>421</span>
+<span class='line-number'>422</span>
+<span class='line-number'>423</span>
+<span class='line-number'>424</span>
+<span class='line-number'>425</span>
+<span class='line-number'>426</span>
+<span class='line-number'>427</span>
+<span class='line-number'>428</span>
+<span class='line-number'>429</span>
+<span class='line-number'>430</span>
+<span class='line-number'>431</span>
+<span class='line-number'>432</span>
+<span class='line-number'>433</span>
+<span class='line-number'>434</span>
+<span class='line-number'>435</span>
+<span class='line-number'>436</span>
+<span class='line-number'>437</span>
+<span class='line-number'>438</span>
+<span class='line-number'>439</span>
+<span class='line-number'>440</span>
+<span class='line-number'>441</span>
+<span class='line-number'>442</span>
+<span class='line-number'>443</span>
+<span class='line-number'>444</span>
+<span class='line-number'>445</span>
+<span class='line-number'>446</span>
+<span class='line-number'>447</span>
+<span class='line-number'>448</span>
+<span class='line-number'>449</span>
+<span class='line-number'>450</span>
+<span class='line-number'>451</span>
+<span class='line-number'>452</span>
+<span class='line-number'>453</span>
+<span class='line-number'>454</span>
+<span class='line-number'>455</span>
+<span class='line-number'>456</span>
+<span class='line-number'>457</span>
+<span class='line-number'>458</span>
+<span class='line-number'>459</span>
+<span class='line-number'>460</span>
+<span class='line-number'>461</span>
+<span class='line-number'>462</span>
+<span class='line-number'>463</span>
+<span class='line-number'>464</span>
+<span class='line-number'>465</span>
+<span class='line-number'>466</span>
+<span class='line-number'>467</span>
+<span class='line-number'>468</span>
+<span class='line-number'>469</span>
+<span class='line-number'>470</span>
+<span class='line-number'>471</span>
+<span class='line-number'>472</span>
+<span class='line-number'>473</span>
+<span class='line-number'>474</span>
+<span class='line-number'>475</span>
+<span class='line-number'>476</span>
+<span class='line-number'>477</span>
+<span class='line-number'>478</span>
+<span class='line-number'>479</span>
+<span class='line-number'>480</span>
+<span class='line-number'>481</span>
+<span class='line-number'>482</span>
+<span class='line-number'>483</span>
+<span class='line-number'>484</span>
+<span class='line-number'>485</span>
+<span class='line-number'>486</span>
+<span class='line-number'>487</span>
+<span class='line-number'>488</span>
+<span class='line-number'>489</span>
+<span class='line-number'>490</span>
+<span class='line-number'>491</span>
+<span class='line-number'>492</span>
+<span class='line-number'>493</span>
+<span class='line-number'>494</span>
+<span class='line-number'>495</span>
+<span class='line-number'>496</span>
+<span class='line-number'>497</span>
+<span class='line-number'>498</span>
+<span class='line-number'>499</span>
+<span class='line-number'>500</span>
+<span class='line-number'>501</span>
+<span class='line-number'>502</span>
+<span class='line-number'>503</span>
+<span class='line-number'>504</span>
+<span class='line-number'>505</span>
+<span class='line-number'>506</span>
+<span class='line-number'>507</span>
+<span class='line-number'>508</span>
+<span class='line-number'>509</span>
+<span class='line-number'>510</span>
+<span class='line-number'>511</span>
+<span class='line-number'>512</span>
+<span class='line-number'>513</span>
+<span class='line-number'>514</span>
+<span class='line-number'>515</span>
+<span class='line-number'>516</span>
+<span class='line-number'>517</span>
+<span class='line-number'>518</span>
+<span class='line-number'>519</span>
+<span class='line-number'>520</span>
+<span class='line-number'>521</span>
+<span class='line-number'>522</span>
+<span class='line-number'>523</span>
+<span class='line-number'>524</span>
+<span class='line-number'>525</span>
+<span class='line-number'>526</span>
+<span class='line-number'>527</span>
+<span class='line-number'>528</span>
+<span class='line-number'>529</span>
+<span class='line-number'>530</span>
+<span class='line-number'>531</span>
+<span class='line-number'>532</span>
+<span class='line-number'>533</span>
+<span class='line-number'>534</span>
+<span class='line-number'>535</span>
+<span class='line-number'>536</span>
+<span class='line-number'>537</span>
+<span class='line-number'>538</span>
+<span class='line-number'>539</span>
+<span class='line-number'>540</span>
+<span class='line-number'>541</span>
+<span class='line-number'>542</span>
+<span class='line-number'>543</span>
+<span class='line-number'>544</span>
+<span class='line-number'>545</span>
+<span class='line-number'>546</span>
+<span class='line-number'>547</span>
+<span class='line-number'>548</span>
+<span class='line-number'>549</span>
+<span class='line-number'>550</span>
+<span class='line-number'>551</span>
+<span class='line-number'>552</span>
+<span class='line-number'>553</span>
+<span class='line-number'>554</span>
+<span class='line-number'>555</span>
+<span class='line-number'>556</span>
+<span class='line-number'>557</span>
+<span class='line-number'>558</span>
+<span class='line-number'>559</span>
+<span class='line-number'>560</span>
+<span class='line-number'>561</span>
+<span class='line-number'>562</span>
+<span class='line-number'>563</span>
+<span class='line-number'>564</span>
+<span class='line-number'>565</span>
+<span class='line-number'>566</span>
+<span class='line-number'>567</span>
+<span class='line-number'>568</span>
+<span class='line-number'>569</span>
+<span class='line-number'>570</span>
+<span class='line-number'>571</span>
+<span class='line-number'>572</span>
+<span class='line-number'>573</span>
+<span class='line-number'>574</span>
+<span class='line-number'>575</span>
+<span class='line-number'>576</span>
+<span class='line-number'>577</span>
+<span class='line-number'>578</span>
+<span class='line-number'>579</span>
+<span class='line-number'>580</span>
+<span class='line-number'>581</span>
+<span class='line-number'>582</span>
+<span class='line-number'>583</span>
+<span class='line-number'>584</span>
+<span class='line-number'>585</span>
+<span class='line-number'>586</span>
+<span class='line-number'>587</span>
+<span class='line-number'>588</span>
+<span class='line-number'>589</span>
+<span class='line-number'>590</span>
+<span class='line-number'>591</span>
+<span class='line-number'>592</span>
+<span class='line-number'>593</span>
+<span class='line-number'>594</span>
+<span class='line-number'>595</span>
+<span class='line-number'>596</span>
+<span class='line-number'>597</span>
+<span class='line-number'>598</span>
+<span class='line-number'>599</span>
+<span class='line-number'>600</span>
+<span class='line-number'>601</span>
+<span class='line-number'>602</span>
+<span class='line-number'>603</span>
+<span class='line-number'>604</span>
+<span class='line-number'>605</span>
+<span class='line-number'>606</span>
+<span class='line-number'>607</span>
+<span class='line-number'>608</span>
+<span class='line-number'>609</span>
+<span class='line-number'>610</span>
+<span class='line-number'>611</span>
+<span class='line-number'>612</span>
+<span class='line-number'>613</span>
+<span class='line-number'>614</span>
+<span class='line-number'>615</span>
+<span class='line-number'>616</span>
+<span class='line-number'>617</span>
+<span class='line-number'>618</span>
+<span class='line-number'>619</span>
+<span class='line-number'>620</span>
+<span class='line-number'>621</span>
+<span class='line-number'>622</span>
+<span class='line-number'>623</span>
+<span class='line-number'>624</span>
+<span class='line-number'>625</span>
+<span class='line-number'>626</span>
+<span class='line-number'>627</span>
+<span class='line-number'>628</span>
+<span class='line-number'>629</span>
+<span class='line-number'>630</span>
+<span class='line-number'>631</span>
+<span class='line-number'>632</span>
+<span class='line-number'>633</span>
+<span class='line-number'>634</span>
+<span class='line-number'>635</span>
+<span class='line-number'>636</span>
+<span class='line-number'>637</span>
+<span class='line-number'>638</span>
+<span class='line-number'>639</span>
+<span class='line-number'>640</span>
+<span class='line-number'>641</span>
+<span class='line-number'>642</span>
+<span class='line-number'>643</span>
+<span class='line-number'>644</span>
+<span class='line-number'>645</span>
+<span class='line-number'>646</span>
+<span class='line-number'>647</span>
+<span class='line-number'>648</span>
+<span class='line-number'>649</span>
+<span class='line-number'>650</span>
+<span class='line-number'>651</span>
+<span class='line-number'>652</span>
+<span class='line-number'>653</span>
+<span class='line-number'>654</span>
+<span class='line-number'>655</span>
+<span class='line-number'>656</span>
+<span class='line-number'>657</span>
+<span class='line-number'>658</span>
+<span class='line-number'>659</span>
+<span class='line-number'>660</span>
+<span class='line-number'>661</span>
+<span class='line-number'>662</span>
+<span class='line-number'>663</span>
+<span class='line-number'>664</span>
+<span class='line-number'>665</span>
+<span class='line-number'>666</span>
+<span class='line-number'>667</span>
+<span class='line-number'>668</span>
+<span class='line-number'>669</span>
+<span class='line-number'>670</span>
+<span class='line-number'>671</span>
+<span class='line-number'>672</span>
+<span class='line-number'>673</span>
+<span class='line-number'>674</span>
+<span class='line-number'>675</span>
+<span class='line-number'>676</span>
+<span class='line-number'>677</span>
+<span class='line-number'>678</span>
+<span class='line-number'>679</span>
+<span class='line-number'>680</span>
+<span class='line-number'>681</span>
+<span class='line-number'>682</span>
+<span class='line-number'>683</span>
+<span class='line-number'>684</span>
+<span class='line-number'>685</span>
+<span class='line-number'>686</span>
+<span class='line-number'>687</span>
+<span class='line-number'>688</span>
+<span class='line-number'>689</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="cp">#include &lt;asm/proc/domain.h&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#include &lt;regs.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifndef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="cp">#ifndef CFG_PHY_UBOOT_BASE</span>
+</span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   CFG_UBOOT_BASE</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * Jump vector table as in table 3.1 in [1]</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_start</span>
+</span><span class='line'><span class="nl">_start</span><span class="p">:</span> <span class="n">b</span>   <span class="n">reset</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_undefined_instruction</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_software_interrupt</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_prefetch_abort</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_data_abort</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_not_used</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_irq</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_fiq</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">_undefined_instruction</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">undefined_instruction</span>
+</span><span class='line'><span class="nl">_software_interrupt</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">software_interrupt</span>
+</span><span class='line'><span class="nl">_prefetch_abort</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">prefetch_abort</span>
+</span><span class='line'><span class="nl">_data_abort</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">data_abort</span>
+</span><span class='line'><span class="nl">_not_used</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">not_used</span>
+</span><span class='line'><span class="nl">_irq</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">irq</span>
+</span><span class='line'><span class="nl">_fiq</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">fiq</span>
+</span><span class='line'><span class="nl">_pad</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x12345678</span> <span class="cm">/* now 16*4=64 */</span>
+</span><span class='line'><span class="p">.</span><span class="n">global</span> <span class="n">_end_vect</span>
+</span><span class='line'><span class="nl">_end_vect</span><span class="p">:</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">balignl</span> <span class="mi">16</span><span class="p">,</span><span class="mh">0xdeadbeef</span>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * Startup Code (reset vector)</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * do important init only if we don&#39;t start from memory!</span>
+</span><span class='line'><span class="cm"> * setup Memory and board specific bits prior to relocation.</span>
+</span><span class='line'><span class="cm"> * relocate armboot to ram</span>
+</span><span class='line'><span class="cm"> * setup stack</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">_TEXT_BASE</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">TEXT_BASE</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Below variable is very important because we use MMU in U-Boot.</span>
+</span><span class='line'><span class="cm"> * Without it, we cannot run code correctly before MMU is ON.</span>
+</span><span class='line'><span class="cm"> * by scsuh.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="nl">_TEXT_PHY_BASE</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">CFG_PHY_UBOOT_BASE</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_armboot_start</span>
+</span><span class='line'><span class="nl">_armboot_start</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">_start</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * These are defined in the board-specific linker script.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_bss_start</span>
+</span><span class='line'><span class="nl">_bss_start</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">__bss_start</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_bss_end</span>
+</span><span class='line'><span class="nl">_bss_end</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">_end</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
+</span><span class='line'><span class="cm">/* IRQ stack memory (calculated at run-time) */</span>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">IRQ_STACK_START</span>
+</span><span class='line'><span class="nl">IRQ_STACK_START</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x0badc0de</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* IRQ stack memory (calculated at run-time) */</span>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">FIQ_STACK_START</span>
+</span><span class='line'><span class="nl">FIQ_STACK_START</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x0badc0de</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * the actual reset code</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">reset</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * set the cpu to SVC32 mode</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">mrs</span>  <span class="n">r0</span><span class="p">,</span><span class="n">cpsr</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0x1f</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0xd3</span>
+</span><span class='line'>  <span class="n">msr</span>  <span class="n">cpsr</span><span class="p">,</span><span class="n">r0</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * CPU_init_critical registers</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * setup important registers</span>
+</span><span class='line'><span class="cm"> * setup memory timing</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>         <span class="cm">/*</span>
+</span><span class='line'><span class="cm">         * we do sys-critical inits only at reboot,</span>
+</span><span class='line'><span class="cm">         * not when booting from ram!</span>
+</span><span class='line'><span class="cm">         */</span>
+</span><span class='line'><span class="nl">cpu_init_crit</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * flush v4 I/D caches</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush v3/v4 cache */</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c8</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush v4 TLB */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * disable MMU stuff and caches</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00002300</span>    <span class="err">@</span> <span class="n">clear</span> <span class="n">bits</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="o">:</span><span class="mi">8</span> <span class="p">(</span><span class="o">--</span><span class="n">V</span><span class="o">-</span> <span class="o">--</span><span class="n">RS</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000087</span>    <span class="err">@</span> <span class="n">clear</span> <span class="n">bits</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span><span class="mi">0</span> <span class="p">(</span><span class="n">B</span><span class="o">---</span> <span class="o">-</span><span class="n">CAM</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000002</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">2</span> <span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">Align</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">Cache</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Peri port setup */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>
+</span><span class='line'>      <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>        <span class="err">@</span> <span class="n">onenand</span> <span class="n">controller</span> <span class="n">setup</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100000</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xe0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_S3C6410) || defined(CONFIG_S3C6430)</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">300</span>       <span class="err">@</span> <span class="n">disable</span> <span class="n">watchdog</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x23000000</span>      <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x20000000</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc30000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0400</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">address1</span> <span class="k">register</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>      <span class="err">@</span> <span class="n">ecc</span> <span class="n">bypass</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x04</span><span class="p">]</span>      <span class="err">@</span> <span class="n">select</span> <span class="n">dataram</span> <span class="k">for</span> <span class="n">DDP</span> <span class="n">as</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r4</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x104</span>       <span class="err">@</span> <span class="n">interrupt</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0002</span>      <span class="err">@</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0800</span>      <span class="err">@</span> <span class="n">BSA</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">onenand_bl1_load</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r5</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1c</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x02</span>      <span class="err">@</span> <span class="n">BSC</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r6</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">BSA</span><span class="p">,</span> <span class="n">BSC</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>       <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span><span class="p">]</span>      <span class="err">@</span> <span class="n">write</span> <span class="n">load</span> <span class="n">command</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>       <span class="err">@</span> <span class="n">need</span> <span class="n">small</span> <span class="n">delay</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">onenand_wait_loop1</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">r7</span><span class="p">,</span> <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_wait_loop1</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x200</span>     <span class="err">@</span> <span class="n">next</span> <span class="n">BSA</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl1_load</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * Go setup Memory and board specific bits prior to relocation.</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">lowlevel_init</span>    <span class="cm">/* go setup pll,mux,memory */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* when we already run in ram, we don&#39;t need to relocate U-Boot.</span>
+</span><span class='line'><span class="cm">  * and actually, memory controller must be configured before U-Boot</span>
+</span><span class='line'><span class="cm">  * is running in ram.</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xff000fff</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">r0</span>       <span class="cm">/* r0 &lt;- current base addr of code */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">_TEXT_BASE</span>     <span class="cm">/* r1 &lt;- original base addr in ram */</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r0</span>       <span class="cm">/* r0 &lt;- current base addr of code */</span>
+</span><span class='line'>  <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                  <span class="cm">/* compare r0, r1                  */</span>
+</span><span class='line'>  <span class="n">beq</span>     <span class="n">after_copy</span>        <span class="cm">/* r0 == r1 then skip flash copy   */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_NOR           </span><span class="cm">/* relocate U-Boot to RAM */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">adr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_start</span>     <span class="cm">/* r0 &lt;- current position of code   */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span> <span class="cm">/* r1 &lt;- destination                */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">_armboot_start</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">_bss_start</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="n">r2</span>       <span class="cm">/* r2 &lt;- size of armboot            */</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>       <span class="cm">/* r2 &lt;- source end address         */</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">nor_copy_loop</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">r0</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r3</span><span class="o">-</span><span class="n">r10</span><span class="p">}</span>       <span class="cm">/* copy from source address [r0]    */</span>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">r1</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r3</span><span class="o">-</span><span class="n">r10</span><span class="p">}</span>       <span class="cm">/* copy to   target address [r1]    */</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>         <span class="cm">/* until source end addreee [r2]    */</span>
+</span><span class='line'>  <span class="n">ble</span>  <span class="n">nor_copy_loop</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_NAND</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_from_nand</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_MOVINAND</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">movi_bl2_copy</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x50000000</span>        <span class="err">@</span> <span class="n">temporary</span> <span class="n">stack</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_S3C6400</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x20000000</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc30000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x23000000</span>      <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>      <span class="err">@</span> <span class="n">ecc</span> <span class="n">bypass</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0400</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">address1</span> <span class="k">register</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x04</span><span class="p">]</span>      <span class="err">@</span> <span class="n">select</span> <span class="n">dataram</span> <span class="k">for</span> <span class="n">DDP</span> <span class="n">as</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r4</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x104</span>       <span class="err">@</span> <span class="n">interrupt</span> <span class="k">register</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0c00</span>      <span class="err">@</span> <span class="n">fixed</span> <span class="n">dataram1</span> <span class="n">sector</span> <span class="n">number</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r6</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0000</span>      <span class="err">@</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r9</span><span class="p">,</span> <span class="o">=</span><span class="n">CFG_PHY_UBOOT_BASE</span> <span class="err">@</span> <span class="n">destination</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">onenand_bl2_load</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r5</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1c</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span><span class="p">]</span>      <span class="err">@</span> <span class="n">write</span> <span class="n">load</span> <span class="n">command</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
+</span><span class='line'><span class="nl">onenand_wait_loop2</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">r8</span><span class="p">,</span> <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_wait_loop2</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">onenand_wait_int</span><span class="p">:</span>          <span class="err">@</span> <span class="n">wait</span> <span class="n">INT</span> <span class="n">and</span> <span class="n">RI</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r8</span><span class="p">,</span> <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span>
+</span><span class='line'>  <span class="n">tst</span>  <span class="n">r7</span><span class="p">,</span> <span class="n">r8</span>
+</span><span class='line'>  <span class="n">beq</span>  <span class="n">onenand_wait_int</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc00</span>       <span class="err">@</span> <span class="n">source</span> <span class="n">address</span> <span class="p">(</span><span class="n">dataram1</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r10</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>       <span class="err">@</span> <span class="n">copy</span> <span class="n">loop</span> <span class="n">count</span> <span class="p">(</span><span class="mi">64</span> <span class="o">=</span> <span class="mi">2048</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>        <span class="err">@</span> <span class="n">backup</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">onenand_copy_to_ram</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">r8</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">r9</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">r10</span><span class="p">,</span> <span class="n">r10</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_copy_to_ram</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>        <span class="err">@</span> <span class="n">restore</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x4</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FPA</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>       <span class="err">@</span> <span class="n">last</span> <span class="n">FPA</span><span class="o">?</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl2_load</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* next block */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">reset</span> <span class="n">FPA</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FBA</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>     <span class="err">@</span> <span class="n">last</span> <span class="n">FBA</span><span class="o">?</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl2_load</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND_IROM</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">onenand_bl2_copy</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">after_copy</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xC00</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFPUD_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0000000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80000000</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFPUD_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8000</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0000000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40000000</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  
+</span><span class='line'>  
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="nl">enable_mmu</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/* enable domain access */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r5</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0000ffff</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        <span class="err">@</span> <span class="n">load</span> <span class="n">domain</span> <span class="n">access</span> <span class="k">register</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Set the TTB register */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_mmu_table_base</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">CFG_PHY_UBOOT_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xfff00000</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Enable the MMU */</span>
+</span><span class='line'><span class="nl">mmu_on</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>         <span class="cm">/* Set CR_M to enable MMU */</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">skip_hw_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/* Set up the stack                            */</span>
+</span><span class='line'><span class="nl">stack_setup</span><span class="p">:</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="mh">0xc</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_TEXT_BASE</span>     <span class="cm">/* upper 128 KiB: relocated uboot   */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_MALLOC_LEN</span> <span class="cm">/* malloc area                      */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_GBL_DATA_SIZE</span> <span class="cm">/* bdinfo                        */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CONFIG_STACKSIZE_IRQ</span><span class="o">+</span><span class="n">CONFIG_STACKSIZE_FIQ</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">12</span>        <span class="cm">/* leave 3 words for abort-stack    */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">clear_bss</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_bss_start</span>     <span class="cm">/* find start of bss segment        */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_bss_end</span>       <span class="cm">/* stop here                        */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000000</span>      <span class="cm">/* clear                            */</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">clbss_l</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>     <span class="cm">/* clear loop...                    */</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
+</span><span class='line'>  <span class="n">ble</span>  <span class="n">clbss_l</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_start_armboot</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">_start_armboot</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">start_armboot</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="nl">_mmu_table_base</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">mmu_table</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * copy U-Boot to SDRAM and jump to ram (from NAND or OneNAND)</span>
+</span><span class='line'><span class="cm"> * r0: size to be compared</span>
+</span><span class='line'><span class="cm"> * Load 1&#39;st 2blocks to RAM because U-boot&#39;s size is larger than 1block(128k) size</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">copy_from_nand</span>
+</span><span class='line'><span class="nl">copy_from_nand</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r10</span><span class="p">,</span> <span class="n">lr</span>        <span class="cm">/* save return address */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r9</span><span class="p">,</span> <span class="n">r0</span>
+</span><span class='line'>  <span class="cm">/* get ready to call C functions */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span> <span class="cm">/* setup temp stack pointer */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="mi">12</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">fp</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>           <span class="cm">/* no previous frame, so fp=0 */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r9</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_uboot_to_ram</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">3</span><span class="o">:</span> <span class="n">tst</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">copy_failed</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0c000000</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
+</span><span class='line'><span class="mi">1</span><span class="o">:</span> <span class="n">ldr</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r4</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'>  <span class="n">teq</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">r4</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">compare_failed</span>   <span class="cm">/* not matched */</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">r9</span><span class="p">,</span> <span class="n">r9</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="mi">1</span><span class="n">b</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">4</span><span class="o">:</span> <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r10</span>        <span class="cm">/* all is OK */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">copy_failed</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">nop</span>          <span class="cm">/* copy from nand failed */</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">copy_failed</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">compare_failed</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">nop</span>          <span class="cm">/* compare failed */</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">compare_failed</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * we assume that cache operation is done before. (eg. cleanup_before_linux())</span>
+</span><span class='line'><span class="cm"> * actually, we don&#39;t need to do anything about cache if not use d-cache in U-Boot</span>
+</span><span class='line'><span class="cm"> * So, in this function we clean only MMU. by scsuh</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * void  theLastJump(void *kernel, int arch_num, uint boot_params);</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">theLastJump</span>
+</span><span class='line'><span class="nl">theLastJump</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r9</span><span class="p">,</span> <span class="n">r0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r3</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xfff00000</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r4</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
+</span><span class='line'>  <span class="n">adr</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">phy_last_jump</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">r3</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">r4</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r5</span>
+</span><span class='line'><span class="nl">phy_last_jump</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * disable MMU stuff</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00002300</span>    <span class="cm">/* clear bits 13, 9:8 (--V- --RS) */</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000087</span>    <span class="cm">/* clear bits 7, 2:0 (B--- -CAM) */</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000002</span>    <span class="cm">/* set bit 2 (A) Align */</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>    <span class="cm">/* set bit 12 (I) I-Cache */</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c8</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush v4 TLB */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r9</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * Interrupt handling</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> *************************************************************************</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="err">@</span>
+</span><span class='line'><span class="err">@</span> <span class="n">IRQ</span> <span class="n">stack</span> <span class="n">frame</span><span class="p">.</span>
+</span><span class='line'><span class="err">@</span>
+</span><span class='line'><span class="cp">#define S_FRAME_SIZE 72</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define S_OLD_R0 68</span>
+</span><span class='line'><span class="cp">#define S_PSR        64</span>
+</span><span class='line'><span class="cp">#define S_PC     60</span>
+</span><span class='line'><span class="cp">#define S_LR     56</span>
+</span><span class='line'><span class="cp">#define S_SP     52</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define S_IP     48</span>
+</span><span class='line'><span class="cp">#define S_FP     44</span>
+</span><span class='line'><span class="cp">#define S_R10        40</span>
+</span><span class='line'><span class="cp">#define S_R9     36</span>
+</span><span class='line'><span class="cp">#define S_R8     32</span>
+</span><span class='line'><span class="cp">#define S_R7     28</span>
+</span><span class='line'><span class="cp">#define S_R6     24</span>
+</span><span class='line'><span class="cp">#define S_R5     20</span>
+</span><span class='line'><span class="cp">#define S_R4     16</span>
+</span><span class='line'><span class="cp">#define S_R3     12</span>
+</span><span class='line'><span class="cp">#define S_R2     8</span>
+</span><span class='line'><span class="cp">#define S_R1     4</span>
+</span><span class='line'><span class="cp">#define S_R0     0</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MODE_SVC 0x13</span>
+</span><span class='line'><span class="cp">#define I_BIT     0x80</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * use bad_save_user_regs for abort/prefetch/undef/swi ...</span>
+</span><span class='line'><span class="cm"> * use irq_save_user_regs / irq_restore_user_regs for IRQ/FIQ handling</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span>    <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_FRAME_SIZE</span>       <span class="err">@</span> <span class="n">carve</span> <span class="n">out</span> <span class="n">a</span> <span class="n">frame</span> <span class="n">on</span> <span class="n">current</span> <span class="n">user</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span> <span class="o">-</span> <span class="n">r12</span><span class="p">}</span>         <span class="err">@</span> <span class="n">Save</span> <span class="n">user</span> <span class="n">registers</span> <span class="p">(</span><span class="n">now</span> <span class="n">in</span> <span class="n">svc</span> <span class="n">mode</span><span class="p">)</span> <span class="n">r0</span><span class="o">-</span><span class="n">r12</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">_armboot_start</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_MALLOC_LEN</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_GBL_DATA_SIZE</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span> <span class="err">@</span> <span class="n">set</span> <span class="n">base</span> <span class="mi">2</span> <span class="n">words</span> <span class="n">into</span> <span class="n">abort</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">r2</span><span class="p">,</span> <span class="p">{</span><span class="n">r2</span> <span class="o">-</span> <span class="n">r3</span><span class="p">}</span>          <span class="err">@</span> <span class="n">get</span> <span class="n">values</span> <span class="k">for</span> <span class="s">&quot;aborted&quot;</span> <span class="n">pc</span> <span class="n">and</span> <span class="n">cpsr</span> <span class="p">(</span><span class="n">into</span> <span class="n">parm</span> <span class="n">regs</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_FRAME_SIZE</span>       <span class="err">@</span> <span class="n">grab</span> <span class="n">pointer</span> <span class="n">to</span> <span class="n">old</span> <span class="n">stack</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_SP</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">r5</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span> <span class="o">-</span> <span class="n">r3</span><span class="p">}</span>          <span class="err">@</span> <span class="n">save</span> <span class="n">sp_SVC</span><span class="p">,</span> <span class="n">lr_SVC</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">cpsr</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">sp</span>             <span class="err">@</span> <span class="n">save</span> <span class="n">current</span> <span class="n">stack</span> <span class="n">into</span> <span class="n">r0</span> <span class="p">(</span><span class="n">param</span> <span class="k">register</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span>    <span class="n">irq_save_user_regs</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_FRAME_SIZE</span>
+</span><span class='line'>  <span class="n">stmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span> <span class="o">-</span> <span class="n">r12</span><span class="p">}</span>         <span class="err">@</span> <span class="n">Calling</span> <span class="n">r0</span><span class="o">-</span><span class="n">r12</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r8</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_PC</span>           <span class="err">@</span> <span class="o">!!!!</span> <span class="n">R8</span> <span class="n">NEEDS</span> <span class="n">to</span> <span class="n">be</span> <span class="n">saved</span> <span class="o">!!!!</span> <span class="n">a</span> <span class="n">reserved</span> <span class="n">stack</span> <span class="n">spot</span> <span class="n">would</span> <span class="n">be</span> <span class="n">good</span><span class="p">.</span>
+</span><span class='line'>  <span class="n">stmdb</span>    <span class="n">r8</span><span class="p">,</span> <span class="p">{</span><span class="n">sp</span><span class="p">,</span> <span class="n">lr</span><span class="p">}</span><span class="o">^</span>           <span class="err">@</span> <span class="n">Calling</span> <span class="n">SP</span><span class="p">,</span> <span class="n">LR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span><span class="p">]</span>         <span class="err">@</span> <span class="n">Save</span> <span class="n">calling</span> <span class="n">PC</span>
+</span><span class='line'>  <span class="n">mrs</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">spsr</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r6</span><span class="p">,</span> <span class="p">[</span><span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span><span class="p">]</span>         <span class="err">@</span> <span class="n">Save</span> <span class="n">CPSR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r0</span><span class="p">,</span> <span class="p">[</span><span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mi">8</span><span class="p">]</span>         <span class="err">@</span> <span class="n">Save</span> <span class="n">OLD_R0</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">sp</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span>    <span class="n">irq_restore_user_regs</span>
+</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span> <span class="o">-</span> <span class="n">lr</span><span class="p">}</span><span class="o">^</span>          <span class="err">@</span> <span class="n">Calling</span> <span class="n">r0</span> <span class="o">-</span> <span class="n">lr</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_PC</span><span class="p">]</span>           <span class="err">@</span> <span class="n">Get</span> <span class="n">PC</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="n">S_FRAME_SIZE</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>         <span class="err">@</span> <span class="k">return</span> <span class="o">&amp;</span> <span class="n">move</span> <span class="n">spsr_svc</span> <span class="n">into</span> <span class="n">cpsr</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span> <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r13</span><span class="p">,</span> <span class="n">_armboot_start</span>        <span class="err">@</span> <span class="n">setup</span> <span class="n">our</span> <span class="n">mode</span> <span class="n">stack</span> <span class="p">(</span><span class="n">enter</span> <span class="n">in</span> <span class="n">banked</span> <span class="n">mode</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r13</span><span class="p">,</span> <span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_MALLOC_LEN</span><span class="p">)</span>   <span class="err">@</span> <span class="n">move</span> <span class="n">past</span> <span class="n">malloc</span> <span class="n">pool</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r13</span><span class="p">,</span> <span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_GBL_DATA_SIZE</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span> <span class="err">@</span> <span class="n">move</span> <span class="n">to</span> <span class="n">reserved</span> <span class="n">a</span> <span class="n">couple</span> <span class="n">spots</span> <span class="k">for</span> <span class="n">abort</span> <span class="n">stack</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r13</span><span class="p">]</span>            <span class="err">@</span> <span class="n">save</span> <span class="n">caller</span> <span class="n">lr</span> <span class="n">in</span> <span class="n">position</span> <span class="mi">0</span> <span class="n">of</span> <span class="n">saved</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">mrs</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">spsr</span>           <span class="err">@</span> <span class="n">get</span> <span class="n">the</span> <span class="n">spsr</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span><span class="p">]</span>            <span class="err">@</span> <span class="n">save</span> <span class="n">spsr</span> <span class="n">in</span> <span class="n">position</span> <span class="mi">1</span> <span class="n">of</span> <span class="n">saved</span> <span class="n">stack</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="n">MODE_SVC</span>            <span class="err">@</span> <span class="n">prepare</span> <span class="n">SVC</span><span class="o">-</span><span class="n">Mode</span>
+</span><span class='line'>  <span class="err">@</span> <span class="n">msr</span>   <span class="n">spsr_c</span><span class="p">,</span> <span class="n">r13</span>
+</span><span class='line'>  <span class="n">msr</span>  <span class="n">spsr</span><span class="p">,</span> <span class="n">r13</span>          <span class="err">@</span> <span class="k">switch</span> <span class="n">modes</span><span class="p">,</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">moves</span> <span class="n">will</span> <span class="n">execute</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">pc</span>             <span class="err">@</span> <span class="n">capture</span> <span class="k">return</span> <span class="n">pc</span>
+</span><span class='line'>  <span class="n">movs</span> <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>             <span class="err">@</span> <span class="n">jump</span> <span class="n">to</span> <span class="n">next</span> <span class="n">instruction</span> <span class="o">&amp;</span> <span class="k">switch</span> <span class="n">modes</span><span class="p">.</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span> <span class="n">get_bad_stack_swi</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r13</span><span class="p">,</span> <span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>           <span class="err">@</span> <span class="n">space</span> <span class="n">on</span> <span class="n">current</span> <span class="n">stack</span> <span class="k">for</span> <span class="n">scratch</span> <span class="n">reg</span><span class="p">.</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r0</span><span class="p">,</span> <span class="p">[</span><span class="n">r13</span><span class="p">]</span>            <span class="err">@</span> <span class="n">save</span> <span class="n">R0</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">value</span><span class="p">.</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_armboot_start</span>     <span class="err">@</span> <span class="n">get</span> <span class="n">data</span> <span class="n">regions</span> <span class="n">start</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_MALLOC_LEN</span><span class="p">)</span> <span class="err">@</span> <span class="n">move</span> <span class="n">past</span> <span class="n">malloc</span> <span class="n">pool</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CFG_GBL_DATA_SIZE</span><span class="o">+</span><span class="mi">8</span><span class="p">)</span> <span class="err">@</span> <span class="n">move</span> <span class="n">past</span> <span class="n">gbl</span> <span class="n">and</span> <span class="n">a</span> <span class="n">couple</span> <span class="n">spots</span> <span class="k">for</span> <span class="n">abort</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>         <span class="err">@</span> <span class="n">save</span> <span class="n">caller</span> <span class="n">lr</span> <span class="n">in</span> <span class="n">position</span> <span class="mi">0</span> <span class="n">of</span> <span class="n">saved</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">mrs</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">spsr</span>           <span class="err">@</span> <span class="n">get</span> <span class="n">the</span> <span class="n">spsr</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">lr</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span><span class="p">]</span>         <span class="err">@</span> <span class="n">save</span> <span class="n">spsr</span> <span class="n">in</span> <span class="n">position</span> <span class="mi">1</span> <span class="n">of</span> <span class="n">saved</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="p">[</span><span class="n">r13</span><span class="p">]</span>            <span class="err">@</span> <span class="n">restore</span> <span class="n">r0</span>
+</span><span class='line'>  <span class="n">add</span>  <span class="n">r13</span><span class="p">,</span> <span class="n">r13</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>           <span class="err">@</span> <span class="n">pop</span> <span class="n">stack</span> <span class="n">entry</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span> <span class="n">get_irq_stack</span>           <span class="err">@</span> <span class="n">setup</span> <span class="n">IRQ</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">IRQ_STACK_START</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">macro</span> <span class="n">get_fiq_stack</span>           <span class="err">@</span> <span class="n">setup</span> <span class="n">FIQ</span> <span class="n">stack</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">FIQ_STACK_START</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endm</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * exception handlers</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">undefined_instruction</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_undefined_instruction</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">software_interrupt</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack_swi</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_software_interrupt</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">prefetch_abort</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_prefetch_abort</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">data_abort</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_data_abort</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">not_used</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_not_used</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">irq</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_irq_stack</span>
+</span><span class='line'>  <span class="n">irq_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_irq</span>
+</span><span class='line'>  <span class="n">irq_restore_user_regs</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">fiq</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_fiq_stack</span>
+</span><span class='line'>  <span class="cm">/* someone ought to write a more effiction fiq_save_user_regs */</span>
+</span><span class='line'>  <span class="n">irq_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_fiq</span>
+</span><span class='line'>  <span class="n">irq_restore_user_regs</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">irq</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_irq</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="nl">fiq</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">get_bad_stack</span>
+</span><span class='line'>  <span class="n">bad_save_user_regs</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">do_fiq</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span> <span class="mi">5</span>
+</span><span class='line'><span class="p">.</span><span class="n">global</span> <span class="n">arm1136_cache_flush</span>
+</span><span class='line'><span class="nl">arm1136_cache_flush</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c5</span><span class="p">,</span> <span class="mi">0</span>    <span class="err">@</span> <span class="n">invalidate</span> <span class="n">I</span> <span class="n">cache</span>
+</span><span class='line'>      <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>         <span class="err">@</span> <span class="n">back</span> <span class="n">to</span> <span class="n">caller</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_INTEGRATOR) &amp;&amp; defined(CONFIG_ARCH_CINTEGRATOR)</span>
+</span><span class='line'><span class="cm">/* Use the IntegratorCP function from board/integratorcp/platform.S */</span>
+</span><span class='line'><span class="cp">#elif defined(CONFIG_S3C64XX)</span>
+</span><span class='line'><span class="cm">/* For future usage of S3C64XX*/</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span>    <span class="mi">5</span>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">reset_cpu</span>
+</span><span class='line'><span class="nl">reset_cpu</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">rstctl</span> <span class="cm">/* get addr for global reset reg */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span> <span class="cm">/* full reset pll+mpu */</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">]</span> <span class="cm">/* force reset */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span>
+</span><span class='line'><span class="nl">_loop_forever</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">b</span>    <span class="n">_loop_forever</span>
+</span><span class='line'><span class="nl">rstctl</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">PM_RSTCTRL_WKUP</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-13T23:15:44+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/13/u-boot-dot-lds/">
 		
 			u-boot.lds</a>
@@ -1193,326 +2613,6 @@
 
 
 <time datetime="2015-05-23T18:03:13+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/20/nuvoton-m451-timer/">
-		
-			Nuvoton-M451-Timer</a>
-	</h2>
-	<div class="entry-content">
-		<h2>新唐CortexM4内核芯片M451学习之&mdash;-定时器Timer</h2>
-
-<blockquote><ul>
-<li>4组32位定时器TIMER0~TIMER3,带24位向上计数器和一个8位的预分频器</li>
-<li>支持两个中断标志：一个是<code>TIF</code>，该标志在当定时器计数器值CNT与定时器比价值CMPDAT相匹配时置位，另一个是<code>CAPIF</code>标志，该标志在当Tx_ENT管脚的变化与CAPEDGE的设置一致是置位</li>
-<li>定时器计数模式：one-shot(单周期),periodic(多周期),toggle-output(翻转输出)和continuous counting(连续计数)计数模式</li>
-<li>可以选择Tx管脚上的信号作为计数器CNT的时钟(外部事件计数模式)，输入事件的频率必须小于1/8PCLK。此外，Tx管脚还可作为toggle-output模式下的输出引脚</li>
-<li>事件捕捉功能是当检测到Tx_EXT管脚边沿有变化时，当时的CNT值会送到CAPDAT中。Tx_EXT管脚的信号变化率必须小于1/8PCLK。如果CPU不清除CAPIF状态标志，定时器会保持TIMERx_CAP寄存器的值不变，且不会保存新的捕捉值。</li>
-<li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK;CAPFUNCS为0对应事件捕捉，为1对应事件复位，即会复位CNT的值</li>
-<li>注意当使用事件计数功能时候，定时器的工作模式不能设置为TIMER_TOGGLE_MODE</li>
-<li>超时溢出周期 = (定时器输入时钟周期) * (8-bit PSC + 1) * (24-bit CMPDAT)</li>
-</ul>
-</blockquote>
-
-<h2>API</h2>
-
-<ul>
-<li><code>TIMER_SET_CMP_VALUE(timer,u32Value)</code></li>
-<li><code>TIMER_SET_PRESCALE_VALUE(timer,u32Value)</code></li>
-<li><code>TIMER_IS_ACTIVE(timer)</code></li>
-<li><code>TIMER_SELECT_TOUT_PIN(timer,u32ToutSel)</code></li>
-<li><code>TIMER_Start(TIMER_T *timer)</code></li>
-<li><code>TIMER_Stop(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableWakeup(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableWakeup(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableCaptureDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableCaptureDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableEventCounterDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableEventCounterDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableCaptureInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableCaptureInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCaptureIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearCaptureIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetWakeupFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearWakeupFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCaptureData(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCounter(TIMER_T *timer)</code></li>
-<li><code>TIMER_Open(TIMER_T *timer,uint32_t u32Mode,uint32_t u32Freq)</code></li>
-<li><code>TIMER_Close(TIMER_T *timer)</code></li>
-<li><code>TIMER_Delay(TIMER_t *timer)</code></li>
-<li><code>TIMER_EnableCapture(TIMER_T *timer,uint32_t u32CapMode,uint32_t u32Edge)</code></li>
-<li><code>TIMER_DisableCapture(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableEventCounter(TIMER_T *timer,uint32_t u32Edge)</code></li>
-<li><code>TIMER_DisableEventCounter(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetModuleClock(TIMER_T *timer)</code></li>
-</ul>
-
-
-<blockquote><ul>
-<li>TIMER_T *timer的取值有<code>TIMER0</code>,<code>TIMER1</code>,<code>TIMER2</code>,<code>TIMER3</code></li>
-<li>u32ToutSel的取值有<code>TIMER_TOUT_PIN_FROM_TX</code>,<code>TIMER_TOUT_PIN_FROM_TX_EXT</code></li>
-<li>u32CapMode的取值有<code>TIMER_CAPTURE_FREE_COUNTING_MODE</code>,<code>TIMER_CAPTURE_COUNTER_RESET_MODE</code></li>
-<li>捕获模式中u32Edge的取值有<code>TIMER_CAPTURE_FALLING_EDGE</code>,<code>TIMER_CAPTURE_RISING_EDGE</code>,<code>TIMER_CAPTURE_FALLING_AND_RISING_EDGE</code></li>
-<li>事件计数模式中u32Edge的取值有<code>TIMER_COUNTER_FALLING_EDGE</code>,<code>TIMER_COUNTER_RISING_EDGE</code></li>
-<li>u32Mode的取值有<code>TIMER_ONESHOT_MODE</code>,<code>TIMER_PERIODIC_MODE</code>,<code>TIMER_TOGGLE_MODE</code>,<code>TIMER_CONTINUOUS_MODE</code></li>
-</ul>
-</blockquote>
-
-<h2>定时器TMR0的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR0:toggle-output模式，频率1000Hz(PD4实际产生的方波频率500Hz)，关闭中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with PCLK0*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR0SEL_PCLK0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR0 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR0 Module, working at toggle mode, with Freq=1000Hz*/</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer0_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD4[PIN18] Multifuntion Pin as T0 for Toggle Output*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD4MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD4MFP_T0</span><span class="p">;</span>
-</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
-</span><span class='line'><span class="c">/*Enable Int for TMR0 Module*/</span>
-</span><span class='line'><span class="c">TIMER_EnableInt(TIMER0);</span>
-</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR0_IRQn);</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'><span class="cm">/*Start TMR0 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
-</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR0 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer0_freq</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR3的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR3：toggle-output模式，频率2Hz(PD11实际产生的方波频率2Hz)，关闭中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR3 ClK Source with PCLK1*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR3SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR3 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR3 Module, working at toggle mode, with Freq=2Hz*/</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer3_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD11[PIN27] Multifuntion Pin as T3 for Toggle Output*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPH_PD11MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPH_PD11MFP_T3</span><span class="p">;</span>
-</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
-</span><span class='line'><span class="c">/*Enable Int for TMR3 Module*/</span>
-</span><span class='line'><span class="c">TIMER_EnableInt(TIMER3);</span>
-</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR3_IRQn);</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'><span class="cm">/*Start TMR3 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">);</span>
-</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR3 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer3_freq</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR2的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR2: continuous模式，开启事件计数器功能(PD3)，开启捕获功能(PA5)，开启捕获中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR2 Clk Source with PCLK1*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR2SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR2 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR2 Module,working at continuous mode,with Freq=1Hz*/</span>
-</span><span class='line'><span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_CONTINUOUS_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Event Counter for TMR2, Enable Event Counter Debounce*/</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounter</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_COUNTER_FALLING_EDGE</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounterDebounce</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_PRESCALE_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_CMP_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mh">0xFFFFFF</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Capture Counting for TMR2, Enable Capture Debounce*/</span>
-</span><span class='line'><span class="n">TIMER_EnableCapture</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_CAPTURE_FREE_COUNTING_MODE</span><span class="p">,</span><span class="n">TIMER_CAPTURE_FALLING_EDGE</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableCaptureDebounce</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD3[PIN17] Multifuntion Pin as T2 for Event Counter*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD3MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD3MFP_T2</span><span class="p">;</span>
-</span><span class='line'><span class="cm">/*Set PA5[PIN61] Multifuntion Pin as T2_EXT for Capture*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPA_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPA_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPA_MFPL_PA5MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPA_MFPL_PA5MFP_T2_EXT</span><span class="p">;</span>
-</span><span class='line'><span class="cm">/*Enable Int for TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableCaptureInt</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR2_IRQn</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Start TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR2中断程序</h2>
-
-<figure class='code'><figcaption><span>TMR2中断程序</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * @brief       Timer2 IRQ</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @param       None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @return      None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @details     The Timer2 default IRQ, declared in startup_M451Series.s.</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">capCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">TMR2_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer2 time-out interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;TMR2 Time-Out Interrupt occured</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetCaptureIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer2 capture trigger interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearCaptureIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">capCount</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>主函数测试代码</h2>
-
-<figure class='code'><figcaption><span>main函数主要测试代码,测试结果为500</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">uint32_t</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">initCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">capCount</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">capCount</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="n">initCount</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">TIMER_GetCaptureData</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;diff=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</span><span class='line'>      <span class="n">initCount</span> <span class="o">=</span> <span class="n">capCount</span><span class="o">%</span><span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-20T11:03:28+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 
