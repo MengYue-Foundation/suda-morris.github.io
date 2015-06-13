@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-13T23:09:26+08:00</updated>
+  <updated>2015-06-13T23:11:23+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,7 @@
     <link href="http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds/"/>
     <updated>2015-06-13T23:06:13+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds</id>
-    <content type="html"><![CDATA[<pre><code>OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+    <content type="html"><![CDATA[<pre><code class="C u-boot.lds">OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
 SECTIONS
