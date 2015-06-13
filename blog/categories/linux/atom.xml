@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-12T22:23:59+08:00</updated>
+  <updated>2015-06-13T23:09:26+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[u-boot.lds]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds/"/>
+    <updated>2015-06-13T23:06:13+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds</id>
+    <content type="html"><![CDATA[<pre><code>OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+OUTPUT_ARCH(arm)
+ENTRY(_start)
+SECTIONS
+{
+    . = 0x00000000;
+    . = ALIGN(4);
+    .text      :
+    {
+      cpu/s3c64xx/start.o   (.text)
+      cpu/s3c64xx/s3c6410/cpu_init.o    (.text)
+      cpu/s3c64xx/onenand_cp.o  (.text)
+      cpu/s3c64xx/nand_cp.o (.text)
+      board/samsung/mini6410/nand_6410.fo
+      cpu/s3c64xx/movi.o (.text)
+      *(.text)
+      lib_arm/div0.o
+    }
+    . = ALIGN(4);
+    .rodata : { *(.rodata) }
+    . = ALIGN(4);
+    .data : { *(.data) }
+    . = ALIGN(4);
+    .got : { *(.got) }
+    __u_boot_cmd_start = .;
+    .u_boot_cmd : { *(.u_boot_cmd) }
+    __u_boot_cmd_end = .;
+    . = ALIGN(4);
+    .mmudata : { *(.mmudata) }
+    . = ALIGN(4);
+    __bss_start = .;
+    .bss : { *(.bss) }
+    _end = .;
+}
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[KDM-DevEnv]]></title>
@@ -212,6 +255,14 @@ sync</p>
 </li>
 </ol>
 </li>
+</ol>
+</li>
+<li>U-boot目录结构
+
+<ol>
+<li>与处理器体系结构或者开发板硬件直接相关</li>
+<li>通用的函数或者驱动程序</li>
+<li>U-Boot的应用程序、工具或者文档</li>
 </ol>
 </li>
 </ul>

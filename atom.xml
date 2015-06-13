@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-12T22:23:59+08:00</updated>
+  <updated>2015-06-13T23:09:26+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,83 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[u-boot.lds]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds/"/>
+    <updated>2015-06-13T23:06:13+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds</id>
+    <content type="html"><![CDATA[<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+</span><span class='line'>OUTPUT_ARCH(arm)
+</span><span class='line'>ENTRY(_start)
+</span><span class='line'>SECTIONS
+</span><span class='line'>{
+</span><span class='line'>  . = 0x00000000;
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .text      :
+</span><span class='line'>  {
+</span><span class='line'>    cpu/s3c64xx/start.o   (.text)
+</span><span class='line'>    cpu/s3c64xx/s3c6410/cpu_init.o    (.text)
+</span><span class='line'>    cpu/s3c64xx/onenand_cp.o  (.text)
+</span><span class='line'>    cpu/s3c64xx/nand_cp.o (.text)
+</span><span class='line'>    board/samsung/mini6410/nand_6410.fo
+</span><span class='line'>    cpu/s3c64xx/movi.o (.text)
+</span><span class='line'>    *(.text)
+</span><span class='line'>    lib_arm/div0.o
+</span><span class='line'>  }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .rodata : { *(.rodata) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .data : { *(.data) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .got : { *(.got) }
+</span><span class='line'>  __u_boot_cmd_start = .;
+</span><span class='line'>  .u_boot_cmd : { *(.u_boot_cmd) }
+</span><span class='line'>  __u_boot_cmd_end = .;
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .mmudata : { *(.mmudata) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  __bss_start = .;
+</span><span class='line'>  .bss : { *(.bss) }
+</span><span class='line'>  _end = .;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[KDM-DevEnv]]></title>
@@ -215,6 +292,14 @@
 </li>
 </ol>
 </li>
+</ol>
+</li>
+<li>U-boot目录结构
+
+<ol>
+<li>与处理器体系结构或者开发板硬件直接相关</li>
+<li>通用的函数或者驱动程序</li>
+<li>U-Boot的应用程序、工具或者文档</li>
 </ol>
 </li>
 </ul>

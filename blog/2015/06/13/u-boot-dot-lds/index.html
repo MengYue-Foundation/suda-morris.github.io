@@ -1,0 +1,289 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>u-boot.lds - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", " &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">u-boot.lds</h2>
+	<div class="entry-content"><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
+</span><span class='line'>OUTPUT_ARCH(arm)
+</span><span class='line'>ENTRY(_start)
+</span><span class='line'>SECTIONS
+</span><span class='line'>{
+</span><span class='line'>  . = 0x00000000;
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .text      :
+</span><span class='line'>  {
+</span><span class='line'>    cpu/s3c64xx/start.o   (.text)
+</span><span class='line'>    cpu/s3c64xx/s3c6410/cpu_init.o    (.text)
+</span><span class='line'>    cpu/s3c64xx/onenand_cp.o  (.text)
+</span><span class='line'>    cpu/s3c64xx/nand_cp.o (.text)
+</span><span class='line'>    board/samsung/mini6410/nand_6410.fo
+</span><span class='line'>    cpu/s3c64xx/movi.o (.text)
+</span><span class='line'>    *(.text)
+</span><span class='line'>    lib_arm/div0.o
+</span><span class='line'>  }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .rodata : { *(.rodata) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .data : { *(.data) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .got : { *(.got) }
+</span><span class='line'>  __u_boot_cmd_start = .;
+</span><span class='line'>  .u_boot_cmd : { *(.u_boot_cmd) }
+</span><span class='line'>  __u_boot_cmd_end = .;
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  .mmudata : { *(.mmudata) }
+</span><span class='line'>  . = ALIGN(4);
+</span><span class='line'>  __bss_start = .;
+</span><span class='line'>  .bss : { *(.bss) }
+</span><span class='line'>  _end = .;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-13T23:06:13+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/06/13/u-boot-dot-lds" data-title="u-boot.lds" data-url="http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
