@@ -972,7 +972,7 @@
 </span><span class='line'>  <span class="cm">/* Peri port setup */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>
 </span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>
-</span><span class='line'>      <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">mcr</span>    <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>        <span class="err">@</span> <span class="n">onenand</span> <span class="n">controller</span> <span class="n">setup</span>
@@ -1513,6 +1513,8 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 </div>
 
 

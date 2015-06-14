@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-13T23:17:53+08:00</updated>
+  <updated>2015-06-14T22:39:01+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,113 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[raw_machine_code]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/14/raw-machine-code/"/>
+    <updated>2015-06-14T19:39:49+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/14/raw-machine-code</id>
+    <content type="html"><![CDATA[<h3>把外设的基地址告诉CPU</h3>
+
+<pre><code class="C">ldr r0, =0x70000000                     //对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)
+orr r0, r0, #0x13                       //外设大小:256M
+mcr p15,0,r0,c15,c2,4                   //把r0的值(包括了外设基地址+外设大小)告诉cpu
+</code></pre>
+
+<h3>关看门狗</h3>
+
+<pre><code class="C">ldr r0, =0x7E004000
+mov r1, #0
+str r1, [r0]
+</code></pre>
+
+<h3>死循环</h3>
+
+<pre><code class="C">halt:
+    b halt
+</code></pre>
+
+<blockquote><p>b与bl都是跳转指令，但是bl会把下一条指令的地址保存到寄存器lr中</p>
+
+<h3>Makefile</h3>
+
+<pre><code class="C">led.bin : start.o
+    arm-linux-ld -Ttext 0 -o led.elf start.o
+    arm-linux-objcopy -O binary led.elf led.bin
+    arm-linux-objdump -D led.elf &gt; led.dis
+start.o : start.S
+    arm-linux-gcc -c -O start.o start.S
+clean:
+    rm *.o led.elf led.bin led.dis
+</code></pre>
+
+<ol>
+<li>6410一上电后，nandflash前8K内容会被硬件原原本本地复制到片内的一个叫stepping stone的区域，该区域被映射到CPU内存地址0处</li>
+<li>在ARM中，pc:r15,lr:r14,ip:r12,fp:r11</li>
+</ol>
+</blockquote>
+
+<h3>CPU时钟设置</h3>
+
+<pre><code class="C">clock_init:
+    // 1. 设置各PLL的LOCK_TIME,使用默认值  
+    ldr r0, =0x7E00F000                         // APLL_LOCK，供cpu使用 
+    ldr r1, =0x0000FFFF
+    str r1, [r0]
+
+    str r1, [r0, #4]                            // MPLL_LOCK，供AHB(存储/中断/lcd等控制器)/APB(看门狗，定时器，SD等)总线上的设备使用 
+    str r1, [r0, #8]                            // EPLL_LOCK，供UART,IIS,IIC使用 
+
+    // 2. 设置为异步模式(Asynchronous mode)  
+#define OTHERS  0x7E00F900
+    ldr r0, =OTHERS                             // OTHERS
+                                                // 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式
+                                                // 用APLL是同步(SYNC)模式
+    ldr r1, [r0]
+    bic r1, r1, #0xc0                           // bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0
+    str r1, [r0]
+loop:           
+    ldr r0, =0x7E00F900
+    ldr r1, [r0]
+    and r1, r1, #0xf00                  
+    cmp r1, #0
+    bne loop        
+
+    // 3. 设置分频系数  
+#define ARM_RATIO    0                          // ARMCLK   = DOUTAPLL / (ARM_RATIO + 1)    = 532/(0+1) = 532  MHz
+#define MPLL_RATIO   0                          // DOUTMPLL = MOUTMPLL / (MPLL_RATIO + 1)   = 532/(0+1) = 532  MHz
+#define HCLKX2_RATIO 1                          // HCLKX2   = HCLKX2IN / (HCLKX2_RATIO + 1) = 532/(1+1) = 266  MHz
+#define HCLK_RATIO   1                          // HCLK     = HCLKX2   / (HCLK_RATIO + 1)   = 266/(1+1) = 133  MHz
+#define PCLK_RATIO   3                          // PCLK     = HCLKX2   / (PCLK_RATIO + 1)   = 266/(3+1) = 66.5 MHz
+
+    ldr r0, =0x7E00F020                         // CLK_DIV0
+    ldr r1, =(ARM_RATIO) | (MPLL_RATIO &lt;&lt; 4) | (HCLK_RATIO &lt;&lt; 8) | (HCLKX2_RATIO &lt;&lt; 9) | (PCLK_RATIO &lt;&lt; 12)
+    str r1, [r0]
+
+    // 4. 设置PLL,放大时钟  
+    // 4.1 配置APLL  
+#define APLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))
+    ldr r0, =0x7E00F00C                         // APLL_CON
+    ldr r1, =APLL_CON_VAL                       // FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz
+    str r1, [r0]        
+
+    // 4.2 配置MPLL  
+#define MPLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))
+    ldr r0, =0x7E00F010                         // MPLL_CON
+    ldr r1, =MPLL_CON_VAL                       // FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz
+    str r1, [r0]        
+
+#define MPLL_SEL 1
+#define APLL_SEL 1  
+    // 5.选择PLL的输出作为时钟源  
+    ldr r0, =0x7E00F01C                         // CLK_SRC
+    ldr r1, =(MPLL_SEL&lt;&lt;1) | (APLL_SEL&lt;&lt;0)
+    str r1, [r0]
+
+    mov pc, lr
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[start.S]]></title>
@@ -168,7 +275,7 @@ cpu_init_crit:
     /* Peri port setup */
     ldr r0, =0x70000000
     orr r0, r0, #0x13
-        mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
+    mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
 
 #ifdef CONFIG_BOOT_ONENAND
     ldr r0, =0x70000000     @ onenand controller setup
@@ -708,6 +815,8 @@ rstctl:
 
 #endif
 </code></pre>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
@@ -751,6 +860,8 @@ SECTIONS
     _end = .;
 }
 </code></pre>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   

@@ -88,6 +88,222 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/14/raw-machine-code/">
+		
+			Raw_machine_code</a>
+	</h2>
+	<div class="entry-content">
+		<h3>把外设的基地址告诉CPU</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>                     <span class="c1">//对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)</span>
+</span><span class='line'><span class="n">orr</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>                     <span class="c1">//外设大小:256M</span>
+</span><span class='line'><span class="n">mcr</span> <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>                   <span class="c1">//把r0的值(包括了外设基地址+外设大小)告诉cpu</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>关看门狗</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E004000</span>
+</span><span class='line'><span class="n">mov</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'><span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>死循环</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="nl">halt</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">b</span> <span class="n">halt</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>b与bl都是跳转指令，但是bl会把下一条指令的地址保存到寄存器lr中</p>
+
+<h3>Makefile</h3></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">led</span><span class="p">.</span><span class="nl">bin</span> <span class="p">:</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span> <span class="o">-</span><span class="n">Ttext</span> <span class="mi">0</span> <span class="o">-</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">objcopy</span> <span class="o">-</span><span class="n">O</span> <span class="n">binary</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">led</span><span class="p">.</span><span class="n">bin</span>
+</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">objdump</span> <span class="o">-</span><span class="n">D</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="o">&gt;</span> <span class="n">led</span><span class="p">.</span><span class="n">dis</span>
+</span><span class='line'><span class="n">start</span><span class="p">.</span><span class="nl">o</span> <span class="p">:</span> <span class="n">start</span><span class="p">.</span><span class="n">S</span>
+</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">O</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span> <span class="n">start</span><span class="p">.</span><span class="n">S</span>
+</span><span class='line'><span class="nl">clean</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">rm</span> <span class="o">*</span><span class="p">.</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">led</span><span class="p">.</span><span class="n">bin</span> <span class="n">led</span><span class="p">.</span><span class="n">dis</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><ol>
+<li>6410一上电后，nandflash前8K内容会被硬件原原本本地复制到片内的一个叫stepping stone的区域，该区域被映射到CPU内存地址0处</li>
+<li>在ARM中，pc:r15,lr:r14,ip:r12,fp:r11</li>
+</ol>
+</blockquote>
+
+<h3>CPU时钟设置</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="nl">clock_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="c1">// 1. 设置各PLL的LOCK_TIME,使用默认值  </span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F000</span>                         <span class="c1">// APLL_LOCK，供cpu使用 </span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0000FFFF</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span><span class="p">]</span>                          <span class="c1">// MPLL_LOCK，供AHB(存储/中断/lcd等控制器)/APB(看门狗，定时器，SD等)总线上的设备使用 </span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">8</span><span class="p">]</span>                          <span class="c1">// EPLL_LOCK，供UART,IIS,IIC使用 </span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// 2. 设置为异步模式(Asynchronous mode)  </span>
+</span><span class='line'><span class="cp">#define OTHERS   0x7E00F900</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">OTHERS</span>                              <span class="c1">// OTHERS</span>
+</span><span class='line'>                                              <span class="c1">// 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式</span>
+</span><span class='line'>                                              <span class="c1">// 用APLL是同步(SYNC)模式</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0</span>                           <span class="c1">// bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'><span class="nl">loop</span><span class="p">:</span>          
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F900</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">and</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xf00</span>                  
+</span><span class='line'>  <span class="n">cmp</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'>  <span class="n">bne</span> <span class="n">loop</span>      
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// 3. 设置分频系数  </span>
+</span><span class='line'><span class="cp">#define ARM_RATIO    0                           </span><span class="c1">// ARMCLK   = DOUTAPLL / (ARM_RATIO + 1)    = 532/(0+1) = 532  MHz</span>
+</span><span class='line'><span class="cp">#define MPLL_RATIO   0                           </span><span class="c1">// DOUTMPLL = MOUTMPLL / (MPLL_RATIO + 1)   = 532/(0+1) = 532  MHz</span>
+</span><span class='line'><span class="cp">#define HCLKX2_RATIO 1                           </span><span class="c1">// HCLKX2   = HCLKX2IN / (HCLKX2_RATIO + 1) = 532/(1+1) = 266  MHz</span>
+</span><span class='line'><span class="cp">#define HCLK_RATIO   1                           </span><span class="c1">// HCLK     = HCLKX2   / (HCLK_RATIO + 1)   = 266/(1+1) = 133  MHz</span>
+</span><span class='line'><span class="cp">#define PCLK_RATIO   3                           </span><span class="c1">// PCLK     = HCLKX2   / (PCLK_RATIO + 1)   = 266/(3+1) = 66.5 MHz</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F020</span>                         <span class="c1">// CLK_DIV0</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ARM_RATIO</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">MPLL_RATIO</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">HCLK_RATIO</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">HCLKX2_RATIO</span> <span class="o">&lt;&lt;</span> <span class="mi">9</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">PCLK_RATIO</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// 4. 设置PLL,放大时钟  </span>
+</span><span class='line'>  <span class="c1">// 4.1 配置APLL  </span>
+</span><span class='line'><span class="cp">#define APLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F00C</span>                         <span class="c1">// APLL_CON</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">APLL_CON_VAL</span>                        <span class="c1">// FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>      
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">// 4.2 配置MPLL  </span>
+</span><span class='line'><span class="cp">#define MPLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F010</span>                         <span class="c1">// MPLL_CON</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">MPLL_CON_VAL</span>                        <span class="c1">// FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>      
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MPLL_SEL 1</span>
+</span><span class='line'><span class="cp">#define APLL_SEL 1   </span>
+</span><span class='line'>  <span class="c1">// 5.选择PLL的输出作为时钟源  </span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7E00F01C</span>                         <span class="c1">// CLK_SRC</span>
+</span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">MPLL_SEL</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">APLL_SEL</span><span class="o">&lt;&lt;</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">str</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">mov</span> <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-14T19:39:49+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/s3c6410/'>s3c6410</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/13/start-dot-s/">
 		
 			start.S</a>
@@ -932,7 +1148,7 @@
 </span><span class='line'>  <span class="cm">/* Peri port setup */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>
 </span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>
-</span><span class='line'>      <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">mcr</span>    <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>        <span class="err">@</span> <span class="n">onenand</span> <span class="n">controller</span> <span class="n">setup</span>
@@ -1474,6 +1690,8 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
 		
 		
 	</div>
@@ -1583,6 +1801,8 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 
 		
 		
@@ -2572,47 +2792,6 @@
 
 
 <time datetime="2015-05-23T22:28:12+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/23/nuvoton-m451-pwm/">
-		
-			Nuvoton-m451-pwm</a>
-	</h2>
-	<div class="entry-content">
-		<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-23T18:03:13+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 

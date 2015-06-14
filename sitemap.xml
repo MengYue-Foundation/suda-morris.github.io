@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2015/06/14/raw-machine-code/</loc>
+    <lastmod>2015-06-14T19:39:49+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2015/06/13/start-dot-s/</loc>
     <lastmod>2015-06-13T23:15:44+08:00</lastmod>
   </url>
@@ -106,6 +110,6 @@
     <loc>http://suda-morris.github.io/blog/categories/u-boot/</loc>
   </url>
   <url>
-    <loc>http://suda-morris.github.io/posts/2/</loc>
+    <loc>http://suda-morris.github.io/blog/categories/s3c6410/</loc>
   </url>
 </urlset>

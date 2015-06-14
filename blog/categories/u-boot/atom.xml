@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-13T23:17:53+08:00</updated>
+  <updated>2015-06-14T22:39:01+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -168,7 +168,7 @@ cpu_init_crit:
     /* Peri port setup */
     ldr r0, =0x70000000
     orr r0, r0, #0x13
-        mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
+    mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
 
 #ifdef CONFIG_BOOT_ONENAND
     ldr r0, =0x70000000     @ onenand controller setup
@@ -708,6 +708,8 @@ rstctl:
 
 #endif
 </code></pre>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
@@ -751,6 +753,8 @@ SECTIONS
     _end = .;
 }
 </code></pre>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
