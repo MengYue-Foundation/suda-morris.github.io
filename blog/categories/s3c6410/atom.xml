@@ -4,7 +4,7 @@
   <title><![CDATA[Category: s3c6410 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/s3c6410/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-14T22:39:01+08:00</updated>
+  <updated>2015-06-14T22:56:26+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -38,7 +38,7 @@ str r1, [r0]
     b halt
 </code></pre>
 
-<blockquote><p>b与bl都是跳转指令，但是bl会把下一条指令的地址保存到寄存器lr中</p>
+<blockquote><p>b与bl都是跳转指令，但是bl会把下一条指令的地址保存到寄存器lr中</p></blockquote>
 
 <h3>Makefile</h3>
 
@@ -52,7 +52,7 @@ clean:
     rm *.o led.elf led.bin led.dis
 </code></pre>
 
-<ol>
+<blockquote><ol>
 <li>6410一上电后，nandflash前8K内容会被硬件原原本本地复制到片内的一个叫stepping stone的区域，该区域被映射到CPU内存地址0处</li>
 <li>在ARM中，pc:r15,lr:r14,ip:r12,fp:r11</li>
 </ol>
@@ -78,7 +78,7 @@ clean:
     bic r1, r1, #0xc0                           // bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0
     str r1, [r0]
 loop:           
-    ldr r0, =0x7E00F900
+    ldr r0, =OTHERS
     ldr r1, [r0]
     and r1, r1, #0xf00                  
     cmp r1, #0
