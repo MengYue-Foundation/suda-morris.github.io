@@ -156,7 +156,7 @@
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">led</span><span class="p">.</span><span class="nl">bin</span> <span class="p">:</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span> <span class="n">clock</span><span class="p">.</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">o</span>
-</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span> <span class="o">-</span><span class="n">Ttext</span> <span class="mi">0</span> <span class="o">-</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span> <span class="n">clock</span><span class="p">.</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span> <span class="o">-</span><span class="n">T</span> <span class="n">leds</span><span class="p">.</span><span class="n">lds</span> <span class="o">-</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">start</span><span class="p">.</span><span class="n">o</span> <span class="n">clock</span><span class="p">.</span><span class="n">o</span> <span class="n">led</span><span class="p">.</span><span class="n">o</span>
 </span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">objcopy</span> <span class="o">-</span><span class="n">O</span> <span class="n">binary</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="n">led</span><span class="p">.</span><span class="n">bin</span>
 </span><span class='line'>  <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">objdump</span> <span class="o">-</span><span class="n">D</span> <span class="n">led</span><span class="p">.</span><span class="n">elf</span> <span class="o">&gt;</span> <span class="n">led</span><span class="p">.</span><span class="n">dis</span>
 </span><span class='line'><span class="o">%</span><span class="p">.</span><span class="nl">o</span> <span class="p">:</span> <span class="o">%</span><span class="p">.</span><span class="n">S</span>
@@ -386,6 +386,226 @@
 </span><span class='line'>  <span class="n">UTXH0</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>                      <span class="c1">// 写数据 </span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<h3>链接脚本</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">SECTIONS</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="mh">0x1000</span><span class="p">;</span>                        <span class="cm">/*当前地址*/</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">text</span> <span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">start</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>          
+</span><span class='line'>  <span class="p">.</span><span class="nl">data</span> <span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">data</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">bss_start</span> <span class="o">=</span> <span class="p">.;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">bss</span> <span class="p">:</span> <span class="p">{</span>                       <span class="cm">/*二进制文件中并不包含bss数据*/</span>
+</span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">bss</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">bss_end</span>  <span class="o">=</span> <span class="p">.;</span>  
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><ol>
+<li>位置无关吗：跳转指令使用相对地址，如b和bl，并且程序中不使用全局变量,静态变量</li>
+<li>程序运行时应该位于它的链接地址上</li>
+</ol>
+</blockquote>
+
+<h3>DRAM控制器初始化</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define MEMCCMD        0x7e001004</span>
+</span><span class='line'><span class="cp">#define P1REFRESH    0x7e001010</span>
+</span><span class='line'><span class="cp">#define P1CASLAT 0x7e001014</span>
+</span><span class='line'><span class="cp">#define MEM_SYS_CFG  0x7e00f120</span>
+</span><span class='line'><span class="cp">#define P1MEMCFG 0x7e00100c</span>
+</span><span class='line'><span class="cp">#define P1T_DQSS 0x7e001018</span>
+</span><span class='line'><span class="cp">#define P1T_MRD      0x7e00101c</span>
+</span><span class='line'><span class="cp">#define P1T_RAS      0x7e001020</span>
+</span><span class='line'><span class="cp">#define P1T_RC       0x7e001024</span>
+</span><span class='line'><span class="cp">#define P1T_RCD      0x7e001028</span>
+</span><span class='line'><span class="cp">#define P1T_RFC      0x7e00102c</span>
+</span><span class='line'><span class="cp">#define P1T_RP       0x7e001030</span>
+</span><span class='line'><span class="cp">#define P1T_RRD      0x7e001034</span>
+</span><span class='line'><span class="cp">#define P1T_WR       0x7e001038</span>
+</span><span class='line'><span class="cp">#define P1T_WTR      0x7e00103c</span>
+</span><span class='line'><span class="cp">#define P1T_XP       0x7e001040</span>
+</span><span class='line'><span class="cp">#define P1T_XSR      0x7e001044</span>
+</span><span class='line'><span class="cp">#define P1T_ESR      0x7e001048</span>
+</span><span class='line'><span class="cp">#define P1MEMCFG2    0X7e00104c</span>
+</span><span class='line'><span class="cp">#define P1_chip_0_cfg    0x7e001200</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define P1MEMSTAT    0x7e001000</span>
+</span><span class='line'><span class="cp">#define P1MEMCCMD    0x7e001004</span>
+</span><span class='line'><span class="cp">#define P1DIRECTCMD  0x7e001008</span>
+</span><span class='line'>  
+</span><span class='line'><span class="cp">#define HCLK 133000000</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define nstoclk(ns)  ( ns/(1000000000/HCLK)+1 )          </span><span class="c1">//+1是四舍五入</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 根据6410手册P192页相关步骤和sdram手册来初始化dram控制器(dramc) */</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">sdram_init</span><span class="p">(</span> <span class="kt">void</span> <span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="cm">/* 1. 使dramc进入&quot;config&quot;状态 */</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span><span class="n">P1MEMCCMD</span><span class="p">,</span> <span class="mh">0x4</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* 2. 设置timing parameter, chip configuration,id configuration registers */</span>
+</span><span class='line'>  <span class="cm">/* 2.1 刷新周期 */</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span><span class="n">P1REFRESH</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">7800</span><span class="p">));</span>                 <span class="c1">//刷新周期:(7.8us)/((1/HCLK)s)=(7.8*10^3)/(1/133*10^6)</span>
+</span><span class='line'>  <span class="cm">/* 2.2 时间参数，下列设置全都是取了最小值 */</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1CASLAT</span><span class="p">,</span> <span class="p">(</span> <span class="mi">3</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">);</span>                      <span class="c1">//CAS Latency:指的是内存存取数据所需的延迟时间，简单的说，就是内存接到CPU的指令后的反应速度。一般的参数值是2和3两种。K4X1G163PQ的芯片手册上CAS Latency=3 </span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_DQSS</span><span class="p">,</span> <span class="mh">0x1</span> <span class="p">);</span>                            <span class="c1">//下列设置均在sdram手册中可查询到             </span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_MRD</span><span class="p">,</span> <span class="mh">0x2</span> <span class="p">);</span>                         
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RAS</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span> <span class="p">);</span>                    
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RC</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span> <span class="p">);</span>     
+</span><span class='line'>  <span class="n">u32</span> <span class="n">trcd</span> <span class="o">=</span> <span class="n">nstoclk</span><span class="p">(</span> <span class="mi">18</span> <span class="p">);</span>                         
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RCD</span><span class="p">,</span> <span class="n">trcd</span> <span class="o">|</span> <span class="p">((</span> <span class="n">trcd</span> <span class="o">-</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">trfc</span> <span class="o">=</span> <span class="n">nstoclk</span><span class="p">(</span> <span class="mi">72</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RFC</span><span class="p">,</span> <span class="n">trfc</span> <span class="o">|</span> <span class="p">(</span> <span class="p">(</span> <span class="n">trfc</span><span class="o">-</span><span class="mi">3</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">trp</span> <span class="o">=</span> <span class="n">nstoclk</span><span class="p">(</span> <span class="mi">18</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RP</span><span class="p">,</span> <span class="n">trp</span> <span class="o">|</span> <span class="p">(</span> <span class="p">(</span> <span class="n">trp</span> <span class="o">-</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span> <span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_RRD</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_WR</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_WTR</span><span class="p">,</span> <span class="mh">0x1</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_XP</span><span class="p">,</span> <span class="mh">0x1</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_XSR</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1T_ESR</span><span class="p">,</span> <span class="n">nstoclk</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="cm">/* 2.3 chip configuration */</span>
+</span><span class='line'>  <span class="n">set_nbit</span><span class="p">(</span> <span class="n">P1MEMCFG</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mh">0x2</span> <span class="p">);</span>                   <span class="c1">// column address(10):A0~A9</span>
+</span><span class='line'>  <span class="n">set_nbit</span><span class="p">(</span> <span class="n">P1MEMCFG</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mh">0x3</span> <span class="p">);</span>                   <span class="c1">// row address(14):A0~A13</span>
+</span><span class='line'>  <span class="n">set_zero</span><span class="p">(</span> <span class="n">P1MEMCFG</span><span class="p">,</span> <span class="mi">6</span> <span class="p">);</span>                         <span class="c1">// A10/AP </span>
+</span><span class='line'>  <span class="n">set_nbit</span><span class="p">(</span> <span class="n">P1MEMCFG</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mh">0x2</span> <span class="p">);</span>                  <span class="c1">//  Burst Length (2, 4, 8, 16)</span>
+</span><span class='line'>  <span class="n">set_nbit</span><span class="p">(</span> <span class="n">P1MEMCFG2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mh">0x5</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_2bit</span><span class="p">(</span> <span class="n">P1MEMCFG2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mh">0x1</span> <span class="p">);</span>                        <span class="c1">// 32 bit </span>
+</span><span class='line'>  <span class="n">set_nbit</span><span class="p">(</span> <span class="n">P1MEMCFG2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mh">0x3</span> <span class="p">);</span>                  <span class="c1">// Mobile DDR SDRAM    </span>
+</span><span class='line'>  <span class="n">set_2bit</span><span class="p">(</span> <span class="n">P1MEMCFG2</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mh">0x1</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">set_one</span><span class="p">(</span> <span class="n">P1_chip_0_cfg</span><span class="p">,</span> <span class="mi">16</span> <span class="p">);</span>                        <span class="c1">// Bank-Row-Column organization </span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* 3. 初始化sdram */</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0xc0000</span> <span class="p">);</span>                     <span class="c1">// NOP</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0x000</span> <span class="p">);</span>                       <span class="c1">// precharge</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0x40000</span> <span class="p">);</span>                 <span class="c1">// auto refresh</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0x40000</span> <span class="p">);</span>                 <span class="c1">// auto refresh</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0xa0000</span> <span class="p">);</span>                     <span class="c1">// EMRS</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1DIRECTCMD</span><span class="p">,</span> <span class="mh">0x80032</span> <span class="p">);</span>                     <span class="c1">// MRS</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">MEM_SYS_CFG</span><span class="p">,</span> <span class="mh">0x0</span> <span class="p">);</span>
+</span><span class='line'>                  
+</span><span class='line'>  <span class="cm">/* 4. 使dramc进入&quot;ready&quot;状态    */</span>
+</span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1MEMCCMD</span><span class="p">,</span> <span class="mh">0x000</span> <span class="p">);</span>
+</span><span class='line'>  <span class="k">while</span><span class="p">(</span> <span class="o">!</span><span class="p">((</span> <span class="n">read_val</span><span class="p">(</span> <span class="n">P1MEMSTAT</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x3</span> <span class="p">)</span> <span class="o">==</span> <span class="mh">0x1</span><span class="p">));</span><span class="c1">// 等待dramc进入&quot;ready&quot;状态      </span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 
 		
