@@ -408,6 +408,13 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">SECTIONS</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="mh">0x1000</span><span class="p">;</span>                        <span class="cm">/*当前地址*/</span>
@@ -415,11 +422,18 @@
 </span><span class='line'>      <span class="n">start</span><span class="p">.</span><span class="n">o</span>
 </span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>          
+</span><span class='line'>
+</span><span class='line'>    <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">rodata</span> <span class="p">:{</span>
+</span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">rodata</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>        
 </span><span class='line'>  <span class="p">.</span><span class="nl">data</span> <span class="p">:</span> <span class="p">{</span>
 </span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">data</span><span class="p">)</span>
 </span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">bss_start</span> <span class="o">=</span> <span class="p">.;</span>
 </span><span class='line'>  <span class="p">.</span><span class="nl">bss</span> <span class="p">:</span> <span class="p">{</span>                       <span class="cm">/*二进制文件中并不包含bss数据*/</span>
 </span><span class='line'>      <span class="o">*</span> <span class="p">(.</span><span class="n">bss</span><span class="p">)</span>
@@ -603,6 +617,59 @@
 </span><span class='line'>  <span class="n">set_val</span><span class="p">(</span> <span class="n">P1MEMCCMD</span><span class="p">,</span> <span class="mh">0x000</span> <span class="p">);</span>
 </span><span class='line'>  <span class="k">while</span><span class="p">(</span> <span class="o">!</span><span class="p">((</span> <span class="n">read_val</span><span class="p">(</span> <span class="n">P1MEMSTAT</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x3</span> <span class="p">)</span> <span class="o">==</span> <span class="mh">0x1</span><span class="p">));</span><span class="c1">// 等待dramc进入&quot;ready&quot;状态      </span>
 </span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>简单重定位</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">adr</span> <span class="n">r0</span><span class="p">,</span> <span class="n">_start</span>          <span class="err">@获得</span><span class="n">_start</span><span class="err">指令当前所在的地址</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">_start</span>            <span class="err">@获得</span><span class="n">_start</span><span class="err">的链接地址</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">bss_start</span>     <span class="err">@</span><span class="n">bss</span><span class="err">段的起始链接地址</span>
+</span><span class='line'><span class="n">cmp</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
+</span><span class='line'><span class="n">beq</span> <span class="n">clean_bss</span>
+</span><span class='line'><span class="nl">copy_loop</span><span class="p">:</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>       <span class="err">@将</span><span class="n">r0</span><span class="err">所指向的内容复制到</span><span class="n">r3</span><span class="err">中，然后将</span><span class="n">r0</span><span class="err">加</span><span class="mi">4</span>
+</span><span class='line'><span class="n">str</span> <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>       <span class="err">@将</span><span class="n">r3</span><span class="err">中的内容保存到</span><span class="n">r1</span><span class="err">所指向的地址中，然后将</span><span class="n">r1</span><span class="err">加</span><span class="mi">4</span>
+</span><span class='line'><span class="n">cmp</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'><span class="n">bne</span> <span class="n">copy_loop</span>
+</span><span class='line'>  
+</span><span class='line'><span class="cm">/* 把BBS段对应的内存清零 */</span>
+</span><span class='line'><span class="nl">clean_bss</span><span class="p">:</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">bss_start</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">bss_end</span>
+</span><span class='line'><span class="n">mov</span> <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'><span class="n">cmp</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
+</span><span class='line'><span class="n">beq</span> <span class="n">on_ddr</span>
+</span><span class='line'><span class="nl">clean_loop</span><span class="p">:</span>
+</span><span class='line'><span class="n">str</span> <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'><span class="n">cmp</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>    
+</span><span class='line'><span class="n">bne</span> <span class="n">clean_loop</span>  
+</span><span class='line'><span class="nl">on_ddr</span><span class="p">:</span>
+</span><span class='line'><span class="n">ldr</span> <span class="n">pc</span><span class="p">,</span> <span class="o">=</span><span class="n">main</span>          <span class="err">@</span><span class="n">pc</span><span class="err">等于</span><span class="n">main</span><span class="err">的链接地址</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

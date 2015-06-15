@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-15T15:03:54+08:00</updated>
+  <updated>2015-06-15T16:31:33+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -190,10 +190,17 @@ void putchar(char c)
         * (.text)
     }
 
+    . = ALIGN(4);
+    .rodata :{
+        * (.rodata)
+    }
+
+    . = ALIGN(4);       
     .data : {
         * (.data)
     }
 
+    . = ALIGN(4);
     bss_start = .; 
     .bss : {                        /*二进制文件中并不包含bss数据*/
         * (.bss)
@@ -293,6 +300,34 @@ int sdram_init( void )
     set_val( P1MEMCCMD, 0x000 );
     while( !(( read_val( P1MEMSTAT ) &amp; 0x3 ) == 0x1));// 等待dramc进入"ready"状态     
 }
+</code></pre>
+
+<h3>简单重定位</h3>
+
+<pre><code class="C">    adr r0, _start          @获得_start指令当前所在的地址
+    ldr r1, =_start         @获得_start的链接地址
+    ldr r2, =bss_start      @bss段的起始链接地址
+    cmp r0, r1
+    beq clean_bss
+copy_loop:
+    ldr r3, [r0], #4        @将r0所指向的内容复制到r3中，然后将r0加4
+    str r3, [r1], #4        @将r3中的内容保存到r1所指向的地址中，然后将r1加4
+    cmp r1, r2
+    bne copy_loop
+
+    /* 把BBS段对应的内存清零 */
+clean_bss:
+    ldr r0, =bss_start
+    ldr r1, =bss_end
+    mov r3, #0
+    cmp r0, r1
+    beq on_ddr
+clean_loop:
+    str r3, [r0], #4
+    cmp r0, r1  
+    bne clean_loop  
+on_ddr:
+    ldr pc, =main           @pc等于main的链接地址
 </code></pre>
 ]]></content>
   </entry>
