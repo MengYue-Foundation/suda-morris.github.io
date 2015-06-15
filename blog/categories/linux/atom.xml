@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-15T10:20:25+08:00</updated>
+  <updated>2015-06-15T10:31:21+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -118,6 +118,16 @@ loop:
     str r1, [r0]
 
     mov pc, lr
+</code></pre>
+
+<h3>是否开启icaches</h3>
+
+<pre><code class="C">#ifdef  CONFIG_SYS_ICACHE_OFF
+    bic r0, r0, #0x00001000                 @ clear bit 12 (I) I-cache
+#else
+    orr r0, r0, #0x00001000                 @ set bit 12 (I) I-cache
+#endif
+    mcr p15, 0, r0, c1, c0, 0
 </code></pre>
 ]]></content>
   </entry>

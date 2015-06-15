@@ -274,6 +274,23 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h3>是否开启icaches</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  CONFIG_SYS_ICACHE_OFF</span>
+</span><span class='line'>  <span class="n">bic</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">clear</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">orr</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">mcr</span> <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 		
 		
 	</div>
