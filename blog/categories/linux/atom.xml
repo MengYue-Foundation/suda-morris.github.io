@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-15T10:03:45+08:00</updated>
+  <updated>2015-06-15T10:20:25+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -42,12 +42,14 @@ str r1, [r0]
 
 <h3>Makefile</h3>
 
-<pre><code class="C">led.bin : start.o
-    arm-linux-ld -Ttext 0 -o led.elf start.o
+<pre><code class="C">led.bin : start.o clock.o led.o
+    arm-linux-ld -Ttext 0 -o led.elf start.o clock.o led.o
     arm-linux-objcopy -O binary led.elf led.bin
     arm-linux-objdump -D led.elf &gt; led.dis
-start.o : start.S
-    arm-linux-gcc -c -O start.o start.S
+%.o : %.S
+    arm-linux-gcc -o $@ @&lt; -c
+%.o : %.c
+    arm-linux-gcc -o $@ @&lt; -c
 clean:
     rm *.o led.elf led.bin led.dis
 </code></pre>
@@ -97,7 +99,7 @@ loop:
 
     // 4. 设置PLL,放大时钟  
     // 4.1 配置APLL  
-#define APLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))
+#define APLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1)) 
     ldr r0, =0x7E00F00C                         // APLL_CON
     ldr r1, =APLL_CON_VAL                       // FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz
     str r1, [r0]        
