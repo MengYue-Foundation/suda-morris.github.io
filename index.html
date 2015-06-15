@@ -223,7 +223,7 @@
 </span><span class='line'>  <span class="c1">// 2. 设置为异步模式(Asynchronous mode)  </span>
 </span><span class='line'><span class="cp">#define OTHERS   0x7E00F900</span>
 </span><span class='line'>  <span class="n">ldr</span> <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">OTHERS</span>                              <span class="c1">// OTHERS</span>
-</span><span class='line'>                                              <span class="c1">// 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式</span>
+</span><span class='line'>                                              <span class="c1">// 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式(当内存时钟与CPU时钟源不一样时需要设置成异步模式)</span>
 </span><span class='line'>                                              <span class="c1">// 用APLL是同步(SYNC)模式</span>
 </span><span class='line'>  <span class="n">ldr</span> <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
 </span><span class='line'>  <span class="n">bic</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0</span>                           <span class="c1">// bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0</span>

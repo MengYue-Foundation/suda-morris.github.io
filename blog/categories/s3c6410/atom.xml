@@ -4,7 +4,7 @@
   <title><![CDATA[Category: s3c6410 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/s3c6410/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-14T22:56:26+08:00</updated>
+  <updated>2015-06-15T10:03:45+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -72,7 +72,7 @@ clean:
     // 2. 设置为异步模式(Asynchronous mode)  
 #define OTHERS  0x7E00F900
     ldr r0, =OTHERS                             // OTHERS
-                                                // 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式
+                                                // 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式(当内存时钟与CPU时钟源不一样时需要设置成异步模式)
                                                 // 用APLL是同步(SYNC)模式
     ldr r1, [r0]
     bic r1, r1, #0xc0                           // bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0
