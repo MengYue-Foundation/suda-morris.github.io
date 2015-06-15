@@ -616,7 +616,7 @@ mcr p15,0,r0,c15, &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>简单重定位</h3>
+<h3>简单重定位(从片内内存重定位到DDR)</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -669,6 +669,406 @@ mcr p15,0,r0,c15, &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h3>NandFlash驱动</h3>
+
+<blockquote><ol>
+<li>地址，数据，命令复用</li>
+<li>地址多次发出</li>
+<li>NandFlash一页是2K字节，另外每页都会有一个64字节的区域叫做OOB，共64字节,存放校验码</li>
+<li>NandFlash一个块的大小是128K字节</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define ELFIN_NAND_BASE        0x70200000</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NFCONF_OFFSET           0x00</span>
+</span><span class='line'><span class="cp">#define NFCONT_OFFSET           0x04</span>
+</span><span class='line'><span class="cp">#define NFCMMD_OFFSET           0x08</span>
+</span><span class='line'><span class="cp">#define NFADDR_OFFSET           0x0c</span>
+</span><span class='line'><span class="cp">#define NFDATA_OFFSET            0x10</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA0_OFFSET      0x14</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA1_OFFSET      0x18</span>
+</span><span class='line'><span class="cp">#define NFSECCDATA0_OFFSET      0x1c</span>
+</span><span class='line'><span class="cp">#define NFSBLK_OFFSET           0x20</span>
+</span><span class='line'><span class="cp">#define NFEBLK_OFFSET           0x24</span>
+</span><span class='line'><span class="cp">#define NFSTAT_OFFSET           0x28</span>
+</span><span class='line'><span class="cp">#define NFESTAT0_OFFSET         0x2c</span>
+</span><span class='line'><span class="cp">#define NFESTAT1_OFFSET         0x30</span>
+</span><span class='line'><span class="cp">#define NFMECC0_OFFSET          0x34</span>
+</span><span class='line'><span class="cp">#define NFMECC1_OFFSET          0x38</span>
+</span><span class='line'><span class="cp">#define NFSECC_OFFSET           0x3c</span>
+</span><span class='line'><span class="cp">#define NFMLCBITPT_OFFSET       0x40</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR0_OFFSET        0x44</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR1_OFFSET        0x48</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR2_OFFSET        0x4c</span>
+</span><span class='line'><span class="cp">#define NFM8ECC0_OFFSET          0x50</span>
+</span><span class='line'><span class="cp">#define NFM8ECC1_OFFSET          0x54</span>
+</span><span class='line'><span class="cp">#define NFM8ECC2_OFFSET          0x58</span>
+</span><span class='line'><span class="cp">#define NFM8ECC3_OFFSET          0x5c</span>
+</span><span class='line'><span class="cp">#define NFMLC8BITPT0_OFFSET      0x60</span>
+</span><span class='line'><span class="cp">#define NFMLC8BITPT1_OFFSET      0x64</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NFCONF               (ELFIN_NAND_BASE+NFCONF_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFCONT               (ELFIN_NAND_BASE+NFCONT_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFCMMD               (ELFIN_NAND_BASE+NFCMMD_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFADDR               (ELFIN_NAND_BASE+NFADDR_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFDATA           (ELFIN_NAND_BASE+NFDATA_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA0      (ELFIN_NAND_BASE+NFMECCDATA0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA1      (ELFIN_NAND_BASE+NFMECCDATA1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSECCDATA0          (ELFIN_NAND_BASE+NFSECCDATA0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSBLK           (ELFIN_NAND_BASE+NFSBLK_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFEBLK               (ELFIN_NAND_BASE+NFEBLK_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSTAT               (ELFIN_NAND_BASE+NFSTAT_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFESTAT0             (ELFIN_NAND_BASE+NFESTAT0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFESTAT1             (ELFIN_NAND_BASE+NFESTAT1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECC0              (ELFIN_NAND_BASE+NFMECC0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECC1              (ELFIN_NAND_BASE+NFMECC1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSECC               (ELFIN_NAND_BASE+NFSECC_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMLCBITPT          (ELFIN_NAND_BASE+NFMLCBITPT_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR0           (ELFIN_NAND_BASE+NF8ECCERR0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR1           (ELFIN_NAND_BASE+NF8ECCERR1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NF8ECCERR2           (ELFIN_NAND_BASE+NF8ECCERR2_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFM8ECC0         (ELFIN_NAND_BASE+NFM8ECC0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFM8ECC1         (ELFIN_NAND_BASE+NFM8ECC1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFM8ECC2         (ELFIN_NAND_BASE+NFM8ECC2_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFM8ECC3         (ELFIN_NAND_BASE+NFM8ECC3_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMLC8BITPT0     (ELFIN_NAND_BASE+NFMLC8BITPT0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMLC8BITPT1     (ELFIN_NAND_BASE+NFMLC8BITPT1_OFFSET)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define __REG(x)             (*(volatile unsigned long *)(x))</span>
+</span><span class='line'><span class="cp">#define __REGb(x)                (*(volatile unsigned char *)(x))</span>
+</span><span class='line'><span class="cp">#define NFCONF_REG               __REG(ELFIN_NAND_BASE+NFCONF_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFCONT_REG               __REG(ELFIN_NAND_BASE+NFCONT_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFCMD_REG                __REG(ELFIN_NAND_BASE+NFCMMD_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFADDR_REG               __REG(ELFIN_NAND_BASE+NFADDR_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFDATA_REG           __REG(ELFIN_NAND_BASE+NFDATA_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFDATA8_REG              __REGb(ELFIN_NAND_BASE+NFDATA_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA0_REG      __REG(ELFIN_NAND_BASE+NFMECCDATA0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECCDATA1_REG      __REG(ELFIN_NAND_BASE+NFMECCDATA1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSECCDATA0_REG          __REG(ELFIN_NAND_BASE+NFSECCDATA0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSBLK_REG           __REG(ELFIN_NAND_BASE+NFSBLK_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFEBLK_REG               __REG(ELFIN_NAND_BASE+NFEBLK_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSTAT_REG               __REG(ELFIN_NAND_BASE+NFSTAT_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFESTAT0_REG             __REG(ELFIN_NAND_BASE+NFESTAT0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFESTAT1_REG             __REG(ELFIN_NAND_BASE+NFESTAT1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECC0_REG              __REG(ELFIN_NAND_BASE+NFMECC0_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMECC1_REG              __REG(ELFIN_NAND_BASE+NFMECC1_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFSECC_REG               __REG(ELFIN_NAND_BASE+NFSECC_OFFSET)</span>
+</span><span class='line'><span class="cp">#define NFMLCBITPT_REG           __REG(ELFIN_NAND_BASE+NFMLCBITPT_OFFSET)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NAND_DISABLE_CE()    (NFCONT_REG |= (1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NAND_ENABLE_CE() (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NF_TRANSRnB()        do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// Standard NAND flash commands</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_READ0       0</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_READ1       1</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_RNDOUT      5</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_PAGEPROG    0x10</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_READOOB 0x50</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_ERASE1      0x60</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_STATUS      0x70</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_STATUS_MULTI    0x71</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_SEQIN       0x80</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_RNDIN       0x85</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_READID      0x90</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_ERASE2      0xd0</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_RESET       0xff</span>
+</span><span class='line'><span class="c1">// Extended commands for large page devices</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_READSTART   0x30</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_RNDOUTSTART 0xE0</span>
+</span><span class='line'><span class="cp">#define NAND_CMD_CACHEDPROG  0x15</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MEM_SYS_CFG     (*((volatile unsigned long *)0x7E00F120))</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">nand_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="c1">// 设置NAND Flash控制器</span>
+</span><span class='line'>  <span class="n">NFCONF_REG</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="mh">0x2</span><span class="o">&lt;&lt;</span><span class="mi">12</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0xf</span><span class="o">&lt;&lt;</span><span class="mi">8</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0x7</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="p">);</span>
+</span><span class='line'>  <span class="n">NFCONT_REG</span> <span class="o">|=</span> <span class="p">(</span><span class="mh">0x3</span><span class="o">&lt;&lt;</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 读一页，即2048byte</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_page</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 发片选</span>
+</span><span class='line'>  <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 发读命令：0x00</span>
+</span><span class='line'>  <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">// 发地址</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">// 发读命令：0x30</span>
+</span><span class='line'>  <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 等待数据</span>
+</span><span class='line'>  <span class="n">NF_TRANSRnB</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 连续读2048个字节</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 取消片选</span>
+</span><span class='line'>  <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 从NAND中拷贝代码到DRAM</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">copy2ddr</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nand_start</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ddr_start</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">ddr_start</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 发片选</span>
+</span><span class='line'>  <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 使len为2048的整数倍</span>
+</span><span class='line'>  <span class="n">len</span> <span class="o">=</span> <span class="p">(</span><span class="n">len</span><span class="o">/</span><span class="mi">2048</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2048</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 循环拷贝，每次拷贝一页数据</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">len</span><span class="o">&gt;&gt;</span><span class="n">page_shift</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">buf</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">page_shift</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="c1">// 读一页，即2048byte</span>
+</span><span class='line'>      <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>异常向量表</h3>
+
+<blockquote><ol>
+<li>CPU一上电进入SVC模式</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_start</span>
+</span><span class='line'><span class="nl">_start</span><span class="p">:</span>
+</span><span class='line'>  <span class="c1">// 异常向量表</span>
+</span><span class='line'>  <span class="n">b</span> <span class="n">reset</span>                           <span class="cm">/* 复位时,cpu跳到0地址 */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_undefined_instruction</span>  <span class="cm">/* 未定义指令异常 */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_swi</span>                   <span class="cm">/* swi异常，进入svc模式 */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">ldr</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">_prefetch_abort</span>            <span class="cm">/* 预取中止异常 */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">ldr</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">_data_abort</span>            <span class="cm">/* 数据访问异常 */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">ldr</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">_not_used</span>              <span class="cm">/* 没用到 */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">ldr</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">_irq</span>                   <span class="cm">/* 中断异常 */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">ldr</span>    <span class="n">pc</span><span class="p">,</span> <span class="n">_fiq</span>                   <span class="cm">/* 快中断异常 */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>进入user模式</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// 进入user 模式</span>
+</span><span class='line'><span class="n">mrs</span> <span class="n">r0</span><span class="p">,</span> <span class="n">cpsr</span>
+</span><span class='line'><span class="n">bic</span>    <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0x1f</span>
+</span><span class='line'><span class="n">orr</span>    <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0x10</span>
+</span><span class='line'><span class="n">msr</span>    <span class="n">cpsr</span><span class="p">,</span><span class="n">r0</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
 
