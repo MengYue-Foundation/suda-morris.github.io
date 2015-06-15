@@ -111,6 +111,23 @@ mcr p15,0,r0,c15, &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h3>是否开启icaches</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  CONFIG_SYS_ICACHE_OFF</span>
+</span><span class='line'>  <span class="n">bic</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">clear</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">orr</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">mcr</span> <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 <h3>死循环</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -270,7 +287,7 @@ mcr p15,0,r0,c15, &hellip;">
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h3>是否开启icaches</h3>
+<h3>串口UART</h3>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -278,12 +295,92 @@ mcr p15,0,r0,c15, &hellip;">
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  CONFIG_SYS_ICACHE_OFF</span>
-</span><span class='line'>  <span class="n">bic</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">clear</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">orr</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>                 <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">cache</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">mcr</span> <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define ULCON0     (*((volatile unsigned long *)0x7F005000))</span>
+</span><span class='line'><span class="cp">#define UCON0      (*((volatile unsigned long *)0x7F005004))</span>
+</span><span class='line'><span class="cp">#define UFCON0     (*((volatile unsigned long *)0x7F005008))</span>
+</span><span class='line'><span class="cp">#define UMCON0     (*((volatile unsigned long *)0x7F00500C))</span>
+</span><span class='line'><span class="cp">#define UTRSTAT0   (*((volatile unsigned long *)0x7F005010))</span>
+</span><span class='line'><span class="cp">#define UFSTAT0    (*((volatile unsigned long *)0x7F005018))</span>
+</span><span class='line'><span class="cp">#define UTXH0      (*((volatile unsigned char *)0x7F005020))</span>
+</span><span class='line'><span class="cp">#define URXH0      (*((volatile unsigned char *)0x7F005024))</span>
+</span><span class='line'><span class="cp">#define UBRDIV0    (*((volatile unsigned short *)0x7F005028))</span>
+</span><span class='line'><span class="cp">#define UDIVSLOT0  (*((volatile unsigned short *)0x7F00502C))</span>
+</span><span class='line'><span class="cp">#define GPACON     (*((volatile unsigned long *)0x7F008000))</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">init_uart</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="cm">/* 1. 配置引脚 */</span>
+</span><span class='line'>  <span class="n">GPACON</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">GPACON</span> <span class="o">|=</span> <span class="mh">0x22</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="cm">/* 2. 设置数据格式等 */</span>
+</span><span class='line'>  <span class="n">ULCON0</span> <span class="o">=</span> <span class="mh">0x3</span><span class="p">;</span>                      <span class="c1">// 数据位:8, 无校验, 停止位: 1, 8n1 </span>
+</span><span class='line'>  <span class="n">UCON0</span>  <span class="o">=</span> <span class="mh">0x5</span><span class="p">;</span>                      <span class="c1">// 时钟：PCLK，禁止中断，使能UART发送、接收 </span>
+</span><span class='line'>  <span class="n">UFCON0</span> <span class="o">=</span> <span class="mh">0x01</span><span class="p">;</span>                     <span class="c1">// FIFO ENABLE</span>
+</span><span class='line'>  <span class="n">UMCON0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                        <span class="c1">// 无流控</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="cm">/* 3. 设置波特率 */</span>
+</span><span class='line'>  <span class="c1">// DIV_VAL = (PCLK / (bps x 16 ) ) - 1 = (66500000/(115200x16))-1 = 35.08</span>
+</span><span class='line'>  <span class="c1">// DIV_VAL = 35.08 = UBRDIVn + (num of 1’s in UDIVSLOTn)/16 </span>
+</span><span class='line'>  <span class="n">UBRDIV0</span>   <span class="o">=</span> <span class="mi">35</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">UDIVSLOT0</span> <span class="o">=</span> <span class="mh">0x1</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 接收一个字符 */</span>
+</span><span class='line'><span class="kt">char</span> <span class="nf">getchar</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">((</span><span class="n">UFSTAT0</span> <span class="o">&amp;</span> <span class="mh">0x7f</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">// 如果RX FIFO空，等待 </span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">URXH0</span><span class="p">;</span>                   <span class="c1">// 取数据 </span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 发送一个字符 */</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">putchar</span><span class="p">(</span><span class="kt">char</span> <span class="n">c</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="n">UFSTAT0</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">14</span><span class="p">));</span>       <span class="c1">// 如果TX FIFO满，等待 </span>
+</span><span class='line'>  <span class="n">UTXH0</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>                      <span class="c1">// 写数据 </span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

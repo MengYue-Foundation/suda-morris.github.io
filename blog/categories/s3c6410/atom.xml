@@ -4,7 +4,7 @@
   <title><![CDATA[Category: s3c6410 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/s3c6410/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-15T10:31:21+08:00</updated>
+  <updated>2015-06-15T11:17:34+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -30,6 +30,16 @@ mcr p15,0,r0,c15,c2,4                   //把r0的值(包括了外设基地址+�
 <pre><code class="C">ldr r0, =0x7E004000
 mov r1, #0
 str r1, [r0]
+</code></pre>
+
+<h3>是否开启icaches</h3>
+
+<pre><code class="C">#ifdef  CONFIG_SYS_ICACHE_OFF
+    bic r0, r0, #0x00001000                 @ clear bit 12 (I) I-cache
+#else
+    orr r0, r0, #0x00001000                 @ set bit 12 (I) I-cache
+#endif
+    mcr p15, 0, r0, c1, c0, 0
 </code></pre>
 
 <h3>死循环</h3>
@@ -120,14 +130,54 @@ loop:
     mov pc, lr
 </code></pre>
 
-<h3>是否开启icaches</h3>
+<h3>串口UART</h3>
 
-<pre><code class="C">#ifdef  CONFIG_SYS_ICACHE_OFF
-    bic r0, r0, #0x00001000                 @ clear bit 12 (I) I-cache
-#else
-    orr r0, r0, #0x00001000                 @ set bit 12 (I) I-cache
-#endif
-    mcr p15, 0, r0, c1, c0, 0
+<pre><code class="C">#define ULCON0     (*((volatile unsigned long *)0x7F005000))
+#define UCON0      (*((volatile unsigned long *)0x7F005004))
+#define UFCON0     (*((volatile unsigned long *)0x7F005008))
+#define UMCON0     (*((volatile unsigned long *)0x7F00500C))
+#define UTRSTAT0   (*((volatile unsigned long *)0x7F005010))
+#define UFSTAT0    (*((volatile unsigned long *)0x7F005018))
+#define UTXH0      (*((volatile unsigned char *)0x7F005020))
+#define URXH0      (*((volatile unsigned char *)0x7F005024))
+#define UBRDIV0    (*((volatile unsigned short *)0x7F005028))
+#define UDIVSLOT0  (*((volatile unsigned short *)0x7F00502C))
+#define GPACON     (*((volatile unsigned long *)0x7F008000))
+
+
+void init_uart(void)
+{
+    /* 1. 配置引脚 */
+    GPACON &amp;= ~0xff;
+    GPACON |= 0x22;
+
+    /* 2. 设置数据格式等 */
+    ULCON0 = 0x3;                   // 数据位:8, 无校验, 停止位: 1, 8n1 
+    UCON0  = 0x5;                   // 时钟：PCLK，禁止中断，使能UART发送、接收 
+    UFCON0 = 0x01;                  // FIFO ENABLE
+    UMCON0 = 0;                     // 无流控
+
+    /* 3. 设置波特率 */
+    // DIV_VAL = (PCLK / (bps x 16 ) ) - 1 = (66500000/(115200x16))-1 = 35.08
+    // DIV_VAL = 35.08 = UBRDIVn + (num of 1’s in UDIVSLOTn)/16 
+    UBRDIV0   = 35;
+    UDIVSLOT0 = 0x1;
+
+}
+
+/* 接收一个字符 */
+char getchar(void)
+{
+    while ((UFSTAT0 &amp; 0x7f) == 0);  // 如果RX FIFO空，等待 
+    return URXH0;                   // 取数据 
+}
+
+/* 发送一个字符 */
+void putchar(char c)
+{
+    while (UFSTAT0 &amp; (1&lt;&lt;14));      // 如果TX FIFO满，等待 
+    UTXH0 = c;                      // 写数据 
+}
 </code></pre>
 ]]></content>
   </entry>
