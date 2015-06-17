@@ -88,6 +88,84 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/17/mini6410-dot-h/">
+		
+			Mini6410.h</a>
+	</h2>
+	<div class="entry-content">
+		<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ENABLE_MMU    </span><span class="cm">/*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define MEMORY_BASE_ADDRESS  0x50000000  </span><span class="cm">/*DDR起始地址*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   MEMORY_BASE_ADDRESS + 0x7e00000 </span><span class="cm">/*Uboot的物理地址0x57e00000*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
+</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_MEDIA_SD) </span><span class="cm">/*启动介质是SD Card*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOT_MOVINAND</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#error Boot media not defined</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
+</span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-17T11:49:49+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/14/raw-machine-code/">
 		
 			Raw_machine_code</a>
@@ -1730,153 +1808,12 @@
 <span class='line-number'>547</span>
 <span class='line-number'>548</span>
 <span class='line-number'>549</span>
-<span class='line-number'>550</span>
-<span class='line-number'>551</span>
-<span class='line-number'>552</span>
-<span class='line-number'>553</span>
-<span class='line-number'>554</span>
-<span class='line-number'>555</span>
-<span class='line-number'>556</span>
-<span class='line-number'>557</span>
-<span class='line-number'>558</span>
-<span class='line-number'>559</span>
-<span class='line-number'>560</span>
-<span class='line-number'>561</span>
-<span class='line-number'>562</span>
-<span class='line-number'>563</span>
-<span class='line-number'>564</span>
-<span class='line-number'>565</span>
-<span class='line-number'>566</span>
-<span class='line-number'>567</span>
-<span class='line-number'>568</span>
-<span class='line-number'>569</span>
-<span class='line-number'>570</span>
-<span class='line-number'>571</span>
-<span class='line-number'>572</span>
-<span class='line-number'>573</span>
-<span class='line-number'>574</span>
-<span class='line-number'>575</span>
-<span class='line-number'>576</span>
-<span class='line-number'>577</span>
-<span class='line-number'>578</span>
-<span class='line-number'>579</span>
-<span class='line-number'>580</span>
-<span class='line-number'>581</span>
-<span class='line-number'>582</span>
-<span class='line-number'>583</span>
-<span class='line-number'>584</span>
-<span class='line-number'>585</span>
-<span class='line-number'>586</span>
-<span class='line-number'>587</span>
-<span class='line-number'>588</span>
-<span class='line-number'>589</span>
-<span class='line-number'>590</span>
-<span class='line-number'>591</span>
-<span class='line-number'>592</span>
-<span class='line-number'>593</span>
-<span class='line-number'>594</span>
-<span class='line-number'>595</span>
-<span class='line-number'>596</span>
-<span class='line-number'>597</span>
-<span class='line-number'>598</span>
-<span class='line-number'>599</span>
-<span class='line-number'>600</span>
-<span class='line-number'>601</span>
-<span class='line-number'>602</span>
-<span class='line-number'>603</span>
-<span class='line-number'>604</span>
-<span class='line-number'>605</span>
-<span class='line-number'>606</span>
-<span class='line-number'>607</span>
-<span class='line-number'>608</span>
-<span class='line-number'>609</span>
-<span class='line-number'>610</span>
-<span class='line-number'>611</span>
-<span class='line-number'>612</span>
-<span class='line-number'>613</span>
-<span class='line-number'>614</span>
-<span class='line-number'>615</span>
-<span class='line-number'>616</span>
-<span class='line-number'>617</span>
-<span class='line-number'>618</span>
-<span class='line-number'>619</span>
-<span class='line-number'>620</span>
-<span class='line-number'>621</span>
-<span class='line-number'>622</span>
-<span class='line-number'>623</span>
-<span class='line-number'>624</span>
-<span class='line-number'>625</span>
-<span class='line-number'>626</span>
-<span class='line-number'>627</span>
-<span class='line-number'>628</span>
-<span class='line-number'>629</span>
-<span class='line-number'>630</span>
-<span class='line-number'>631</span>
-<span class='line-number'>632</span>
-<span class='line-number'>633</span>
-<span class='line-number'>634</span>
-<span class='line-number'>635</span>
-<span class='line-number'>636</span>
-<span class='line-number'>637</span>
-<span class='line-number'>638</span>
-<span class='line-number'>639</span>
-<span class='line-number'>640</span>
-<span class='line-number'>641</span>
-<span class='line-number'>642</span>
-<span class='line-number'>643</span>
-<span class='line-number'>644</span>
-<span class='line-number'>645</span>
-<span class='line-number'>646</span>
-<span class='line-number'>647</span>
-<span class='line-number'>648</span>
-<span class='line-number'>649</span>
-<span class='line-number'>650</span>
-<span class='line-number'>651</span>
-<span class='line-number'>652</span>
-<span class='line-number'>653</span>
-<span class='line-number'>654</span>
-<span class='line-number'>655</span>
-<span class='line-number'>656</span>
-<span class='line-number'>657</span>
-<span class='line-number'>658</span>
-<span class='line-number'>659</span>
-<span class='line-number'>660</span>
-<span class='line-number'>661</span>
-<span class='line-number'>662</span>
-<span class='line-number'>663</span>
-<span class='line-number'>664</span>
-<span class='line-number'>665</span>
-<span class='line-number'>666</span>
-<span class='line-number'>667</span>
-<span class='line-number'>668</span>
-<span class='line-number'>669</span>
-<span class='line-number'>670</span>
-<span class='line-number'>671</span>
-<span class='line-number'>672</span>
-<span class='line-number'>673</span>
-<span class='line-number'>674</span>
-<span class='line-number'>675</span>
-<span class='line-number'>676</span>
-<span class='line-number'>677</span>
-<span class='line-number'>678</span>
-<span class='line-number'>679</span>
-<span class='line-number'>680</span>
-<span class='line-number'>681</span>
-<span class='line-number'>682</span>
-<span class='line-number'>683</span>
-<span class='line-number'>684</span>
-<span class='line-number'>685</span>
-<span class='line-number'>686</span>
-<span class='line-number'>687</span>
-<span class='line-number'>688</span>
-<span class='line-number'>689</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
-</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
-</span><span class='line'><span class="cp">#include &lt;asm/proc/domain.h&gt;</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'><span class="cp">#include &lt;regs.h&gt;</span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;regs.h&gt;      </span><span class="cm">/*6410外设寄存器头文件*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*6410在Uboot中是开启MMU的，目的为了开启DCache来提高运行速度,CFG_PHY_UBOOT_BASE=0x57e00000*/</span>
 </span><span class='line'><span class="cp">#ifndef CONFIG_ENABLE_MMU</span>
 </span><span class='line'><span class="cp">#ifndef CFG_PHY_UBOOT_BASE</span>
 </span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   CFG_UBOOT_BASE</span>
@@ -1891,15 +1828,16 @@
 </span><span class='line'><span class="cm"> *************************************************************************</span>
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'>
-</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_start</span>
-</span><span class='line'><span class="nl">_start</span><span class="p">:</span> <span class="n">b</span>   <span class="n">reset</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_undefined_instruction</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_software_interrupt</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_prefetch_abort</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_data_abort</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_not_used</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_irq</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_fiq</span>
+</span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_start</span>        <span class="cm">/*在u-boot.lds中指明了ENTRY(_start),所以这里需要对外公开_start的地址*/</span>
+</span><span class='line'><span class="cm">/*下面是异常向量表,地址范围0~0x20,正好8条指令，每条指令4字节*/</span>
+</span><span class='line'><span class="nl">_start</span><span class="p">:</span> <span class="n">b</span>   <span class="n">reset</span>    <span class="cm">/*相对跳转指令，位置无关码*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_undefined_instruction</span> <span class="cm">/*undefined异常由arm核译码单元检测，并触发未定义指令异常请求，硬件设置pc的值为0x4，强制程序从内存0x4地址执行指令*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_software_interrupt</span>        <span class="cm">/*arm中使用swi指令时触发软件中断，硬件设置PC的值为0x8，同时进入系统模式，多用在系统库的编写*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_prefetch_abort</span>            <span class="cm">/*prefetch异常，预取指中止异常，导致正在取的指令无法正常取出，这里需要注意流水线造成的pc值*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_data_abort</span>                <span class="cm">/*data中止，无法获取数据，产生的原因有可能是内存未准备好、内存无读或写权限等一些原因产生的异常*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_not_used</span>              <span class="cm">/* 0x14暂时未使用*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_irq</span>                   <span class="cm">/* 0x18提供系统硬件中断跳转接口*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_fiq</span>                   <span class="cm">/* 0x1c地址为_fiq快速中断，一个系统在中断流水线上可能产生很多中断，但快中断只会有一个*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">_undefined_instruction</span><span class="p">:</span>
 </span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">undefined_instruction</span>
@@ -1917,10 +1855,10 @@
 </span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">fiq</span>
 </span><span class='line'><span class="nl">_pad</span><span class="p">:</span>
 </span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x12345678</span> <span class="cm">/* now 16*4=64 */</span>
-</span><span class='line'><span class="p">.</span><span class="n">global</span> <span class="n">_end_vect</span>
+</span><span class='line'><span class="p">.</span><span class="n">global</span> <span class="n">_end_vect</span>    <span class="cm">/*全局变量_end_vect*/</span>
 </span><span class='line'><span class="nl">_end_vect</span><span class="p">:</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="p">.</span><span class="n">balignl</span> <span class="mi">16</span><span class="p">,</span><span class="mh">0xdeadbeef</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">balignl</span> <span class="mi">16</span><span class="p">,</span><span class="mh">0xdeadbeef</span>         <span class="cm">/*.balign 的作用同.align,用于表示对齐方式:通过添加填充字节使当前位置满足一定的对齐方式,以下代码按照16位对齐，不足位补上0xdeadbeef*/</span>
 </span><span class='line'><span class="cm">/*</span>
 </span><span class='line'><span class="cm"> *************************************************************************</span>
 </span><span class='line'><span class="cm"> *</span>
@@ -1935,14 +1873,14 @@
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">_TEXT_BASE</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">TEXT_BASE</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">TEXT_BASE</span>        <span class="cm">/*定义uboot程序的运行地址，值为0xc7e0 0000,TEXT_BASE在编译的时候，通过向编译器传递参数获得,值的定义在config.mk中，Makefile会包含它*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*</span>
 </span><span class='line'><span class="cm"> * Below variable is very important because we use MMU in U-Boot.</span>
 </span><span class='line'><span class="cm"> * Without it, we cannot run code correctly before MMU is ON.</span>
 </span><span class='line'><span class="cm"> * by scsuh.</span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="nl">_TEXT_PHY_BASE</span><span class="p">:</span>
+</span><span class='line'><span class="nl">_TEXT_PHY_BASE</span><span class="p">:</span>                <span class="cm">/*MMU开启前uboot在内存存放的是真实物理地址,0x57e0 0000*/</span>
 </span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">CFG_PHY_UBOOT_BASE</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_armboot_start</span>
@@ -1954,12 +1892,13 @@
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_bss_start</span>
 </span><span class='line'><span class="nl">_bss_start</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">__bss_start</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">__bss_start</span>      <span class="cm">/*_bss_start 保存的是__bss_start 这个标号所在的地址,不受编译时地址的影响，表示当前代码所在的地址不是编译时的地址*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">_bss_end</span>
 </span><span class='line'><span class="nl">_bss_end</span><span class="p">:</span>
 </span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">_end</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/*uboot里面没有开启IRQ中断功能*/</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
 </span><span class='line'><span class="cm">/* IRQ stack memory (calculated at run-time) */</span>
 </span><span class='line'><span class="p">.</span><span class="n">globl</span> <span class="n">IRQ_STACK_START</span>
@@ -1976,13 +1915,16 @@
 </span><span class='line'><span class="cm"> * the actual reset code</span>
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/*MRS {} Rd,CPSR/SPSR语句的意思：将 CPSR/SPSR的值传送到Rd*/</span>
+</span><span class='line'><span class="cm">/*MSR {} CPSR|SPSR,Rm语句的意思：将Rm中的值保存到CPSR/SPSR*/</span>
 </span><span class='line'><span class="nl">reset</span><span class="p">:</span>
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * set the cpu to SVC32 mode</span>
 </span><span class='line'><span class="cm">  */</span>
+</span><span class='line'><span class="cm">/*进入SVC模式(保证CPSR寄存器的最低5位为10011)，由于ARM上电就处于SVC模式，故此代码可以省略*/</span>
 </span><span class='line'>  <span class="n">mrs</span>  <span class="n">r0</span><span class="p">,</span><span class="n">cpsr</span>
 </span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0x1f</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0xd3</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="err">#</span><span class="mh">0xd3</span>            <span class="cm">/*把0xd3赋给CPSR，即1101 0011，最高两位置1的意思是关闭中断和快中断,bit【5】为0的意思是cpu的状态为arm状态，如果是1则cpu进入thumb状态*/</span>
 </span><span class='line'>  <span class="n">msr</span>  <span class="n">cpsr</span><span class="p">,</span><span class="n">r0</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*</span>
@@ -2003,6 +1945,11 @@
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * flush v4 I/D caches</span>
 </span><span class='line'><span class="cm">  */</span>
+</span><span class='line'><span class="cm">/*mcr的意思是把arm寄存器的值赋给coprocesser寄存器*/</span>
+</span><span class='line'><span class="cm">/*mrc的意思是把coprocesser寄存器的值赋给arm寄存器*/</span>
+</span><span class='line'><span class="cm">/*mcr{cond} coproc,opcode1,Rd,CRn,CRm,{opcode2}:coproc是协处理器，标准名为Pn，n=1~15，对应CPn；opcode1位协处理器行为操作吗，必须为0，否则协处理器状态不确定；Rd为ARM的寄存器；CRn为目标寄存器；CRm为附加寄存器，不使用的时候设为0*/</span>
+</span><span class='line'><span class="cm">/*CP15是系统控制协处理器，用于连接在内存中的页表描述符,它是外部内存端口映射寄存器,32位，在开关MMU的时候发生作用，且优先级最高*/</span>
+</span><span class='line'><span class="cm">/*c7，c8都被清零*/</span>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
 </span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush v3/v4 cache */</span>
 </span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c8</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush v4 TLB */</span>
@@ -2010,82 +1957,34 @@
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * disable MMU stuff and caches</span>
 </span><span class='line'><span class="cm">  */</span>
-</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'><span class="cm">/*c1是控制寄存器,其中13,9,8位为 V、R、S：V位是对高端异常向量表的支持，如果选择0异常向量表为0x00000000-0x0000001c，如果选择1异常向量表就是FFFF0000-FFFF001c；R位用于ROM保护的，具体的还要与c5里面的配合,S在这里面的意思也是用于系统保护的*/</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        
 </span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00002300</span>    <span class="err">@</span> <span class="n">clear</span> <span class="n">bits</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">9</span><span class="o">:</span><span class="mi">8</span> <span class="p">(</span><span class="o">--</span><span class="n">V</span><span class="o">-</span> <span class="o">--</span><span class="n">RS</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000087</span>    <span class="err">@</span> <span class="n">clear</span> <span class="n">bits</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span><span class="mi">0</span> <span class="p">(</span><span class="n">B</span><span class="o">---</span> <span class="o">-</span><span class="n">CAM</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000002</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">2</span> <span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">Align</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">Cache</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000087</span>    <span class="err">@</span> <span class="n">clear</span> <span class="n">bits</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="o">:</span><span class="mi">0</span> <span class="p">(</span><span class="n">B</span><span class="o">---</span> <span class="o">-</span><span class="n">CAM</span><span class="p">)</span>      <span class="cm">/*B为0表示支持小little-endian,M为0代表禁止MMU,A为0代表禁止地址对齐检查，C为0代表禁止指令数据cache控制*/</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000002</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">2</span> <span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="n">Align</span>                <span class="cm">/*A为1代表使能地址对齐检查*/</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00001000</span>    <span class="err">@</span> <span class="n">set</span> <span class="n">bit</span> <span class="mi">12</span> <span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="n">I</span><span class="o">-</span><span class="n">Cache</span>               <span class="cm">/*I为1代表打开指令缓存*/</span>
 </span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* Peri port setup */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>
+</span><span class='line'><span class="cm">/*把外设的基地址告诉CPU*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>            <span class="cm">/*对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)*/</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x13</span>          <span class="cm">/*外设大小:256M*/</span>
 </span><span class='line'>    <span class="n">mcr</span>    <span class="n">p15</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="n">c15</span><span class="p">,</span><span class="n">c2</span><span class="p">,</span><span class="mi">4</span>       <span class="err">@</span> <span class="mi">256</span><span class="n">M</span><span class="p">(</span><span class="mh">0x70000000</span><span class="o">-</span><span class="mh">0x7fffffff</span><span class="p">)</span>
 </span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x70000000</span>        <span class="err">@</span> <span class="n">onenand</span> <span class="n">controller</span> <span class="n">setup</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100000</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xe0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_S3C6410) || defined(CONFIG_S3C6430)</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">300</span>       <span class="err">@</span> <span class="n">disable</span> <span class="n">watchdog</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x23000000</span>      <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x20000000</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc30000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0400</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">address1</span> <span class="k">register</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>      <span class="err">@</span> <span class="n">ecc</span> <span class="n">bypass</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x04</span><span class="p">]</span>      <span class="err">@</span> <span class="n">select</span> <span class="n">dataram</span> <span class="k">for</span> <span class="n">DDP</span> <span class="n">as</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r4</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x104</span>       <span class="err">@</span> <span class="n">interrupt</span> <span class="k">register</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0002</span>      <span class="err">@</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0800</span>      <span class="err">@</span> <span class="n">BSA</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">onenand_bl1_load</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r5</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1c</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x02</span>      <span class="err">@</span> <span class="n">BSC</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r6</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">BSA</span><span class="p">,</span> <span class="n">BSC</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>       <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span><span class="p">]</span>      <span class="err">@</span> <span class="n">write</span> <span class="n">load</span> <span class="n">command</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>       <span class="err">@</span> <span class="n">need</span> <span class="n">small</span> <span class="n">delay</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">onenand_wait_loop1</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">subs</span> <span class="n">r7</span><span class="p">,</span> <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_wait_loop1</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">add</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>
-</span><span class='line'>  <span class="n">add</span>  <span class="n">r6</span><span class="p">,</span> <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x200</span>     <span class="err">@</span> <span class="n">next</span> <span class="n">BSA</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl1_load</span>
-</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cm">/*关闭看门狗*/</span>
+</span><span class='line'><span class="cm">/*一般都在外部专门有一个看门狗,做一个外部的电路,不在cpu内部使用看门狗,cpu内部的看门狗只是复位一个cpu,当开发板很复杂时,有好几个cpu 时,就不能完全让板子复位*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * Go setup Memory and board specific bits prior to relocation.</span>
 </span><span class='line'><span class="cm">  */</span>
+</span><span class='line'><span class="cm">/*在lowlevel.S中实现比如说点亮LED灯、关闭watchdog、关闭中断、系统时钟初始、nand flash初始化、内存控制器初始化*/</span>
 </span><span class='line'>  <span class="n">bl</span>   <span class="n">lowlevel_init</span>    <span class="cm">/* go setup pll,mux,memory */</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* when we already run in ram, we don&#39;t need to relocate U-Boot.</span>
 </span><span class='line'><span class="cm">  * and actually, memory controller must be configured before U-Boot</span>
 </span><span class='line'><span class="cm">  * is running in ram.</span>
 </span><span class='line'><span class="cm">  */</span>
+</span><span class='line'><span class="cm">/*跳转出来以后，继续执行下面的代码，下面的代码是判断程序是否已经在ram中了，在的话就不拷贝，直接跳转到after_copy了，否则继续执行下面的代码*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xff000fff</span>
 </span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">r0</span>       <span class="cm">/* r0 &lt;- current base addr of code */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">_TEXT_BASE</span>     <span class="cm">/* r1 &lt;- original base addr in ram */</span>
@@ -2093,120 +1992,19 @@
 </span><span class='line'>  <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                  <span class="cm">/* compare r0, r1                  */</span>
 </span><span class='line'>  <span class="n">beq</span>     <span class="n">after_copy</span>        <span class="cm">/* r0 == r1 then skip flash copy   */</span>
 </span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_NOR           </span><span class="cm">/* relocate U-Boot to RAM */</span><span class="cp"></span>
-</span><span class='line'>  <span class="n">adr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_start</span>     <span class="cm">/* r0 &lt;- current position of code   */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span> <span class="cm">/* r1 &lt;- destination                */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">_armboot_start</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">_bss_start</span>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="n">r2</span>       <span class="cm">/* r2 &lt;- size of armboot            */</span>
-</span><span class='line'>  <span class="n">add</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>       <span class="cm">/* r2 &lt;- source end address         */</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">nor_copy_loop</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">r0</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r3</span><span class="o">-</span><span class="n">r10</span><span class="p">}</span>       <span class="cm">/* copy from source address [r0]    */</span>
-</span><span class='line'>  <span class="n">stmia</span>    <span class="n">r1</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r3</span><span class="o">-</span><span class="n">r10</span><span class="p">}</span>       <span class="cm">/* copy to   target address [r1]    */</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>         <span class="cm">/* until source end addreee [r2]    */</span>
-</span><span class='line'>  <span class="n">ble</span>  <span class="n">nor_copy_loop</span>
-</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_NAND</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_NAND      </span><span class="cm">/*从Nand启动*/</span><span class="cp"></span>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
-</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_from_nand</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_from_nand</span>       <span class="cm">/*具体实现在后面的代码*/</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_MOVINAND</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
-</span><span class='line'>  <span class="n">bl</span>   <span class="n">movi_bl2_copy</span>
-</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x50000000</span>        <span class="err">@</span> <span class="n">temporary</span> <span class="n">stack</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_S3C6400</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x20000000</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc30000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x23000000</span>      <span class="err">@</span> <span class="n">start</span> <span class="n">buffer</span> <span class="k">register</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc800</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>      <span class="err">@</span> <span class="n">ecc</span> <span class="n">bypass</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x84</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0400</span>        <span class="err">@</span> <span class="n">start</span> <span class="n">address1</span> <span class="k">register</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x04</span><span class="p">]</span>      <span class="err">@</span> <span class="n">select</span> <span class="n">dataram</span> <span class="k">for</span> <span class="n">DDP</span> <span class="n">as</span> <span class="mi">0</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r4</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x104</span>       <span class="err">@</span> <span class="n">interrupt</span> <span class="k">register</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r6</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0c00</span>      <span class="err">@</span> <span class="n">fixed</span> <span class="n">dataram1</span> <span class="n">sector</span> <span class="n">number</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r6</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0000</span>      <span class="err">@</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r9</span><span class="p">,</span> <span class="o">=</span><span class="n">CFG_PHY_UBOOT_BASE</span> <span class="err">@</span> <span class="n">destination</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">onenand_bl2_load</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">DFS</span><span class="p">,</span> <span class="n">FBA</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r5</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1c</span><span class="p">]</span>      <span class="err">@</span> <span class="n">save</span> <span class="n">FPA</span><span class="p">,</span> <span class="n">FSA</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span><span class="p">]</span>      <span class="err">@</span> <span class="n">write</span> <span class="n">load</span> <span class="n">command</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
-</span><span class='line'><span class="nl">onenand_wait_loop2</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">subs</span> <span class="n">r8</span><span class="p">,</span> <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_wait_loop2</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">onenand_wait_int</span><span class="p">:</span>          <span class="err">@</span> <span class="n">wait</span> <span class="n">INT</span> <span class="n">and</span> <span class="n">RI</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r8</span><span class="p">,</span> <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80</span>
-</span><span class='line'>  <span class="n">tst</span>  <span class="n">r7</span><span class="p">,</span> <span class="n">r8</span>
-</span><span class='line'>  <span class="n">beq</span>  <span class="n">onenand_wait_int</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r7</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">clear</span> <span class="n">interrupt</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r7</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="n">r4</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r8</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc00</span>       <span class="err">@</span> <span class="n">source</span> <span class="n">address</span> <span class="p">(</span><span class="n">dataram1</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r10</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>       <span class="err">@</span> <span class="n">copy</span> <span class="n">loop</span> <span class="n">count</span> <span class="p">(</span><span class="mi">64</span> <span class="o">=</span> <span class="mi">2048</span> <span class="o">/</span> <span class="mi">32</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">stmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>        <span class="err">@</span> <span class="n">backup</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">onenand_copy_to_ram</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">r8</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>
-</span><span class='line'>  <span class="n">stmia</span>    <span class="n">r9</span><span class="o">!</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>
-</span><span class='line'>  <span class="n">subs</span> <span class="n">r10</span><span class="p">,</span> <span class="n">r10</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_copy_to_ram</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldmia</span>    <span class="n">sp</span><span class="p">,</span> <span class="p">{</span><span class="n">r0</span><span class="o">-</span><span class="n">r7</span><span class="p">}</span>        <span class="err">@</span> <span class="n">restore</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">add</span>  <span class="n">r5</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x4</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FPA</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x100</span>       <span class="err">@</span> <span class="n">last</span> <span class="n">FPA</span><span class="o">?</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl2_load</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/* next block */</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r5</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>     <span class="err">@</span> <span class="n">reset</span> <span class="n">FPA</span>
-</span><span class='line'>  <span class="n">add</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>       <span class="err">@</span> <span class="n">next</span> <span class="n">FBA</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x2</span>     <span class="err">@</span> <span class="n">last</span> <span class="n">FBA</span><span class="o">?</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">onenand_bl2_load</span>
-</span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_ONENAND_IROM</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
-</span><span class='line'>  <span class="n">bl</span>   <span class="n">onenand_bl2_copy</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_MOVINAND  </span><span class="cm">/*从SD卡启动*/</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span> <span class="cm">/*因为要调用C函数，所以先要设置栈指针，此时MMU没有开启，堆栈栈顶地址为0x57e00000,ARM中的栈向下(低地址)生长*/</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">movi_bl2_copy</span>        <span class="cm">/*具体实现代码在于cpu/s3c64xx/movi.c*/</span>
 </span><span class='line'>  <span class="n">b</span>    <span class="n">after_copy</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">after_copy</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>            <span class="cm">/*定义在Regs.h头文件中，0x7f008000*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xC00</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPDAT_OFFSET</span><span class="p">]</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFPUD_OFFSET</span><span class="p">]</span>
@@ -2221,7 +2019,7 @@
 </span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40000000</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFCON_OFFSET</span><span class="p">]</span>
 </span><span class='line'>  
-</span><span class='line'>  
+</span><span class='line'><span class="cm">/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/</span> 
 </span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
 </span><span class='line'><span class="nl">enable_mmu</span><span class="p">:</span>
 </span><span class='line'>  <span class="cm">/* enable domain access */</span>
@@ -3600,74 +3398,6 @@
 
 
 	<a class='category' href='/blog/categories/software/'>software</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/23/nuvoton-m451-eadc/">
-		
-			Nuvoton-M451-EADC</a>
-	</h2>
-	<div class="entry-content">
-		<h2>新唐CortexM4内核芯片M451学习之&mdash;-模数转换EADC</h2>
-
-<blockquote><ul>
-<li>包含一个12位带16个外部输入通道或者8对差分模拟输入通道和3个内部通道的SAR-ADC(逐次逼近型模数转换器)</li>
-<li>可以通过软件触发，PWM0/1触发，timer0~3溢出脉冲触发，ADINT0，ADINT1中断EOC(转换结束)脉冲触发和外部管脚(STADC)输入信号来启动转换</li>
-<li>Vref最大5V，12位分辨率，保证10位精度</li>
-<li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
-<li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
-<li>最大ADC时钟频率是20MHz</li>
-<li>高达1Msps采样频率</li>
-<li>内部采样时间可配置</li>
-<li>双缓存用于采样控制逻辑模块0~3</li>
-<li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
-<li>支持PDMA</li>
-<li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
-<li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
-<li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位</li>
-<li>触发延时时间=<code>TRGDLYCNT*ADC_CLK*n</code>(n=1,2,4,16来自TRGDLYDIV设置).</li>
-</ul>
-</blockquote>
-
-<h2>中断源</h2>
-
-<p><img src="http://i.imgur.com/6HZ5VTs.png" alt="Nuvoton-M451-EADC中断源" /></p>
-
-<h2>API</h2>
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-23T22:28:12+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-16T17:56:41+08:00</updated>
+  <updated>2015-06-17T22:40:15+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -14,17 +14,43 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Mini6410.h]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/17/mini6410-dot-h/"/>
+    <updated>2015-06-17T11:49:49+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/17/mini6410-dot-h</id>
+    <content type="html"><![CDATA[<pre><code class="C">#define CONFIG_S3C6410      1       /* in a SAMSUNG S3C6410 SoC */
+#define CONFIG_S3C64XX      1       /* in a SAMSUNG S3C64XX Family  */
+#define CONFIG_MINI6410     1       /* in a FriendlyARM MINI6410 Board */
+
+#define CONFIG_ENABLE_MMU   /*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/
+#define MEMORY_BASE_ADDRESS 0x50000000  /*DDR起始地址*/
+#define CFG_PHY_UBOOT_BASE  MEMORY_BASE_ADDRESS + 0x7e00000 /*Uboot的物理地址0x57e00000*/
+
+#if defined(FRIENDLYARM_BOOT_MEDIA_NAND)    /*启动介质是NandFlash*/
+#define CONFIG_BOOT_NAND
+#elif defined(FRIENDLYARM_BOOT_MEDIA_SD)    /*启动介质是SD Card*/
+#define CONFIG_BOOT_MOVINAND
+#else
+#error Boot media not defined
+#endif
+
+#define CONFIG_NAND
+#define CONFIG_MOVINAND
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[start.S]]></title>
     <link href="http://suda-morris.github.io/blog/2015/06/13/start-dot-s/"/>
     <updated>2015-06-13T23:15:44+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/13/start-dot-s</id>
     <content type="html"><![CDATA[<pre><code class="C start.S">#include &lt;config.h&gt;
 #include &lt;version.h&gt;
-#ifdef CONFIG_ENABLE_MMU
-#include &lt;asm/proc/domain.h&gt;
-#endif
-#include &lt;regs.h&gt;
 
+#include &lt;regs.h&gt;       /*6410外设寄存器头文件*/
+
+/*6410在Uboot中是开启MMU的，目的为了开启DCache来提高运行速度,CFG_PHY_UBOOT_BASE=0x57e00000*/
 #ifndef CONFIG_ENABLE_MMU
 #ifndef CFG_PHY_UBOOT_BASE
 #define CFG_PHY_UBOOT_BASE  CFG_UBOOT_BASE
@@ -39,15 +65,16 @@
  *************************************************************************
  */
 
-.globl _start
-_start: b   reset
-    ldr pc, _undefined_instruction
-    ldr pc, _software_interrupt
-    ldr pc, _prefetch_abort
-    ldr pc, _data_abort
-    ldr pc, _not_used
-    ldr pc, _irq
-    ldr pc, _fiq
+.globl _start       /*在u-boot.lds中指明了ENTRY(_start),所以这里需要对外公开_start的地址*/
+/*下面是异常向量表,地址范围0~0x20,正好8条指令，每条指令4字节*/
+_start: b   reset   /*相对跳转指令，位置无关码*/
+    ldr pc, _undefined_instruction  /*undefined异常由arm核译码单元检测，并触发未定义指令异常请求，硬件设置pc的值为0x4，强制程序从内存0x4地址执行指令*/
+    ldr pc, _software_interrupt     /*arm中使用swi指令时触发软件中断，硬件设置PC的值为0x8，同时进入系统模式，多用在系统库的编写*/
+    ldr pc, _prefetch_abort         /*prefetch异常，预取指中止异常，导致正在取的指令无法正常取出，这里需要注意流水线造成的pc值*/
+    ldr pc, _data_abort             /*data中止，无法获取数据，产生的原因有可能是内存未准备好、内存无读或写权限等一些原因产生的异常*/
+    ldr pc, _not_used               /* 0x14暂时未使用*/
+    ldr pc, _irq                    /* 0x18提供系统硬件中断跳转接口*/
+    ldr pc, _fiq                    /* 0x1c地址为_fiq快速中断，一个系统在中断流水线上可能产生很多中断，但快中断只会有一个*/
 
 _undefined_instruction:
     .word undefined_instruction
@@ -65,10 +92,10 @@ _fiq:
     .word fiq
 _pad:
     .word 0x12345678 /* now 16*4=64 */
-.global _end_vect
+.global _end_vect   /*全局变量_end_vect*/
 _end_vect:
 
-    .balignl 16,0xdeadbeef
+    .balignl 16,0xdeadbeef          /*.balign 的作用同.align,用于表示对齐方式:通过添加填充字节使当前位置满足一定的对齐方式,以下代码按照16位对齐，不足位补上0xdeadbeef*/
 /*
  *************************************************************************
  *
@@ -83,14 +110,14 @@ _end_vect:
  */
 
 _TEXT_BASE:
-    .word   TEXT_BASE
+    .word   TEXT_BASE       /*定义uboot程序的运行地址，值为0xc7e0 0000,TEXT_BASE在编译的时候，通过向编译器传递参数获得,值的定义在config.mk中，Makefile会包含它*/
 
 /*
  * Below variable is very important because we use MMU in U-Boot.
  * Without it, we cannot run code correctly before MMU is ON.
  * by scsuh.
  */
-_TEXT_PHY_BASE:
+_TEXT_PHY_BASE:             /*MMU开启前uboot在内存存放的是真实物理地址,0x57e0 0000*/
     .word   CFG_PHY_UBOOT_BASE
 
 .globl _armboot_start
@@ -102,12 +129,13 @@ _armboot_start:
  */
 .globl _bss_start
 _bss_start:
-    .word __bss_start
+    .word __bss_start       /*_bss_start 保存的是__bss_start 这个标号所在的地址,不受编译时地址的影响，表示当前代码所在的地址不是编译时的地址*/
 
 .globl _bss_end
 _bss_end:
     .word _end
 
+/*uboot里面没有开启IRQ中断功能*/
 #ifdef CONFIG_USE_IRQ
 /* IRQ stack memory (calculated at run-time) */
 .globl IRQ_STACK_START
@@ -124,13 +152,16 @@ FIQ_STACK_START:
  * the actual reset code
  */
 
+/*MRS {} Rd,CPSR/SPSR语句的意思：将 CPSR/SPSR的值传送到Rd*/
+/*MSR {} CPSR|SPSR,Rm语句的意思：将Rm中的值保存到CPSR/SPSR*/
 reset:
     /*
      * set the cpu to SVC32 mode
      */
+/*进入SVC模式(保证CPSR寄存器的最低5位为10011)，由于ARM上电就处于SVC模式，故此代码可以省略*/
     mrs r0,cpsr
     bic r0,r0,#0x1f
-    orr r0,r0,#0xd3
+    orr r0,r0,#0xd3         /*把0xd3赋给CPSR，即1101 0011，最高两位置1的意思是关闭中断和快中断,bit【5】为0的意思是cpu的状态为arm状态，如果是1则cpu进入thumb状态*/
     msr cpsr,r0
 
 /*
@@ -151,6 +182,11 @@ cpu_init_crit:
     /*
      * flush v4 I/D caches
      */
+/*mcr的意思是把arm寄存器的值赋给coprocesser寄存器*/
+/*mrc的意思是把coprocesser寄存器的值赋给arm寄存器*/
+/*mcr{cond} coproc,opcode1,Rd,CRn,CRm,{opcode2}:coproc是协处理器，标准名为Pn，n=1~15，对应CPn；opcode1位协处理器行为操作吗，必须为0，否则协处理器状态不确定；Rd为ARM的寄存器；CRn为目标寄存器；CRm为附加寄存器，不使用的时候设为0*/
+/*CP15是系统控制协处理器，用于连接在内存中的页表描述符,它是外部内存端口映射寄存器,32位，在开关MMU的时候发生作用，且优先级最高*/
+/*c7，c8都被清零*/
     mov r0, #0
     mcr p15, 0, r0, c7, c7, 0   /* flush v3/v4 cache */
     mcr p15, 0, r0, c8, c7, 0   /* flush v4 TLB */
@@ -158,82 +194,34 @@ cpu_init_crit:
     /*
      * disable MMU stuff and caches
      */
-    mrc p15, 0, r0, c1, c0, 0
+/*c1是控制寄存器,其中13,9,8位为 V、R、S：V位是对高端异常向量表的支持，如果选择0异常向量表为0x00000000-0x0000001c，如果选择1异常向量表就是FFFF0000-FFFF001c；R位用于ROM保护的，具体的还要与c5里面的配合,S在这里面的意思也是用于系统保护的*/
+    mrc p15, 0, r0, c1, c0, 0       
     bic r0, r0, #0x00002300 @ clear bits 13, 9:8 (--V- --RS)
-    bic r0, r0, #0x00000087 @ clear bits 7, 2:0 (B--- -CAM)
-    orr r0, r0, #0x00000002 @ set bit 2 (A) Align
-    orr r0, r0, #0x00001000 @ set bit 12 (I) I-Cache
+    bic r0, r0, #0x00000087 @ clear bits 7, 2:0 (B--- -CAM)     /*B为0表示支持小little-endian,M为0代表禁止MMU,A为0代表禁止地址对齐检查，C为0代表禁止指令数据cache控制*/
+    orr r0, r0, #0x00000002 @ set bit 2 (A) Align               /*A为1代表使能地址对齐检查*/
+    orr r0, r0, #0x00001000 @ set bit 12 (I) I-Cache                /*I为1代表打开指令缓存*/
     mcr p15, 0, r0, c1, c0, 0
 
     /* Peri port setup */
-    ldr r0, =0x70000000
-    orr r0, r0, #0x13
+/*把外设的基地址告诉CPU*/
+    ldr r0, =0x70000000         /*对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)*/
+    orr r0, r0, #0x13           /*外设大小:256M*/
     mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
 
-#ifdef CONFIG_BOOT_ONENAND
-    ldr r0, =0x70000000     @ onenand controller setup
-    orr r0, r0, #0x100000
-    ldr r1, =0x4000
-    orr r1, r1, #0xe0
-    str r1, [r0]
-
-#if defined(CONFIG_S3C6410) || defined(CONFIG_S3C6430)
-    orr r0, r0, #300        @ disable watchdog
-    mov r1, #1
-    str r1, [r0]
-
-    mov r1, #0x23000000     @ start buffer register
-    orr r1, r1, #0x30000
-    orr r1, r1, #0xc800
-#else
-    mov r1, =0x20000000     @ start buffer register
-    orr r1, r1, #0xc30000
-    orr r1, r1, #0xc800
-#endif
-
-    sub r0, r1, #0x0400     @ start address1 register
-
-    ldr r2, [r1, #0x84]     @ ecc bypass
-    orr r2, r2, #0x100
-    str r2, [r1, #0x84]
-
-    mov r3, #0x0        @ DFS, FBA
-    str r3, [r0, #0x00]
-    str r3, [r0, #0x04]     @ select dataram for DDP as 0
-
-    mov r4, #0x104      @ interrupt register
-    mov r5, #0x0002     @ FPA, FSA
-    mov r6, #0x0800     @ BSA
-
-onenand_bl1_load:
-    str r5, [r0, #0x1c]     @ save FPA, FSA
-    orr r6, r6, #0x02       @ BSC
-    str r6, [r1, #0x00]     @ save BSA, BSC
-    str r3, [r1, r4]        @ clear interrupt
-    str r3, [r1, #0x80]     @ write load command
-
-    mov r7, #0x100      @ need small delay
-
-onenand_wait_loop1:
-    subs    r7, r7, #0x1
-    bne onenand_wait_loop1
-
-    add r5, r5, #0x2        @ next FPA, FSA
-    sub r6, r6, #0x2
-    add r6, r6, #0x200      @ next BSA
-    cmp r5, #0x8
-    bne onenand_bl1_load
-#endif
+/*关闭看门狗*/
+/*一般都在外部专门有一个看门狗,做一个外部的电路,不在cpu内部使用看门狗,cpu内部的看门狗只是复位一个cpu,当开发板很复杂时,有好几个cpu 时,就不能完全让板子复位*/
 
     /*
      * Go setup Memory and board specific bits prior to relocation.
      */
+/*在lowlevel.S中实现比如说点亮LED灯、关闭watchdog、关闭中断、系统时钟初始、nand flash初始化、内存控制器初始化*/
     bl  lowlevel_init   /* go setup pll,mux,memory */
 
     /* when we already run in ram, we don't need to relocate U-Boot.
      * and actually, memory controller must be configured before U-Boot
      * is running in ram.
      */
+/*跳转出来以后，继续执行下面的代码，下面的代码是判断程序是否已经在ram中了，在的话就不拷贝，直接跳转到after_copy了，否则继续执行下面的代码*/
     ldr r0, =0xff000fff
     bic r1, pc, r0      /* r0 &lt;- current base addr of code */
     ldr r2, _TEXT_BASE      /* r1 &lt;- original base addr in ram */
@@ -241,120 +229,19 @@ onenand_wait_loop1:
     cmp     r1, r2                  /* compare r0, r1                  */
     beq     after_copy      /* r0 == r1 then skip flash copy   */
 
-#ifdef CONFIG_BOOT_NOR          /* relocate U-Boot to RAM */
-    adr r0, _start      /* r0 &lt;- current position of code   */
-    ldr r1, _TEXT_PHY_BASE  /* r1 &lt;- destination                */
-    ldr r2, _armboot_start
-    ldr r3, _bss_start
-    sub r2, r3, r2      /* r2 &lt;- size of armboot            */
-    add r2, r0, r2      /* r2 &lt;- source end address         */
-
-nor_copy_loop:
-    ldmia   r0!, {r3-r10}       /* copy from source address [r0]    */
-    stmia   r1!, {r3-r10}       /* copy to   target address [r1]    */
-    cmp r0, r2          /* until source end addreee [r2]    */
-    ble nor_copy_loop
-    b   after_copy
-#endif
-
-#ifdef CONFIG_BOOT_NAND
+#ifdef CONFIG_BOOT_NAND     /*从Nand启动*/
     mov r0, #0x1000
-    bl  copy_from_nand
+    bl  copy_from_nand      /*具体实现在后面的代码*/
 #endif
 
-#ifdef CONFIG_BOOT_MOVINAND
-    ldr sp, _TEXT_PHY_BASE
-    bl  movi_bl2_copy
-    b   after_copy
-#endif
-
-#ifdef CONFIG_BOOT_ONENAND
-    ldr sp, =0x50000000     @ temporary stack
-
-#ifdef CONFIG_S3C6400
-    mov r1, =0x20000000     @ start buffer register
-    orr r1, r1, #0xc30000
-    orr r1, r1, #0xc800
-#else
-    mov r1, #0x23000000     @ start buffer register
-    orr r1, r1, #0x30000
-    orr r1, r1, #0xc800
-#endif
-
-    ldr r2, [r1, #0x84]     @ ecc bypass
-    orr r2, r2, #0x100
-    str r2, [r1, #0x84]
-
-    sub r0, r1, #0x0400     @ start address1 register
-
-    str r3, [r0, #0x00]
-    str r3, [r0, #0x04]     @ select dataram for DDP as 0
-
-    mov r4, #0x104      @ interrupt register
-
-    mov r6, #0x0c00     @ fixed dataram1 sector number
-    str r6, [r1, #0x00]
-
-    mov r3, #0x0        @ DFS, FBA
-    mov r5, #0x0000     @ FPA, FSA
-    ldr r9, =CFG_PHY_UBOOT_BASE @ destination
-
-onenand_bl2_load:
-    str r3, [r0, #0x00]     @ save DFS, FBA
-    str r5, [r0, #0x1c]     @ save FPA, FSA
-
-    mov r7, #0x0        @ clear interrupt
-    str r7, [r1, r4]
-    str r7, [r1, #0x80]     @ write load command
-
-    mov r8, #0x1000
-onenand_wait_loop2:
-    subs    r8, r8, #0x1
-    bne onenand_wait_loop2
-
-onenand_wait_int:           @ wait INT and RI
-    ldr r7, [r1, r4]
-    mov r8, #0x8000
-    orr r8, r8, #0x80
-    tst r7, r8
-    beq onenand_wait_int
-
-    mov r7, #0x0        @ clear interrupt
-    str r7, [r1, r4]
-
-    mov r8, #0xc00      @ source address (dataram1)
-    mov r10, #0x40      @ copy loop count (64 = 2048 / 32)
-
-    stmia   sp, {r0-r7}     @ backup
-
-onenand_copy_to_ram:
-    ldmia   r8!, {r0-r7}
-    stmia   r9!, {r0-r7}
-    subs    r10, r10, #0x1
-    bne onenand_copy_to_ram
-
-    ldmia   sp, {r0-r7}     @ restore
-
-    add r5, r5, #0x4        @ next FPA
-    cmp r5, #0x100      @ last FPA?
-    bne onenand_bl2_load
-
-    /* next block */
-    mov r5, #0x0        @ reset FPA
-    add r3, r3, #0x1        @ next FBA
-    cmp r3, #0x2        @ last FBA?
-    bne onenand_bl2_load
-    b   after_copy
-#endif
-
-#ifdef CONFIG_BOOT_ONENAND_IROM
-    ldr sp, _TEXT_PHY_BASE
-    bl  onenand_bl2_copy
+#ifdef CONFIG_BOOT_MOVINAND /*从SD卡启动*/
+    ldr sp, _TEXT_PHY_BASE  /*因为要调用C函数，所以先要设置栈指针，此时MMU没有开启，堆栈栈顶地址为0x57e00000,ARM中的栈向下(低地址)生长*/
+    bl  movi_bl2_copy       /*具体实现代码在于cpu/s3c64xx/movi.c*/
     b   after_copy
 #endif
 
 after_copy:
-    ldr r0, =ELFIN_GPIO_BASE
+    ldr r0, =ELFIN_GPIO_BASE            /*定义在Regs.h头文件中，0x7f008000*/
     ldr r1, =0xC00
     str r1, [r0, #GPPDAT_OFFSET]
     ldr r1, [r0, #GPFPUD_OFFSET]
@@ -369,7 +256,7 @@ after_copy:
     orr r1, r1, #0x40000000
     str r1, [r0, #GPFCON_OFFSET]
 
-
+/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/   
 #ifdef CONFIG_ENABLE_MMU
 enable_mmu:
     /* enable domain access */
