@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-17T22:40:15+08:00</updated>
+  <updated>2015-06-18T15:38:58+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -22,9 +22,19 @@
 #define CONFIG_S3C64XX      1       /* in a SAMSUNG S3C64XX Family  */
 #define CONFIG_MINI6410     1       /* in a FriendlyARM MINI6410 Board */
 
+#define CFG_UBOOT_SIZE      (2*1024*1024)   /*定义Uboot大小为2M字节*/
+
 #define CONFIG_ENABLE_MMU   /*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/
 #define MEMORY_BASE_ADDRESS 0x50000000  /*DDR起始地址*/
 #define CFG_PHY_UBOOT_BASE  MEMORY_BASE_ADDRESS + 0x7e00000 /*Uboot的物理地址0x57e00000*/
+
+#ifdef CONFIG_ENABLE_MMU
+#define CFG_UBOOT_BASE      0xc7e00000
+#else
+#define CFG_UBOOT_BASE      0x57e00000
+#endif
+
+#define CFG_ENV_OFFSET      0x00040000      /*Uboot中环境变量偏移地址*/
 
 #if defined(FRIENDLYARM_BOOT_MEDIA_NAND)    /*启动介质是NandFlash*/
 #define CONFIG_BOOT_NAND
@@ -36,6 +46,10 @@
 
 #define CONFIG_NAND
 #define CONFIG_MOVINAND
+
+#define CONFIG_MEMORY_UPPER_CODE
+
+#undef CONFIG_USE_IRQ                       /* Uboot中不使用IRQ/FIQ*/
 </code></pre>
 ]]></content>
   </entry>
@@ -241,41 +255,28 @@ cpu_init_crit:
 #endif
 
 after_copy:
-    ldr r0, =ELFIN_GPIO_BASE            /*定义在Regs.h头文件中，0x7f008000*/
-    ldr r1, =0xC00
-    str r1, [r0, #GPPDAT_OFFSET]
-    ldr r1, [r0, #GPFPUD_OFFSET]
-    bic r1, r1, #0xc0000000
-    orr r1, r1, #0x80000000
-    str r1, [r0, #GPFPUD_OFFSET]
-    ldr r1, [r0, #GPFDAT_OFFSET]
-    orr r1, r1, #0x8000
-    str r1, [r0, #GPFDAT_OFFSET]
-    ldr r1, [r0, #GPFCON_OFFSET]
-    bic r1, r1, #0xc0000000
-    orr r1, r1, #0x40000000
-    str r1, [r0, #GPFCON_OFFSET]
 
-/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/   
+/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/
+/*协处理器c2用于保存页表基地址。所谓页表基地址即是虚实转换的内存页表的首地址*/  
 #ifdef CONFIG_ENABLE_MMU
 enable_mmu:
     /* enable domain access */
     ldr r5, =0x0000ffff
-    mcr p15, 0, r5, c3, c0, 0       @ load domain access register
+    mcr p15, 0, r5, c3, c0, 0       /*代码的含义为设置高8个域无访问权限，低8个域为管理者权限*/
 
     /* Set the TTB register */
-    ldr r0, _mmu_table_base
+    ldr r0, _mmu_table_base         /*_mmu_table_base=mmu_table,mmu_table在lowlevel_init.S中*/
     ldr r1, =CFG_PHY_UBOOT_BASE
     ldr r2, =0xfff00000
     bic r0, r0, r2
     orr r1, r0, r1
-    mcr p15, 0, r1, c2, c0, 0
+    mcr p15, 0, r1, c2, c0, 0       /*r1的值为0x57exxxxx*/
 
     /* Enable the MMU */
 mmu_on:
     mrc p15, 0, r0, c1, c0, 0
-    orr r0, r0, #1          /* Set CR_M to enable MMU */
-    mcr p15, 0, r0, c1, c0, 0
+    orr r0, r0, #1                  /* Set CR_M to enable MMU */
+    mcr p15, 0, r0, c1, c0, 0       /*将c1的最后一位置1*/
     nop
     nop
     nop
@@ -283,40 +284,40 @@ mmu_on:
 #endif
 
 skip_hw_init:
-    /* Set up the stack                         */
+    /* Set up the stack */
 stack_setup:
 #ifdef CONFIG_MEMORY_UPPER_CODE
-    ldr sp, =(CFG_UBOOT_BASE + CFG_UBOOT_SIZE - 0xc)
+    ldr sp, =(CFG_UBOOT_BASE + CFG_UBOOT_SIZE - 0xc)    /*sp = 0xc7e0 0000+0x20 0000-0xc=0xc7ff fff4*/
 #else
-    ldr r0, _TEXT_BASE      /* upper 128 KiB: relocated uboot   */
-    sub r0, r0, #CFG_MALLOC_LEN /* malloc area                      */
-    sub r0, r0, #CFG_GBL_DATA_SIZE /* bdinfo                        */
+    ldr r0, _TEXT_BASE                                  /* upper 128 KiB: relocated uboot */
+    sub r0, r0, #CFG_MALLOC_LEN                         /* malloc area */
+    sub r0, r0, #CFG_GBL_DATA_SIZE                      /* bdinfo  */
 #ifdef CONFIG_USE_IRQ
     sub r0, r0, #(CONFIG_STACKSIZE_IRQ+CONFIG_STACKSIZE_FIQ)
 #endif
-    sub sp, r0, #12     /* leave 3 words for abort-stack    */
+    sub sp, r0, #12                                     /* leave 3 words for abort-stack    */
 
 #endif
 
 clear_bss:
-    ldr r0, _bss_start      /* find start of bss segment        */
-    ldr r1, _bss_end        /* stop here                        */
-    mov     r2, #0x00000000     /* clear                            */
+    ldr r0, _bss_start                                  /* find start of bss segment*/
+    ldr r1, _bss_end                                
+    mov     r2, #0x00000000                             
 
 clbss_l:
-    str r2, [r0]        /* clear loop...                    */
+    str r2, [r0]        
     add r0, r0, #4
     cmp r0, r1
-    ble clbss_l
+    ble clbss_l                                         /*ble指令表明：小于或者等于就跳转*/
 
-    ldr pc, _start_armboot
+    ldr pc, _start_armboot                              /*跳转到uboot代码的第二个阶段的入口点。这里不能使用b跳转指令，因为此时代码还没有在ddr中运行*/
 
 _start_armboot:
-    .word start_armboot
+    .word start_armboot                                 /*定义在lib_arm/board.c中的函数*/
 
 #ifdef CONFIG_ENABLE_MMU
 _mmu_table_base:
-    .word mmu_table
+    .word mmu_table                                     /*在lowlevel_init.S中将mmu_tabel声明为全局变量*/
 #endif
 
 /*
@@ -326,26 +327,26 @@ _mmu_table_base:
  */
     .globl copy_from_nand
 copy_from_nand:
-    mov r10, lr     /* save return address */
+    mov r10, lr                                         /* save return address */
 
     mov r9, r0
     /* get ready to call C functions */
-    ldr sp, _TEXT_PHY_BASE  /* setup temp stack pointer */
+    ldr sp, _TEXT_PHY_BASE                              /*设置好临时的堆栈指针,此时MMU还没有开启，所以sp=0x57e0 0000*/
     sub sp, sp, #12
-    mov fp, #0          /* no previous frame, so fp=0 */
+    mov fp, #0                                          /* no previous frame, so fp=0 */
     mov r9, #0x1000
-    bl  copy_uboot_to_ram
+    bl  copy_uboot_to_ram                               /*函数在cpu/s3c64xx/Nand_cp.c中.从nand中读取0x50000(大于uboot实际大小)大小的内容到内存0x57e00000中,*/
 
-3:  tst     r0, #0x0
+3:  tst     r0, #0x0                                    /*r0中保存着copy_uboot_to_ram的返回值，如果返回值不是0，就表明失败,进入死循环*/
     bne copy_failed
 
-    ldr r0, =0x0c000000
+    ldr r0, =0x0c000000                                 /*校验拷贝是否失真，比较的地址为：0x0c000000(stepping stone)和0x57e0 0000*/
     ldr r1, _TEXT_PHY_BASE
 1:  ldr r3, [r0], #4
     ldr r4, [r1], #4
     teq r3, r4
-    bne compare_failed  /* not matched */
-    subs    r9, r9, #4
+    bne compare_failed  /* not matched */               /*如果发生了失真就进入死循环*/
+    subs    r9, r9, #4                                  /*总共比较4K大小的数据，没有全部比较*/
     bne 1b
 
 4:  mov lr, r10     /* all is OK */

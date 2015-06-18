@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-17T22:40:15+08:00</updated>
+  <updated>2015-06-18T15:38:58+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[lowlevel_init.S]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/18/lowlevel-init-dot-s/"/>
+    <updated>2015-06-18T15:38:36+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/18/lowlevel-init-dot-s</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mini6410.h]]></title>
@@ -36,13 +45,37 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_SIZE       (2*1024*1024)   </span><span class="cm">/*定义Uboot大小为2M字节*/</span><span class="cp"></span>
+</span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_ENABLE_MMU    </span><span class="cm">/*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define MEMORY_BASE_ADDRESS  0x50000000  </span><span class="cm">/*DDR起始地址*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   MEMORY_BASE_ADDRESS + 0x7e00000 </span><span class="cm">/*Uboot的物理地址0x57e00000*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0xc7e00000</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0x57e00000</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
@@ -54,6 +87,10 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
 </span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
@@ -1656,19 +1693,6 @@
 <span class='line-number'>534</span>
 <span class='line-number'>535</span>
 <span class='line-number'>536</span>
-<span class='line-number'>537</span>
-<span class='line-number'>538</span>
-<span class='line-number'>539</span>
-<span class='line-number'>540</span>
-<span class='line-number'>541</span>
-<span class='line-number'>542</span>
-<span class='line-number'>543</span>
-<span class='line-number'>544</span>
-<span class='line-number'>545</span>
-<span class='line-number'>546</span>
-<span class='line-number'>547</span>
-<span class='line-number'>548</span>
-<span class='line-number'>549</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
 </span><span class='line'>
@@ -1865,41 +1889,28 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">after_copy</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>            <span class="cm">/*定义在Regs.h头文件中，0x7f008000*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xC00</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPDAT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFPUD_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0000000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x80000000</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFPUD_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFDAT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8000</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFDAT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFCON_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xc0000000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40000000</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPFCON_OFFSET</span><span class="p">]</span>
 </span><span class='line'>  
-</span><span class='line'><span class="cm">/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/</span> 
+</span><span class='line'><span class="cm">/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/</span>
+</span><span class='line'><span class="cm">/*协处理器c2用于保存页表基地址。所谓页表基地址即是虚实转换的内存页表的首地址*/</span>    
 </span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
 </span><span class='line'><span class="nl">enable_mmu</span><span class="p">:</span>
 </span><span class='line'>  <span class="cm">/* enable domain access */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r5</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0000ffff</span>
-</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        <span class="err">@</span> <span class="n">load</span> <span class="n">domain</span> <span class="n">access</span> <span class="k">register</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r5</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        <span class="cm">/*代码的含义为设置高8个域无访问权限，低8个域为管理者权限*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* Set the TTB register */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_mmu_table_base</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_mmu_table_base</span>            <span class="cm">/*_mmu_table_base=mmu_table,mmu_table在lowlevel_init.S中*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">CFG_PHY_UBOOT_BASE</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xfff00000</span>
 </span><span class='line'>  <span class="n">bic</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r2</span>
 </span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
-</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        <span class="cm">/*r1的值为0x57exxxxx*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* Enable the MMU */</span>
 </span><span class='line'><span class="nl">mmu_on</span><span class="p">:</span>
 </span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>         <span class="cm">/* Set CR_M to enable MMU */</span>
-</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>                 <span class="cm">/* Set CR_M to enable MMU */</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="mi">0</span>        <span class="cm">/*将c1的最后一位置1*/</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>  <span class="n">nop</span>
@@ -1907,40 +1918,40 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">skip_hw_init</span><span class="p">:</span>
-</span><span class='line'>  <span class="cm">/* Set up the stack                            */</span>
+</span><span class='line'>  <span class="cm">/* Set up the stack    */</span>
 </span><span class='line'><span class="nl">stack_setup</span><span class="p">:</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="mh">0xc</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="mh">0xc</span><span class="p">)</span> <span class="cm">/*sp = 0xc7e0 0000+0x20 0000-0xc=0xc7ff fff4*/</span>
 </span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_TEXT_BASE</span>     <span class="cm">/* upper 128 KiB: relocated uboot   */</span>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_MALLOC_LEN</span> <span class="cm">/* malloc area                      */</span>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_GBL_DATA_SIZE</span> <span class="cm">/* bdinfo                        */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_TEXT_BASE</span>                                 <span class="cm">/* upper 128 KiB: relocated uboot */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_MALLOC_LEN</span>                         <span class="cm">/* malloc area */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CFG_GBL_DATA_SIZE</span>                      <span class="cm">/* bdinfo  */</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
 </span><span class='line'>  <span class="n">sub</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="p">(</span><span class="n">CONFIG_STACKSIZE_IRQ</span><span class="o">+</span><span class="n">CONFIG_STACKSIZE_FIQ</span><span class="p">)</span>
 </span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">12</span>        <span class="cm">/* leave 3 words for abort-stack    */</span>
+</span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">12</span>                                        <span class="cm">/* leave 3 words for abort-stack    */</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">clear_bss</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_bss_start</span>     <span class="cm">/* find start of bss segment        */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_bss_end</span>       <span class="cm">/* stop here                        */</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000000</span>      <span class="cm">/* clear                            */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">_bss_start</span>                                 <span class="cm">/* find start of bss segment*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_bss_end</span>                               
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x00000000</span>                              
 </span><span class='line'>
 </span><span class='line'><span class="nl">clbss_l</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>     <span class="cm">/* clear loop...                    */</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r2</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>     
 </span><span class='line'>  <span class="n">add</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
 </span><span class='line'>  <span class="n">cmp</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r1</span>
-</span><span class='line'>  <span class="n">ble</span>  <span class="n">clbss_l</span>
+</span><span class='line'>  <span class="n">ble</span>  <span class="n">clbss_l</span>                                          <span class="cm">/*ble指令表明：小于或者等于就跳转*/</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_start_armboot</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">_start_armboot</span>                             <span class="cm">/*跳转到uboot代码的第二个阶段的入口点。这里不能使用b跳转指令，因为此时代码还没有在ddr中运行*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">_start_armboot</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">start_armboot</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">start_armboot</span>                                    <span class="cm">/*定义在lib_arm/board.c中的函数*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
 </span><span class='line'><span class="nl">_mmu_table_base</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">mmu_table</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">mmu_table</span>                                        <span class="cm">/*在lowlevel_init.S中将mmu_tabel声明为全局变量*/</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*</span>
@@ -1950,26 +1961,26 @@
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">copy_from_nand</span>
 </span><span class='line'><span class="nl">copy_from_nand</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r10</span><span class="p">,</span> <span class="n">lr</span>        <span class="cm">/* save return address */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r10</span><span class="p">,</span> <span class="n">lr</span>                                            <span class="cm">/* save return address */</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">r9</span><span class="p">,</span> <span class="n">r0</span>
 </span><span class='line'>  <span class="cm">/* get ready to call C functions */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span> <span class="cm">/* setup temp stack pointer */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>                             <span class="cm">/*设置好临时的堆栈指针,此时MMU还没有开启，所以sp=0x57e0 0000*/</span>
 </span><span class='line'>  <span class="n">sub</span>  <span class="n">sp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="err">#</span><span class="mi">12</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">fp</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>           <span class="cm">/* no previous frame, so fp=0 */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">fp</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>                                           <span class="cm">/* no previous frame, so fp=0 */</span>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">r9</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1000</span>
-</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_uboot_to_ram</span>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">copy_uboot_to_ram</span>                                <span class="cm">/*函数在cpu/s3c64xx/Nand_cp.c中.从nand中读取0x50000(大于uboot实际大小)大小的内容到内存0x57e00000中,*/</span>
 </span><span class='line'>
-</span><span class='line'><span class="mi">3</span><span class="o">:</span> <span class="n">tst</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'><span class="mi">3</span><span class="o">:</span> <span class="n">tst</span>  <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>                                 <span class="cm">/*r0中保存着copy_uboot_to_ram的返回值，如果返回值不是0，就表明失败,进入死循环*/</span>
 </span><span class='line'>  <span class="n">bne</span>  <span class="n">copy_failed</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0c000000</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0c000000</span>                                    <span class="cm">/*校验拷贝是否失真，比较的地址为：0x0c000000(stepping stone)和0x57e0 0000*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">_TEXT_PHY_BASE</span>
 </span><span class='line'><span class="mi">1</span><span class="o">:</span> <span class="n">ldr</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r4</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">],</span> <span class="err">#</span><span class="mi">4</span>
 </span><span class='line'>  <span class="n">teq</span>  <span class="n">r3</span><span class="p">,</span> <span class="n">r4</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">compare_failed</span>   <span class="cm">/* not matched */</span>
-</span><span class='line'>  <span class="n">subs</span> <span class="n">r9</span><span class="p">,</span> <span class="n">r9</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">compare_failed</span>   <span class="cm">/* not matched */</span>               <span class="cm">/*如果发生了失真就进入死循环*/</span>
+</span><span class='line'>  <span class="n">subs</span> <span class="n">r9</span><span class="p">,</span> <span class="n">r9</span><span class="p">,</span> <span class="err">#</span><span class="mi">4</span>                                 <span class="cm">/*总共比较4K大小的数据，没有全部比较*/</span>
 </span><span class='line'>  <span class="n">bne</span>  <span class="mi">1</span><span class="n">b</span>
 </span><span class='line'>
 </span><span class='line'><span class="mi">4</span><span class="o">:</span> <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r10</span>        <span class="cm">/* all is OK */</span>

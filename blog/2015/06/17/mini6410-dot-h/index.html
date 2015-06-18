@@ -25,8 +25,22 @@
 16
 17
 18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
 #define CONFIG_S3C6410 1 /* in a SAMSUNG S3C6410 SoC */
-#define CONFIG_S3C64XX 1 /* in a SAMSUNG S3C64XX &hellip;">
+# &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -121,13 +135,37 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_SIZE       (2*1024*1024)   </span><span class="cm">/*定义Uboot大小为2M字节*/</span><span class="cp"></span>
+</span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_ENABLE_MMU    </span><span class="cm">/*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define MEMORY_BASE_ADDRESS  0x50000000  </span><span class="cm">/*DDR起始地址*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   MEMORY_BASE_ADDRESS + 0x7e00000 </span><span class="cm">/*Uboot的物理地址0x57e00000*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0xc7e00000</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0x57e00000</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
@@ -139,6 +177,10 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
 </span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
