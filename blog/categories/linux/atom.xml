@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-19T12:14:51+08:00</updated>
+  <updated>2015-06-19T17:32:37+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,174 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[cpu_init.S]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/19/cpu-init-dot-s/"/>
+    <updated>2015-06-19T17:28:03+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/19/cpu-init-dot-s</id>
+    <content type="html"><![CDATA[<pre><code class="C">#include &lt;config.h&gt;
+#include &lt;s3c6410.h&gt;
+
+    .globl mem_ctrl_asm_init
+mem_ctrl_asm_init:
+    ldr r0, =ELFIN_MEM_SYS_CFG          @Memory sussystem address 0x7e00f120
+    mov r1, #0xd                        @ Xm0CSn2 = NFCON CS0, Xm0CSn3 = NFCON CS1
+    str r1, [r0]
+
+    ldr r0, =ELFIN_DMC1_BASE            @DMC1 base address 0x7e001000
+
+    ldr r1, =0x04
+    str r1, [r0, #INDEX_DMC_MEMC_CMD]
+
+    ldr r1, =DMC_DDR_REFRESH_PRD
+    str r1, [r0, #INDEX_DMC_REFRESH_PRD]
+
+    ldr r1, =DMC_DDR_CAS_LATENCY
+    str r1, [r0, #INDEX_DMC_CAS_LATENCY]
+
+    ldr r1, =DMC_DDR_t_DQSS
+    str r1, [r0, #INDEX_DMC_T_DQSS]
+
+    ldr r1, =DMC_DDR_t_MRD
+    str r1, [r0, #INDEX_DMC_T_MRD]
+
+    ldr r1, =DMC_DDR_t_RAS
+    str r1, [r0, #INDEX_DMC_T_RAS]
+
+    ldr r1, =DMC_DDR_t_RC
+    str r1, [r0, #INDEX_DMC_T_RC]
+
+    ldr r1, =DMC_DDR_t_RCD
+    ldr r2, =DMC_DDR_schedule_RCD
+    orr r1, r1, r2
+    str r1, [r0, #INDEX_DMC_T_RCD]
+
+    ldr r1, =DMC_DDR_t_RFC
+    ldr r2, =DMC_DDR_schedule_RFC
+    orr r1, r1, r2
+    str r1, [r0, #INDEX_DMC_T_RFC]
+
+    ldr r1, =DMC_DDR_t_RP
+    ldr r2, =DMC_DDR_schedule_RP
+    orr r1, r1, r2
+    str r1, [r0, #INDEX_DMC_T_RP]
+
+    ldr r1, =DMC_DDR_t_RRD
+    str r1, [r0, #INDEX_DMC_T_RRD]
+
+    ldr r1, =DMC_DDR_t_WR
+    str r1, [r0, #INDEX_DMC_T_WR]
+
+    ldr r1, =DMC_DDR_t_WTR
+    str r1, [r0, #INDEX_DMC_T_WTR]
+
+    ldr r1, =DMC_DDR_t_XP
+    str r1, [r0, #INDEX_DMC_T_XP]
+
+    ldr r1, =DMC_DDR_t_XSR
+    str r1, [r0, #INDEX_DMC_T_XSR]
+
+    ldr r1, =DMC_DDR_t_ESR
+    str r1, [r0, #INDEX_DMC_T_ESR]
+
+    ldr r1, =DMC1_MEM_CFG
+    str r1, [r0, #INDEX_DMC_MEMORY_CFG]
+
+    ldr r1, =DMC1_MEM_CFG2
+    str r1, [r0, #INDEX_DMC_MEMORY_CFG2]
+
+    ldr r1, =DMC1_CHIP0_CFG
+    str r1, [r0, #INDEX_DMC_CHIP_0_CFG]
+
+    ldr r1, =DMC_DDR_32_CFG
+    str r1, [r0, #INDEX_DMC_USER_CONFIG]
+
+    @DMC0 DDR Chip 0 configuration direct command reg
+    ldr r1, =DMC_NOP0
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Precharge All
+    ldr r1, =DMC_PA0
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Auto Refresh   2 time
+    ldr r1, =DMC_AR0
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @MRS
+    ldr r1, =DMC_mDDR_EMR0
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Mode Reg
+    ldr r1, =DMC_mDDR_MR0
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+#ifdef CONFIG_SMDK6410_X5A
+    ldr r1, =DMC1_CHIP1_CFG
+    str r1, [r0, #INDEX_DMC_CHIP_1_CFG]
+
+    @DMC0 DDR Chip 0 configuration direct command reg
+    ldr r1, =DMC_NOP1
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Precharge All
+    ldr r1, =DMC_PA1
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Auto Refresh   2 time
+    ldr r1, =DMC_AR1
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @MRS
+    ldr r1, =DMC_mDDR_EMR1
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+
+    @Mode Reg
+    ldr r1, =DMC_mDDR_MR1
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+#endif
+
+    @Enable DMC1
+    mov r1, #0x0
+    str r1, [r0, #INDEX_DMC_MEMC_CMD]
+
+check_dmc1_ready:
+    ldr r1, [r0, #INDEX_DMC_MEMC_STATUS]
+    mov r2, #0x3
+    and r1, r1, r2
+    cmp r1, #0x1
+    bne check_dmc1_ready
+    nop
+    mov pc, lr
+
+
+/* Below code is for ARM926EJS and ARM1026EJS */
+    .globl cleanDCache
+cleanDCache:
+    mrc p15, 0, pc, c7, c10, 3  /* test/clean D-Cache */
+    bne cleanDCache
+    mov pc, lr
+
+    .globl cleanFlushDCache
+cleanFlushDCache:
+    mrc p15, 0, pc, c7, c14, 3  /* test/cleanflush D-Cache */
+    bne cleanFlushDCache
+    mov pc, lr
+
+    .globl cleanFlushCache
+cleanFlushCache:
+    mrc p15, 0, pc, c7, c14, 3  /* test/cleanflush D-Cache */
+    bne cleanFlushCache
+    mcr p15, 0, r0, c7, c5, 0   /* flush I-Cache */
+    mov pc, lr
+
+    .ltorg
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[lowlevel_init.S]]></title>
@@ -97,25 +265,13 @@ lowlevel_init:
     bl nand_asm_init                    /*nand flash初始化*/
 #endif
 
-#if 0
-    ldr r0, =0xff000fff
-    bic r1, pc, r0      /* r0 &lt;- current base addr of code */
-    ldr r2, _TEXT_BASE      /* r1 &lt;- original base addr in ram */
-    bic r2, r2, r0      /* r0 &lt;- current base addr of code */
-    cmp     r1, r2          /* compare r0, r1                  */
-    beq 1f          /* r0 == r1 then skip sdram init   */
-#endif
-
     bl  mem_ctrl_asm_init               /*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/
 
-#if 1
-        ldr     r0, =(ELFIN_CLOCK_POWER_BASE+RST_STAT_OFFSET)
-        ldr     r1, [r0]
-        bic     r1, r1, #0xfffffff7
-        cmp     r1, #0x8
-        beq     wakeup_reset
-
-#endif
+    ldr     r0, =(ELFIN_CLOCK_POWER_BASE+RST_STAT_OFFSET)
+    ldr     r1, [r0]
+    bic     r1, r1, #0xfffffff7
+    cmp     r1, #0x8
+    beq     wakeup_reset
 
 1:
     ldr r0, =ELFIN_UART_BASE
@@ -124,7 +280,7 @@ lowlevel_init:
 
     mov lr, r12
     mov pc, lr
-#if 1
+
 wakeup_reset:
 
     /*Clear wakeup status register*/
@@ -143,7 +299,6 @@ wakeup_reset:
     mov pc, r1      /*Jump to kernel (sleep-s3c6400.S)*/
     nop
     nop
-#endif
 
 /*
  * system_clock_init: Initialize core clock and bus clock.
@@ -253,7 +408,7 @@ wait_for_async:
     str r1, [r0, #OTHERS_OFFSET]
 #endif
 
-    mov pc, lr
+    mov pc, lr                              /*系统时钟初始化完成，返回*/
 
 
 /*
@@ -261,106 +416,113 @@ wait_for_async:
  * void uart_asm_init(void)
  */
 uart_asm_init:
-    /* set GPIO to enable UART */
-    @ GPIO setting for UART
+    /*配置GPIO的功能为串口UART*/
+    /*UART0_RXD=GPA0,UART0_TXD=GPA1,UART1_RXD=GPA4,UART1_TXD=GPA5*/
+    /*UART2_RXD=GPB0,UART2_TXD=GPB1,UART3_RXD=GPB2,UART3_TXD=GPB3*/
     ldr r0, =ELFIN_GPIO_BASE
     ldr r1, =0x22222222
-    str     r1, [r0, #GPACON_OFFSET]
+    str     r1, [r0, #GPACON_OFFSET]        /*配置UART0和UART1使用的GPIO引脚,UART0和UART1具有流控功能(GPA0~GPA7)*/
     ldr r1, =0x2222
-    str     r1, [r0, #GPBCON_OFFSET]
+    str     r1, [r0, #GPBCON_OFFSET]        /*配置UART2和UART3使用的GPIO引脚,UART2和UART3不具有流控功能(GPB0~GPB3)*/
 
-    ldr r0, =ELFIN_UART_CONSOLE_BASE        @0x7F005000
+    ldr r0, =ELFIN_UART_CONSOLE_BASE        /*ELFIN_UART_CONSOLE_BASE=0x7F005000,即UART0*/
     mov r1, #0x0
-    str r1, [r0, #UFCON_OFFSET]
-    str r1, [r0, #UMCON_OFFSET]
+    str r1, [r0, #UFCON_OFFSET]             /*禁止使用FIFO*/
+    str r1, [r0, #UMCON_OFFSET]             /*禁止流控，调制解调功能*/
 
-    mov r1, #0x3                    @was 0.
+    mov r1, #0x3                            /*配置UART0：数据位:8, 无校验, 停止位: 1, 8n1*/
     str r1, [r0, #ULCON_OFFSET]
 
+/*设置波特率 */
+/*DIV_VAL = (EXT_UCLK1 / (bps x 16 ) ) - 1 = (66500000/(115200x16))-1 = 35.08*/
+/*DIV_VAL = 35.08 = UBRDIVn + (num of 1’s in UDIVSLOTn)/16*/
 #if defined(CONFIG_CLKSRC_CLKUART)
-    ldr r1, =0xe45          /* UARTCLK SRC = 11 =&gt; EXT_UCLK1*/
+    ldr r1, =0xe45                          /* UARTCLK_SRC=11 =&gt; EXT_UCLK1,EXT_UCLK1由MPLL或者EPLL分频得到,这里是66.5MHz。串口数据接收发送采用轮训或者中断的方式*/
 #else
-    ldr r1, =0x245          /* UARTCLK SRC = x0 =&gt; PCLK */
+    ldr r1, =0x245                          /* UARTCLK_SRC=x0 =&gt; PCLK */
 #endif
-
     str r1, [r0, #UCON_OFFSET]
 
 #if defined(CONFIG_UART_50)
     ldr r1, =0x1A
 #elif defined(CONFIG_UART_66)
-    ldr r1, =0x22
+    ldr r1, =0x23
 #else
     ldr r1, =0x1A
 #endif
-    str r1, [r0, #UBRDIV_OFFSET]
+    str r1, [r0, #UBRDIV_OFFSET]            /*UBRDIV0=35*/
 
 #if defined(CONFIG_UART_50)
     ldr r1, =0x3
 #elif defined(CONFIG_UART_66)
-    ldr r1, =0x1FFF
+    ldr r1, =0x0080
 #else
     ldr r1, =0x3
 #endif
-    str r1, [r0, #UDIVSLOT_OFFSET]
+    str r1, [r0, #UDIVSLOT_OFFSET]          /*UDIVSLOT0中有1个‘1’*/
 
     ldr r1, =0x4f4f4f4f
-    str r1, [r0, #UTXH_OFFSET]      @'O'
+    str r1, [r0, #UTXH_OFFSET]              /*UART0串口发送字母‘O’*/
+    ldr r1, =0x4b4b4fb4b
+    str r1, [r0, #UTXH_OFFSET]              /*UART0串口发送字母‘K’*/
 
-    mov pc, lr
+    mov pc, lr                              /*串口配置结束，返回*/
 
 /*
- * Nand Interface Init for SMDK6400 */
-nand_asm_init:
+ * Nand Interface Init for SMDK6410 
+ * /
+nand_asm_init:                              /*初始化NandFlash控制器*/
     ldr r0, =ELFIN_NAND_BASE
     ldr r1, [r0, #NFCONF_OFFSET]
-    orr r1, r1, #0x70
-    orr r1, r1, #0x7700
+    orr r1, r1, #0x70                       /*TWRPH1=7*/
+    orr r1, r1, #0x7700                     /*TWRPH0=7,TACLS=7*/
     str     r1, [r0, #NFCONF_OFFSET]
 
     ldr r1, [r0, #NFCONT_OFFSET]
-    orr r1, r1, #0x03
+    orr r1, r1, #0x03                       /*使能NandFlash控制器*/
     str     r1, [r0, #NFCONT_OFFSET]
 
-    mov pc, lr
+    mov pc, lr                              /*NandFlash控制器初始化完毕，返回*/
+
 
 #ifdef CONFIG_ENABLE_MMU
-
-/*
- * MMU Table for SMDK6400
- */
-
-    /* form a first-level section entry */
-.macro FL_SECTION_ENTRY base,ap,d,c,b
+                                            /*为Uboot服务的MMU页表在这里创建*/
+                                            /* form a first-level section entry */
+/*定义一个可以生成描述符的宏*/
+/*描述符的最低两位00为无效，01为二级页表方式（由高地址12位的一级页表(TTB的高18位指定的虚拟基地址)位置取出对应二级页表(coarse page table)的基地址，由中间地址8位的二级页表取出对应4KB页表（small page）的基地址，最后由低12为地址的页表取出最终的内存值），10为一级页表方式（如果bit18为0，则为section，bit18为1，则为supersection），11保留。*/
+.macro FL_SECTION_ENTRY base,ap,d,c,b       
     .word (\base &lt;&lt; 20) | (\ap &lt;&lt; 10) | \
           (\d &lt;&lt; 5) | (1&lt;&lt;4) | (\c &lt;&lt; 3) | (\b &lt;&lt; 2) | (1&lt;&lt;1)
 .endm
-.section .mmudata, "a"
-    .align 14
+
+/*按照section方式映射，每个section必须是1M，占20位地址，这里共256M物理内存，映射到整个4G地址空间，所以共有4096（0x1000）个描述符。虚拟地址的高12位（4096）作为描述符位置，低20位作为section里面的地址*/
+.section .mmudata, "a"                      /*指名该段的名称是.mmudata,在u-boot.lds中会为该段分配具体的空间，.a表示这是一个需要鉴权的段*/
+    .align 14                               /*对齐到0x4000*/
     // the following alignment creates the mmu table at address 0x4000.
-    .globl mmu_table
+    .globl mmu_table                        /*mmu页表地址需要在start.S中告诉CPU以启动MMU，因此需要声明为全局变量*/
 mmu_table:
     .set __base,0
     // 1:1 mapping for debugging
-    .rept 0xA00
-    FL_SECTION_ENTRY __base,3,0,0,0
+    .rept 0xA00                             /*共2048个描述符*/
+    FL_SECTION_ENTRY __base,3,0,0,0         /*ap为3表示读允许,d为0表示这些描述符都属于domain0，domain用来做权限控制,c和b为0表示共享，互斥读写*/
     .set __base,__base+1
     .endr
 
     // access is not allowed.
-    .rept 0xC00 - 0xA00
-    .word 0x00000000
+    .rept 0xC00 - 0xA00                     /*共512个描述符*/
+    .word 0x00000000                        /*ap为0表示不允许访问*/
     .endr
 
     // 128MB for SDRAM 0xC0000000 -&gt; 0x50000000
     .set __base, 0x500
-    .rept 0xC80 - 0xC00
-    FL_SECTION_ENTRY __base,3,0,1,1
+    .rept 0xC80 - 0xC00                     /*共128个描述符*/
+    FL_SECTION_ENTRY __base,3,0,1,1         /*ap为3表示读允许,d为0表示这些描述符都属于domain0，domain用来做权限控制,c和b为1表示内存输入输出都为回写模式*/
     .set __base,__base+1
     .endr
 
     // access is not allowed.
-    .rept 0x1000 - 0xc80
-    .word 0x00000000
+    .rept 0x1000 - 0xc80                        /*共896个描述符*/
+    .word 0x00000000                        /*ap为0表示不允许访问*/
     .endr
 
 #endif
@@ -437,7 +599,7 @@ mmu_table:
 #endif
 
 #define CONFIG_CLKSRC_CLKUART
-#define CONFIG_UART_66  
+#define CONFIG_UART_66                      /*CLKUART=66.5MHz*/
 </code></pre>
 ]]></content>
   </entry>
@@ -1931,51 +2093,6 @@ rstctl:
     .word   PM_RSTCTRL_WKUP
 
 #endif
-</code></pre>
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[u-boot.lds]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds/"/>
-    <updated>2015-06-13T23:06:13+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/13/u-boot-dot-lds</id>
-    <content type="html"><![CDATA[<pre><code class="C u-boot.lds">OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
-OUTPUT_ARCH(arm)
-ENTRY(_start)
-SECTIONS
-{
-    . = 0x00000000;
-    . = ALIGN(4);
-    .text      :
-    {
-      cpu/s3c64xx/start.o   (.text)
-      cpu/s3c64xx/s3c6410/cpu_init.o    (.text)
-      cpu/s3c64xx/onenand_cp.o  (.text)
-      cpu/s3c64xx/nand_cp.o (.text)
-      board/samsung/mini6410/nand_6410.fo
-      cpu/s3c64xx/movi.o (.text)
-      *(.text)
-      lib_arm/div0.o
-    }
-    . = ALIGN(4);
-    .rodata : { *(.rodata) }
-    . = ALIGN(4);
-    .data : { *(.data) }
-    . = ALIGN(4);
-    .got : { *(.got) }
-    __u_boot_cmd_start = .;
-    .u_boot_cmd : { *(.u_boot_cmd) }
-    __u_boot_cmd_end = .;
-    . = ALIGN(4);
-    .mmudata : { *(.mmudata) }
-    . = ALIGN(4);
-    __bss_start = .;
-    .bss : { *(.bss) }
-    _end = .;
-}
 </code></pre>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
