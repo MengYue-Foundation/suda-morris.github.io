@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-18T15:38:58+08:00</updated>
+  <updated>2015-06-19T12:14:51+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,700 @@
     <link href="http://suda-morris.github.io/blog/2015/06/18/lowlevel-init-dot-s/"/>
     <updated>2015-06-18T15:38:36+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/18/lowlevel-init-dot-s</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
+</span><span class='line'><span class="cp">#include &quot;mini6410_val.h&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">_TEXT_BASE</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">TEXT_BASE</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">lowlevel_init</span>
+</span><span class='line'><span class="nl">lowlevel_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r12</span><span class="p">,</span> <span class="n">lr</span>                        <span class="cm">/*bl指令会把下一条指令的地址赋给lr，在这里保存lr是为了最后能够成功地函数返回*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* LED on only #8 */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>        <span class="cm">/*Regs.h中的宏定义，就是s3c6410.h中的宏定义*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55540000</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN15~GPN9均是输出(01),GPN0~GPN8均是输入(00)*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55555555</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNPUD_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN0~GPN15均是下拉使能*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xf000</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN15~GPN12输出高电平，GPN10~11输出低电平*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPECON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0设置为输出，GPE1~GPE15设置为输入*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPEDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0输出低电平*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2A5AAAAA</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPP15设置为输入，GPP11~GPP10设置为输出，其余设置为片内外设功能*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPP11和GPP10输出低电平*/</span>
+</span><span class='line'>  
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55555555</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MEM1DRVCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*由于ddr芯片的工作电压在1.8V，所以驱动电流设置为7mA*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Disable Watchdog */</span>              <span class="cm">/*关闭片内看门狗*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7e000000</span>        <span class="err">@</span><span class="mh">0x7e004000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x4000</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span> <span class="n">External</span> <span class="n">interrupt</span> <span class="n">pending</span> <span class="n">clear</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_GPIO_BASE</span><span class="o">+</span><span class="n">EINTPEND_OFFSET</span><span class="p">)</span>  <span class="cm">/*EINTPEND*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                     <span class="cm">/*读一次外部中断就能清楚外部中断信号*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_VIC0_BASE_ADDR</span>   <span class="err">@</span><span class="mh">0x71200000</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_VIC1_BASE_ADDR</span>   <span class="err">@</span><span class="mh">0x71300000</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span> <span class="n">Disable</span> <span class="n">all</span> <span class="n">interrupts</span> <span class="p">(</span><span class="n">VIC0</span> <span class="n">and</span> <span class="n">VIC1</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">mvn</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>                     <span class="cm">/*0取反为全1*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMSK</span><span class="p">]</span>                <span class="cm">/*禁用所有中断*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMSK</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span> <span class="n">Set</span> <span class="n">all</span> <span class="n">interrupts</span> <span class="n">as</span> <span class="n">IRQ</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMOD</span><span class="p">]</span>                <span class="cm">/*将所有中断设置为IRQ中断*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMOD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span> <span class="n">Pending</span> <span class="n">Interrupt</span> <span class="n">Clear</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>                     <span class="cm">/*清除所有当前激活的中断服务程序的地址*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oVECTADDR</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oVECTADDR</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* init system clock */</span>
+</span><span class='line'>  <span class="n">bl</span> <span class="n">system_clock_init</span>              <span class="cm">/*初始化系统时钟*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* for UART */</span>
+</span><span class='line'>  <span class="n">bl</span> <span class="n">uart_asm_init</span>                  <span class="cm">/*初始化串口*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_NAND)</span>
+</span><span class='line'>  <span class="cm">/* simple init for NAND */</span>
+</span><span class='line'>  <span class="n">bl</span> <span class="n">nand_asm_init</span>                  <span class="cm">/*nand flash初始化*/</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
+</span><span class='line'><span class="c">  ldr r0, =0xff000fff</span>
+</span><span class='line'><span class="c">  bic r1, pc, r0      /* r0 &lt;- current base addr of code */</span>
+</span><span class='line'><span class="c">  ldr r2, _TEXT_BASE      /* r1 &lt;- original base addr in ram */</span>
+</span><span class='line'><span class="c">  bic r2, r2, r0      /* r0 &lt;- current base addr of code */</span>
+</span><span class='line'><span class="c">  cmp     r1, r2          /* compare r0, r1                  */</span>
+</span><span class='line'><span class="c">  beq 1f          /* r0 == r1 then skip sdram init   */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">bl</span>   <span class="n">mem_ctrl_asm_init</span>                <span class="cm">/*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if 1</span>
+</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>        <span class="n">bic</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xfffffff7</span>
+</span><span class='line'>        <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>
+</span><span class='line'>        <span class="n">beq</span>     <span class="n">wakeup_reset</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r12</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'><span class="cp">#if 1</span>
+</span><span class='line'><span class="nl">wakeup_reset</span><span class="p">:</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*Clear wakeup status register*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">WAKEUP_STAT_OFFSET</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/*LED test*/</span>
+</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
+</span><span class='line'>        <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*Load return address and jump to kernel*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span> <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>     <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * system_clock_init: Initialize core clock and bus clock.</span>
+</span><span class='line'><span class="cm"> * void system_clock_init(void)</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="nl">system_clock_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_CLOCK_POWER_BASE</span> <span class="err">@</span><span class="mh">0x7e00f000</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef   CONFIG_SYNC_MODE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>              
+</span><span class='line'>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x80</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>          <span class="cm">/*bit[6],bit[7]都置1，设置成同步模式*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">check_syncack</span><span class="p">:</span>                             <span class="cm">/*等待时钟完成同步*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xf00</span>
+</span><span class='line'>  <span class="n">and</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                           <span class="cm">/*只查看bit[8]~bit[11]，这几位是SYNC mode相应位，只读,只有在AYNC模式才能读1*/</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xf00</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">check_syncack</span>
+</span><span class='line'><span class="cp">#else                                        </span><span class="cm">/* 否则配置成异步时钟模式 */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xC0</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>                      <span class="cm">/*bit[6]置1，bit[7]清0*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>          
+</span><span class='line'>
+</span><span class='line'><span class="nl">wait_for_async</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">and</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xf00</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">wait_for_async</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>                      <span class="cm">/*bit[6]清0*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff00</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff</span>                      <span class="cm">/*设置各PLL的LOCK_TIME,使用最大值*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">APLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*APLL_LOCK，供cpu使用*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MPLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*MPLL_LOCK，供AHB(存储/中断/lcd等控制器)/APB(看门狗，定时器，SD等)总线上的设备使用*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*EPLL_LOCK，供UART,IIS,IIC使用*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
+</span><span class='line'>  <span class="n">ldr</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV2_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x70000</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>                   <span class="cm">/*CLK_DIV2的bit[16]~bit[19]即UART_RATIO,设置为3,CLKUART(66.5Mhz)=CLKUART_input(532/2=266Mhz)/(UART_RATIO(3)+1)*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV2_OFFSET</span><span class="p">]</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV0_OFFSET</span><span class="p">]</span>        <span class="cm">/*Set Clock Divider*/</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff00</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">CLK_DIV_VAL</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV0_OFFSET</span><span class="p">]</span>            <span class="cm">/*设置时钟的分频系数*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">APLL_VAL</span>                       <span class="cm">/*设置APLL_MDIV=266,APLL_PDIV=3,APLL_SDIV=1*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">APLL_CON_OFFSET</span><span class="p">]</span>            <span class="cm">/*FOUT = MDIV X FIN / (PDIV X 2^SDIV) = 266*12/(3*2^1) = 532MHz*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">MPLL_VAL</span>                       <span class="cm">/*设置MPLL_MDIV=266,MPLL_PDIV=3,MPLL_SDIV=1*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MPLL_CON_OFFSET</span><span class="p">]</span>            <span class="cm">/*FOUT = MDIV X FIN / (PDIV X 2^SDIV) = 266*12/(3*2^1) = 532MHz*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x80200102</span>                        <span class="cm">/*设置EPLL_MDIV=32,EPLL_PDIV=1,EPLL_SDIV=2*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_CON0_OFFSET</span><span class="p">]</span>           <span class="cm">/*FOUT = (MDIV+KDIV/2^16) X FIN / (PDIV X 2^SDIV) = (32+0)*12/(1*2^2) = 96MHz*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>                           <span class="cm">/*设置EPLL_KDIV=0*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_CON1_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_SRC_OFFSET</span><span class="p">]</span>         <span class="cm">/*读取CLK_SRC寄存器的值*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2007</span>                                    
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                           <span class="cm">/*APLL,MPLL,EPLL的时钟源选择各自的Fout；UART的时钟源选择DOUT_MPLL*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_SRC_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x10000</span>                     <span class="cm">/*等待所有时钟稳定，至少200us*/</span>
+</span><span class='line'><span class="mi">1</span><span class="o">:</span> <span class="n">subs</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>                     <span class="cm">/*非0则跳转*/</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="mi">1</span><span class="n">b</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_SYNC_MODE                      </span><span class="cm">/* Synchronization for VIC port */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x20</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x20</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * uart_asm_init: Initialize UART in asm mode, 115200bps fixed.</span>
+</span><span class='line'><span class="cm"> * void uart_asm_init(void)</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="nl">uart_asm_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="cm">/* set GPIO to enable UART */</span>
+</span><span class='line'>  <span class="err">@</span> <span class="n">GPIO</span> <span class="n">setting</span> <span class="k">for</span> <span class="n">UART</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x22222222</span>
+</span><span class='line'>  <span class="n">str</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPACON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2222</span>
+</span><span class='line'>  <span class="n">str</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPBCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_CONSOLE_BASE</span>        <span class="err">@</span><span class="mh">0x7F005000</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UFCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UMCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x3</span>                 <span class="err">@</span><span class="n">was</span> <span class="mf">0.</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">ULCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xe45</span>         <span class="cm">/* UARTCLK SRC = 11 =&gt; EXT_UCLK1*/</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x245</span>         <span class="cm">/* UARTCLK SRC = x0 =&gt; PCLK */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UCON_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_UART_50)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1A</span>
+</span><span class='line'><span class="cp">#elif defined(CONFIG_UART_66)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x22</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1A</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UBRDIV_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_UART_50)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3</span>
+</span><span class='line'><span class="cp">#elif defined(CONFIG_UART_66)</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1FFF</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UDIVSLOT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4f4f4f4f</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>        <span class="err">@</span><span class="sc">&#39;O&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Nand Interface Init for SMDK6400 */</span>
+</span><span class='line'><span class="nl">nand_asm_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_NAND_BASE</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONF_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x70</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x7700</span>
+</span><span class='line'>  <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONF_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x03</span>
+</span><span class='line'>  <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * MMU Table for SMDK6400</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* form a first-level section entry */</span>
+</span><span class='line'><span class="p">.</span><span class="n">macro</span> <span class="n">FL_SECTION_ENTRY</span> <span class="n">base</span><span class="p">,</span><span class="n">ap</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">b</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="p">(</span><span class="err">\</span><span class="n">base</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">ap</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> \
+</span><span class='line'>        <span class="p">(</span><span class="err">\</span><span class="n">d</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="p">.</span><span class="n">endm</span>
+</span><span class='line'><span class="p">.</span><span class="n">section</span> <span class="p">.</span><span class="n">mmudata</span><span class="p">,</span> <span class="s">&quot;a&quot;</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">align</span> <span class="mi">14</span>
+</span><span class='line'>  <span class="c1">// the following alignment creates the mmu table at address 0x4000.</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">mmu_table</span>
+</span><span class='line'><span class="nl">mmu_table</span><span class="p">:</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="mi">0</span>
+</span><span class='line'>  <span class="c1">// 1:1 mapping for debugging</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xA00</span>
+</span><span class='line'>  <span class="n">FL_SECTION_ENTRY</span> <span class="n">__base</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="n">__base</span><span class="o">+</span><span class="mi">1</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// access is not allowed.</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xC00</span> <span class="o">-</span> <span class="mh">0xA00</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x00000000</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 128MB for SDRAM 0xC0000000 -&gt; 0x50000000</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span> <span class="mh">0x500</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xC80</span> <span class="o">-</span> <span class="mh">0xC00</span>
+</span><span class='line'>  <span class="n">FL_SECTION_ENTRY</span> <span class="n">__base</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="n">__base</span><span class="o">+</span><span class="mi">1</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// access is not allowed.</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0x1000</span> <span class="o">-</span> <span class="mh">0xc80</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x00000000</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
@@ -59,6 +752,39 @@
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -91,6 +817,39 @@
 </span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/******************************************系统时钟宏定义*******************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_CLK_532_133_66                </span><span class="cm">/*FIN=12MHz,Fout=532MHz*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define APLL_MDIV    266</span>
+</span><span class='line'><span class="cp">#define APLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define APLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define CONFIG_SYNC_MODE</span>
+</span><span class='line'><span class="cp">#define set_pll(mdiv, pdiv, sdiv)    (1&lt;&lt;31 | mdiv&lt;&lt;16 | pdiv&lt;&lt;8 | sdiv)</span>
+</span><span class='line'><span class="cp">#define APLL_VAL set_pll(APLL_MDIV, APLL_PDIV, APLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_APLL (CONFIG_SYS_CLK_FREQ/(APLL_PDIV&lt;&lt;APLL_SDIV)*APLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MPLL_MDIV    266                     </span><span class="cm">/* fixed MPLL 533MHz */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define MPLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define MPLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define MPLL_VAL set_pll(MPLL_MDIV, MPLL_PDIV, MPLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_MPLL ((CONFIG_SYS_CLK_FREQ)/(MPLL_PDIV&lt;&lt;MPLL_SDIV)*MPLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define Startup_APLLdiv      0</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKx2div    1</span>
+</span><span class='line'><span class="cp">#define  Startup_PCLKdiv     3</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKdiv      1</span>
+</span><span class='line'><span class="cp">#define Startup_MPLLdiv      1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CLK_DIV_VAL  ((Startup_PCLKdiv&lt;&lt;12)|(Startup_HCLKx2div&lt;&lt;9)|(Startup_HCLKdiv&lt;&lt;8)|(Startup_MPLLdiv&lt;&lt;4)|Startup_APLLdiv)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_SYNC_MODE)</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_APLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_MPLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_CLKSRC_CLKUART</span>
+</span><span class='line'><span class="cp">#define CONFIG_UART_66   </span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>

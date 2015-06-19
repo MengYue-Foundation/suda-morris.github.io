@@ -39,8 +39,27 @@
 30
 31
 32
-#define CONFIG_S3C6410 1 /* in a SAMSUNG S3C6410 SoC */
-# &hellip;">
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -149,6 +168,39 @@
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
 <span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -181,6 +233,39 @@
 </span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/******************************************系统时钟宏定义*******************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_CLK_532_133_66                </span><span class="cm">/*FIN=12MHz,Fout=532MHz*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define APLL_MDIV    266</span>
+</span><span class='line'><span class="cp">#define APLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define APLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define CONFIG_SYNC_MODE</span>
+</span><span class='line'><span class="cp">#define set_pll(mdiv, pdiv, sdiv)    (1&lt;&lt;31 | mdiv&lt;&lt;16 | pdiv&lt;&lt;8 | sdiv)</span>
+</span><span class='line'><span class="cp">#define APLL_VAL set_pll(APLL_MDIV, APLL_PDIV, APLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_APLL (CONFIG_SYS_CLK_FREQ/(APLL_PDIV&lt;&lt;APLL_SDIV)*APLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MPLL_MDIV    266                     </span><span class="cm">/* fixed MPLL 533MHz */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define MPLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define MPLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define MPLL_VAL set_pll(MPLL_MDIV, MPLL_PDIV, MPLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_MPLL ((CONFIG_SYS_CLK_FREQ)/(MPLL_PDIV&lt;&lt;MPLL_SDIV)*MPLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define Startup_APLLdiv      0</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKx2div    1</span>
+</span><span class='line'><span class="cp">#define  Startup_PCLKdiv     3</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKdiv      1</span>
+</span><span class='line'><span class="cp">#define Startup_MPLLdiv      1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CLK_DIV_VAL  ((Startup_PCLKdiv&lt;&lt;12)|(Startup_HCLKx2div&lt;&lt;9)|(Startup_HCLKdiv&lt;&lt;8)|(Startup_MPLLdiv&lt;&lt;4)|Startup_APLLdiv)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_SYNC_MODE)</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_APLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_MPLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_CLKSRC_CLKUART</span>
+</span><span class='line'><span class="cp">#define CONFIG_UART_66   </span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
