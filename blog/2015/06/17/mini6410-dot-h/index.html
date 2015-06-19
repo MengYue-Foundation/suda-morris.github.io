@@ -201,6 +201,54 @@
 <span class='line-number'>63</span>
 <span class='line-number'>64</span>
 <span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -234,6 +282,8 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
 </span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
 </span><span class='line'><span class="cm">/******************************************系统时钟宏定义*******************************************/</span>
 </span><span class='line'><span class="cp">#define CONFIG_CLK_532_133_66                </span><span class="cm">/*FIN=12MHz,Fout=532MHz*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define APLL_MDIV    266</span>
@@ -266,6 +316,52 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_CLKSRC_CLKUART</span>
 </span><span class='line'><span class="cp">#define CONFIG_UART_66                       </span><span class="cm">/*CLKUART=66.5MHz*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*****************************************DDR控制器宏定义*******************************************/</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span><span class="cm">/* 32bit, DDR */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* DDR Parameters */</span>
+</span><span class='line'><span class="cp">#define DDR_tREFRESH     7800        </span><span class="cm">/* ns */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRAS     45      </span><span class="cm">/* ns (min: 45ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRC      68      </span><span class="cm">/* ns (min: 67.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRCD     23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRFC     80      </span><span class="cm">/* ns (min: 80ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRP      23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRRD     15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tWR      15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tXSR     120     </span><span class="cm">/* ns (min: 120ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_CASL     3       </span><span class="cm">/* CAS Latency 3 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define DMC_DDR_BA_EMRS  2</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_MEM_CASLAT   3</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_CAS_LATENCY  (DDR_CASL&lt;&lt;1)                     </span><span class="c1">//6   Set Cas Latency to 3</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_DQSS       1                           </span><span class="c1">// Min 0.75 ~ 1.25</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_MRD        2                           </span><span class="c1">//Min 2 tck</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RAS        (((Startup_HCLK / 1000 * DDR_tRAS) - 1) / 1000000 + 1)  </span><span class="c1">//7, Min 45ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RC     (((Startup_HCLK / 1000 * DDR_tRC) - 1) / 1000000 + 1)   </span><span class="c1">//10, Min 67.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RCD        (((Startup_HCLK / 1000 * DDR_tRCD) - 1) / 1000000 + 1)  </span><span class="c1">//4,5(TRM), Min 22.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RCD ((DMC_DDR_t_RCD - 3) &lt;&lt; 3)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RFC        (((Startup_HCLK / 1000 * DDR_tRFC) - 1) / 1000000 + 1)  </span><span class="c1">//11,18(TRM) Min 80ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RFC ((DMC_DDR_t_RFC - 3) &lt;&lt; 5)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RP     (((Startup_HCLK / 1000 * DDR_tRP) - 1) / 1000000 + 1)   </span><span class="c1">//4, 5(TRM) Min 22.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RP  ((DMC_DDR_t_RP - 3) &lt;&lt; 3)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RRD        (((Startup_HCLK / 1000 * DDR_tRRD) - 1) / 1000000 + 1)  </span><span class="c1">//3, Min 15ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_WR     (((Startup_HCLK / 1000 * DDR_tWR) - 1) / 1000000 + 1)   </span><span class="c1">//Min 15ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_WTR        2</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_XP     2                           </span><span class="c1">//1tck + tIS(1.5ns)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_XSR        (((Startup_HCLK / 1000 * DDR_tXSR) - 1) / 1000000 + 1)  </span><span class="c1">//17, Min 120ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_ESR        DMC_DDR_t_XSR</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_REFRESH_PRD  (((Startup_HCLK / 1000 * DDR_tREFRESH) - 1) / 1000000)  </span><span class="c1">// TRM 2656</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_USER_CONFIG  1                           </span><span class="c1">// 2b01 : mDDR</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
+</span><span class='line'><span class="c1">//#define PHYS_SDRAM_1_SIZE  0x08000000 /* 128 MB */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_FLASH_BASE       0x00000000</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

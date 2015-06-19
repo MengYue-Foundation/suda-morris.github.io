@@ -295,7 +295,9 @@
 <span class='line-number'>157</span>
 <span class='line-number'>158</span>
 <span class='line-number'>159</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;                      </span><span class="cm">/*里面包含mini6410.h*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">mem_ctrl_asm_init</span>
@@ -306,14 +308,16 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_DMC1_BASE</span>            <span class="err">@</span><span class="n">DMC1</span> <span class="n">base</span> <span class="n">address</span> <span class="mh">0x7e001000</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/* 1. 使dramc进入&quot;config&quot;状态 */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x04</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span> 
 </span><span class='line'>
+</span><span class='line'><span class="cm">/* 2. 设置timing parameter, chip configuration,id configuration registers */</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_REFRESH_PRD</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_REFRESH_PRD</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_REFRESH_PRD</span><span class="p">]</span>      <span class="cm">/*刷新周期7.8us */</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_CAS_LATENCY</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_CAS_LATENCY</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_CAS_LATENCY</span><span class="p">]</span>      <span class="cm">/*CAS Latency:指的是内存存取数据所需的延迟时间，简单的说，就是内存接到CPU的指令后的反应速度。一般的参数值是2和3*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_DQSS</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_DQSS</span><span class="p">]</span>
