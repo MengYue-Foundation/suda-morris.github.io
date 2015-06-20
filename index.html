@@ -254,6 +254,9 @@
 <span class='line-number'>159</span>
 <span class='line-number'>160</span>
 <span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;                      </span><span class="cm">/*里面包含mini6410.h*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
 </span><span class='line'>
@@ -269,7 +272,7 @@
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x04</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span> 
 </span><span class='line'>
-</span><span class='line'><span class="cm">/* 2. 设置timing parameter, chip configuration,id configuration registers */</span>
+</span><span class='line'><span class="cm">/* 2. 设置timing parameter*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_REFRESH_PRD</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_REFRESH_PRD</span><span class="p">]</span>      <span class="cm">/*刷新周期7.8us */</span>
 </span><span class='line'>
@@ -282,10 +285,10 @@
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_MRD</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_MRD</span><span class="p">]</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RAS</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RAS</span>                      <span class="cm">/*RAS=45ns*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RAS</span><span class="p">]</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RC</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RC</span>                       <span class="cm">/*RC=68ns*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RC</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RCD</span>
@@ -321,6 +324,7 @@
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_ESR</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_ESR</span><span class="p">]</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/* 3.设置chip configuration*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC1_MEM_CFG</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMORY_CFG</span><span class="p">]</span>
 </span><span class='line'>
@@ -333,25 +337,26 @@
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_32_CFG</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_USER_CONFIG</span><span class="p">]</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/* 4. 初始化sdram */</span>
 </span><span class='line'>  <span class="err">@</span><span class="n">DMC0</span> <span class="n">DDR</span> <span class="n">Chip</span> <span class="mi">0</span> <span class="n">configuration</span> <span class="n">direct</span> <span class="n">command</span> <span class="n">reg</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_NOP0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_NOP0</span>                                   <span class="cm">/* NOP*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="err">@</span><span class="n">Precharge</span> <span class="n">All</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_PA0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_PA0</span>                                    <span class="cm">/*precharge*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="err">@</span><span class="n">Auto</span> <span class="n">Refresh</span>    <span class="mi">2</span> <span class="n">time</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_AR0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>                   <span class="cm">/*auto refresh*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="err">@</span><span class="n">MRS</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_EMR0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_EMR0</span>                              <span class="cm">/*EMRS*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="err">@</span><span class="n">Mode</span> <span class="n">Reg</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_MR0</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_MR0</span>                               <span class="cm">/*MRS*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_SMDK6410_X5A</span>
@@ -380,6 +385,7 @@
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
+</span><span class='line'><span class="cm">/* 5. 使dramc进入&quot;ready&quot;状态  */</span>
 </span><span class='line'>  <span class="err">@</span><span class="n">Enable</span> <span class="n">DMC1</span>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span>
@@ -391,7 +397,7 @@
 </span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
 </span><span class='line'>  <span class="n">bne</span>  <span class="n">check_dmc1_ready</span>
 </span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*内存控制器初始化完毕，返回*/</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* Below code is for ARM926EJS and ARM1026EJS */</span>
@@ -794,9 +800,6 @@
 <span class='line-number'>335</span>
 <span class='line-number'>336</span>
 <span class='line-number'>337</span>
-<span class='line-number'>338</span>
-<span class='line-number'>339</span>
-<span class='line-number'>340</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
@@ -878,36 +881,35 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="n">bl</span>   <span class="n">mem_ctrl_asm_init</span>                <span class="cm">/*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>      <span class="cm">/*7e00_f904-&gt;RST_STAT*/</span>
 </span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
 </span><span class='line'>    <span class="n">bic</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xfffffff7</span>
-</span><span class='line'>    <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>
+</span><span class='line'>    <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>                    <span class="cm">/*bit[3]=1,表明从SLEEP状态中唤醒*/</span>
 </span><span class='line'>    <span class="n">beq</span>     <span class="n">wakeup_reset</span>
 </span><span class='line'>
 </span><span class='line'><span class="mi">1</span><span class="o">:</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>                    <span class="cm">/*通过串口发送字母“K”*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r12</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                         <span class="cm">/*lowlevel_init结束，返回*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">wakeup_reset</span><span class="p">:</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/*Clear wakeup status register*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">WAKEUP_STAT_OFFSET</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                     <span class="cm">/*Clear wakeup status register*/</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="cm">/*LED test*/</span>
-</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
-</span><span class='line'>        <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>    <span class="cm">/*LED test*/</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
+</span><span class='line'>    <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/*Load return address and jump to kernel*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span> <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>     <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>       <span class="cm">/*0x4c00_0a00-&gt;INFORM0*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                                         <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>                                             <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>
@@ -1074,8 +1076,6 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4f4f4f4f</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>                <span class="cm">/*UART0串口发送字母‘O’*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4fb4b</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>                <span class="cm">/*UART0串口发送字母‘K’*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*串口配置结束，返回*/</span>
 </span><span class='line'>
@@ -1292,6 +1292,15 @@
 <span class='line-number'>111</span>
 <span class='line-number'>112</span>
 <span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -1363,8 +1372,20 @@
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*****************************************DDR控制器宏定义*******************************************/</span>
-</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span><span class="cm">/* 32bit, DDR */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_RAM256)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (3&lt;&lt;3) | (2&lt;&lt;0))   </span><span class="cm">/*column address(10):A0~A9;row address(14):A0~A13;Burst Length =4*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F0                                 </span><span class="cm">/*Bank-Row-Column organization */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x10000000 </span><span class="cm">/* 256 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_RAM128)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (2&lt;&lt;3)| (2&lt;&lt;0))</span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F8</span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x8000000 </span><span class="cm">/* 128 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#error RAM size must be defined</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41       </span><span class="cm">/*Memory with=32,Mobile DDR SDRAM,Read delay 1 cycle*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* DDR Parameters */</span>
 </span><span class='line'><span class="cp">#define DDR_tREFRESH     7800        </span><span class="cm">/* ns */</span><span class="cp"></span>
@@ -1402,9 +1423,6 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
-</span><span class='line'><span class="c1">//#define PHYS_SDRAM_1_SIZE  0x08000000 /* 128 MB */</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_FLASH_BASE       0x00000000</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

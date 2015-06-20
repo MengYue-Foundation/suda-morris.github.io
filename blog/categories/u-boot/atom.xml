@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-19T22:37:55+08:00</updated>
+  <updated>2015-06-20T15:14:34+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -33,7 +33,7 @@ mem_ctrl_asm_init:
     ldr r1, =0x04
     str r1, [r0, #INDEX_DMC_MEMC_CMD]   
 
-/* 2. 设置timing parameter, chip configuration,id configuration registers */
+/* 2. 设置timing parameter*/
     ldr r1, =DMC_DDR_REFRESH_PRD
     str r1, [r0, #INDEX_DMC_REFRESH_PRD]        /*刷新周期7.8us */
 
@@ -46,10 +46,10 @@ mem_ctrl_asm_init:
     ldr r1, =DMC_DDR_t_MRD
     str r1, [r0, #INDEX_DMC_T_MRD]
 
-    ldr r1, =DMC_DDR_t_RAS
+    ldr r1, =DMC_DDR_t_RAS                      /*RAS=45ns*/
     str r1, [r0, #INDEX_DMC_T_RAS]
 
-    ldr r1, =DMC_DDR_t_RC
+    ldr r1, =DMC_DDR_t_RC                       /*RC=68ns*/
     str r1, [r0, #INDEX_DMC_T_RC]
 
     ldr r1, =DMC_DDR_t_RCD
@@ -85,6 +85,7 @@ mem_ctrl_asm_init:
     ldr r1, =DMC_DDR_t_ESR
     str r1, [r0, #INDEX_DMC_T_ESR]
 
+/* 3.设置chip configuration*/
     ldr r1, =DMC1_MEM_CFG
     str r1, [r0, #INDEX_DMC_MEMORY_CFG]
 
@@ -97,25 +98,26 @@ mem_ctrl_asm_init:
     ldr r1, =DMC_DDR_32_CFG
     str r1, [r0, #INDEX_DMC_USER_CONFIG]
 
+/* 4. 初始化sdram */
     @DMC0 DDR Chip 0 configuration direct command reg
-    ldr r1, =DMC_NOP0
+    ldr r1, =DMC_NOP0                                   /* NOP*/
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
     @Precharge All
-    ldr r1, =DMC_PA0
+    ldr r1, =DMC_PA0                                    /*precharge*/
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
     @Auto Refresh   2 time
     ldr r1, =DMC_AR0
-    str r1, [r0, #INDEX_DMC_DIRECT_CMD]
+    str r1, [r0, #INDEX_DMC_DIRECT_CMD]                 /*auto refresh*/
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
     @MRS
-    ldr r1, =DMC_mDDR_EMR0
+    ldr r1, =DMC_mDDR_EMR0                              /*EMRS*/
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
     @Mode Reg
-    ldr r1, =DMC_mDDR_MR0
+    ldr r1, =DMC_mDDR_MR0                               /*MRS*/
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 
 #ifdef CONFIG_SMDK6410_X5A
@@ -144,6 +146,7 @@ mem_ctrl_asm_init:
     str r1, [r0, #INDEX_DMC_DIRECT_CMD]
 #endif
 
+/* 5. 使dramc进入"ready"状态   */
     @Enable DMC1
     mov r1, #0x0
     str r1, [r0, #INDEX_DMC_MEMC_CMD]
@@ -155,7 +158,7 @@ check_dmc1_ready:
     cmp r1, #0x1
     bne check_dmc1_ready
     nop
-    mov pc, lr
+    mov pc, lr                              /*内存控制器初始化完毕，返回*/
 
 
 /* Below code is for ARM926EJS and ARM1026EJS */
@@ -269,36 +272,35 @@ lowlevel_init:
 
     bl  mem_ctrl_asm_init               /*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/
 
-    ldr     r0, =(ELFIN_CLOCK_POWER_BASE+RST_STAT_OFFSET)
+    ldr     r0, =(ELFIN_CLOCK_POWER_BASE+RST_STAT_OFFSET)       /*7e00_f904-&gt;RST_STAT*/
     ldr     r1, [r0]
     bic     r1, r1, #0xfffffff7
-    cmp     r1, #0x8
+    cmp     r1, #0x8                    /*bit[3]=1,表明从SLEEP状态中唤醒*/
     beq     wakeup_reset
 
 1:
     ldr r0, =ELFIN_UART_BASE
-    ldr r1, =0x4b4b4b4b
+    ldr r1, =0x4b4b4b4b                 /*通过串口发送字母“K”*/
     str r1, [r0, #UTXH_OFFSET]
 
     mov lr, r12
-    mov pc, lr
+    mov pc, lr                          /*lowlevel_init结束，返回*/
 
 wakeup_reset:
 
-    /*Clear wakeup status register*/
     ldr r0, =(ELFIN_CLOCK_POWER_BASE+WAKEUP_STAT_OFFSET)
     ldr r1, [r0]
-    str r1, [r0]
+    str r1, [r0]                        /*Clear wakeup status register*/
 
-        /*LED test*/
-        ldr     r0, =ELFIN_GPIO_BASE
-        ldr     r1, =0x3000
-        str     r1, [r0, #GPNDAT_OFFSET]
+    /*LED test*/
+    ldr     r0, =ELFIN_GPIO_BASE
+    ldr     r1, =0x3000
+    str     r1, [r0, #GPNDAT_OFFSET]
 
     /*Load return address and jump to kernel*/
-    ldr r0, =(ELFIN_CLOCK_POWER_BASE+INF_REG0_OFFSET)
-    ldr r1, [r0]    /* r1 = physical address of s3c6400_cpu_resume function*/
-    mov pc, r1      /*Jump to kernel (sleep-s3c6400.S)*/
+    ldr r0, =(ELFIN_CLOCK_POWER_BASE+INF_REG0_OFFSET)       /*0x4c00_0a00-&gt;INFORM0*/
+    ldr r1, [r0]                                            /* r1 = physical address of s3c6400_cpu_resume function*/
+    mov pc, r1                                              /*Jump to kernel (sleep-s3c6400.S)*/
     nop
     nop
 
@@ -465,8 +467,6 @@ uart_asm_init:
 
     ldr r1, =0x4f4f4f4f
     str r1, [r0, #UTXH_OFFSET]              /*UART0串口发送字母‘O’*/
-    ldr r1, =0x4b4b4fb4b
-    str r1, [r0, #UTXH_OFFSET]              /*UART0串口发送字母‘K’*/
 
     mov pc, lr                              /*串口配置结束，返回*/
 
@@ -608,8 +608,20 @@ mmu_table:
 
 
 /*****************************************DDR控制器宏定义*******************************************/
-#define DMC1_MEM_CFG2       0xB41
-#define DMC_DDR_32_CFG      0x0         /* 32bit, DDR */
+#if defined(FRIENDLYARM_BOOT_RAM256)
+#define DMC1_MEM_CFG        ((1&lt;&lt;30) | (2&lt;&lt;15) | (3&lt;&lt;3) | (2&lt;&lt;0))   /*column address(10):A0~A9;row address(14):A0~A13;Burst Length =4*/
+#define DMC1_CHIP0_CFG      0x150F0                                 /*Bank-Row-Column organization */
+#define PHYS_SDRAM_1_SIZE   0x10000000 /* 256 MB */
+#elif defined(FRIENDLYARM_BOOT_RAM128)
+#define DMC1_MEM_CFG        ((1&lt;&lt;30) | (2&lt;&lt;15) | (2&lt;&lt;3)| (2&lt;&lt;0))
+#define DMC1_CHIP0_CFG      0x150F8
+#define PHYS_SDRAM_1_SIZE   0x8000000 /* 128 MB */
+#else
+#error RAM size must be defined
+#endif
+
+#define DMC1_MEM_CFG2       0xB41       /*Memory with=32,Mobile DDR SDRAM,Read delay 1 cycle*/
+#define DMC_DDR_32_CFG      0x0         
 
 /* DDR Parameters */
 #define DDR_tREFRESH        7800        /* ns */
@@ -647,9 +659,6 @@ mmu_table:
 
 #define CONFIG_NR_DRAM_BANKS    1      /* we have 2 bank of DRAM */
 #define PHYS_SDRAM_1        MEMORY_BASE_ADDRESS /* SDRAM Bank #1 */
-//#define PHYS_SDRAM_1_SIZE 0x08000000 /* 128 MB */
-
-#define CFG_FLASH_BASE      0x00000000
 </code></pre>
 ]]></content>
   </entry>

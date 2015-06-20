@@ -473,9 +473,6 @@
 <span class='line-number'>335</span>
 <span class='line-number'>336</span>
 <span class='line-number'>337</span>
-<span class='line-number'>338</span>
-<span class='line-number'>339</span>
-<span class='line-number'>340</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
@@ -557,36 +554,35 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="n">bl</span>   <span class="n">mem_ctrl_asm_init</span>                <span class="cm">/*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>      <span class="cm">/*7e00_f904-&gt;RST_STAT*/</span>
 </span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
 </span><span class='line'>    <span class="n">bic</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xfffffff7</span>
-</span><span class='line'>    <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>
+</span><span class='line'>    <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>                    <span class="cm">/*bit[3]=1,表明从SLEEP状态中唤醒*/</span>
 </span><span class='line'>    <span class="n">beq</span>     <span class="n">wakeup_reset</span>
 </span><span class='line'>
 </span><span class='line'><span class="mi">1</span><span class="o">:</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>                    <span class="cm">/*通过串口发送字母“K”*/</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r12</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                         <span class="cm">/*lowlevel_init结束，返回*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="nl">wakeup_reset</span><span class="p">:</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/*Clear wakeup status register*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">WAKEUP_STAT_OFFSET</span><span class="p">)</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                     <span class="cm">/*Clear wakeup status register*/</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="cm">/*LED test*/</span>
-</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>        <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
-</span><span class='line'>        <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
+</span><span class='line'>    <span class="cm">/*LED test*/</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
+</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
+</span><span class='line'>    <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/*Load return address and jump to kernel*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span> <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>     <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>       <span class="cm">/*0x4c00_0a00-&gt;INFORM0*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                                         <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>                                             <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>  <span class="n">nop</span>
 </span><span class='line'>
@@ -753,8 +749,6 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4f4f4f4f</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>                <span class="cm">/*UART0串口发送字母‘O’*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4fb4b</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>                <span class="cm">/*UART0串口发送字母‘K’*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*串口配置结束，返回*/</span>
 </span><span class='line'>

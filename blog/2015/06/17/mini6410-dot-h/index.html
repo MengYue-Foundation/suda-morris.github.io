@@ -249,6 +249,15 @@
 <span class='line-number'>111</span>
 <span class='line-number'>112</span>
 <span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -320,8 +329,20 @@
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*****************************************DDR控制器宏定义*******************************************/</span>
-</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span><span class="cm">/* 32bit, DDR */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_RAM256)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (3&lt;&lt;3) | (2&lt;&lt;0))   </span><span class="cm">/*column address(10):A0~A9;row address(14):A0~A13;Burst Length =4*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F0                                 </span><span class="cm">/*Bank-Row-Column organization */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x10000000 </span><span class="cm">/* 256 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_RAM128)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (2&lt;&lt;3)| (2&lt;&lt;0))</span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F8</span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x8000000 </span><span class="cm">/* 128 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#error RAM size must be defined</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41       </span><span class="cm">/*Memory with=32,Mobile DDR SDRAM,Read delay 1 cycle*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/* DDR Parameters */</span>
 </span><span class='line'><span class="cp">#define DDR_tREFRESH     7800        </span><span class="cm">/* ns */</span><span class="cp"></span>
@@ -359,9 +380,6 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
-</span><span class='line'><span class="c1">//#define PHYS_SDRAM_1_SIZE  0x08000000 /* 128 MB */</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_FLASH_BASE       0x00000000</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
