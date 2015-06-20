@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-20T15:14:34+08:00</updated>
+  <updated>2015-06-20T15:24:55+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,664 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[board.c]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
+    <updated>2015-06-20T15:23:31+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
+    <content type="html"><![CDATA[<pre><code class="C">#include &lt;common.h&gt;
+#include &lt;command.h&gt;
+#include &lt;malloc.h&gt;
+#include &lt;devices.h&gt;
+#include &lt;version.h&gt;
+#include &lt;net.h&gt;
+#include &lt;asm/io.h&gt;
+
+#if defined(CONFIG_BOOT_MOVINAND)
+#include &lt;movi.h&gt;
+#endif
+
+#ifdef CONFIG_DRIVER_SMC91111
+#include "../drivers/smc91111.h"
+#endif
+#ifdef CONFIG_DRIVER_LAN91C96
+#include "../drivers/lan91c96.h"
+#endif
+
+/* Note: volatile register variable is *NOT* volatile in gcc 4.5.1+ */
+#if 0
+DECLARE_GLOBAL_DATA_PTR;
+#else
+gd_t *gd;
+#endif
+
+#if (CONFIG_COMMANDS &amp; CFG_CMD_NAND)
+void nand_init (void);
+#endif
+
+#ifdef CONFIG_ONENAND
+void onenand_init(void);
+#endif
+
+ulong monitor_flash_len;
+
+#ifdef CONFIG_HAS_DATAFLASH
+extern int  AT91F_DataflashInit(void);
+extern void dataflash_print_info(void);
+#endif
+
+#ifndef CONFIG_IDENT_STRING
+#define CONFIG_IDENT_STRING ""
+#endif
+
+const char version_string[] =
+    "   kdm ver1.01" CONFIG_IDENT_STRING;
+
+#ifdef CONFIG_DRIVER_CS8900
+extern void cs8900_get_enetaddr (uchar * addr);
+#endif
+
+#ifdef CONFIG_DRIVER_RTL8019
+extern void rtl8019_get_enetaddr (uchar * addr);
+#endif
+
+/*
+ * Begin and End of memory area for malloc(), and current "brk"
+ */
+static ulong mem_malloc_start = 0;
+static ulong mem_malloc_end = 0;
+static ulong mem_malloc_brk = 0;
+
+static
+void mem_malloc_init (ulong dest_addr)
+{
+    mem_malloc_start = dest_addr;
+    mem_malloc_end = dest_addr + CFG_MALLOC_LEN;
+    mem_malloc_brk = mem_malloc_start;
+
+    /* memset ((void *) mem_malloc_start, 0,
+            mem_malloc_end - mem_malloc_start); */
+}
+
+void *sbrk (ptrdiff_t increment)
+{
+    ulong old = mem_malloc_brk;
+    ulong new = old + increment;
+
+    if ((new &lt; mem_malloc_start) || (new &gt; mem_malloc_end)) {
+        return (NULL);
+    }
+    mem_malloc_brk = new;
+
+    return ((void *) old);
+}
+
+/************************************************************************
+ * Init Utilities                           *
+ ************************************************************************
+ * Some of this code should be moved into the core functions,
+ * or dropped completely,
+ * but let's get it working (again) first...
+ */
+
+static int init_baudrate (void)
+{
+    char tmp[64];   /* long enough for environment variables */
+    int i = getenv_r ("baudrate", tmp, sizeof (tmp));
+    gd-&gt;bd-&gt;bi_baudrate = gd-&gt;baudrate = (i &gt; 0)
+            ? (int) simple_strtoul (tmp, NULL, 10)
+            : CONFIG_BAUDRATE;
+
+    return (0);
+}
+
+static int display_banner (void)
+{
+    printf ("\n\n%s\n\n", version_string);
+    debug ("U-Boot code: %08lX -&gt; %08lX  BSS: -&gt; %08lX\n",
+           _armboot_start, _bss_start, _bss_end);
+#ifdef CONFIG_MEMORY_UPPER_CODE /* by scsuh */
+    debug("\t\bMalloc and Stack is above the U-Boot Code.\n");
+#else
+    debug("\t\bMalloc and Stack is below the U-Boot Code.\n");
+#endif
+#ifdef CONFIG_MODEM_SUPPORT
+    debug ("Modem Support enabled\n");
+#endif
+#ifdef CONFIG_USE_IRQ
+    debug ("IRQ Stack: %08lx\n", IRQ_STACK_START);
+    debug ("FIQ Stack: %08lx\n", FIQ_STACK_START);
+#endif
+
+    return (0);
+}
+
+/*
+ * WARNING: this code looks "cleaner" than the PowerPC version, but
+ * has the disadvantage that you either get nothing, or everything.
+ * On PowerPC, you might see "DRAM: " before the system hangs - which
+ * gives a simple yet clear indication which part of the
+ * initialization if failing.
+ */
+static int display_dram_config (void)
+{
+    int i;
+
+#ifdef DEBUG
+    puts ("RAM Configuration:\n");
+
+    for(i=0; i&lt;CONFIG_NR_DRAM_BANKS; i++) {
+        printf ("Bank #%d: %08lx ", i, gd-&gt;bd-&gt;bi_dram[i].start);
+        print_size (gd-&gt;bd-&gt;bi_dram[i].size, "\n");
+    }
+#else
+    ulong size = 0;
+
+    for (i=0; i&lt;CONFIG_NR_DRAM_BANKS; i++) {
+        size += gd-&gt;bd-&gt;bi_dram[i].size;
+    }
+
+    puts("DRAM:    ");
+    print_size(size, "\n");
+#endif
+
+    return (0);
+}
+
+#ifndef CFG_NO_FLASH
+static void display_flash_config (ulong size)
+{
+    puts ("Flash:  ");
+    print_size (size, "\n");
+}
+#endif /* CFG_NO_FLASH */
+
+
+/*
+ * Breathe some life into the board...
+ *
+ * Initialize a serial port as console, and carry out some hardware
+ * tests.
+ *
+ * The first part of initialization is running from Flash memory;
+ * its main purpose is to initialize the RAM so that we
+ * can relocate the monitor code to RAM.
+ */
+
+/*
+ * All attempts to come up with a "common" initialization sequence
+ * that works for all boards and architectures failed: some of the
+ * requirements are just _too_ different. To get rid of the resulting
+ * mess of board dependent #ifdef'ed code we now make the whole
+ * initialization sequence configurable to the user.
+ *
+ * The requirements for any new initalization function is simple: it
+ * receives a pointer to the "global data" structure as it's only
+ * argument, and returns an integer return code, where 0 means
+ * "continue" and != 0 means "fatal error, hang the system".
+ */
+typedef int (init_fnc_t) (void);
+
+int print_cpuinfo (void); /* test-only */
+
+init_fnc_t *init_sequence[] = {
+    cpu_init,       /* basic cpu dependent setup */
+    board_init,     /* basic board dependent setup */
+    interrupt_init,     /* set up exceptions */
+    env_init,       /* initialize environment */
+    init_baudrate,      /* initialze baudrate settings */
+    serial_init,        /* serial communications setup */
+    console_init_f,     /* stage 1 init of console */
+    display_banner,     /* say that we are here */
+#if defined(CONFIG_DISPLAY_CPUINFO)
+    print_cpuinfo,      /* display cpu info (and speed) */
+#endif
+#if defined(CONFIG_DISPLAY_BOARDINFO)
+    checkboard,     /* display board info */
+#endif
+    dram_init,      /* configure available RAM banks */
+    display_dram_config,
+    NULL,
+};
+
+void start_armboot (void)
+{
+    init_fnc_t **init_fnc_ptr;
+    char *s;
+#ifndef CFG_NO_FLASH
+    ulong size;
+#endif
+
+#if defined(CONFIG_VFD) || defined(CONFIG_LCD)
+    unsigned long addr;
+#endif
+
+#if defined(CONFIG_BOOT_MOVINAND)
+    uint *magic = (uint *) (PHYS_SDRAM_1);
+#endif
+
+    /* Pointer is writable since we allocated a register for it */
+#ifdef CONFIG_MEMORY_UPPER_CODE /* by scsuh */
+    ulong gd_base;
+
+    gd_base = CFG_UBOOT_BASE + CFG_UBOOT_SIZE - CFG_MALLOC_LEN - CFG_STACK_SIZE - sizeof(gd_t);
+#ifdef CONFIG_USE_IRQ
+    gd_base -= (CONFIG_STACKSIZE_IRQ+CONFIG_STACKSIZE_FIQ);
+#endif
+    gd = (gd_t*)gd_base;
+#else
+    gd = (gd_t*)(_armboot_start - CFG_MALLOC_LEN - sizeof(gd_t));
+#endif
+
+    /* compiler optimization barrier needed for GCC &gt;= 3.4 */
+    __asm__ __volatile__("": : :"memory");
+
+    memset ((void*)gd, 0, sizeof (gd_t));
+    gd-&gt;bd = (bd_t*)((char*)gd - sizeof(bd_t));
+    memset (gd-&gt;bd, 0, sizeof (bd_t));
+
+    monitor_flash_len = _bss_start - _armboot_start;
+
+    for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
+        if ((*init_fnc_ptr)() != 0) {
+            hang ();
+        }
+    }
+
+#ifndef CFG_NO_FLASH
+    /* configure available FLASH banks */
+    size = flash_init ();
+    display_flash_config (size);
+#endif /* CFG_NO_FLASH */
+
+#ifdef CONFIG_VFD
+#   ifndef PAGE_SIZE
+#     define PAGE_SIZE 4096
+#   endif
+    /*
+     * reserve memory for VFD display (always full pages)
+     */
+    /* bss_end is defined in the board-specific linker script */
+    addr = (_bss_end + (PAGE_SIZE - 1)) &amp; ~(PAGE_SIZE - 1);
+    size = vfd_setmem (addr);
+    gd-&gt;fb_base = addr;
+#endif /* CONFIG_VFD */
+
+#ifdef CONFIG_LCD
+#   ifndef PAGE_SIZE
+#     define PAGE_SIZE 4096
+#   endif
+    /*
+     * reserve memory for LCD display (always full pages)
+     */
+    /* bss_end is defined in the board-specific linker script */
+    addr = (_bss_end + (PAGE_SIZE - 1)) &amp; ~(PAGE_SIZE - 1);
+    size = lcd_setmem (addr);
+    gd-&gt;fb_base = addr;
+#endif /* CONFIG_LCD */
+
+    /* armboot_start is defined in the board-specific linker script */
+#ifdef CONFIG_MEMORY_UPPER_CODE /* by scsuh */
+    mem_malloc_init (CFG_UBOOT_BASE + CFG_UBOOT_SIZE - CFG_MALLOC_LEN - CFG_STACK_SIZE);
+#else
+    mem_malloc_init (_armboot_start - CFG_MALLOC_LEN);
+#endif
+
+#if defined(CONFIG_SMDK6400) || defined(CONFIG_SMDK6410) || defined(CONFIG_SMDK6430) || defined(CONFIG_SMDK2450) || defined(CONFIG_SMDK2416) || \
+defined(CONFIG_MINI6410)
+
+#if defined(CONFIG_NAND)
+    puts ("NAND:    ");
+    nand_init();        /* go init the NAND */
+    NAND_Init();
+#endif
+
+#if defined(CONFIG_ONENAND)
+    puts ("OneNAND: ");
+    onenand_init();     /* go init the One-NAND */
+#endif
+
+#if defined(CONFIG_BOOT_MOVINAND)
+    puts ("MMC:     ");
+
+    if ((0x24564236 == magic[0]) &amp;&amp; (0x20764316 == magic[1])) {
+        printf("Boot up for burning\n");
+    } else {
+        movi_set_capacity();
+        movi_set_ofs(MOVI_TOTAL_BLKCNT);
+        movi_init();
+    }
+#endif
+
+#else
+
+#if (CONFIG_COMMANDS &amp; CFG_CMD_NAND)
+    puts ("NAND:    ");
+    nand_init();        /* go init the NAND */
+#endif
+
+#endif
+
+#ifdef CONFIG_HAS_DATAFLASH
+    AT91F_DataflashInit();
+    dataflash_print_info();
+#endif
+
+    /* initialize environment */
+    env_relocate ();
+
+#ifdef CONFIG_VFD
+    /* must do this after the framebuffer is allocated */
+    drv_vfd_init();
+#endif /* CONFIG_VFD */
+
+    /* IP Address */
+    gd-&gt;bd-&gt;bi_ip_addr = getenv_IPaddr ("ipaddr");
+
+    /* MAC Address */
+    {
+        int i;
+        ulong reg;
+        char *s, *e;
+        char tmp[64];
+
+        i = getenv_r ("ethaddr", tmp, sizeof (tmp));
+        s = (i &gt; 0) ? tmp : NULL;
+
+        for (reg = 0; reg &lt; 6; ++reg) {
+            gd-&gt;bd-&gt;bi_enetaddr[reg] = s ? simple_strtoul (s, &amp;e, 16) : 0;
+            if (s)
+                s = (*e) ? e + 1 : e;
+        }
+
+#ifdef CONFIG_HAS_ETH1
+        i = getenv_r ("eth1addr", tmp, sizeof (tmp));
+        s = (i &gt; 0) ? tmp : NULL;
+
+        for (reg = 0; reg &lt; 6; ++reg) {
+            gd-&gt;bd-&gt;bi_enet1addr[reg] = s ? simple_strtoul (s, &amp;e, 16) : 0;
+            if (s)
+                s = (*e) ? e + 1 : e;
+        }
+#endif
+    }
+
+    devices_init ();    /* get the devices list going. */
+
+#ifdef CONFIG_CMC_PU2
+    load_sernum_ethaddr ();
+#endif /* CONFIG_CMC_PU2 */
+
+    jumptable_init ();
+
+    console_init_r ();  /* fully init console as a device */
+
+#if defined(CONFIG_MISC_INIT_R)
+    /* miscellaneous platform dependent initialisations */
+    misc_init_r ();
+#endif
+
+    /* enable exceptions */
+    enable_interrupts ();
+
+    /* Perform network card initialisation if necessary */
+#if defined(CONFIG_DRIVER_DM9000) &amp;&amp; defined(CONFIG_DRIVER_DM9000_NO_EEPROM)
+extern int eth_set_mac(bd_t * bd);
+    if (getenv ("ethaddr")) {
+        eth_set_mac(gd-&gt;bd);
+    }
+#endif
+
+#ifdef CONFIG_DRIVER_CS8900
+    cs8900_get_enetaddr (gd-&gt;bd-&gt;bi_enetaddr);
+#endif
+
+#if defined(CONFIG_DRIVER_SMC91111) || defined (CONFIG_DRIVER_LAN91C96)
+    if (getenv ("ethaddr")) {
+        smc_set_mac_addr(gd-&gt;bd-&gt;bi_enetaddr);
+    }
+#endif /* CONFIG_DRIVER_SMC91111 || CONFIG_DRIVER_LAN91C96 */
+
+    /* Initialize from environment */
+    if ((s = getenv ("loadaddr")) != NULL) {
+        load_addr = simple_strtoul (s, NULL, 16);
+    }
+#if (CONFIG_COMMANDS &amp; CFG_CMD_NET)
+    if ((s = getenv ("bootfile")) != NULL) {
+        copy_filename (BootFile, s, sizeof (BootFile));
+    }
+#endif  /* CFG_CMD_NET */
+
+#ifdef BOARD_LATE_INIT
+    board_late_init ();
+#endif
+#if (CONFIG_COMMANDS &amp; CFG_CMD_NET)
+#if defined(CONFIG_NET_MULTI)
+    puts ("Net:     ");
+#endif
+    eth_initialize(gd-&gt;bd);
+#endif
+    /* main_loop() can return to retry autoboot, if so just run it again. */
+    for (;;) {
+        main_loop ();
+    }
+
+    /* NOTREACHED - no way out of command loop except booting */
+}
+
+void hang (void)
+{
+    puts ("### ERROR ### Please RESET the board ###\n");
+    for (;;);
+}
+
+#ifdef CONFIG_MODEM_SUPPORT
+static inline void mdm_readline(char *buf, int bufsiz);
+
+/* called from main loop (common/main.c) */
+extern void  dbg(const char *fmt, ...);
+int mdm_init (void)
+{
+    char env_str[16];
+    char *init_str;
+    int i;
+    extern char console_buffer[];
+    extern void enable_putc(void);
+    extern int hwflow_onoff(int);
+
+    enable_putc(); /* enable serial_putc() */
+
+#ifdef CONFIG_HWFLOW
+    init_str = getenv("mdm_flow_control");
+    if (init_str &amp;&amp; (strcmp(init_str, "rts/cts") == 0))
+        hwflow_onoff (1);
+    else
+        hwflow_onoff(-1);
+#endif
+
+    for (i = 1;;i++) {
+        sprintf(env_str, "mdm_init%d", i);
+        if ((init_str = getenv(env_str)) != NULL) {
+            serial_puts(init_str);
+            serial_puts("\n");
+            for(;;) {
+                mdm_readline(console_buffer, CFG_CBSIZE);
+                dbg("ini%d: [%s]", i, console_buffer);
+
+                if ((strcmp(console_buffer, "OK") == 0) ||
+                    (strcmp(console_buffer, "ERROR") == 0)) {
+                    dbg("ini%d: cmd done", i);
+                    break;
+                } else /* in case we are originating call ... */
+                    if (strncmp(console_buffer, "CONNECT", 7) == 0) {
+                        dbg("ini%d: connect", i);
+                        return 0;
+                    }
+            }
+        } else
+            break; /* no init string - stop modem init */
+
+        udelay(100000);
+    }
+
+    udelay(100000);
+
+    /* final stage - wait for connect */
+    for(;i &gt; 1;) { /* if 'i' &gt; 1 - wait for connection
+                  message from modem */
+        mdm_readline(console_buffer, CFG_CBSIZE);
+        dbg("ini_f: [%s]", console_buffer);
+        if (strncmp(console_buffer, "CONNECT", 7) == 0) {
+            dbg("ini_f: connected");
+            return 0;
+        }
+    }
+
+    return 0;
+}
+
+/* 'inline' - We have to do it fast */
+static inline void mdm_readline(char *buf, int bufsiz)
+{
+    char c;
+    char *p;
+    int n;
+
+    n = 0;
+    p = buf;
+    for(;;) {
+        c = serial_getc();
+
+        /*      dbg("(%c)", c); */
+
+        switch(c) {
+        case '\r':
+            break;
+        case '\n':
+            *p = '\0';
+            return;
+
+        default:
+            if(n++ &gt; bufsiz) {
+                *p = '\0';
+                return; /* sanity check */
+            }
+            *p = c;
+            p++;
+            break;
+        }
+    }
+}
+#endif  /* CONFIG_MODEM_SUPPORT */
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nand_cp.c]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/20/nand-cp-dot-c/"/>
+    <updated>2015-06-20T15:17:22+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/20/nand-cp-dot-c</id>
+    <content type="html"><![CDATA[<pre><code class="C">#include &lt;common.h&gt;
+#ifdef CONFIG_S3C64XX
+#include &lt;asm/io.h&gt;
+#include &lt;linux/mtd/nand.h&gt;
+#include &lt;regs.h&gt;
+
+/*
+ * address format
+ *              17 16         9 8            0
+ * --------------------------------------------
+ * | block(12bit) | page(5bit) | offset(9bit) |
+ * --------------------------------------------
+ */
+
+static int nandll_read_page (uchar *buf, ulong addr, int large_block)
+{
+        int i;
+    int page_size = 512;
+
+    if (large_block)
+        page_size = 2048;
+
+        NAND_ENABLE_CE();
+
+        NFCMD_REG = NAND_CMD_READ0;
+
+        /* Write Address */
+        NFADDR_REG = 0;
+
+    if (large_block)
+            NFADDR_REG = 0;
+
+    NFADDR_REG = (addr) &amp; 0xff;
+    NFADDR_REG = (addr &gt;&gt; 8) &amp; 0xff;
+    NFADDR_REG = (addr &gt;&gt; 16) &amp; 0xff;
+
+    if (large_block)
+        NFCMD_REG = NAND_CMD_READSTART;
+
+        NF_TRANSRnB();
+
+    /* for compatibility(2460). u32 cannot be used. by scsuh */
+    for(i=0; i &lt; page_size; i++) {
+                *buf++ = NFDATA8_REG;
+        }
+
+        NAND_DISABLE_CE();
+        return 0;
+}
+
+/*
+ * Read data from NAND.
+ */
+static int nandll_read_blocks (ulong dst_addr, ulong size, int large_block)
+{
+        uchar *buf = (uchar *)dst_addr;
+        int i;
+    uint page_shift = 9;
+
+    if (large_block)
+        page_shift = 11;
+
+        /* Read pages */
+        for (i = 0; i &lt; (0x50000&gt;&gt;page_shift); i++, buf+=(1&lt;&lt;page_shift)) {
+                nandll_read_page(buf, i, large_block);
+        }
+
+        return 0;
+}
+
+int copy_uboot_to_ram (void)
+{
+    int large_block = 0;
+    int i;
+    vu_char id;
+
+        NAND_ENABLE_CE();
+        NFCMD_REG = NAND_CMD_READID;
+        NFADDR_REG =  0x00;
+
+    /* wait for a while */
+        for (i=0; i&lt;200; i++);
+    id = NFDATA8_REG;
+    id = NFDATA8_REG;
+
+    if (id &gt; 0x80)
+        large_block = 1;
+
+    /* read NAND Block.
+     * 128KB -&gt;240KB because of U-Boot size increase. by scsuh
+     * So, read 0x3c000 bytes not 0x20000(128KB).
+     */
+    return nandll_read_blocks(CFG_PHY_UBOOT_BASE, 0x50000, large_block);
+}
+
+#endif
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[cpu_init.S]]></title>
@@ -660,1501 +1318,6 @@ mmu_table:
 #define CONFIG_NR_DRAM_BANKS    1      /* we have 2 bank of DRAM */
 #define PHYS_SDRAM_1        MEMORY_BASE_ADDRESS /* SDRAM Bank #1 */
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[raw_machine_code]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/14/raw-machine-code/"/>
-    <updated>2015-06-14T19:39:49+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/14/raw-machine-code</id>
-    <content type="html"><![CDATA[<h3>把外设的基地址告诉CPU</h3>
-
-<pre><code class="C">ldr r0, =0x70000000                     //对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)
-orr r0, r0, #0x13                       //外设大小:256M
-mcr p15,0,r0,c15,c2,4                   //把r0的值(包括了外设基地址+外设大小)告诉cpu
-</code></pre>
-
-<h3>关看门狗</h3>
-
-<pre><code class="C">ldr r0, =0x7E004000
-mov r1, #0
-str r1, [r0]
-</code></pre>
-
-<h3>开启icaches</h3>
-
-<blockquote><ol>
-<li>基于程序访问的局限性，在主存和CPU通用寄存器之间设置了一类高速的、容量较小的存储器，把正在执行的指令地址附件的一部分指令或数据从主存调入这类存储器，供CPU在一段时间内使用，这对提高程序的运行速度又很大的作用。这类介于主存和CPU之间的高速小容量存储器称作cahce。比较常见的cache有icache和dcache，icache的使用比较简单，系统刚上电时，icache中的内容是无效的，并且icache的功能是关闭的，往CP15协处理器中的寄存器1的bit【12】写1可以启动icache，写0可以停止icache。icache关闭时，CPU每次取指令都要读主存，性能非常低，因为icache可以随时启动，所以越早开启越好。，</li>
-<li>与icache相似，dcache在系统刚上电时候里面的内容是无效的，并且dcache的功能是关闭的，往CP15协处理器中的寄存器1的bit【2】写1可以启动dcache，写0可以停止dcache。<code>注意dcache必须在启动mmu后才能被启动</code></li>
-</ol>
-</blockquote>
-
-<pre><code class="C">#ifdef  CONFIG_SYS_ICACHE_OFF
-    bic r0, r0, #0x00001000                 @ clear bit 12 (I) I-cache
-#else
-    orr r0, r0, #0x00001000                 @ set bit 12 (I) I-cache
-#endif
-    mcr p15, 0, r0, c1, c0, 0
-</code></pre>
-
-<h3>死循环</h3>
-
-<pre><code class="C">halt:
-    b halt
-</code></pre>
-
-<blockquote><p>b与bl都是跳转指令，但是bl会把下一条指令的地址保存到寄存器lr中</p></blockquote>
-
-<h3>Makefile</h3>
-
-<pre><code class="C">led.bin : start.o clock.o led.o
-    arm-linux-ld -T leds.lds -o led.elf start.o clock.o led.o
-    arm-linux-objcopy -O binary led.elf led.bin
-    arm-linux-objdump -D led.elf &gt; led.dis
-%.o : %.S
-    arm-linux-gcc -o $@ @&lt; -c
-%.o : %.c
-    arm-linux-gcc -o $@ @&lt; -c
-clean:
-    rm *.o led.elf led.bin led.dis
-</code></pre>
-
-<blockquote><ol>
-<li>6410一上电后，nandflash前8K内容会被硬件原原本本地复制到片内的一个叫stepping stone的区域，该区域被映射到CPU内存地址0处</li>
-<li>在ARM中，pc:r15,lr:r14,sp:r13,ip:r12,fp:r11</li>
-</ol>
-</blockquote>
-
-<h3>CPU时钟设置</h3>
-
-<pre><code class="C">clock_init:
-    // 1. 设置各PLL的LOCK_TIME,使用默认值  
-    ldr r0, =0x7E00F000                         // APLL_LOCK，供cpu使用 
-    ldr r1, =0x0000FFFF
-    str r1, [r0]
-
-    str r1, [r0, #4]                            // MPLL_LOCK，供AHB(存储/中断/lcd等控制器)/APB(看门狗，定时器，SD等)总线上的设备使用 
-    str r1, [r0, #8]                            // EPLL_LOCK，供UART,IIS,IIC使用 
-
-    // 2. 设置为异步模式(Asynchronous mode)  
-#define OTHERS  0x7E00F900
-    ldr r0, =OTHERS                             // OTHERS
-                                                // 《linux installation for u-boot》3.7中：用MPLL作为HCLK和PCLK的Source是异步(ASYNC)模式(当内存时钟与CPU时钟源不一样时需要设置成异步模式)
-                                                // 用APLL是同步(SYNC)模式
-    ldr r1, [r0]
-    bic r1, r1, #0xc0                           // bit[6:7]清0,即SYNCMODE=0/SYNCMUXSEL=0
-    str r1, [r0]
-loop:           
-    ldr r0, =OTHERS
-    ldr r1, [r0]
-    and r1, r1, #0xf00                  
-    cmp r1, #0
-    bne loop        
-
-    // 3. 设置分频系数  
-#define ARM_RATIO    0                          // ARMCLK   = DOUTAPLL / (ARM_RATIO + 1)    = 532/(0+1) = 532  MHz
-#define MPLL_RATIO   0                          // DOUTMPLL = MOUTMPLL / (MPLL_RATIO + 1)   = 532/(0+1) = 532  MHz
-#define HCLKX2_RATIO 1                          // HCLKX2   = HCLKX2IN / (HCLKX2_RATIO + 1) = 532/(1+1) = 266  MHz
-#define HCLK_RATIO   1                          // HCLK     = HCLKX2   / (HCLK_RATIO + 1)   = 266/(1+1) = 133  MHz
-#define PCLK_RATIO   3                          // PCLK     = HCLKX2   / (PCLK_RATIO + 1)   = 266/(3+1) = 66.5 MHz
-
-    ldr r0, =0x7E00F020                         // CLK_DIV0
-    ldr r1, =(ARM_RATIO) | (MPLL_RATIO &lt;&lt; 4) | (HCLK_RATIO &lt;&lt; 8) | (HCLKX2_RATIO &lt;&lt; 9) | (PCLK_RATIO &lt;&lt; 12)
-    str r1, [r0]
-
-    // 4. 设置PLL,放大时钟  
-    // 4.1 配置APLL  
-#define APLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1)) 
-    ldr r0, =0x7E00F00C                         // APLL_CON
-    ldr r1, =APLL_CON_VAL                       // FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz
-    str r1, [r0]        
-
-    // 4.2 配置MPLL  
-#define MPLL_CON_VAL  ((1&lt;&lt;31) | (266 &lt;&lt; 16) | (3 &lt;&lt; 8) | (1))
-    ldr r0, =0x7E00F010                         // MPLL_CON
-    ldr r1, =MPLL_CON_VAL                       // FOUT = MDIV X FIN / (PDIV X 2SDIV) = 266*12/(3*2^1) = 532MHz
-    str r1, [r0]        
-
-#define MPLL_SEL 1
-#define APLL_SEL 1  
-    // 5.选择PLL的输出作为时钟源  
-    ldr r0, =0x7E00F01C                         // CLK_SRC
-    ldr r1, =(MPLL_SEL&lt;&lt;1) | (APLL_SEL&lt;&lt;0)
-    str r1, [r0]
-
-    mov pc, lr
-</code></pre>
-
-<h3>串口UART</h3>
-
-<pre><code class="C">#define ULCON0     (*((volatile unsigned long *)0x7F005000))
-#define UCON0      (*((volatile unsigned long *)0x7F005004))
-#define UFCON0     (*((volatile unsigned long *)0x7F005008))
-#define UMCON0     (*((volatile unsigned long *)0x7F00500C))
-#define UTRSTAT0   (*((volatile unsigned long *)0x7F005010))
-#define UFSTAT0    (*((volatile unsigned long *)0x7F005018))
-#define UTXH0      (*((volatile unsigned char *)0x7F005020))
-#define URXH0      (*((volatile unsigned char *)0x7F005024))
-#define UBRDIV0    (*((volatile unsigned short *)0x7F005028))
-#define UDIVSLOT0  (*((volatile unsigned short *)0x7F00502C))
-#define GPACON     (*((volatile unsigned long *)0x7F008000))
-
-
-void init_uart(void)
-{
-    /* 1. 配置引脚 */
-    GPACON &amp;= ~0xff;
-    GPACON |= 0x22;
-
-    /* 2. 设置数据格式等 */
-    ULCON0 = 0x3;                   // 数据位:8, 无校验, 停止位: 1, 8n1 
-    UCON0  = 0x5;                   // 时钟：PCLK，禁止中断，使能UART发送、接收 
-    UFCON0 = 0x01;                  // FIFO ENABLE
-    UMCON0 = 0;                     // 无流控
-
-    /* 3. 设置波特率 */
-    // DIV_VAL = (PCLK / (bps x 16 ) ) - 1 = (66500000/(115200x16))-1 = 35.08
-    // DIV_VAL = 35.08 = UBRDIVn + (num of 1’s in UDIVSLOTn)/16 
-    UBRDIV0   = 35;
-    UDIVSLOT0 = 0x1;
-
-}
-
-/* 接收一个字符 */
-char getchar(void)
-{
-    while ((UFSTAT0 &amp; 0x7f) == 0);  // 如果RX FIFO空，等待 
-    return URXH0;                   // 取数据 
-}
-
-/* 发送一个字符 */
-void putchar(char c)
-{
-    while (UFSTAT0 &amp; (1&lt;&lt;14));      // 如果TX FIFO满，等待 
-    UTXH0 = c;                      // 写数据 
-}
-</code></pre>
-
-<h3>链接脚本</h3>
-
-<pre><code class="C">SECTIONS
-{
-    . = 0x1000;                     /*当前地址*/
-    .text : {
-        start.o
-        * (.text)
-    }
-
-    . = ALIGN(4);
-    .rodata :{
-        * (.rodata)
-    }
-
-    . = ALIGN(4);       
-    .data : {
-        * (.data)
-    }
-
-    . = ALIGN(4);
-    bss_start = .; 
-    .bss : {                        /*二进制文件中并不包含bss数据*/
-        * (.bss)
-    }
-    bss_end  = .;   
-}
-</code></pre>
-
-<blockquote><ol>
-<li>位置无关吗：跳转指令使用相对地址，如b和bl，并且程序中不使用全局变量,静态变量</li>
-<li>程序运行时应该位于它的链接地址上</li>
-</ol>
-</blockquote>
-
-<h3>DRAM控制器初始化</h3>
-
-<pre><code class="C">#define MEMCCMD     0x7e001004
-#define P1REFRESH   0x7e001010
-#define P1CASLAT    0x7e001014
-#define MEM_SYS_CFG 0x7e00f120
-#define P1MEMCFG    0x7e00100c
-#define P1T_DQSS    0x7e001018
-#define P1T_MRD     0x7e00101c
-#define P1T_RAS     0x7e001020
-#define P1T_RC      0x7e001024
-#define P1T_RCD     0x7e001028
-#define P1T_RFC     0x7e00102c
-#define P1T_RP      0x7e001030
-#define P1T_RRD     0x7e001034
-#define P1T_WR      0x7e001038
-#define P1T_WTR     0x7e00103c
-#define P1T_XP      0x7e001040
-#define P1T_XSR     0x7e001044
-#define P1T_ESR     0x7e001048
-#define P1MEMCFG2   0X7e00104c
-#define P1_chip_0_cfg   0x7e001200
-
-#define P1MEMSTAT   0x7e001000
-#define P1MEMCCMD   0x7e001004
-#define P1DIRECTCMD 0x7e001008
-
-#define HCLK    133000000
-
-#define nstoclk(ns) ( ns/(1000000000/HCLK)+1 )          //+1是四舍五入
-
-/* 根据6410手册P192页相关步骤和sdram手册来初始化dram控制器(dramc) */
-int sdram_init( void )
-{
-    /* 1. 使dramc进入"config"状态 */
-    set_val(P1MEMCCMD, 0x4);
-
-    /* 2. 设置timing parameter, chip configuration,id configuration registers */
-    /* 2.1 刷新周期 */
-    set_val(P1REFRESH, nstoclk(7800));                  //刷新周期:(7.8us)/((1/HCLK)s)=(7.8*10^3)/(1/133*10^6)
-    /* 2.2 时间参数，下列设置全都是取了最小值 */
-    set_val( P1CASLAT, ( 3 &lt;&lt; 1 ) );                    //CAS Latency:指的是内存存取数据所需的延迟时间，简单的说，就是内存接到CPU的指令后的反应速度。一般的参数值是2和3两种。K4X1G163PQ的芯片手册上CAS Latency=3 
-    set_val( P1T_DQSS, 0x1 );                           //下列设置均在sdram手册中可查询到              
-    set_val( P1T_MRD, 0x2 );                            
-    set_val( P1T_RAS, nstoclk(42) );                    
-    set_val( P1T_RC, nstoclk(60) );     
-    u32 trcd = nstoclk( 18 );                           
-    set_val( P1T_RCD, trcd | (( trcd - 3 ) &lt;&lt; 3 ) );
-    u32 trfc = nstoclk( 72 );
-    set_val( P1T_RFC, trfc | ( ( trfc-3 ) &lt;&lt; 5 ) );   
-    u32 trp = nstoclk( 18 );
-    set_val( P1T_RP, trp | ( ( trp - 3 ) &lt;&lt; 3 ) ); 
-    set_val( P1T_RRD, nstoclk(12) );
-    set_val( P1T_WR, nstoclk(12) );
-
-    set_val( P1T_WTR, 0x1 );
-    set_val( P1T_XP, 0x1 );
-    set_val( P1T_XSR, nstoclk(120) );
-    set_val( P1T_ESR, nstoclk(120) );
-
-    /* 2.3 chip configuration */
-    set_nbit( P1MEMCFG, 0, 3, 0x2 );                    // column address(10):A0~A9
-    set_nbit( P1MEMCFG, 3, 3, 0x3 );                    // row address(14):A0~A13
-    set_zero( P1MEMCFG, 6 );                            // A10/AP 
-    set_nbit( P1MEMCFG, 15, 3, 0x2 );                   //  Burst Length (2, 4, 8, 16)
-    set_nbit( P1MEMCFG2, 0, 4, 0x5 );
-    set_2bit( P1MEMCFG2, 6, 0x1 );                      // 32 bit 
-    set_nbit( P1MEMCFG2, 8, 3, 0x3 );                   // Mobile DDR SDRAM     
-    set_2bit( P1MEMCFG2, 11, 0x1 );
-    set_one( P1_chip_0_cfg, 16 );                       // Bank-Row-Column organization 
-
-    /* 3. 初始化sdram */
-    set_val( P1DIRECTCMD, 0xc0000 );                    // NOP
-    set_val( P1DIRECTCMD, 0x000 );                      // precharge
-    set_val( P1DIRECTCMD, 0x40000 );                    // auto refresh
-    set_val( P1DIRECTCMD, 0x40000 );                    // auto refresh
-    set_val( P1DIRECTCMD, 0xa0000 );                    // EMRS
-    set_val( P1DIRECTCMD, 0x80032 );                    // MRS
-
-    set_val( MEM_SYS_CFG, 0x0 );
-
-    /* 4. 使dramc进入"ready"状态   */
-    set_val( P1MEMCCMD, 0x000 );
-    while( !(( read_val( P1MEMSTAT ) &amp; 0x3 ) == 0x1));// 等待dramc进入"ready"状态     
-}
-</code></pre>
-
-<h3>简单重定位(从片内内存重定位到DDR)</h3>
-
-<pre><code class="C">    adr r0, _start          @获得_start指令当前所在的地址
-    ldr r1, =_start         @获得_start的链接地址
-    ldr r2, =bss_start      @bss段的起始链接地址
-    cmp r0, r1
-    beq clean_bss
-copy_loop:
-    ldr r3, [r0], #4        @将r0所指向的内容复制到r3中，然后将r0加4
-    str r3, [r1], #4        @将r3中的内容保存到r1所指向的地址中，然后将r1加4
-    cmp r1, r2
-    bne copy_loop
-
-    /* 把BBS段对应的内存清零 */
-clean_bss:
-    ldr r0, =bss_start
-    ldr r1, =bss_end
-    mov r3, #0
-    cmp r0, r1
-    beq on_ddr
-clean_loop:
-    str r3, [r0], #4
-    cmp r0, r1  
-    bne clean_loop  
-on_ddr:
-    ldr pc, =main           @pc等于main的链接地址
-</code></pre>
-
-<h3>NandFlash驱动</h3>
-
-<blockquote><ol>
-<li>地址，数据，命令复用</li>
-<li>地址多次发出</li>
-<li>NandFlash一页是2K字节，另外每页都会有一个64字节的区域叫做OOB，共64字节,存放校验码</li>
-<li>NandFlash一个块的大小是128K字节
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-<span class='line-number'>224</span>
-<span class='line-number'>225</span>
-<span class='line-number'>226</span>
-<span class='line-number'>227</span>
-<span class='line-number'>228</span>
-<span class='line-number'>229</span>
-<span class='line-number'>230</span>
-<span class='line-number'>231</span>
-<span class='line-number'>232</span>
-<span class='line-number'>233</span>
-<span class='line-number'>234</span>
-<span class='line-number'>235</span>
-<span class='line-number'>236</span>
-<span class='line-number'>237</span>
-<span class='line-number'>238</span>
-<span class='line-number'>239</span>
-<span class='line-number'>240</span>
-<span class='line-number'>241</span>
-<span class='line-number'>242</span>
-<span class='line-number'>243</span>
-<span class='line-number'>244</span>
-<span class='line-number'>245</span>
-<span class='line-number'>246</span>
-<span class='line-number'>247</span>
-<span class='line-number'>248</span>
-<span class='line-number'>249</span>
-<span class='line-number'>250</span>
-<span class='line-number'>251</span>
-<span class='line-number'>252</span>
-<span class='line-number'>253</span>
-<span class='line-number'>254</span>
-<span class='line-number'>255</span>
-<span class='line-number'>256</span>
-<span class='line-number'>257</span>
-<span class='line-number'>258</span>
-<span class='line-number'>259</span>
-<span class='line-number'>260</span>
-<span class='line-number'>261</span>
-<span class='line-number'>262</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">ELFIN_NAND_BASE</span>     <span class="mh">0x70200000</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONF_OFFSET</span>           <span class="mh">0x00</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONT_OFFSET</span>           <span class="mh">0x04</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCMMD_OFFSET</span>           <span class="mh">0x08</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFADDR_OFFSET</span>           <span class="mh">0x0c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFDATA_OFFSET</span>           <span class="mh">0x10</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA0_OFFSET</span>      <span class="mh">0x14</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA1_OFFSET</span>      <span class="mh">0x18</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECCDATA0_OFFSET</span>      <span class="mh">0x1c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSBLK_OFFSET</span>           <span class="mh">0x20</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFEBLK_OFFSET</span>           <span class="mh">0x24</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSTAT_OFFSET</span>           <span class="mh">0x28</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT0_OFFSET</span>         <span class="mh">0x2c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT1_OFFSET</span>         <span class="mh">0x30</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC0_OFFSET</span>          <span class="mh">0x34</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC1_OFFSET</span>          <span class="mh">0x38</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECC_OFFSET</span>           <span class="mh">0x3c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLCBITPT_OFFSET</span>       <span class="mh">0x40</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR0_OFFSET</span>       <span class="mh">0x44</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR1_OFFSET</span>       <span class="mh">0x48</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR2_OFFSET</span>       <span class="mh">0x4c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC0_OFFSET</span>         <span class="mh">0x50</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC1_OFFSET</span>         <span class="mh">0x54</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC2_OFFSET</span>         <span class="mh">0x58</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC3_OFFSET</span>         <span class="mh">0x5c</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLC8BITPT0_OFFSET</span>     <span class="mh">0x60</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLC8BITPT1_OFFSET</span>     <span class="mh">0x64</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONF</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCONF_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONT</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCONT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCMMD</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCMMD_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFADDR</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFADDR_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFDATA</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFDATA_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA0</span>         <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECCDATA0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA1</span>         <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECCDATA1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECCDATA0</span>         <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSECCDATA0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSBLK</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSBLK_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFEBLK</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFEBLK_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSTAT</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSTAT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT0</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFESTAT0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT1</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFESTAT1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC0</span>             <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECC0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC1</span>             <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECC1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECC</span>              <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSECC_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLCBITPT</span>          <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMLCBITPT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR0</span>          <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NF8ECCERR0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR1</span>          <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NF8ECCERR1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF8ECCERR2</span>          <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NF8ECCERR2_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC0</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFM8ECC0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC1</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFM8ECC1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC2</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFM8ECC2_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFM8ECC3</span>            <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFM8ECC3_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLC8BITPT0</span>        <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMLC8BITPT0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLC8BITPT1</span>        <span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMLC8BITPT1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">__REG</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                <span class="p">(</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="p">(</span><span class="k">volatile</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="p">)(</span><span class="n">x</span><span class="p">))</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">__REGb</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>               <span class="p">(</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="p">(</span><span class="k">volatile</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="p">)(</span><span class="n">x</span><span class="p">))</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONF_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCONF_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCONT_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCONT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFCMD_REG</span>               <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFCMMD_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFADDR_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFADDR_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFDATA_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFDATA_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFDATA8_REG</span>             <span class="n">__REGb</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFDATA_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA0_REG</span>         <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECCDATA0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECCDATA1_REG</span>         <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECCDATA1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECCDATA0_REG</span>         <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSECCDATA0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSBLK_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSBLK_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFEBLK_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFEBLK_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSTAT_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSTAT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT0_REG</span>            <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFESTAT0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFESTAT1_REG</span>            <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFESTAT1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC0_REG</span>             <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECC0_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMECC1_REG</span>             <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMECC1_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFSECC_REG</span>              <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFSECC_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NFMLCBITPT_REG</span>          <span class="n">__REG</span><span class="p">(</span><span class="n">ELFIN_NAND_BASE</span><span class="o">+</span><span class="n">NFMLCBITPT_OFFSET</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_DISABLE_CE</span><span class="p">()</span>   <span class="p">(</span><span class="n">NFCONT_REG</span> <span class="o">|=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_ENABLE_CE</span><span class="p">()</span>    <span class="p">(</span><span class="n">NFCONT_REG</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">=</span> <span class="o">~</span><span class="p">(</span><span class="mi">1</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">1</span><span class="p">))</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NF_TRANSRnB</span><span class="p">()</span>       <span class="k">do</span> <span class="p">{</span> <span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">NFSTAT_REG</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="mi">0</span><span class="p">)));</span> <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// Standard NAND flash commands&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_READ0</span>      <span class="mi">0</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_READ1</span>      <span class="mi">1</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_RNDOUT</span>     <span class="mi">5</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_PAGEPROG</span>   <span class="mh">0x10</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_READOOB</span>    <span class="mh">0x50</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_ERASE1</span>     <span class="mh">0x60</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_STATUS</span>     <span class="mh">0x70</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_STATUS_MULTI</span>   <span class="mh">0x71</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_SEQIN</span>      <span class="mh">0x80</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_RNDIN</span>      <span class="mh">0x85</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_READID</span>     <span class="mh">0x90</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_ERASE2</span>     <span class="mh">0xd0</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_RESET</span>      <span class="mh">0xff</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// Extended commands for large page devices&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_READSTART</span>  <span class="mh">0x30</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_RNDOUTSTART</span>    <span class="mh">0xE0</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">NAND_CMD_CACHEDPROG</span> <span class="mh">0x15</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">define</span> <span class="n">MEM_SYS_CFG</span>     <span class="p">(</span><span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="p">((</span><span class="k">volatile</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="p">)</span><span class="mh">0x7E00F120</span><span class="p">))</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kt">void</span> <span class="n">nand_init</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 设置NAND Flash控制器</span>
-</span><span class='line'>    <span class="n">NFCONF_REG</span> <span class="o">=</span> <span class="p">(</span> <span class="p">(</span><span class="mh">0x2</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="mi">12</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0xf</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="mi">8</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="mh">0x7</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="mi">4</span><span class="p">)</span> <span class="p">);</span>
-</span><span class='line'>    <span class="n">NFCONT_REG</span> <span class="o">|=</span> <span class="p">(</span><span class="mh">0x3</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="mi">0</span><span class="p">);</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 读一页，即2048byte</span>
-</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="n">nandll_read_page</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 发片选</span>
-</span><span class='line'><span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 发读命令：0x00</span>
-</span><span class='line'><span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>
-</span><span class='line'><span class="c1">// 发地址</span>
-</span><span class='line'><span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="mh">0xff</span><span class="p">;</span>
-</span><span class='line'><span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="mh">0xff</span><span class="p">;</span>
-</span><span class='line'><span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="mh">0xff</span><span class="p">;</span>
-</span><span class='line'><span class="c1">// 发读命令：0x30</span>
-</span><span class='line'><span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 等待数据</span>
-</span><span class='line'><span class="n">NF_TRANSRnB</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 连续读2048个字节</span>
-</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 取消片选</span>
-</span><span class='line'><span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">// 从NAND中拷贝代码到DRAM</span>
-</span><span class='line'><span class="kt">int</span> <span class="n">copy2ddr</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">nand_start</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ddr_start</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span><span class="p">)</span><span class="n">ddr_start</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// 发片选</span>
-</span><span class='line'><span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 使len为2048的整数倍</span>
-</span><span class='line'><span class="n">len</span> <span class="o">=</span> <span class="p">(</span><span class="n">len</span><span class="o">/</span><span class="mi">2048</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">2048</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 循环拷贝，每次拷贝一页数据</span>
-</span><span class='line'><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="p">(</span><span class="n">len</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">page_shift</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">buf</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">page_shift</span><span class="p">))</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 读一页，即2048byte</span>
-</span><span class='line'>    <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<h3>异常向量表</h3>
-
-<blockquote><ol>
-<li>CPU一上电进入SVC模式</li>
-<li>当CPU进入异常模式后，当前的cpsr的值会被保存到相应的spsr_xxx中</li>
-<li>swi用来做系统调用</li>
-<li>未定义异常用来做调试，打断点</li>
-</ol>
-</blockquote>
-
-<pre><code class="C">.globl _start
-_start:
-    // 异常向量表
-    b reset                             /* 复位时,cpu跳到0地址 */
-    ldr     pc, _undefined_instruction  /* 未定义指令异常 */
-    ldr     pc, _swi                    /* swi异常，进入svc模式 */
-    @ldr    pc, _prefetch_abort         /* 预取中止异常 */
-    @ldr    pc, _data_abort             /* 数据访问异常 */
-    @ldr    pc, _not_used               /* 没用到 */
-    @ldr    pc, _irq                    /* 中断异常 */
-    @ldr    pc, _fiq                    /* 快中断异常 */
-</code></pre>
-
-<h3>进入user模式</h3>
-
-<pre><code class="C">    // 进入user 模式
-    mrs r0, cpsr   
-    bic r0,r0,#0x1f
-    orr r0,r0,#0x10
-    msr cpsr,r0
-</code></pre>
-
-<h3>中断</h3>
-
-<blockquote><ol>
-<li>CPU执行每一条指令前都会先判断有无中断发生，如果有，则硬件自动完成以下工作：
-
-<ul>
-<li>CPU进入IRQ模式</li>
-<li>当前的CPSR值保存到自己的SPSR寄存器中</li>
-<li>切换使用当前模式的R13和R14</li>
-<li>将下一条指令的地址保存到寄存器R14(即lr寄存器)中</li>
-<li>跳转到0x18地址</li>
-</ul>
-</li>
-<li>软件执行的工作：
-
-<ul>
-<li>分辨中断源，调用对应的中断处理函数</li>
-</ul>
-</li>
-</ol>
-</blockquote>
-
-<h3>LCD</h3>
-
-<blockquote><ul>
-<li>怎么写LCD驱动程序
-
-<ol>
-<li>设置LCD控制器
-
-<ul>
-<li>分辨率</li>
-<li>时间参数</li>
-</ul>
-</li>
-<li>分配一部分DDR中的内存，并告诉LCD控制器</li>
-<li>设置像素的颜色格式</li>
-</ol>
-</li>
-</ul>
-</blockquote>
-
-<h3>内存管理单元</h3>
-
-<blockquote><ul>
-<li>功能：权限管理，地址映射</li>
-<li>段映射的单位是1M</li>
-<li>步骤：
-
-<ol>
-<li>建立表格</li>
-<li>把表格地址告诉MMU</li>
-<li>启动MMU</li>
-</ol>
-</li>
-</ul>
-</blockquote>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[start.S]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/13/start-dot-s/"/>
-    <updated>2015-06-13T23:15:44+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/13/start-dot-s</id>
-    <content type="html"><![CDATA[<pre><code class="C start.S">#include &lt;config.h&gt;
-#include &lt;version.h&gt;
-
-#include &lt;regs.h&gt;       /*6410外设寄存器头文件*/
-
-/*6410在Uboot中是开启MMU的，目的为了开启DCache来提高运行速度,CFG_PHY_UBOOT_BASE=0x57e00000*/
-#ifndef CONFIG_ENABLE_MMU
-#ifndef CFG_PHY_UBOOT_BASE
-#define CFG_PHY_UBOOT_BASE  CFG_UBOOT_BASE
-#endif
-#endif
-
-/*
- *************************************************************************
- *
- * Jump vector table as in table 3.1 in [1]
- *
- *************************************************************************
- */
-
-.globl _start       /*在u-boot.lds中指明了ENTRY(_start),所以这里需要对外公开_start的地址*/
-/*下面是异常向量表,地址范围0~0x20,正好8条指令，每条指令4字节*/
-_start: b   reset   /*相对跳转指令，位置无关码*/
-    ldr pc, _undefined_instruction  /*undefined异常由arm核译码单元检测，并触发未定义指令异常请求，硬件设置pc的值为0x4，强制程序从内存0x4地址执行指令*/
-    ldr pc, _software_interrupt     /*arm中使用swi指令时触发软件中断，硬件设置PC的值为0x8，同时进入系统模式，多用在系统库的编写*/
-    ldr pc, _prefetch_abort         /*prefetch异常，预取指中止异常，导致正在取的指令无法正常取出，这里需要注意流水线造成的pc值*/
-    ldr pc, _data_abort             /*data中止，无法获取数据，产生的原因有可能是内存未准备好、内存无读或写权限等一些原因产生的异常*/
-    ldr pc, _not_used               /* 0x14暂时未使用*/
-    ldr pc, _irq                    /* 0x18提供系统硬件中断跳转接口*/
-    ldr pc, _fiq                    /* 0x1c地址为_fiq快速中断，一个系统在中断流水线上可能产生很多中断，但快中断只会有一个*/
-
-_undefined_instruction:
-    .word undefined_instruction
-_software_interrupt:
-    .word software_interrupt
-_prefetch_abort:
-    .word prefetch_abort
-_data_abort:
-    .word data_abort
-_not_used:
-    .word not_used
-_irq:
-    .word irq
-_fiq:
-    .word fiq
-_pad:
-    .word 0x12345678 /* now 16*4=64 */
-.global _end_vect   /*全局变量_end_vect*/
-_end_vect:
-
-    .balignl 16,0xdeadbeef          /*.balign 的作用同.align,用于表示对齐方式:通过添加填充字节使当前位置满足一定的对齐方式,以下代码按照16位对齐，不足位补上0xdeadbeef*/
-/*
- *************************************************************************
- *
- * Startup Code (reset vector)
- *
- * do important init only if we don't start from memory!
- * setup Memory and board specific bits prior to relocation.
- * relocate armboot to ram
- * setup stack
- *
- *************************************************************************
- */
-
-_TEXT_BASE:
-    .word   TEXT_BASE       /*定义uboot程序的运行地址，值为0xc7e0 0000,TEXT_BASE在编译的时候，通过向编译器传递参数获得,值的定义在config.mk中，Makefile会包含它*/
-
-/*
- * Below variable is very important because we use MMU in U-Boot.
- * Without it, we cannot run code correctly before MMU is ON.
- * by scsuh.
- */
-_TEXT_PHY_BASE:             /*MMU开启前uboot在内存存放的是真实物理地址,0x57e0 0000*/
-    .word   CFG_PHY_UBOOT_BASE
-
-.globl _armboot_start
-_armboot_start:
-    .word _start
-
-/*
- * These are defined in the board-specific linker script.
- */
-.globl _bss_start
-_bss_start:
-    .word __bss_start       /*_bss_start 保存的是__bss_start 这个标号所在的地址,不受编译时地址的影响，表示当前代码所在的地址不是编译时的地址*/
-
-.globl _bss_end
-_bss_end:
-    .word _end
-
-/*uboot里面没有开启IRQ中断功能*/
-#ifdef CONFIG_USE_IRQ
-/* IRQ stack memory (calculated at run-time) */
-.globl IRQ_STACK_START
-IRQ_STACK_START:
-    .word   0x0badc0de
-
-/* IRQ stack memory (calculated at run-time) */
-.globl FIQ_STACK_START
-FIQ_STACK_START:
-    .word 0x0badc0de
-#endif
-
-/*
- * the actual reset code
- */
-
-/*MRS {} Rd,CPSR/SPSR语句的意思：将 CPSR/SPSR的值传送到Rd*/
-/*MSR {} CPSR|SPSR,Rm语句的意思：将Rm中的值保存到CPSR/SPSR*/
-reset:
-    /*
-     * set the cpu to SVC32 mode
-     */
-/*进入SVC模式(保证CPSR寄存器的最低5位为10011)，由于ARM上电就处于SVC模式，故此代码可以省略*/
-    mrs r0,cpsr
-    bic r0,r0,#0x1f
-    orr r0,r0,#0xd3         /*把0xd3赋给CPSR，即1101 0011，最高两位置1的意思是关闭中断和快中断,bit【5】为0的意思是cpu的状态为arm状态，如果是1则cpu进入thumb状态*/
-    msr cpsr,r0
-
-/*
- *************************************************************************
- *
- * CPU_init_critical registers
- *
- * setup important registers
- * setup memory timing
- *
- *************************************************************************
- */
-         /*
-         * we do sys-critical inits only at reboot,
-         * not when booting from ram!
-         */
-cpu_init_crit:
-    /*
-     * flush v4 I/D caches
-     */
-/*mcr的意思是把arm寄存器的值赋给coprocesser寄存器*/
-/*mrc的意思是把coprocesser寄存器的值赋给arm寄存器*/
-/*mcr{cond} coproc,opcode1,Rd,CRn,CRm,{opcode2}:coproc是协处理器，标准名为Pn，n=1~15，对应CPn；opcode1位协处理器行为操作吗，必须为0，否则协处理器状态不确定；Rd为ARM的寄存器；CRn为目标寄存器；CRm为附加寄存器，不使用的时候设为0*/
-/*CP15是系统控制协处理器，用于连接在内存中的页表描述符,它是外部内存端口映射寄存器,32位，在开关MMU的时候发生作用，且优先级最高*/
-/*c7，c8都被清零*/
-    mov r0, #0
-    mcr p15, 0, r0, c7, c7, 0   /* flush v3/v4 cache */
-    mcr p15, 0, r0, c8, c7, 0   /* flush v4 TLB */
-
-    /*
-     * disable MMU stuff and caches
-     */
-/*c1是控制寄存器,其中13,9,8位为 V、R、S：V位是对高端异常向量表的支持，如果选择0异常向量表为0x00000000-0x0000001c，如果选择1异常向量表就是FFFF0000-FFFF001c；R位用于ROM保护的，具体的还要与c5里面的配合,S在这里面的意思也是用于系统保护的*/
-    mrc p15, 0, r0, c1, c0, 0       
-    bic r0, r0, #0x00002300 @ clear bits 13, 9:8 (--V- --RS)
-    bic r0, r0, #0x00000087 @ clear bits 7, 2:0 (B--- -CAM)     /*B为0表示支持小little-endian,M为0代表禁止MMU,A为0代表禁止地址对齐检查，C为0代表禁止指令数据cache控制*/
-    orr r0, r0, #0x00000002 @ set bit 2 (A) Align               /*A为1代表使能地址对齐检查*/
-    orr r0, r0, #0x00001000 @ set bit 12 (I) I-Cache                /*I为1代表打开指令缓存*/
-    mcr p15, 0, r0, c1, c0, 0
-
-    /* Peri port setup */
-/*把外设的基地址告诉CPU*/
-    ldr r0, =0x70000000         /*对于6410来说,内存(0x00000000～0x60000000),外设(0x70000000-0x7fffffff)*/
-    orr r0, r0, #0x13           /*外设大小:256M*/
-    mcr p15,0,r0,c15,c2,4       @ 256M(0x70000000-0x7fffffff)
-
-/*关闭看门狗*/
-/*一般都在外部专门有一个看门狗,做一个外部的电路,不在cpu内部使用看门狗,cpu内部的看门狗只是复位一个cpu,当开发板很复杂时,有好几个cpu 时,就不能完全让板子复位*/
-
-    /*
-     * Go setup Memory and board specific bits prior to relocation.
-     */
-/*在lowlevel.S中实现比如说点亮LED灯、关闭watchdog、关闭中断、系统时钟初始、nand flash初始化、内存控制器初始化*/
-    bl  lowlevel_init   /* go setup pll,mux,memory */
-
-    /* when we already run in ram, we don't need to relocate U-Boot.
-     * and actually, memory controller must be configured before U-Boot
-     * is running in ram.
-     */
-/*跳转出来以后，继续执行下面的代码，下面的代码是判断程序是否已经在ram中了，在的话就不拷贝，直接跳转到after_copy了，否则继续执行下面的代码*/
-    ldr r0, =0xff000fff
-    bic r1, pc, r0      /* r0 &lt;- current base addr of code */
-    ldr r2, _TEXT_BASE      /* r1 &lt;- original base addr in ram */
-    bic r2, r2, r0      /* r0 &lt;- current base addr of code */
-    cmp     r1, r2                  /* compare r0, r1                  */
-    beq     after_copy      /* r0 == r1 then skip flash copy   */
-
-#ifdef CONFIG_BOOT_NAND     /*从Nand启动*/
-    mov r0, #0x1000
-    bl  copy_from_nand      /*具体实现在后面的代码*/
-#endif
-
-#ifdef CONFIG_BOOT_MOVINAND /*从SD卡启动*/
-    ldr sp, _TEXT_PHY_BASE  /*因为要调用C函数，所以先要设置栈指针，此时MMU没有开启，堆栈栈顶地址为0x57e00000,ARM中的栈向下(低地址)生长*/
-    bl  movi_bl2_copy       /*具体实现代码在于cpu/s3c64xx/movi.c*/
-    b   after_copy
-#endif
-
-after_copy:
-
-/*协处理器c3的作用是存储的保护和控制，用在MMU中为内存的域访问控制，c3为32位寄存器，每两位为一个访问控制特权，0x00代表没有访问权限，这时候访问将失效；0x01为客户类型，将根据地址变换条目中的访问控制位决定是否允许特定内存访问；0x10是保留的，暂时没有使用，0x11为管理者权限，不考虑地址变换条目中的权限控制位，将不会访问内存失效。*/
-/*协处理器c2用于保存页表基地址。所谓页表基地址即是虚实转换的内存页表的首地址*/  
-#ifdef CONFIG_ENABLE_MMU
-enable_mmu:
-    /* enable domain access */
-    ldr r5, =0x0000ffff
-    mcr p15, 0, r5, c3, c0, 0       /*代码的含义为设置高8个域无访问权限，低8个域为管理者权限*/
-
-    /* Set the TTB register */
-    ldr r0, _mmu_table_base         /*_mmu_table_base=mmu_table,mmu_table在lowlevel_init.S中*/
-    ldr r1, =CFG_PHY_UBOOT_BASE
-    ldr r2, =0xfff00000
-    bic r0, r0, r2
-    orr r1, r0, r1
-    mcr p15, 0, r1, c2, c0, 0       /*r1的值为0x57exxxxx*/
-
-    /* Enable the MMU */
-mmu_on:
-    mrc p15, 0, r0, c1, c0, 0
-    orr r0, r0, #1                  /* Set CR_M to enable MMU */
-    mcr p15, 0, r0, c1, c0, 0       /*将c1的最后一位置1*/
-    nop
-    nop
-    nop
-    nop
-#endif
-
-skip_hw_init:
-    /* Set up the stack */
-stack_setup:
-#ifdef CONFIG_MEMORY_UPPER_CODE
-    ldr sp, =(CFG_UBOOT_BASE + CFG_UBOOT_SIZE - 0xc)    /*sp = 0xc7e0 0000+0x20 0000-0xc=0xc7ff fff4*/
-#else
-    ldr r0, _TEXT_BASE                                  /* upper 128 KiB: relocated uboot */
-    sub r0, r0, #CFG_MALLOC_LEN                         /* malloc area */
-    sub r0, r0, #CFG_GBL_DATA_SIZE                      /* bdinfo  */
-#ifdef CONFIG_USE_IRQ
-    sub r0, r0, #(CONFIG_STACKSIZE_IRQ+CONFIG_STACKSIZE_FIQ)
-#endif
-    sub sp, r0, #12                                     /* leave 3 words for abort-stack    */
-
-#endif
-
-clear_bss:
-    ldr r0, _bss_start                                  /* find start of bss segment*/
-    ldr r1, _bss_end                                
-    mov     r2, #0x00000000                             
-
-clbss_l:
-    str r2, [r0]        
-    add r0, r0, #4
-    cmp r0, r1
-    ble clbss_l                                         /*ble指令表明：小于或者等于就跳转*/
-
-    ldr pc, _start_armboot                              /*跳转到uboot代码的第二个阶段的入口点。这里不能使用b跳转指令，因为此时代码还没有在ddr中运行*/
-
-_start_armboot:
-    .word start_armboot                                 /*定义在lib_arm/board.c中的函数*/
-
-#ifdef CONFIG_ENABLE_MMU
-_mmu_table_base:
-    .word mmu_table                                     /*在lowlevel_init.S中将mmu_tabel声明为全局变量*/
-#endif
-
-/*
- * copy U-Boot to SDRAM and jump to ram (from NAND or OneNAND)
- * r0: size to be compared
- * Load 1'st 2blocks to RAM because U-boot's size is larger than 1block(128k) size
- */
-    .globl copy_from_nand
-copy_from_nand:
-    mov r10, lr                                         /* save return address */
-
-    mov r9, r0
-    /* get ready to call C functions */
-    ldr sp, _TEXT_PHY_BASE                              /*设置好临时的堆栈指针,此时MMU还没有开启，所以sp=0x57e0 0000*/
-    sub sp, sp, #12
-    mov fp, #0                                          /* no previous frame, so fp=0 */
-    mov r9, #0x1000
-    bl  copy_uboot_to_ram                               /*函数在cpu/s3c64xx/Nand_cp.c中.从nand中读取0x50000(大于uboot实际大小)大小的内容到内存0x57e00000中,*/
-
-3:  tst     r0, #0x0                                    /*r0中保存着copy_uboot_to_ram的返回值，如果返回值不是0，就表明失败,进入死循环*/
-    bne copy_failed
-
-    ldr r0, =0x0c000000                                 /*校验拷贝是否失真，比较的地址为：0x0c000000(stepping stone)和0x57e0 0000*/
-    ldr r1, _TEXT_PHY_BASE
-1:  ldr r3, [r0], #4
-    ldr r4, [r1], #4
-    teq r3, r4
-    bne compare_failed  /* not matched */               /*如果发生了失真就进入死循环*/
-    subs    r9, r9, #4                                  /*总共比较4K大小的数据，没有全部比较*/
-    bne 1b
-
-4:  mov lr, r10     /* all is OK */
-    mov pc, lr
-
-copy_failed:
-    nop         /* copy from nand failed */
-    b   copy_failed
-
-compare_failed:
-    nop         /* compare failed */
-    b   compare_failed
-
-/*
- * we assume that cache operation is done before. (eg. cleanup_before_linux())
- * actually, we don't need to do anything about cache if not use d-cache in U-Boot
- * So, in this function we clean only MMU. by scsuh
- *
- * void theLastJump(void *kernel, int arch_num, uint boot_params);
- */
-#ifdef CONFIG_ENABLE_MMU
-    .globl theLastJump
-theLastJump:
-    mov r9, r0
-    ldr r3, =0xfff00000
-    ldr r4, _TEXT_PHY_BASE
-    adr r5, phy_last_jump
-    bic r5, r5, r3
-    orr r5, r5, r4
-    mov pc, r5
-phy_last_jump:
-    /*
-     * disable MMU stuff
-     */
-    mrc p15, 0, r0, c1, c0, 0
-    bic r0, r0, #0x00002300 /* clear bits 13, 9:8 (--V- --RS) */
-    bic r0, r0, #0x00000087 /* clear bits 7, 2:0 (B--- -CAM) */
-    orr r0, r0, #0x00000002 /* set bit 2 (A) Align */
-    orr r0, r0, #0x00001000 /* set bit 12 (I) I-Cache */
-    mcr p15, 0, r0, c1, c0, 0
-
-    mcr p15, 0, r0, c8, c7, 0   /* flush v4 TLB */
-
-    mov r0, #0
-    mov pc, r9
-#endif
-/*
- *************************************************************************
- *
- * Interrupt handling
- *
- *************************************************************************
- */
-@
-@ IRQ stack frame.
-@
-#define S_FRAME_SIZE    72
-
-#define S_OLD_R0    68
-#define S_PSR       64
-#define S_PC        60
-#define S_LR        56
-#define S_SP        52
-
-#define S_IP        48
-#define S_FP        44
-#define S_R10       40
-#define S_R9        36
-#define S_R8        32
-#define S_R7        28
-#define S_R6        24
-#define S_R5        20
-#define S_R4        16
-#define S_R3        12
-#define S_R2        8
-#define S_R1        4
-#define S_R0        0
-
-#define MODE_SVC 0x13
-#define I_BIT    0x80
-
-/*
- * use bad_save_user_regs for abort/prefetch/undef/swi ...
- * use irq_save_user_regs / irq_restore_user_regs for IRQ/FIQ handling
- */
-
-    .macro  bad_save_user_regs
-    sub sp, sp, #S_FRAME_SIZE       @ carve out a frame on current user stack
-    stmia   sp, {r0 - r12}          @ Save user registers (now in svc mode) r0-r12
-
-    ldr r2, _armboot_start
-    sub r2, r2, #(CFG_MALLOC_LEN)
-    sub r2, r2, #(CFG_GBL_DATA_SIZE+8)  @ set base 2 words into abort stack
-    ldmia   r2, {r2 - r3}           @ get values for "aborted" pc and cpsr (into parm regs)
-    add r0, sp, #S_FRAME_SIZE       @ grab pointer to old stack
-
-    add r5, sp, #S_SP
-    mov r1, lr
-    stmia   r5, {r0 - r3}           @ save sp_SVC, lr_SVC, pc, cpsr
-    mov r0, sp              @ save current stack into r0 (param register)
-    .endm
-
-    .macro  irq_save_user_regs
-    sub sp, sp, #S_FRAME_SIZE
-    stmia   sp, {r0 - r12}          @ Calling r0-r12
-    add r8, sp, #S_PC           @ !!!! R8 NEEDS to be saved !!!! a reserved stack spot would be good.
-    stmdb   r8, {sp, lr}^           @ Calling SP, LR
-    str lr, [r8, #0]            @ Save calling PC
-    mrs r6, spsr
-    str r6, [r8, #4]            @ Save CPSR
-    str r0, [r8, #8]            @ Save OLD_R0
-    mov r0, sp
-    .endm
-
-    .macro  irq_restore_user_regs
-    ldmia   sp, {r0 - lr}^          @ Calling r0 - lr
-    mov r0, r0
-    ldr lr, [sp, #S_PC]         @ Get PC
-    add sp, sp, #S_FRAME_SIZE
-    subs    pc, lr, #4          @ return &amp; move spsr_svc into cpsr
-    .endm
-
-    .macro get_bad_stack
-    ldr r13, _armboot_start     @ setup our mode stack (enter in banked mode)
-    sub r13, r13, #(CFG_MALLOC_LEN) @ move past malloc pool
-    sub r13, r13, #(CFG_GBL_DATA_SIZE+8) @ move to reserved a couple spots for abort stack
-
-    str lr, [r13]           @ save caller lr in position 0 of saved stack
-    mrs lr, spsr            @ get the spsr
-    str lr, [r13, #4]           @ save spsr in position 1 of saved stack
-
-    mov r13, #MODE_SVC          @ prepare SVC-Mode
-    @ msr   spsr_c, r13
-    msr spsr, r13           @ switch modes, make sure moves will execute
-    mov lr, pc              @ capture return pc
-    movs    pc, lr              @ jump to next instruction &amp; switch modes.
-    .endm
-
-    .macro get_bad_stack_swi
-    sub r13, r13, #4            @ space on current stack for scratch reg.
-    str r0, [r13]           @ save R0's value.
-    ldr r0, _armboot_start      @ get data regions start
-    sub r0, r0, #(CFG_MALLOC_LEN)   @ move past malloc pool
-    sub r0, r0, #(CFG_GBL_DATA_SIZE+8)  @ move past gbl and a couple spots for abort stack
-    str lr, [r0]            @ save caller lr in position 0 of saved stack
-    mrs r0, spsr            @ get the spsr
-    str lr, [r0, #4]            @ save spsr in position 1 of saved stack
-    ldr r0, [r13]           @ restore r0
-    add r13, r13, #4            @ pop stack entry
-    .endm
-
-    .macro get_irq_stack            @ setup IRQ stack
-    ldr sp, IRQ_STACK_START
-    .endm
-
-    .macro get_fiq_stack            @ setup FIQ stack
-    ldr sp, FIQ_STACK_START
-    .endm
-
-/*
- * exception handlers
- */
-    .align  5
-undefined_instruction:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_undefined_instruction
-
-    .align  5
-software_interrupt:
-    get_bad_stack_swi
-    bad_save_user_regs
-    bl  do_software_interrupt
-
-    .align  5
-prefetch_abort:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_prefetch_abort
-
-    .align  5
-data_abort:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_data_abort
-
-    .align  5
-not_used:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_not_used
-
-#ifdef CONFIG_USE_IRQ
-
-    .align  5
-irq:
-    get_irq_stack
-    irq_save_user_regs
-    bl  do_irq
-    irq_restore_user_regs
-
-    .align  5
-fiq:
-    get_fiq_stack
-    /* someone ought to write a more effiction fiq_save_user_regs */
-    irq_save_user_regs
-    bl  do_fiq
-    irq_restore_user_regs
-
-#else
-
-    .align  5
-irq:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_irq
-
-    .align  5
-fiq:
-    get_bad_stack
-    bad_save_user_regs
-    bl  do_fiq
-
-#endif
-    .align 5
-.global arm1136_cache_flush
-arm1136_cache_flush:
-        mcr p15, 0, r1, c7, c5, 0   @ invalidate I cache
-        mov pc, lr          @ back to caller
-
-#if defined(CONFIG_INTEGRATOR) &amp;&amp; defined(CONFIG_ARCH_CINTEGRATOR)
-/* Use the IntegratorCP function from board/integratorcp/platform.S */
-#elif defined(CONFIG_S3C64XX)
-/* For future usage of S3C64XX*/
-#else
-    .align  5
-.globl reset_cpu
-reset_cpu:
-    ldr r1, rstctl  /* get addr for global reset reg */
-    mov r3, #0x2    /* full reset pll+mpu */
-    str r3, [r1]    /* force reset */
-    mov r0, r0
-_loop_forever:
-    b   _loop_forever
-rstctl:
-    .word   PM_RSTCTRL_WKUP
-
-#endif
-</code></pre>
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   

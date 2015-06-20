@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-20T15:14:34+08:00</updated>
+  <updated>2015-06-20T15:24:55+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,1306 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[board.c]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
+    <updated>2015-06-20T15:23:31+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+<span class='line-number'>347</span>
+<span class='line-number'>348</span>
+<span class='line-number'>349</span>
+<span class='line-number'>350</span>
+<span class='line-number'>351</span>
+<span class='line-number'>352</span>
+<span class='line-number'>353</span>
+<span class='line-number'>354</span>
+<span class='line-number'>355</span>
+<span class='line-number'>356</span>
+<span class='line-number'>357</span>
+<span class='line-number'>358</span>
+<span class='line-number'>359</span>
+<span class='line-number'>360</span>
+<span class='line-number'>361</span>
+<span class='line-number'>362</span>
+<span class='line-number'>363</span>
+<span class='line-number'>364</span>
+<span class='line-number'>365</span>
+<span class='line-number'>366</span>
+<span class='line-number'>367</span>
+<span class='line-number'>368</span>
+<span class='line-number'>369</span>
+<span class='line-number'>370</span>
+<span class='line-number'>371</span>
+<span class='line-number'>372</span>
+<span class='line-number'>373</span>
+<span class='line-number'>374</span>
+<span class='line-number'>375</span>
+<span class='line-number'>376</span>
+<span class='line-number'>377</span>
+<span class='line-number'>378</span>
+<span class='line-number'>379</span>
+<span class='line-number'>380</span>
+<span class='line-number'>381</span>
+<span class='line-number'>382</span>
+<span class='line-number'>383</span>
+<span class='line-number'>384</span>
+<span class='line-number'>385</span>
+<span class='line-number'>386</span>
+<span class='line-number'>387</span>
+<span class='line-number'>388</span>
+<span class='line-number'>389</span>
+<span class='line-number'>390</span>
+<span class='line-number'>391</span>
+<span class='line-number'>392</span>
+<span class='line-number'>393</span>
+<span class='line-number'>394</span>
+<span class='line-number'>395</span>
+<span class='line-number'>396</span>
+<span class='line-number'>397</span>
+<span class='line-number'>398</span>
+<span class='line-number'>399</span>
+<span class='line-number'>400</span>
+<span class='line-number'>401</span>
+<span class='line-number'>402</span>
+<span class='line-number'>403</span>
+<span class='line-number'>404</span>
+<span class='line-number'>405</span>
+<span class='line-number'>406</span>
+<span class='line-number'>407</span>
+<span class='line-number'>408</span>
+<span class='line-number'>409</span>
+<span class='line-number'>410</span>
+<span class='line-number'>411</span>
+<span class='line-number'>412</span>
+<span class='line-number'>413</span>
+<span class='line-number'>414</span>
+<span class='line-number'>415</span>
+<span class='line-number'>416</span>
+<span class='line-number'>417</span>
+<span class='line-number'>418</span>
+<span class='line-number'>419</span>
+<span class='line-number'>420</span>
+<span class='line-number'>421</span>
+<span class='line-number'>422</span>
+<span class='line-number'>423</span>
+<span class='line-number'>424</span>
+<span class='line-number'>425</span>
+<span class='line-number'>426</span>
+<span class='line-number'>427</span>
+<span class='line-number'>428</span>
+<span class='line-number'>429</span>
+<span class='line-number'>430</span>
+<span class='line-number'>431</span>
+<span class='line-number'>432</span>
+<span class='line-number'>433</span>
+<span class='line-number'>434</span>
+<span class='line-number'>435</span>
+<span class='line-number'>436</span>
+<span class='line-number'>437</span>
+<span class='line-number'>438</span>
+<span class='line-number'>439</span>
+<span class='line-number'>440</span>
+<span class='line-number'>441</span>
+<span class='line-number'>442</span>
+<span class='line-number'>443</span>
+<span class='line-number'>444</span>
+<span class='line-number'>445</span>
+<span class='line-number'>446</span>
+<span class='line-number'>447</span>
+<span class='line-number'>448</span>
+<span class='line-number'>449</span>
+<span class='line-number'>450</span>
+<span class='line-number'>451</span>
+<span class='line-number'>452</span>
+<span class='line-number'>453</span>
+<span class='line-number'>454</span>
+<span class='line-number'>455</span>
+<span class='line-number'>456</span>
+<span class='line-number'>457</span>
+<span class='line-number'>458</span>
+<span class='line-number'>459</span>
+<span class='line-number'>460</span>
+<span class='line-number'>461</span>
+<span class='line-number'>462</span>
+<span class='line-number'>463</span>
+<span class='line-number'>464</span>
+<span class='line-number'>465</span>
+<span class='line-number'>466</span>
+<span class='line-number'>467</span>
+<span class='line-number'>468</span>
+<span class='line-number'>469</span>
+<span class='line-number'>470</span>
+<span class='line-number'>471</span>
+<span class='line-number'>472</span>
+<span class='line-number'>473</span>
+<span class='line-number'>474</span>
+<span class='line-number'>475</span>
+<span class='line-number'>476</span>
+<span class='line-number'>477</span>
+<span class='line-number'>478</span>
+<span class='line-number'>479</span>
+<span class='line-number'>480</span>
+<span class='line-number'>481</span>
+<span class='line-number'>482</span>
+<span class='line-number'>483</span>
+<span class='line-number'>484</span>
+<span class='line-number'>485</span>
+<span class='line-number'>486</span>
+<span class='line-number'>487</span>
+<span class='line-number'>488</span>
+<span class='line-number'>489</span>
+<span class='line-number'>490</span>
+<span class='line-number'>491</span>
+<span class='line-number'>492</span>
+<span class='line-number'>493</span>
+<span class='line-number'>494</span>
+<span class='line-number'>495</span>
+<span class='line-number'>496</span>
+<span class='line-number'>497</span>
+<span class='line-number'>498</span>
+<span class='line-number'>499</span>
+<span class='line-number'>500</span>
+<span class='line-number'>501</span>
+<span class='line-number'>502</span>
+<span class='line-number'>503</span>
+<span class='line-number'>504</span>
+<span class='line-number'>505</span>
+<span class='line-number'>506</span>
+<span class='line-number'>507</span>
+<span class='line-number'>508</span>
+<span class='line-number'>509</span>
+<span class='line-number'>510</span>
+<span class='line-number'>511</span>
+<span class='line-number'>512</span>
+<span class='line-number'>513</span>
+<span class='line-number'>514</span>
+<span class='line-number'>515</span>
+<span class='line-number'>516</span>
+<span class='line-number'>517</span>
+<span class='line-number'>518</span>
+<span class='line-number'>519</span>
+<span class='line-number'>520</span>
+<span class='line-number'>521</span>
+<span class='line-number'>522</span>
+<span class='line-number'>523</span>
+<span class='line-number'>524</span>
+<span class='line-number'>525</span>
+<span class='line-number'>526</span>
+<span class='line-number'>527</span>
+<span class='line-number'>528</span>
+<span class='line-number'>529</span>
+<span class='line-number'>530</span>
+<span class='line-number'>531</span>
+<span class='line-number'>532</span>
+<span class='line-number'>533</span>
+<span class='line-number'>534</span>
+<span class='line-number'>535</span>
+<span class='line-number'>536</span>
+<span class='line-number'>537</span>
+<span class='line-number'>538</span>
+<span class='line-number'>539</span>
+<span class='line-number'>540</span>
+<span class='line-number'>541</span>
+<span class='line-number'>542</span>
+<span class='line-number'>543</span>
+<span class='line-number'>544</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;common.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;command.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;malloc.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;devices.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;net.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;asm/io.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_BOOT_MOVINAND)</span>
+</span><span class='line'><span class="cp">#include &lt;movi.h&gt;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_DRIVER_SMC91111</span>
+</span><span class='line'><span class="cp">#include &quot;../drivers/smc91111.h&quot;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_DRIVER_LAN91C96</span>
+</span><span class='line'><span class="cp">#include &quot;../drivers/lan91c96.h&quot;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* Note: volatile register variable is *NOT* volatile in gcc 4.5.1+ */</span>
+</span><span class='line'><span class="cp">#if  0</span><span class="c"></span>
+</span><span class='line'><span class="c">DECLARE_GLOBAL_DATA_PTR;</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="kt">gd_t</span> <span class="o">*</span><span class="n">gd</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_NAND)</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">nand_init</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ONENAND</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">onenand_init</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ulong</span> <span class="n">monitor_flash_len</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">int</span>  <span class="nf">AT91F_DataflashInit</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">void</span> <span class="nf">dataflash_print_info</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifndef CONFIG_IDENT_STRING</span>
+</span><span class='line'><span class="cp">#define CONFIG_IDENT_STRING &quot;&quot;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">const</span> <span class="kt">char</span> <span class="n">version_string</span><span class="p">[]</span> <span class="o">=</span>
+</span><span class='line'>  <span class="s">&quot;   kdm ver1.01&quot;</span> <span class="n">CONFIG_IDENT_STRING</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_DRIVER_CS8900</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">void</span> <span class="nf">cs8900_get_enetaddr</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span> <span class="n">addr</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_DRIVER_RTL8019</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">void</span> <span class="nf">rtl8019_get_enetaddr</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span> <span class="n">addr</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Begin and End of memory area for malloc(), and current &quot;brk&quot;</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">static</span> <span class="n">ulong</span> <span class="n">mem_malloc_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">static</span> <span class="n">ulong</span> <span class="n">mem_malloc_end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">static</span> <span class="n">ulong</span> <span class="n">mem_malloc_brk</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">mem_malloc_init</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">dest_addr</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">mem_malloc_start</span> <span class="o">=</span> <span class="n">dest_addr</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">mem_malloc_end</span> <span class="o">=</span> <span class="n">dest_addr</span> <span class="o">+</span> <span class="n">CFG_MALLOC_LEN</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">mem_malloc_brk</span> <span class="o">=</span> <span class="n">mem_malloc_start</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* memset ((void *) mem_malloc_start, 0,</span>
+</span><span class='line'><span class="cm">         mem_malloc_end - mem_malloc_start); */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="o">*</span><span class="nf">sbrk</span> <span class="p">(</span><span class="kt">ptrdiff_t</span> <span class="n">increment</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">old</span> <span class="o">=</span> <span class="n">mem_malloc_brk</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">new</span> <span class="o">=</span> <span class="n">old</span> <span class="o">+</span> <span class="n">increment</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">new</span> <span class="o">&lt;</span> <span class="n">mem_malloc_start</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">new</span> <span class="o">&gt;</span> <span class="n">mem_malloc_end</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">mem_malloc_brk</span> <span class="o">=</span> <span class="n">new</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">old</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************************************</span>
+</span><span class='line'><span class="cm"> * Init Utilities                            *</span>
+</span><span class='line'><span class="cm"> ************************************************************************</span>
+</span><span class='line'><span class="cm"> * Some of this code should be moved into the core functions,</span>
+</span><span class='line'><span class="cm"> * or dropped completely,</span>
+</span><span class='line'><span class="cm"> * but let&#39;s get it working (again) first...</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">init_baudrate</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">tmp</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>  <span class="cm">/* long enough for environment variables */</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">getenv_r</span> <span class="p">(</span><span class="s">&quot;baudrate&quot;</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_baudrate</span> <span class="o">=</span> <span class="n">gd</span><span class="o">-&gt;</span><span class="n">baudrate</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>          <span class="o">?</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span class='line'>          <span class="o">:</span> <span class="n">CONFIG_BAUDRATE</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">display_banner</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">%s</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">version_string</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;U-Boot code: %08lX -&gt; %08lX  BSS: -&gt; %08lX</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="n">_armboot_start</span><span class="p">,</span> <span class="n">_bss_start</span><span class="p">,</span> <span class="n">_bss_end</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE </span><span class="cm">/* by scsuh */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">debug</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t\b</span><span class="s">Malloc and Stack is above the U-Boot Code.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">debug</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\t\b</span><span class="s">Malloc and Stack is below the U-Boot Code.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MODEM_SUPPORT</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;Modem Support enabled</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;IRQ Stack: %08lx</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">IRQ_STACK_START</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;FIQ Stack: %08lx</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">FIQ_STACK_START</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * WARNING: this code looks &quot;cleaner&quot; than the PowerPC version, but</span>
+</span><span class='line'><span class="cm"> * has the disadvantage that you either get nothing, or everything.</span>
+</span><span class='line'><span class="cm"> * On PowerPC, you might see &quot;DRAM: &quot; before the system hangs - which</span>
+</span><span class='line'><span class="cm"> * gives a simple yet clear indication which part of the</span>
+</span><span class='line'><span class="cm"> * initialization if failing.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">display_dram_config</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef DEBUG</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;RAM Configuration:</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">CONFIG_NR_DRAM_BANKS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bank #%d: %08lx &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_dram</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">print_size</span> <span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_dram</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">CONFIG_NR_DRAM_BANKS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">size</span> <span class="o">+=</span> <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_dram</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">puts</span><span class="p">(</span><span class="s">&quot;DRAM:    &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_size</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifndef CFG_NO_FLASH</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">display_flash_config</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">size</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;Flash:  &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">print_size</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CFG_NO_FLASH */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Breathe some life into the board...</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * Initialize a serial port as console, and carry out some hardware</span>
+</span><span class='line'><span class="cm"> * tests.</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * The first part of initialization is running from Flash memory;</span>
+</span><span class='line'><span class="cm"> * its main purpose is to initialize the RAM so that we</span>
+</span><span class='line'><span class="cm"> * can relocate the monitor code to RAM.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * All attempts to come up with a &quot;common&quot; initialization sequence</span>
+</span><span class='line'><span class="cm"> * that works for all boards and architectures failed: some of the</span>
+</span><span class='line'><span class="cm"> * requirements are just _too_ different. To get rid of the resulting</span>
+</span><span class='line'><span class="cm"> * mess of board dependent #ifdef&#39;ed code we now make the whole</span>
+</span><span class='line'><span class="cm"> * initialization sequence configurable to the user.</span>
+</span><span class='line'><span class="cm"> *</span>
+</span><span class='line'><span class="cm"> * The requirements for any new initalization function is simple: it</span>
+</span><span class='line'><span class="cm"> * receives a pointer to the &quot;global data&quot; structure as it&#39;s only</span>
+</span><span class='line'><span class="cm"> * argument, and returns an integer return code, where 0 means</span>
+</span><span class='line'><span class="cm"> * &quot;continue&quot; and != 0 means &quot;fatal error, hang the system&quot;.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">typedef</span> <span class="nf">int</span> <span class="p">(</span><span class="kt">init_fnc_t</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">print_cpuinfo</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="cm">/* test-only */</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">init_fnc_t</span> <span class="o">*</span><span class="n">init_sequence</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">cpu_init</span><span class="p">,</span>     <span class="cm">/* basic cpu dependent setup */</span>
+</span><span class='line'>  <span class="n">board_init</span><span class="p">,</span>       <span class="cm">/* basic board dependent setup */</span>
+</span><span class='line'>  <span class="n">interrupt_init</span><span class="p">,</span>       <span class="cm">/* set up exceptions */</span>
+</span><span class='line'>  <span class="n">env_init</span><span class="p">,</span>     <span class="cm">/* initialize environment */</span>
+</span><span class='line'>  <span class="n">init_baudrate</span><span class="p">,</span>        <span class="cm">/* initialze baudrate settings */</span>
+</span><span class='line'>  <span class="n">serial_init</span><span class="p">,</span>      <span class="cm">/* serial communications setup */</span>
+</span><span class='line'>  <span class="n">console_init_f</span><span class="p">,</span>       <span class="cm">/* stage 1 init of console */</span>
+</span><span class='line'>  <span class="n">display_banner</span><span class="p">,</span>       <span class="cm">/* say that we are here */</span>
+</span><span class='line'><span class="cp">#if defined(CONFIG_DISPLAY_CPUINFO)</span>
+</span><span class='line'>  <span class="n">print_cpuinfo</span><span class="p">,</span>        <span class="cm">/* display cpu info (and speed) */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#if defined(CONFIG_DISPLAY_BOARDINFO)</span>
+</span><span class='line'>  <span class="n">checkboard</span><span class="p">,</span>       <span class="cm">/* display board info */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">dram_init</span><span class="p">,</span>        <span class="cm">/* configure available RAM banks */</span>
+</span><span class='line'>  <span class="n">display_dram_config</span><span class="p">,</span>
+</span><span class='line'>  <span class="nb">NULL</span><span class="p">,</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">start_armboot</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">init_fnc_t</span> <span class="o">**</span><span class="n">init_fnc_ptr</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#ifndef CFG_NO_FLASH</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">size</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_VFD) || defined(CONFIG_LCD)</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_BOOT_MOVINAND)</span>
+</span><span class='line'>  <span class="n">uint</span> <span class="o">*</span><span class="n">magic</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="n">PHYS_SDRAM_1</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Pointer is writable since we allocated a register for it */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE </span><span class="cm">/* by scsuh */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">gd_base</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">gd_base</span> <span class="o">=</span> <span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="n">CFG_MALLOC_LEN</span> <span class="o">-</span> <span class="n">CFG_STACK_SIZE</span> <span class="o">-</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">gd_t</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USE_IRQ</span>
+</span><span class='line'>  <span class="n">gd_base</span> <span class="o">-=</span> <span class="p">(</span><span class="n">CONFIG_STACKSIZE_IRQ</span><span class="o">+</span><span class="n">CONFIG_STACKSIZE_FIQ</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">gd</span> <span class="o">=</span> <span class="p">(</span><span class="kt">gd_t</span><span class="o">*</span><span class="p">)</span><span class="n">gd_base</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">gd</span> <span class="o">=</span> <span class="p">(</span><span class="kt">gd_t</span><span class="o">*</span><span class="p">)(</span><span class="n">_armboot_start</span> <span class="o">-</span> <span class="n">CFG_MALLOC_LEN</span> <span class="o">-</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">gd_t</span><span class="p">));</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* compiler optimization barrier needed for GCC &gt;= 3.4 */</span>
+</span><span class='line'>  <span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">:</span> <span class="o">:</span> <span class="o">:</span><span class="s">&quot;memory&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">memset</span> <span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">gd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">gd_t</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span> <span class="o">=</span> <span class="p">(</span><span class="kt">bd_t</span><span class="o">*</span><span class="p">)((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">gd</span> <span class="o">-</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">bd_t</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">memset</span> <span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">bd_t</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">monitor_flash_len</span> <span class="o">=</span> <span class="n">_bss_start</span> <span class="o">-</span> <span class="n">_armboot_start</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">init_fnc_ptr</span> <span class="o">=</span> <span class="n">init_sequence</span><span class="p">;</span> <span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">;</span> <span class="o">++</span><span class="n">init_fnc_ptr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">)()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">hang</span> <span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifndef CFG_NO_FLASH</span>
+</span><span class='line'>  <span class="cm">/* configure available FLASH banks */</span>
+</span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">flash_init</span> <span class="p">();</span>
+</span><span class='line'>  <span class="n">display_flash_config</span> <span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CFG_NO_FLASH */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
+</span><span class='line'><span class="cp">#    ifndef PAGE_SIZE</span>
+</span><span class='line'><span class="cp">#      define PAGE_SIZE 4096</span>
+</span><span class='line'><span class="cp">#    endif</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * reserve memory for VFD display (always full pages)</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="cm">/* bss_end is defined in the board-specific linker script */</span>
+</span><span class='line'>  <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">_bss_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">vfd_setmem</span> <span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_VFD */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_LCD</span>
+</span><span class='line'><span class="cp">#    ifndef PAGE_SIZE</span>
+</span><span class='line'><span class="cp">#      define PAGE_SIZE 4096</span>
+</span><span class='line'><span class="cp">#    endif</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * reserve memory for LCD display (always full pages)</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="cm">/* bss_end is defined in the board-specific linker script */</span>
+</span><span class='line'>  <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">_bss_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">lcd_setmem</span> <span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_LCD */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* armboot_start is defined in the board-specific linker script */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE </span><span class="cm">/* by scsuh */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">mem_malloc_init</span> <span class="p">(</span><span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="n">CFG_MALLOC_LEN</span> <span class="o">-</span> <span class="n">CFG_STACK_SIZE</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="n">mem_malloc_init</span> <span class="p">(</span><span class="n">_armboot_start</span> <span class="o">-</span> <span class="n">CFG_MALLOC_LEN</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_SMDK6400) || defined(CONFIG_SMDK6410) || defined(CONFIG_SMDK6430) || defined(CONFIG_SMDK2450) || defined(CONFIG_SMDK2416) || \</span>
+</span><span class='line'><span class="cp">defined(CONFIG_MINI6410)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_NAND)</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;NAND:    &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">nand_init</span><span class="p">();</span>      <span class="cm">/* go init the NAND */</span>
+</span><span class='line'>  <span class="n">NAND_Init</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_ONENAND)</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;OneNAND: &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">onenand_init</span><span class="p">();</span>       <span class="cm">/* go init the One-NAND */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_BOOT_MOVINAND)</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;MMC:     &quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="mh">0x24564236</span> <span class="o">==</span> <span class="n">magic</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="mh">0x20764316</span> <span class="o">==</span> <span class="n">magic</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Boot up for burning</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">movi_set_capacity</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">movi_set_ofs</span><span class="p">(</span><span class="n">MOVI_TOTAL_BLKCNT</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">movi_init</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_NAND)</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;NAND:    &quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">nand_init</span><span class="p">();</span>      <span class="cm">/* go init the NAND */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'>  <span class="n">AT91F_DataflashInit</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">dataflash_print_info</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* initialize environment */</span>
+</span><span class='line'>  <span class="n">env_relocate</span> <span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
+</span><span class='line'>  <span class="cm">/* must do this after the framebuffer is allocated */</span>
+</span><span class='line'>  <span class="n">drv_vfd_init</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_VFD */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* IP Address */</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_ip_addr</span> <span class="o">=</span> <span class="n">getenv_IPaddr</span> <span class="p">(</span><span class="s">&quot;ipaddr&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* MAC Address */</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">ulong</span> <span class="n">reg</span><span class="p">;</span>
+</span><span class='line'>      <span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="o">*</span><span class="n">e</span><span class="p">;</span>
+</span><span class='line'>      <span class="kt">char</span> <span class="n">tmp</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">i</span> <span class="o">=</span> <span class="n">getenv_r</span> <span class="p">(</span><span class="s">&quot;ethaddr&quot;</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="nl">tmp</span> <span class="p">:</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="n">reg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">reg</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="o">++</span><span class="n">reg</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_enetaddr</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">?</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span class='line'>              <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">?</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">e</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_ETH1</span>
+</span><span class='line'>      <span class="n">i</span> <span class="o">=</span> <span class="n">getenv_r</span> <span class="p">(</span><span class="s">&quot;eth1addr&quot;</span><span class="p">,</span> <span class="n">tmp</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">tmp</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="nl">tmp</span> <span class="p">:</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="n">reg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">reg</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="o">++</span><span class="n">reg</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_enet1addr</span><span class="p">[</span><span class="n">reg</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span> <span class="o">?</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</span><span class='line'>              <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">?</span> <span class="n">e</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">e</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">devices_init</span> <span class="p">();</span>  <span class="cm">/* get the devices list going. */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_CMC_PU2</span>
+</span><span class='line'>  <span class="n">load_sernum_ethaddr</span> <span class="p">();</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_CMC_PU2 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">jumptable_init</span> <span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">console_init_r</span> <span class="p">();</span>    <span class="cm">/* fully init console as a device */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_MISC_INIT_R)</span>
+</span><span class='line'>  <span class="cm">/* miscellaneous platform dependent initialisations */</span>
+</span><span class='line'>  <span class="n">misc_init_r</span> <span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* enable exceptions */</span>
+</span><span class='line'>  <span class="n">enable_interrupts</span> <span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Perform network card initialisation if necessary */</span>
+</span><span class='line'><span class="cp">#if defined(CONFIG_DRIVER_DM9000) &amp;&amp; defined(CONFIG_DRIVER_DM9000_NO_EEPROM)</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">int</span> <span class="n">eth_set_mac</span><span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span> <span class="n">bd</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;ethaddr&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">eth_set_mac</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_DRIVER_CS8900</span>
+</span><span class='line'>  <span class="n">cs8900_get_enetaddr</span> <span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_enetaddr</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_DRIVER_SMC91111) || defined (CONFIG_DRIVER_LAN91C96)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;ethaddr&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">smc_set_mac_addr</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_enetaddr</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_DRIVER_SMC91111 || CONFIG_DRIVER_LAN91C96 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Initialize from environment */</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;loadaddr&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">load_addr</span> <span class="o">=</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_NET)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;bootfile&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">copy_filename</span> <span class="p">(</span><span class="n">BootFile</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">BootFile</span><span class="p">));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CFG_CMD_NET */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef BOARD_LATE_INIT</span>
+</span><span class='line'>  <span class="n">board_late_init</span> <span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_NET)</span>
+</span><span class='line'><span class="cp">#if defined(CONFIG_NET_MULTI)</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;Net:     &quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">eth_initialize</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="cm">/* main_loop() can return to retry autoboot, if so just run it again. */</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">main_loop</span> <span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* NOTREACHED - no way out of command loop except booting */</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">hang</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;### ERROR ### Please RESET the board ###</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(;;);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MODEM_SUPPORT</span>
+</span><span class='line'><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">mdm_readline</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufsiz</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* called from main loop (common/main.c) */</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">void</span>  <span class="nf">dbg</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...);</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">mdm_init</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">env_str</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">init_str</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">extern</span> <span class="kt">char</span> <span class="n">console_buffer</span><span class="p">[];</span>
+</span><span class='line'>  <span class="k">extern</span> <span class="kt">void</span> <span class="n">enable_putc</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">extern</span> <span class="kt">int</span> <span class="n">hwflow_onoff</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">enable_putc</span><span class="p">();</span> <span class="cm">/* enable serial_putc() */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HWFLOW</span>
+</span><span class='line'>  <span class="n">init_str</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">&quot;mdm_flow_control&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">init_str</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">init_str</span><span class="p">,</span> <span class="s">&quot;rts/cts&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+</span><span class='line'>      <span class="n">hwflow_onoff</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">hwflow_onoff</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">sprintf</span><span class="p">(</span><span class="n">env_str</span><span class="p">,</span> <span class="s">&quot;mdm_init%d&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">init_str</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="n">env_str</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">serial_puts</span><span class="p">(</span><span class="n">init_str</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">serial_puts</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">for</span><span class="p">(;;)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="n">mdm_readline</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="n">CFG_CBSIZE</span><span class="p">);</span>
+</span><span class='line'>              <span class="n">dbg</span><span class="p">(</span><span class="s">&quot;ini%d: [%s]&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">console_buffer</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>              <span class="k">if</span> <span class="p">((</span><span class="n">strcmp</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="s">&quot;OK&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">||</span>
+</span><span class='line'>                  <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="s">&quot;ERROR&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                  <span class="n">dbg</span><span class="p">(</span><span class="s">&quot;ini%d: cmd done&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class='line'>                  <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>              <span class="p">}</span> <span class="k">else</span> <span class="cm">/* in case we are originating call ... */</span>
+</span><span class='line'>                  <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="s">&quot;CONNECT&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                      <span class="n">dbg</span><span class="p">(</span><span class="s">&quot;ini%d: connect&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class='line'>                      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="p">}</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span> <span class="cm">/* no init string - stop modem init */</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">udelay</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">udelay</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* final stage - wait for connect */</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(;</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">;)</span> <span class="p">{</span> <span class="cm">/* if &#39;i&#39; &gt; 1 - wait for connection</span>
+</span><span class='line'><span class="cm">               message from modem */</span>
+</span><span class='line'>      <span class="n">mdm_readline</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="n">CFG_CBSIZE</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">dbg</span><span class="p">(</span><span class="s">&quot;ini_f: [%s]&quot;</span><span class="p">,</span> <span class="n">console_buffer</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">strncmp</span><span class="p">(</span><span class="n">console_buffer</span><span class="p">,</span> <span class="s">&quot;CONNECT&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">dbg</span><span class="p">(</span><span class="s">&quot;ini_f: connected&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* &#39;inline&#39; - We have to do it fast */</span>
+</span><span class='line'><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">mdm_readline</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">bufsiz</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">p</span> <span class="o">=</span> <span class="n">buf</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(;;)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">c</span> <span class="o">=</span> <span class="n">serial_getc</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*     dbg(&quot;(%c)&quot;, c); */</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">switch</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">case</span> <span class="sc">&#39;\r&#39;</span><span class="o">:</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">case</span> <span class="sc">&#39;\n&#39;</span><span class="o">:</span>
+</span><span class='line'>          <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">++</span> <span class="o">&gt;</span> <span class="n">bufsiz</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">return</span><span class="p">;</span> <span class="cm">/* sanity check */</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+</span><span class='line'>          <span class="n">p</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CONFIG_MODEM_SUPPORT */</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[nand_cp.c]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/20/nand-cp-dot-c/"/>
+    <updated>2015-06-20T15:17:22+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/20/nand-cp-dot-c</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;common.h&gt;</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_S3C64XX</span>
+</span><span class='line'><span class="cp">#include &lt;asm/io.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;linux/mtd/nand.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;regs.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * address format</span>
+</span><span class='line'><span class="cm"> *              17 16         9 8            0</span>
+</span><span class='line'><span class="cm"> * --------------------------------------------</span>
+</span><span class='line'><span class="cm"> * | block(12bit) | page(5bit) | offset(9bit) |</span>
+</span><span class='line'><span class="cm"> * --------------------------------------------</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_page</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">page_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* Write Address */</span>
+</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* for compatibility(2460). u32 cannot be used. by scsuh */</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Read data from NAND.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_blocks</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">dst_addr</span><span class="p">;</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">uint</span> <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* Read pages */</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mh">0x50000</span><span class="o">&gt;&gt;</span><span class="n">page_shift</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">buf</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">page_shift</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">copy_uboot_to_ram</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">large_block</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">vu_char</span> <span class="n">id</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* wait for a while */</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">large_block</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* read NAND Block.</span>
+</span><span class='line'><span class="cm">  * 128KB -&gt;240KB because of U-Boot size increase. by scsuh</span>
+</span><span class='line'><span class="cm">  * So, read 0x3c000 bytes not 0x20000(128KB).</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">nandll_read_blocks</span><span class="p">(</span><span class="n">CFG_PHY_UBOOT_BASE</span><span class="p">,</span> <span class="mh">0x50000</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[cpu_init.S]]></title>
