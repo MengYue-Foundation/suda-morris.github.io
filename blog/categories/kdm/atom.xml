@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kdm | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/kdm/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-21T11:23:11+08:00</updated>
+  <updated>2015-06-21T20:32:07+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,45 @@
     <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
     <updated>2015-06-20T15:23:31+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
-    <content type="html"><![CDATA[<pre><code class="C">#include &lt;common.h&gt;
+    <content type="html"><![CDATA[<pre><code class="C include/asm-arm/global_data.h">typedef struct  global_data {
+    bd_t        *bd;
+    unsigned long   flags;
+    unsigned long   baudrate;
+    unsigned long   have_console;   /* serial_init() was called */
+    unsigned long   reloc_off;  /* Relocation Offset */
+    unsigned long   env_addr;   /* Address  of Environment struct */
+    unsigned long   env_valid;  /* Checksum of Environment valid? */
+    unsigned long   fb_base;    /* base address of frame buffer */
+#ifdef CONFIG_VFD
+    unsigned char   vfd_type;   /* display type */
+#endif
+#if 0
+    unsigned long   cpu_clk;    /* CPU clock in Hz!     */
+    unsigned long   bus_clk;
+    unsigned long   ram_size;   /* RAM size */
+    unsigned long   reset_status;   /* reset status register at boot */
+#endif
+    void        **jt;       /* jump table */
+} gd_t;
+
+/*
+ * Global Data Flags
+ */
+#define GD_FLG_RELOC    0x00001     /* Code was relocated to RAM        */
+#define GD_FLG_DEVINIT  0x00002     /* Devices have been initialized    */
+#define GD_FLG_SILENT   0x00004     /* Silent mode              */
+
+#if 0
+#define DECLARE_GLOBAL_DATA_PTR     register volatile gd_t *gd asm ("r8")
+#else
+#define DECLARE_GLOBAL_DATA_PTR
+extern gd_t *gd;
+#endif
+
+#endif /* __ASM_GBL_DATA_H */
+</code></pre>
+
+<pre><code class="C board.c">#include &lt;common.h&gt;
 #include &lt;command.h&gt;
 #include &lt;malloc.h&gt;
 #include &lt;devices.h&gt;

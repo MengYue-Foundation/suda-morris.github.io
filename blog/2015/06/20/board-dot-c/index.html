@@ -7,7 +7,7 @@
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="1
+	<meta name="description" content="include/asm-arm/global_data.h1
 2
 3
 4
@@ -43,23 +43,7 @@
 34
 35
 36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53 &hellip;">
+typedef struct &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -136,7 +120,84 @@
 
 	<div id="content" class="inner"><article class="post">
 	<h2 class="title">board.c</h2>
-	<div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+	<div class="entry-content"><figure class='code'><figcaption><span>include/asm-arm/global_data.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">typedef</span>  <span class="k">struct</span>   <span class="n">global_data</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">bd_t</span>        <span class="o">*</span><span class="n">bd</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">flags</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">baudrate</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">have_console</span><span class="p">;</span> <span class="cm">/* serial_init() was called */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">reloc_off</span><span class="p">;</span>    <span class="cm">/* Relocation Offset */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_addr</span><span class="p">;</span> <span class="cm">/* Address  of Environment struct */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_valid</span><span class="p">;</span>    <span class="cm">/* Checksum of Environment valid? */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">fb_base</span><span class="p">;</span>  <span class="cm">/* base address of frame buffer */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">char</span>   <span class="n">vfd_type</span><span class="p">;</span> <span class="cm">/* display type */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
+</span><span class='line'><span class="c">  unsigned long   cpu_clk;    /* CPU clock in Hz!     */</span>
+</span><span class='line'><span class="c">  unsigned long   bus_clk;</span>
+</span><span class='line'><span class="c">  unsigned long   ram_size;   /* RAM size */</span>
+</span><span class='line'><span class="c">  unsigned long   reset_status;   /* reset status register at boot */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="kt">void</span>        <span class="o">**</span><span class="n">jt</span><span class="p">;</span>      <span class="cm">/* jump table */</span>
+</span><span class='line'><span class="p">}</span> <span class="kt">gd_t</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Global Data Flags</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="cp">#define  GD_FLG_RELOC    0x00001     </span><span class="cm">/* Code was relocated to RAM        */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  GD_FLG_DEVINIT  0x00002     </span><span class="cm">/* Devices have been initialized    */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  GD_FLG_SILENT   0x00004     </span><span class="cm">/* Silent mode              */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if  0</span><span class="c"></span>
+</span><span class='line'><span class="c">#define DECLARE_GLOBAL_DATA_PTR     register volatile gd_t *gd asm (&quot;r8&quot;)</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define DECLARE_GLOBAL_DATA_PTR</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">gd_t</span> <span class="o">*</span><span class="n">gd</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* __ASM_GBL_DATA_H */</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>board.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>

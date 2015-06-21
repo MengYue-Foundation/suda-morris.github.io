@@ -4,7 +4,7 @@
   <title><![CDATA[Category: s3c6410 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/s3c6410/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-21T11:23:11+08:00</updated>
+  <updated>2015-06-21T20:32:07+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -979,6 +979,8 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
 dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
 sync
+#BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16
+#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256
 </code></pre>
 ]]></content>
   </entry>

@@ -1158,10 +1158,14 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#for SD Card,total sectors=1961984</span>
 </span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961966</span>
 </span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961198</span>
 </span><span class='line'><span class="n">sync</span>
+</span><span class='line'><span class="cp">#BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16</span>
+</span><span class='line'><span class="cp">#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

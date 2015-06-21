@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-21T11:23:11+08:00</updated>
+  <updated>2015-06-21T20:32:07+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -18,7 +18,84 @@
     <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
     <updated>2015-06-20T15:23:31+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
-    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span>include/asm-arm/global_data.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">typedef</span>  <span class="k">struct</span>   <span class="n">global_data</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">bd_t</span>        <span class="o">*</span><span class="n">bd</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">flags</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">baudrate</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">have_console</span><span class="p">;</span> <span class="cm">/* serial_init() was called */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">reloc_off</span><span class="p">;</span>    <span class="cm">/* Relocation Offset */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_addr</span><span class="p">;</span> <span class="cm">/* Address  of Environment struct */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_valid</span><span class="p">;</span>    <span class="cm">/* Checksum of Environment valid? */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">fb_base</span><span class="p">;</span>  <span class="cm">/* base address of frame buffer */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">char</span>   <span class="n">vfd_type</span><span class="p">;</span> <span class="cm">/* display type */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
+</span><span class='line'><span class="c">  unsigned long   cpu_clk;    /* CPU clock in Hz!     */</span>
+</span><span class='line'><span class="c">  unsigned long   bus_clk;</span>
+</span><span class='line'><span class="c">  unsigned long   ram_size;   /* RAM size */</span>
+</span><span class='line'><span class="c">  unsigned long   reset_status;   /* reset status register at boot */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="kt">void</span>        <span class="o">**</span><span class="n">jt</span><span class="p">;</span>      <span class="cm">/* jump table */</span>
+</span><span class='line'><span class="p">}</span> <span class="kt">gd_t</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Global Data Flags</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="cp">#define  GD_FLG_RELOC    0x00001     </span><span class="cm">/* Code was relocated to RAM        */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  GD_FLG_DEVINIT  0x00002     </span><span class="cm">/* Devices have been initialized    */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  GD_FLG_SILENT   0x00004     </span><span class="cm">/* Silent mode              */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if  0</span><span class="c"></span>
+</span><span class='line'><span class="c">#define DECLARE_GLOBAL_DATA_PTR     register volatile gd_t *gd asm (&quot;r8&quot;)</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define DECLARE_GLOBAL_DATA_PTR</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">gd_t</span> <span class="o">*</span><span class="n">gd</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* __ASM_GBL_DATA_H */</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>board.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -3673,10 +3750,14 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#for SD Card,total sectors=1961984</span>
 </span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961966</span>
 </span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961198</span>
 </span><span class='line'><span class="n">sync</span>
+</span><span class='line'><span class="cp">#BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16</span>
+</span><span class='line'><span class="cp">#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
@@ -5089,6 +5170,66 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <li>module variance delta=30</li>
 <li>module dejitter delta=100</li>
 <li>module linear</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>Uboot常用命令</h2>
+
+<blockquote><ol>
+<li>使用命令时，可以使用其开头的若干个字母代替它</li>
+<li>当运行一个命令之后，如果它是可重复执行的（代码中使用U_BOOT_CMD定义这个命令时，第三个参数是1），若想再次运行可以直接输入回车</li>
+<li>Uboot接受的数据都是16进制，输入时可以省略前缀0x</li>
+</ol>
+</blockquote>
+
+<ol>
+<li>运行<code>help</code>命令可以看到所有命令的作用，如果要查看某个命令的使用方法，运行<code>help 命令名</code>。可以使用<code>?</code>来代替<code>help</code></li>
+<li>Uboot支持串口下载，网络下载，USB下载，相关命令有：loadb,loads,loadx,loady;tftpboot,nfs;usbslave。使用方法：
+
+<ul>
+<li>loadx [off] [baud];off表示文件下载后存放的内存地址，baud表示使用的波特率，如果off参数省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR</li>
+<li>tftpboot [loadAddress] [bootfilename]; loadAddress表示文件下载后存放的内存地址，bootfilename表示要下载的文件名称。loadAddress省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR。如果bootfilename省略，则使用单板的IP地址构造一个文件名</li>
+<li>nfs [loadAddress] [host ip addr:bootfilename];host ip addr表示服务器的IP地址</li>
+<li>usbslave [wait] [loadAddress]；在PC端使用dnw工具发送文件，U-boot通过USB Device接口接收文件。wait可以取值1或0，表示是否等得数据传输完成，当wait取0时，在后台进行下载，这时在Uboot仍可执行其他操作。下载文件成功后，Uboot会自动创建或者更新环境变量filezise，它表示下载的文件长度，可以在后续命令中使用$(filesize)来引用它</li>
+</ul>
+</li>
+<li>常用的内存操作命令有：查看内存命令md，修改内存命令mm,填充内存命令mw,复制命令cp。这些命令都可以带上后缀".b",&ldquo;.w&rdquo;,&ldquo;.l"表示以字节、字、双字为单位进行操作。
+
+<ul>
+<li>md[.b,.w,.l] address [count],表示以字节、字、双字（默认是双字）为单位，显示从地址address开始的内存数据，显示的数据个数为count</li>
+<li>mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出</li>
+<li>mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。</li>
+<li>cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存</li>
+</ul>
+</li>
+<li>常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
+
+<ul>
+<li>nand info，查看Nand Flash信息</li>
+<li>nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash</li>
+<li>nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
+<li>nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
+<li>nand read.yaffs addr off size，从Nand Flash偏移地址off处读出size个字节的数据（包括OOB区域），存放到开始地址为addr的内存中</li>
+<li>nand write.yaffs addr off size，把开始地址为addr的内存中的size个字节数据(只要有要写入OOB区域的数据)，写到Nand Flash的偏移地址off处</li>
+<li>nand dump off，将Nand Flash偏移地址off的一个山区的数据打印出来，包括OOB数据</li>
+</ul>
+</li>
+<li>环境变量命令(下面的命令只是在内存中进行，最后需要使用<code>saveenv</code>命令将更改后的所有环境变量写入Flash中)
+
+<ul>
+<li><code>printenv</code>命令打印全部环境变量，“printenv name1 name2 &hellip;”打印名字为name1,name2&hellip;&hellip;的环境变量</li>
+<li><code>setenv name value</code>设置名字为name的环境变量的值为value</li>
+<li><code>setenv name</code>删除名字为name的环境变量</li>
+</ul>
+</li>
+<li>启动命令,不带参数的<code>boot</code>,<code>bootm</code>命令都是执行环境变量bootcmd所指定的命令
+
+<ul>
+<li>&ldquo;bootm [addr [arg &hellip;]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg &hellip;]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</li>
+<li>go addr [arg &hellip;]与bootm命令类似，启动存放在地址addr处的二进制文件，[arg &hellip;]表示参数</li>
+<li>nboot [[[loadAddr] dev] offset]命令将Nand Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处，然后，如果环境变量autostart的值为yes，就启动这个映像，如果loadAddr参数省略，存放地址为配置文件中定义的宏CFG_LOAD_ADDR。如果dev参数省略，则它的取值为环境变量bootdevice的值，如果offset参数省略，则默认为0</li>
 </ul>
 </li>
 </ol>
