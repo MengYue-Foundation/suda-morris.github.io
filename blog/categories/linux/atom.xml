@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-20T15:24:55+08:00</updated>
+  <updated>2015-06-21T11:23:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -577,44 +577,35 @@ static inline void mdm_readline(char *buf, int bufsiz)
 #include &lt;linux/mtd/nand.h&gt;
 #include &lt;regs.h&gt;
 
-/*
- * address format
- *              17 16         9 8            0
- * --------------------------------------------
- * | block(12bit) | page(5bit) | offset(9bit) |
- * --------------------------------------------
- */
-
 static int nandll_read_page (uchar *buf, ulong addr, int large_block)
 {
-        int i;
+    int i;
     int page_size = 512;
 
-    if (large_block)
+    if (large_block)    
         page_size = 2048;
 
-        NAND_ENABLE_CE();
+        NAND_ENABLE_CE();               /*使能芯片*/
 
-        NFCMD_REG = NAND_CMD_READ0;
+        NFCMD_REG = NAND_CMD_READ0;     /*读命令*/
 
         /* Write Address */
-        NFADDR_REG = 0;
+        NFADDR_REG = 0;                 /*页内起始地址*/
 
     if (large_block)
             NFADDR_REG = 0;
 
-    NFADDR_REG = (addr) &amp; 0xff;
+    NFADDR_REG = (addr) &amp; 0xff;         /*页地址*/
     NFADDR_REG = (addr &gt;&gt; 8) &amp; 0xff;
     NFADDR_REG = (addr &gt;&gt; 16) &amp; 0xff;
 
     if (large_block)
         NFCMD_REG = NAND_CMD_READSTART;
 
-        NF_TRANSRnB();
+        NF_TRANSRnB();                  /*循环判断是否已经准备好 */
 
-    /* for compatibility(2460). u32 cannot be used. by scsuh */
     for(i=0; i &lt; page_size; i++) {
-                *buf++ = NFDATA8_REG;
+                *buf++ = NFDATA8_REG;   /*从NandFlash数据寄存器读取*/
         }
 
         NAND_DISABLE_CE();
@@ -626,7 +617,7 @@ static int nandll_read_page (uchar *buf, ulong addr, int large_block)
  */
 static int nandll_read_blocks (ulong dst_addr, ulong size, int large_block)
 {
-        uchar *buf = (uchar *)dst_addr;
+        uchar *buf = (uchar *)dst_addr;                     /*这里buf就是指定的0x57e0 0000物理地址*/
         int i;
     uint page_shift = 9;
 
@@ -635,7 +626,7 @@ static int nandll_read_blocks (ulong dst_addr, ulong size, int large_block)
 
         /* Read pages */
         for (i = 0; i &lt; (0x50000&gt;&gt;page_shift); i++, buf+=(1&lt;&lt;page_shift)) {
-                nandll_read_page(buf, i, large_block);
+                nandll_read_page(buf, i, large_block);      /*一次读取一个页*/
         }
 
         return 0;
@@ -647,16 +638,16 @@ int copy_uboot_to_ram (void)
     int i;
     vu_char id;
 
-        NAND_ENABLE_CE();
-        NFCMD_REG = NAND_CMD_READID;
-        NFADDR_REG =  0x00;
+    NAND_ENABLE_CE();               /*使能芯片*/
+    NFCMD_REG = NAND_CMD_READID;
+    NFADDR_REG =  0x00;             /*取第二次的返回值*/
 
     /* wait for a while */
         for (i=0; i&lt;200; i++);
     id = NFDATA8_REG;
     id = NFDATA8_REG;
 
-    if (id &gt; 0x80)
+    if (id &gt; 0x80)                  //判断读取的id是否大于0x80
         large_block = 1;
 
     /* read NAND Block.
@@ -1212,6 +1203,20 @@ mmu_table:
 #endif
 
 #define CFG_ENV_OFFSET      0x00040000      /*Uboot中环境变量偏移地址*/
+#define CFG_ENV_SIZE        0x20000         /* Total Size of Environment Sector */
+
+/****************************************NANDFlash宏定义*********************************************/
+#define CFG_MAX_NAND_DEVICE     1
+#define CFG_NAND_BASE           (0x70200010)
+#define NAND_MAX_CHIPS          1
+
+#define NAND_DISABLE_CE()   (NFCONT_REG |= (1 &lt;&lt; 1))
+#define NAND_ENABLE_CE()    (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))
+#define NF_TRANSRnB()       do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)
+
+#define CFG_NAND_SKIP_BAD_DOT_I 1  /* ".i" read skips bad blocks   */
+#define CFG_NAND_WP     1
+#define CFG_NAND_YAFFS_WRITE    1  /* support yaffs write */
 
 #if defined(FRIENDLYARM_BOOT_MEDIA_NAND)    /*启动介质是NandFlash*/
 #define CONFIG_BOOT_NAND

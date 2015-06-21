@@ -258,6 +258,20 @@
 <span class='line-number'>120</span>
 <span class='line-number'>121</span>
 <span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -275,6 +289,20 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_BASE           (0x70200010)</span>
+</span><span class='line'><span class="cp">#define NAND_MAX_CHIPS          1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NAND_DISABLE_CE()    (NFCONT_REG |= (1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NAND_ENABLE_CE() (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NF_TRANSRnB()        do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_NAND_SKIP_BAD_DOT_I  1  </span><span class="cm">/* &quot;.i&quot; read skips bad blocks   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  CFG_NAND_WP     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_YAFFS_WRITE 1  </span><span class="cm">/* support yaffs write */</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>

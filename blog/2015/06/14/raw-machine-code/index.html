@@ -1137,6 +1137,33 @@ mcr p15,0,r0,c15, &hellip;">
 </li>
 </ul>
 </blockquote>
+
+<h3>从SD卡启动</h3>
+
+<blockquote><ol>
+<li>SD卡启动，实际上是先执行片内IROM中的一段程序，该程序从SD卡中读取代码，写到stepping stone 中，stepping stone是位于0x0c000000、size为8K的片内内存</li>
+<li>在SD启动方式下，S3C6410内部的IROM程序BL0首先运行，并将SD中的最后18个扇区开始的16个扇区内容复制到片内的8K SRAM，也就是SteppingStone，接着跳转到这块SRAM的开始地址开始运行,这8K的代码也叫BL1,在这8K代码中必须要负责将SD内的uboot完整地复制到SDRAM，这时候完整的uboot也叫BL2，这个任务由一个叫做movi_bl2_copy的函数完成,这个函数实际上是
+调用了以下函数：
+CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MOVI_INIT_REQUIRED);</li>
+<li>HSMMC_CHANNEL这是SD/MMC通道号,6410是0</li>
+<li>MOVI_BL2_POS 是需要拷贝的数据位于SD的起始扇区,其计算办法是这样的，先得到这个SD的总扇区数TOTAL，再减去256K的BL2和8K的BL1所占的扇区数，再减去环境变量占据的128K，最后减去0.5K的eFuse和0.5K的保留区所占的扇区数，而这里还定义SD的扇区为512B。总扇区数TOTAL是从(TCM_BASE - 0x4)这个地址读取到的，至于TOTAL是如何被放到这里的就只能从BL0的代码找答案了</li>
+<li>MOVI_BL2_BLKCNT是需要复制的扇区数目，这里就是定义为256K</li>
+<li>BL2_BASE是目的地址，也就是SDRAM中的地址。这里定义为0x57E00000</li>
+<li>MOVI_INIT_REQUIRED定义为0</li>
+<li>Linux下使用dd命令进行烧写SD卡</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#for SD Card,total sectors=1961984</span>
+</span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961966</span>
+</span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961198</span>
+</span><span class='line'><span class="n">sync</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 

@@ -1310,59 +1310,41 @@
 <span class='line-number'>85</span>
 <span class='line-number'>86</span>
 <span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;common.h&gt;</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_S3C64XX</span>
 </span><span class='line'><span class="cp">#include &lt;asm/io.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;linux/mtd/nand.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;regs.h&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * address format</span>
-</span><span class='line'><span class="cm"> *              17 16         9 8            0</span>
-</span><span class='line'><span class="cm"> * --------------------------------------------</span>
-</span><span class='line'><span class="cm"> * | block(12bit) | page(5bit) | offset(9bit) |</span>
-</span><span class='line'><span class="cm"> * --------------------------------------------</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'>
 </span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_page</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 </span><span class='line'>  <span class="kt">int</span> <span class="n">page_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>    
 </span><span class='line'>      <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>       <span class="cm">/*读命令*/</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="cm">/* Write Address */</span>
-</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                  <span class="cm">/*页内起始地址*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'>          <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>            <span class="cm">/*页地址*/</span>
 </span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'>      <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>
+</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好    */</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* for compatibility(2460). u32 cannot be used. by scsuh */</span>
 </span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>   <span class="cm">/*从NandFlash数据寄存器读取*/</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
@@ -1374,7 +1356,7 @@
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_blocks</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>        <span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">dst_addr</span><span class="p">;</span>
+</span><span class='line'>        <span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">dst_addr</span><span class="p">;</span>                     <span class="cm">/*这里buf就是指定的0x57e0 0000物理地址*/</span>
 </span><span class='line'>        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">uint</span> <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
 </span><span class='line'>
@@ -1383,7 +1365,7 @@
 </span><span class='line'>
 </span><span class='line'>        <span class="cm">/* Read pages */</span>
 </span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mh">0x50000</span><span class="o">&gt;&gt;</span><span class="n">page_shift</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">buf</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">page_shift</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>                <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>
+</span><span class='line'>                <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>        <span class="cm">/*一次读取一个页*/</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
@@ -1395,16 +1377,16 @@
 </span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">vu_char</span> <span class="n">id</span><span class="p">;</span>
 </span><span class='line'>  
-</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>
-</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
-</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
+</span><span class='line'>    <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              <span class="cm">/*取第二次的返回值*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* wait for a while */</span>
 </span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
 </span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>                    <span class="c1">//判断读取的id是否大于0x80</span>
 </span><span class='line'>      <span class="n">large_block</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* read NAND Block.</span>
@@ -2665,6 +2647,20 @@
 <span class='line-number'>120</span>
 <span class='line-number'>121</span>
 <span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -2682,6 +2678,20 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_BASE           (0x70200010)</span>
+</span><span class='line'><span class="cp">#define NAND_MAX_CHIPS          1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NAND_DISABLE_CE()    (NFCONT_REG |= (1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NAND_ENABLE_CE() (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NF_TRANSRnB()        do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_NAND_SKIP_BAD_DOT_I  1  </span><span class="cm">/* &quot;.i&quot; read skips bad blocks   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  CFG_NAND_WP     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_YAFFS_WRITE 1  </span><span class="cm">/* support yaffs write */</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
@@ -3877,6 +3887,33 @@
 </li>
 </ul>
 </blockquote>
+
+<h3>从SD卡启动</h3>
+
+<blockquote><ol>
+<li>SD卡启动，实际上是先执行片内IROM中的一段程序，该程序从SD卡中读取代码，写到stepping stone 中，stepping stone是位于0x0c000000、size为8K的片内内存</li>
+<li>在SD启动方式下，S3C6410内部的IROM程序BL0首先运行，并将SD中的最后18个扇区开始的16个扇区内容复制到片内的8K SRAM，也就是SteppingStone，接着跳转到这块SRAM的开始地址开始运行,这8K的代码也叫BL1,在这8K代码中必须要负责将SD内的uboot完整地复制到SDRAM，这时候完整的uboot也叫BL2，这个任务由一个叫做movi_bl2_copy的函数完成,这个函数实际上是
+调用了以下函数：
+CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MOVI_INIT_REQUIRED);</li>
+<li>HSMMC_CHANNEL这是SD/MMC通道号,6410是0</li>
+<li>MOVI_BL2_POS 是需要拷贝的数据位于SD的起始扇区,其计算办法是这样的，先得到这个SD的总扇区数TOTAL，再减去256K的BL2和8K的BL1所占的扇区数，再减去环境变量占据的128K，最后减去0.5K的eFuse和0.5K的保留区所占的扇区数，而这里还定义SD的扇区为512B。总扇区数TOTAL是从(TCM_BASE - 0x4)这个地址读取到的，至于TOTAL是如何被放到这里的就只能从BL0的代码找答案了</li>
+<li>MOVI_BL2_BLKCNT是需要复制的扇区数目，这里就是定义为256K</li>
+<li>BL2_BASE是目的地址，也就是SDRAM中的地址。这里定义为0x57E00000</li>
+<li>MOVI_INIT_REQUIRED定义为0</li>
+<li>Linux下使用dd命令进行烧写SD卡</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#for SD Card,total sectors=1961984</span>
+</span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961966</span>
+</span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="p">.</span><span class="n">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961198</span>
+</span><span class='line'><span class="n">sync</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 		
 		
