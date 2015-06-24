@@ -303,6 +303,58 @@
 <span class='line-number'>165</span>
 <span class='line-number'>166</span>
 <span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -470,6 +522,58 @@
 </span><span class='line'><span class="cp">#define CONFIG_SETUP_MEMORY_TAGS</span>
 </span><span class='line'><span class="cp">#define CONFIG_CMDLINE_TAG</span>
 </span><span class='line'><span class="cp">#define CONFIG_INITRD_TAG</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/******************************************************Shell*******************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_SERIAL1          1            </span><span class="cm">/* we use SERIAL 1 on SMDK6410 */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_HUSH_PARSER                      </span><span class="cm">/* use &quot;hush&quot; command parser  */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CFG_HUSH_PARSER</span>
+</span><span class='line'><span class="cp">#define CFG_PROMPT_HUSH_PS2  &quot;&gt; &quot;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*******************************************************Command definition*****************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_COMMANDS \</span>
+</span><span class='line'><span class="cp">                        (CONFIG_CMD_DFL | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_CACHE   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_USB     | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_REGINFO | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_LOADS   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_LOADB   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_ENV     | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_NAND    | \</span>
+</span><span class='line'><span class="cp">         CFG_CMD_PING    | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_MOVINAND) \</span>
+</span><span class='line'><span class="cp">                        &amp; ~(CFG_CMD_AUTOSCRIPT  | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_BOOTD   | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_IMI     | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_RUN     | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_CONSOLE | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_DOCG3P3 | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_EEPROM | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_I2C      | \</span>
+</span><span class='line'><span class="cp">                                0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*********************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#include &lt;cmd_confdefs.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_BOOTDELAY 0</span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOTARGS      &quot;root=/dev/mtdblock2 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200&quot;</span>
+</span><span class='line'><span class="cp">#define CONFIG_ETHADDR       08:90:90:90:90:90</span>
+</span><span class='line'><span class="cp">#define CONFIG_NETMASK          255.255.255.0</span>
+</span><span class='line'><span class="cp">#define CONFIG_IPADDR        192.168.1.230</span>
+</span><span class='line'><span class="cp">#define CONFIG_SERVERIP      192.168.1.88</span>
+</span><span class='line'><span class="cp">#define CONFIG_GATEWAYIP 192.168.1.1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DEVICENUM    0</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ZERO_BOOTDELAY_CHECK</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CFG_LONGHELP             </span><span class="cm">/* undef to save memory     */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PROMPT       &quot;iggsensor # &quot;    </span><span class="cm">/* Monitor Command Prompt   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_CBSIZE       256     </span><span class="cm">/* Console I/O Buffer Size  */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PBSIZE       384     </span><span class="cm">/* Print Buffer Size */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_MAXARGS      16      </span><span class="cm">/* max number of command args   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_BARGSIZE     CFG_CBSIZE  </span><span class="cm">/* Boot Argument Buffer Size    */</span><span class="cp"></span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

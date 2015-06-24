@@ -1290,6 +1290,695 @@ typedef struct &hellip;">
 </span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CONFIG_MODEM_SUPPORT */</span><span class="cp"></span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<figure class='code'><figcaption><span>common/main.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="nf">main_loop</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="cp">#ifndef CFG_HUSH_PARSER</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">char</span> <span class="n">lastcommand</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span> <span class="p">};</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">flag</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_BOOTDELAY) &amp;&amp; (CONFIG_BOOTDELAY &gt;= 0)</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>                                       <span class="cm">/*保存环境变量字符串*/</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">bootdelay</span><span class="p">;</span>                                    <span class="cm">/*保存uboot启动延时时间*/</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_PREBOOT</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOTCOUNT_LIMIT</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">bootcount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">bootlimit</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">bcs</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">bcs_set</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_BOOTCOUNT_LIMIT */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_VFD) &amp;&amp; defined(VFD_TEST_LOGO)</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">bmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="cm">/* default bitmap */</span>
+</span><span class='line'>  <span class="k">extern</span> <span class="kt">int</span> <span class="n">trab_vfd</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">bitmap</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MODEM_SUPPORT</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">do_mdm_init</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bmp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>   <span class="cm">/* alternate bitmap */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">trab_vfd</span> <span class="p">(</span><span class="n">bmp</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CONFIG_VFD &amp;&amp; VFD_TEST_LOGO */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>                                                  <span class="cm">/*友善之臂1wire触摸驱动*/</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="kt">void</span> <span class="n">FriendlyARM1Wire</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">FriendlyARM1Wire</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOTCOUNT_LIMIT</span>
+</span><span class='line'>  <span class="n">bootcount</span> <span class="o">=</span> <span class="n">bootcount_load</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">bootcount</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">bootcount_store</span> <span class="p">(</span><span class="n">bootcount</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">sprintf</span> <span class="p">(</span><span class="n">bcs_set</span><span class="p">,</span> <span class="s">&quot;%lu&quot;</span><span class="p">,</span> <span class="n">bootcount</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">setenv</span> <span class="p">(</span><span class="s">&quot;bootcount&quot;</span><span class="p">,</span> <span class="n">bcs_set</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">bcs</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;bootlimit&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">bootlimit</span> <span class="o">=</span> <span class="n">bcs</span> <span class="o">?</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">bcs</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_BOOTCOUNT_LIMIT */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_MODEM_SUPPORT</span>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;DEBUG: main_loop:   do_mdm_init=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">do_mdm_init</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">do_mdm_init</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kt">char</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="n">strdup</span><span class="p">(</span><span class="n">getenv</span><span class="p">(</span><span class="s">&quot;mdm_cmd&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">setenv</span> <span class="p">(</span><span class="s">&quot;preboot&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span>  <span class="cm">/* set or delete definition */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">str</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">free</span> <span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">mdm_init</span><span class="p">();</span> <span class="cm">/* wait for modem connection */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif  </span><span class="cm">/* CONFIG_MODEM_SUPPORT */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_VERSION_VARIABLE</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">extern</span> <span class="kt">char</span> <span class="n">version_string</span><span class="p">[];</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">setenv</span> <span class="p">(</span><span class="s">&quot;ver&quot;</span><span class="p">,</span> <span class="n">version_string</span><span class="p">);</span>  <span class="cm">/* set version variable */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_VERSION_VARIABLE */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CFG_HUSH_PARSER</span>
+</span><span class='line'>  <span class="n">u_boot_hush_start</span> <span class="p">();</span>                     <span class="cm">/*定义在common/hush.c中*/</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_AUTO_COMPLETE</span>
+</span><span class='line'>  <span class="n">install_auto_complete</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_PREBOOT</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">p</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;preboot&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="cp"># ifdef CONFIG_AUTOBOOT_KEYED</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">disable_ctrlc</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="cm">/* disable Control C checking */</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># ifndef CFG_HUSH_PARSER</span>
+</span><span class='line'>      <span class="n">run_command</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># else</span>
+</span><span class='line'>      <span class="n">parse_string_outer</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">FLAG_PARSE_SEMICOLON</span> <span class="o">|</span>
+</span><span class='line'>                  <span class="n">FLAG_EXIT_FROM_LOOP</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># ifdef CONFIG_AUTOBOOT_KEYED</span>
+</span><span class='line'>      <span class="n">disable_ctrlc</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>    <span class="cm">/* restore Control C checking */</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_PREBOOT */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_BOOTDELAY) &amp;&amp; (CONFIG_BOOTDELAY &gt;= 0)</span>
+</span><span class='line'>  <span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;bootdelay&quot;</span><span class="p">);</span>               <span class="cm">/*获得环境变量bootdelay*/</span>
+</span><span class='line'>  <span class="n">bootdelay</span> <span class="o">=</span> <span class="n">s</span> <span class="o">?</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">simple_strtol</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">:</span> <span class="n">CONFIG_BOOTDELAY</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;### main_loop entered: bootdelay=%d</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">bootdelay</span><span class="p">);</span>
+</span><span class='line'>    <span class="c1">//printf(&quot;main_loop enter: the bootdelay =%d\n\n&quot;,bootdelay);</span>
+</span><span class='line'><span class="cp"># ifdef CONFIG_BOOT_RETRY_TIME</span>
+</span><span class='line'>  <span class="n">init_cmd_timeout</span> <span class="p">();</span>
+</span><span class='line'><span class="cp"># endif  </span><span class="cm">/* CONFIG_BOOT_RETRY_TIME */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOTCOUNT_LIMIT</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">bootlimit</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">bootcount</span> <span class="o">&gt;</span> <span class="n">bootlimit</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Warning: Bootlimit (%u) exceeded. Using altbootcmd.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span class='line'>              <span class="p">(</span><span class="kt">unsigned</span><span class="p">)</span><span class="n">bootlimit</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;altbootcmd&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_BOOTCOUNT_LIMIT */</span><span class="cp"></span>
+</span><span class='line'>  <span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;bootcmd&quot;</span><span class="p">);</span>                         <span class="cm">/*字符串s保存bootcmd的命令*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;### main_loop: bootcmd=</span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">?</span> <span class="nl">s</span> <span class="p">:</span> <span class="s">&quot;&lt;UNDEFINED&gt;&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">bootdelay</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">s</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">abortboot</span> <span class="p">(</span><span class="n">bootdelay</span><span class="p">))</span> <span class="p">{</span>  <span class="cm">/*uboot延时期间没有被打断则进入if判断*/</span>
+</span><span class='line'><span class="cp"># ifdef CONFIG_AUTOBOOT_KEYED</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">prev</span> <span class="o">=</span> <span class="n">disable_ctrlc</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>             <span class="cm">/* disable Control C checking */</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># ifndef CFG_HUSH_PARSER</span>
+</span><span class='line'>      <span class="n">run_command</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># else</span>
+</span><span class='line'>      <span class="n">parse_string_outer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">FLAG_PARSE_SEMICOLON</span> <span class="o">|</span>
+</span><span class='line'>                  <span class="n">FLAG_EXIT_FROM_LOOP</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># ifdef CONFIG_AUTOBOOT_KEYED</span>
+</span><span class='line'>      <span class="n">disable_ctrlc</span><span class="p">(</span><span class="n">prev</span><span class="p">);</span>                        <span class="cm">/* restore Control C checking */</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp"># ifdef CONFIG_MENUKEY</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">menukey</span> <span class="o">==</span> <span class="n">CONFIG_MENUKEY</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">&quot;menucmd&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="cp"># ifndef CFG_HUSH_PARSER</span>
+</span><span class='line'>      <span class="n">run_command</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># else</span>
+</span><span class='line'>      <span class="n">parse_string_outer</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">FLAG_PARSE_SEMICOLON</span> <span class="o">|</span>
+</span><span class='line'>                  <span class="n">FLAG_EXIT_FROM_LOOP</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_MENUKEY */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CONFIG_BOOTDELAY */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_AMIGAONEG3SE</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">extern</span> <span class="kt">void</span> <span class="n">video_banner</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">video_banner</span><span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//FriendlyARMMenu();                       /*友善之臂uboot界面*/</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * Main Loop for Monitor Command Processing</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'><span class="cp">#ifdef CFG_HUSH_PARSER</span>
+</span><span class='line'>  <span class="n">parse_file_outer</span><span class="p">();</span>                           <span class="cm">/*读取用户命令并执行*/</span>
+</span><span class='line'>  <span class="cm">/* This point is never reached */</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(;;);</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>                                 
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_RETRY_TIME</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="cm">/* Saw enough of a valid command to</span>
+</span><span class='line'><span class="cm">          * restart the timeout.</span>
+</span><span class='line'><span class="cm">          */</span>
+</span><span class='line'>          <span class="n">reset_cmd_timeout</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>      <span class="n">len</span> <span class="o">=</span> <span class="n">readline</span> <span class="p">(</span><span class="n">CFG_PROMPT</span><span class="p">);</span>          <span class="cm">/*循环读取命令的一般实现方法:从终端读入用户输入的命令字符串，然后将该字符串作为参数调用run_command函数执行该命令*/</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="cm">/* assume no special flags for now */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">strcpy</span> <span class="p">(</span><span class="n">lastcommand</span><span class="p">,</span> <span class="n">console_buffer</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">flag</span> <span class="o">|=</span> <span class="n">CMD_FLAG_REPEAT</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BOOT_RETRY_TIME</span>
+</span><span class='line'>      <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="cm">/* -2 means timed out, retry autoboot</span>
+</span><span class='line'><span class="cm">          */</span>
+</span><span class='line'>          <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Timed out waiting for command</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># ifdef CONFIG_RESET_TO_RETRY</span>
+</span><span class='line'>          <span class="cm">/* Reinit board to run initialization code again */</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'><span class="cp"># else</span>
+</span><span class='line'>          <span class="k">return</span><span class="p">;</span>       <span class="cm">/* retry autoboot */</span>
+</span><span class='line'><span class="cp"># endif</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;&lt;INTERRUPT&gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="n">run_command</span> <span class="p">(</span><span class="n">lastcommand</span><span class="p">,</span> <span class="n">flag</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">rc</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="cm">/* invalid command or not repeatable, forget it */</span>
+</span><span class='line'>          <span class="n">lastcommand</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/*CFG_HUSH_PARSER*/</span><span class="cp"></span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*解析执行用户命令*/</span>
+</span><span class='line'><span class="cm">/****************************************************************************</span>
+</span><span class='line'><span class="cm"> * returns:</span>
+</span><span class='line'><span class="cm"> *   1  - command executed, repeatable</span>
+</span><span class='line'><span class="cm"> *   0  - command executed but not repeatable, interrupted commands are</span>
+</span><span class='line'><span class="cm"> *        always considered not repeatable</span>
+</span><span class='line'><span class="cm"> *   -1 - not executed (unrecognized, bootd recursion or too many args)</span>
+</span><span class='line'><span class="cm"> *           (If cmd is NULL or &quot;&quot; or longer than CFG_CBSIZE-1 it is</span>
+</span><span class='line'><span class="cm"> *           considered unrecognized)</span>
+</span><span class='line'><span class="cm"> * **************************************************************************/</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">run_command</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">cmd_tbl_t</span> <span class="o">*</span><span class="n">cmdtp</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">cmdbuf</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">];</span>    <span class="cm">/* working copy of cmd     */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">token</span><span class="p">;</span>           <span class="cm">/* start of token in cmdbuf    */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">sep</span><span class="p">;</span>         <span class="cm">/* end of token (separator) in cmdbuf */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">finaltoken</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">];</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="n">cmdbuf</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[</span><span class="n">CFG_MAXARGS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>  <span class="cm">/* NULL terminated */</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">inquotes</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">repeatable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef DEBUG_PARSER</span>
+</span><span class='line'>  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;[RUN_COMMAND] cmd[%p]=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="n">cmd</span> <span class="o">?</span> <span class="nl">cmd</span> <span class="p">:</span> <span class="s">&quot;NULL&quot;</span><span class="p">);</span>   <span class="cm">/* use puts - string may be loooong */</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">clear_ctrlc</span><span class="p">();</span>        <span class="cm">/* forget any previous Control C */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cmd</span> <span class="o">||</span> <span class="o">!*</span><span class="n">cmd</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="cm">/* empty command */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">CFG_CBSIZE</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;## Command too long!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">strcpy</span> <span class="p">(</span><span class="n">cmdbuf</span><span class="p">,</span> <span class="n">cmd</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Process separators and check for invalid</span>
+</span><span class='line'><span class="cm">  * repeatable commands</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef DEBUG_PARSER</span>
+</span><span class='line'>  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;[PROCESS_SEPARATORS] %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="k">while</span> <span class="p">(</span><span class="o">*</span><span class="n">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * Find separator, or string end</span>
+</span><span class='line'><span class="cm">      * Allow simple escape of &#39;;&#39; by writing &quot;\;&quot;</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="n">inquotes</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="n">str</span><span class="p">;</span> <span class="o">*</span><span class="n">sep</span><span class="p">;</span> <span class="n">sep</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">((</span><span class="o">*</span><span class="n">sep</span><span class="o">==</span><span class="sc">&#39;\&#39;&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>              <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">sep</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="sc">&#39;\\&#39;</span><span class="p">))</span>
+</span><span class='line'>              <span class="n">inquotes</span><span class="o">=!</span><span class="n">inquotes</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">inquotes</span> <span class="o">&amp;&amp;</span>
+</span><span class='line'>              <span class="p">(</span><span class="o">*</span><span class="n">sep</span> <span class="o">==</span> <span class="sc">&#39;;&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span>  <span class="cm">/* separator       */</span>
+</span><span class='line'>              <span class="p">(</span> <span class="n">sep</span> <span class="o">!=</span> <span class="n">str</span><span class="p">)</span> <span class="o">&amp;&amp;</span>  <span class="cm">/* past string start   */</span>
+</span><span class='line'>              <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">sep</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="sc">&#39;\\&#39;</span><span class="p">))</span> <span class="cm">/* and NOT escaped */</span>
+</span><span class='line'>              <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * Limit the token to data between separators</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="n">token</span> <span class="o">=</span> <span class="n">str</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">sep</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">str</span> <span class="o">=</span> <span class="n">sep</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>   <span class="cm">/* start of command for next pass */</span>
+</span><span class='line'>          <span class="o">*</span><span class="n">sep</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">str</span> <span class="o">=</span> <span class="n">sep</span><span class="p">;</span>  <span class="cm">/* no more commands for next pass */</span>
+</span><span class='line'><span class="cp">#ifdef DEBUG_PARSER</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;token: </span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">token</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* find macros in this token and replace them */</span>
+</span><span class='line'>      <span class="n">process_macros</span> <span class="p">(</span><span class="n">token</span><span class="p">,</span> <span class="n">finaltoken</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* Extract arguments */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">argc</span> <span class="o">=</span> <span class="n">parse_line</span> <span class="p">(</span><span class="n">finaltoken</span><span class="p">,</span> <span class="n">argv</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="cm">/* no command at all */</span>
+</span><span class='line'>          <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* Look up command in command table */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">cmdtp</span> <span class="o">=</span> <span class="n">find_cmd</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Unknown command &#39;%s&#39; - try &#39;help&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="cm">/* give up after bad command */</span>
+</span><span class='line'>          <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* found - check max args */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">maxargs</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Usage:</span><span class="se">\n</span><span class="s">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">usage</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_BOOTD)</span>
+</span><span class='line'>      <span class="cm">/* avoid &quot;bootd&quot; recursion */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">cmd</span> <span class="o">==</span> <span class="n">do_bootd</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="cp">#ifdef DEBUG_PARSER</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">finaltoken</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">flag</span> <span class="o">&amp;</span> <span class="n">CMD_FLAG_BOOTD</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;&#39;bootd&#39; recursion detected</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>              <span class="n">flag</span> <span class="o">|=</span> <span class="n">CMD_FLAG_BOOTD</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CFG_CMD_BOOTD */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* OK - call function to do the command */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">cmd</span><span class="p">)</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">repeatable</span> <span class="o">&amp;=</span> <span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">repeatable</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* Did the user stop this? */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">had_ctrlc</span> <span class="p">())</span>
+</span><span class='line'>          <span class="k">return</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* if stopped then not repeatable */</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="n">rc</span> <span class="o">?</span> <span class="nl">rc</span> <span class="p">:</span> <span class="n">repeatable</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
