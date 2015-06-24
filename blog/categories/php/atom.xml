@@ -4,7 +4,7 @@
   <title><![CDATA[Category: php | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/php/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-24T16:05:54+08:00</updated>
+  <updated>2015-06-24T16:12:51+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -21,11 +21,23 @@
     <content type="html"><![CDATA[<h3>变量</h3>
 
 <ul>
-<li>变量使用$+变量名来定义与使用，比如:
+<li>变量使用<strong>$+变量名</strong>来定义与使用，比如:
 <code>PHP
 $a = 10;
 $b = 20;
 echo $a+$b;
+</code>
+
+<h3>常量</h3></li>
+<li>使用关键字<strong>const</strong>：
+<code>PHP
+const THE_VALUE = 100;
+echo THEVALUE;
+</code></li>
+<li>使用<strong>define</strong>函数：
+<code>PHP
+define('THE_VALUE',100);
+echo THE_VALUE;
 </code></li>
 </ul>
 
