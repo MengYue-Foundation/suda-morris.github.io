@@ -88,6 +88,61 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/24/php-knowledge/">
+		
+			PHP语法基础</a>
+	</h2>
+	<div class="entry-content">
+		<h3>变量</h3>
+
+<ul>
+<li>变量使用$+变量名来定义与使用，比如:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='PHP'><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$b</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$a</span><span class="o">+</span><span class="nv">$b</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-24T16:00:02+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/php/'>php</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/20/board-dot-c/">
 		
 			board.c</a>
@@ -130,24 +185,24 @@
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">typedef</span>  <span class="k">struct</span>   <span class="n">global_data</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kt">bd_t</span>        <span class="o">*</span><span class="n">bd</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">bd_t</span>        <span class="o">*</span><span class="n">bd</span><span class="p">;</span>               <span class="cm">/*与板子相关的结构*/</span>
 </span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">flags</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">baudrate</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">baudrate</span><span class="p">;</span>     <span class="cm">/*波特率*/</span>
 </span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">have_console</span><span class="p">;</span> <span class="cm">/* serial_init() was called */</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">reloc_off</span><span class="p">;</span>    <span class="cm">/* Relocation Offset */</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_addr</span><span class="p">;</span> <span class="cm">/* Address  of Environment struct */</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_valid</span><span class="p">;</span>    <span class="cm">/* Checksum of Environment valid? */</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">fb_base</span><span class="p">;</span>  <span class="cm">/* base address of frame buffer */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">reloc_off</span><span class="p">;</span>        <span class="cm">/* 重定位偏移*/</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_addr</span><span class="p">;</span>     <span class="cm">/* 存放环境变量结构的地址*/</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">env_valid</span><span class="p">;</span>        <span class="cm">/* Checksum of Environment valid? */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">long</span>   <span class="n">fb_base</span><span class="p">;</span>      <span class="cm">/* base address of frame buffer */</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
-</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">char</span>   <span class="n">vfd_type</span><span class="p">;</span> <span class="cm">/* display type */</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">char</span>   <span class="n">vfd_type</span><span class="p">;</span>     <span class="cm">/* display type */</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
-</span><span class='line'><span class="c">  unsigned long   cpu_clk;    /* CPU clock in Hz!     */</span>
-</span><span class='line'><span class="c">  unsigned long   bus_clk;</span>
-</span><span class='line'><span class="c">  unsigned long   ram_size;   /* RAM size */</span>
+</span><span class='line'><span class="c">  unsigned long   cpu_clk;        /* CPU的时钟频率*/</span>
+</span><span class='line'><span class="c">  unsigned long   bus_clk;        /*总线的时钟频率*/</span>
+</span><span class='line'><span class="c">  unsigned long   ram_size;       /* RAM size */</span>
 </span><span class='line'><span class="c">  unsigned long   reset_status;   /* reset status register at boot */</span>
 </span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="kt">void</span>        <span class="o">**</span><span class="n">jt</span><span class="p">;</span>      <span class="cm">/* jump table */</span>
+</span><span class='line'>  <span class="kt">void</span>        <span class="o">**</span><span class="n">jt</span><span class="p">;</span>              <span class="cm">/* jump table，保存着某些函数的入口地址，在common/Exoirt.c中进行填充 */</span>
 </span><span class='line'><span class="p">}</span> <span class="kt">gd_t</span><span class="p">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/*</span>
@@ -165,6 +220,61 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* __ASM_GBL_DATA_H */</span><span class="cp"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>include/asm-arm/u-boot.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifndef _U_BOOT_H_</span>
+</span><span class='line'><span class="cp">#define _U_BOOT_H_   1</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">typedef</span> <span class="k">struct</span> <span class="n">bd_info</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span>           <span class="n">bi_baudrate</span><span class="p">;</span>      <span class="cm">/* 串口波特率*/</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">bi_ip_addr</span><span class="p">;</span>       <span class="cm">/* IP Address */</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">bi_enetaddr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span> <span class="cm">/* Ethernet adress */</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">environment_s</span>    <span class="o">*</span><span class="n">bi_env</span><span class="p">;</span><span class="cm">/*环境变量地址指针*/</span>
+</span><span class='line'>    <span class="n">ulong</span>          <span class="n">bi_arch_number</span><span class="p">;</span>   <span class="cm">/* unique id for this board&#39;s CPU */</span>
+</span><span class='line'>    <span class="n">ulong</span>          <span class="n">bi_boot_params</span><span class="p">;</span>   <span class="cm">/* where this board expects params */</span>
+</span><span class='line'>    <span class="k">struct</span>                         <span class="cm">/* RAM configuration */</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">start</span><span class="p">;</span>                   <span class="cm">/*RAM的起始地址*/</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">size</span><span class="p">;</span>                        <span class="cm">/*RAM的大小*/</span>
+</span><span class='line'>    <span class="p">}</span> <span class="n">bi_dram</span><span class="p">[</span><span class="n">CONFIG_NR_DRAM_BANKS</span><span class="p">];</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_ETH1</span>
+</span><span class='line'>    <span class="cm">/* second onboard ethernet port */</span>
+</span><span class='line'>    <span class="kt">unsigned</span> <span class="kt">char</span>   <span class="n">bi_enet1addr</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="p">}</span> <span class="kt">bd_t</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define bi_env_data bi_env-&gt;data</span>
+</span><span class='line'><span class="cp">#define bi_env_crc  bi_env-&gt;crc</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* _U_BOOT_H_ */</span><span class="cp"></span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -688,32 +798,6 @@
 <span class='line-number'>516</span>
 <span class='line-number'>517</span>
 <span class='line-number'>518</span>
-<span class='line-number'>519</span>
-<span class='line-number'>520</span>
-<span class='line-number'>521</span>
-<span class='line-number'>522</span>
-<span class='line-number'>523</span>
-<span class='line-number'>524</span>
-<span class='line-number'>525</span>
-<span class='line-number'>526</span>
-<span class='line-number'>527</span>
-<span class='line-number'>528</span>
-<span class='line-number'>529</span>
-<span class='line-number'>530</span>
-<span class='line-number'>531</span>
-<span class='line-number'>532</span>
-<span class='line-number'>533</span>
-<span class='line-number'>534</span>
-<span class='line-number'>535</span>
-<span class='line-number'>536</span>
-<span class='line-number'>537</span>
-<span class='line-number'>538</span>
-<span class='line-number'>539</span>
-<span class='line-number'>540</span>
-<span class='line-number'>541</span>
-<span class='line-number'>542</span>
-<span class='line-number'>543</span>
-<span class='line-number'>544</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;common.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;command.h&gt;</span>
 </span><span class='line'><span class="cp">#include &lt;malloc.h&gt;</span>
@@ -780,10 +864,9 @@
 </span><span class='line'><span class="k">static</span>
 </span><span class='line'><span class="kt">void</span> <span class="nf">mem_malloc_init</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">dest_addr</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="n">mem_malloc_start</span> <span class="o">=</span> <span class="n">dest_addr</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">mem_malloc_end</span> <span class="o">=</span> <span class="n">dest_addr</span> <span class="o">+</span> <span class="n">CFG_MALLOC_LEN</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">mem_malloc_brk</span> <span class="o">=</span> <span class="n">mem_malloc_start</span><span class="p">;</span>
-</span><span class='line'>
+</span><span class='line'>  <span class="n">mem_malloc_start</span> <span class="o">=</span> <span class="n">dest_addr</span><span class="p">;</span>                   <span class="cm">/*缓冲区起始地址*/</span>
+</span><span class='line'>  <span class="n">mem_malloc_end</span> <span class="o">=</span> <span class="n">dest_addr</span> <span class="o">+</span> <span class="n">CFG_MALLOC_LEN</span><span class="p">;</span>  <span class="cm">/*缓冲区结束地址*/</span>
+</span><span class='line'>  <span class="n">mem_malloc_brk</span> <span class="o">=</span> <span class="n">mem_malloc_start</span><span class="p">;</span>              <span class="cm">/*已使用块的地址，初始时应指向起始地址*/</span>
 </span><span class='line'>  <span class="cm">/* memset ((void *) mem_malloc_start, 0,</span>
 </span><span class='line'><span class="cm">         mem_malloc_end - mem_malloc_start); */</span>
 </span><span class='line'><span class="p">}</span>
@@ -881,57 +964,33 @@
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CFG_NO_FLASH */</span><span class="cp"></span>
 </span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * Breathe some life into the board...</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * Initialize a serial port as console, and carry out some hardware</span>
-</span><span class='line'><span class="cm"> * tests.</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * The first part of initialization is running from Flash memory;</span>
-</span><span class='line'><span class="cm"> * its main purpose is to initialize the RAM so that we</span>
-</span><span class='line'><span class="cm"> * can relocate the monitor code to RAM.</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * All attempts to come up with a &quot;common&quot; initialization sequence</span>
-</span><span class='line'><span class="cm"> * that works for all boards and architectures failed: some of the</span>
-</span><span class='line'><span class="cm"> * requirements are just _too_ different. To get rid of the resulting</span>
-</span><span class='line'><span class="cm"> * mess of board dependent #ifdef&#39;ed code we now make the whole</span>
-</span><span class='line'><span class="cm"> * initialization sequence configurable to the user.</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * The requirements for any new initalization function is simple: it</span>
-</span><span class='line'><span class="cm"> * receives a pointer to the &quot;global data&quot; structure as it&#39;s only</span>
-</span><span class='line'><span class="cm"> * argument, and returns an integer return code, where 0 means</span>
-</span><span class='line'><span class="cm"> * &quot;continue&quot; and != 0 means &quot;fatal error, hang the system&quot;.</span>
-</span><span class='line'><span class="cm"> */</span>
 </span><span class='line'><span class="k">typedef</span> <span class="nf">int</span> <span class="p">(</span><span class="kt">init_fnc_t</span><span class="p">)</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </span><span class='line'>
 </span><span class='line'><span class="kt">int</span> <span class="nf">print_cpuinfo</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span> <span class="cm">/* test-only */</span>
 </span><span class='line'>
 </span><span class='line'><span class="kt">init_fnc_t</span> <span class="o">*</span><span class="n">init_sequence</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="n">cpu_init</span><span class="p">,</span>     <span class="cm">/* basic cpu dependent setup */</span>
-</span><span class='line'>  <span class="n">board_init</span><span class="p">,</span>       <span class="cm">/* basic board dependent setup */</span>
-</span><span class='line'>  <span class="n">interrupt_init</span><span class="p">,</span>       <span class="cm">/* set up exceptions */</span>
-</span><span class='line'>  <span class="n">env_init</span><span class="p">,</span>     <span class="cm">/* initialize environment */</span>
-</span><span class='line'>  <span class="n">init_baudrate</span><span class="p">,</span>        <span class="cm">/* initialze baudrate settings */</span>
-</span><span class='line'>  <span class="n">serial_init</span><span class="p">,</span>      <span class="cm">/* serial communications setup */</span>
-</span><span class='line'>  <span class="n">console_init_f</span><span class="p">,</span>       <span class="cm">/* stage 1 init of console */</span>
-</span><span class='line'>  <span class="n">display_banner</span><span class="p">,</span>       <span class="cm">/* say that we are here */</span>
+</span><span class='line'>  <span class="n">cpu_init</span><span class="p">,</span>         <span class="cm">/* cpu的初始化，位于cpu/sec64xx/cpu.c*/</span>
+</span><span class='line'>  <span class="n">board_init</span><span class="p">,</span>           <span class="cm">/* 板子初始化，位于board/samsung/mini6410/mini6410.c*/</span>
+</span><span class='line'>  <span class="n">interrupt_init</span><span class="p">,</span>       <span class="cm">/* 中断初始化，位于cpu/s3c64xx/interrupts.c*/</span>
+</span><span class='line'>  <span class="n">env_init</span><span class="p">,</span>         <span class="cm">/* 初始化环境变量，位于common/env_nand.c*/</span>
+</span><span class='line'>  <span class="n">init_baudrate</span><span class="p">,</span>        <span class="cm">/* 初始化波特率设置，位于lib_arm/board.c*/</span>
+</span><span class='line'>  <span class="n">serial_init</span><span class="p">,</span>      <span class="cm">/* 串口通讯设置，位于cpu/s3c64xx/serial.c*/</span>
+</span><span class='line'>  <span class="n">console_init_f</span><span class="p">,</span>       <span class="cm">/* 第一阶段控制台设置，位于common/console.c*/</span>
+</span><span class='line'>  <span class="n">display_banner</span><span class="p">,</span>       <span class="cm">/* 打印banner，位于lib_arm/board.c*/</span>
 </span><span class='line'><span class="cp">#if defined(CONFIG_DISPLAY_CPUINFO)</span>
-</span><span class='line'>  <span class="n">print_cpuinfo</span><span class="p">,</span>        <span class="cm">/* display cpu info (and speed) */</span>
+</span><span class='line'>  <span class="n">print_cpuinfo</span><span class="p">,</span>        <span class="cm">/* 打印CPU信息，位于cpu/s3c64xx/s3c6410/speed.c*/</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'><span class="cp">#if defined(CONFIG_DISPLAY_BOARDINFO)</span>
-</span><span class='line'>  <span class="n">checkboard</span><span class="p">,</span>       <span class="cm">/* display board info */</span>
+</span><span class='line'>  <span class="n">checkboard</span><span class="p">,</span>           <span class="cm">/* 打印板子信息，位于board/samsumg/mini6410/mini6410.c*/</span>
 </span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">dram_init</span><span class="p">,</span>        <span class="cm">/* configure available RAM banks */</span>
-</span><span class='line'>  <span class="n">display_dram_config</span><span class="p">,</span>
-</span><span class='line'>  <span class="nb">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">dram_init</span><span class="p">,</span>            <span class="cm">/* 配置现有的RAM banks,这里只是对gd中的bi_dram结构中的两个成员赋值,也即BANK的起始地址和大小 位于board/samsumg/mini6410/mini6410.c*/</span>
+</span><span class='line'>  <span class="n">display_dram_config</span><span class="p">,</span><span class="cm">/*位于lib_arm/board.c*/</span>
+</span><span class='line'>  <span class="nb">NULL</span><span class="p">,</span>                <span class="cm">/*用以标识列表数组的结束 */</span>
 </span><span class='line'><span class="p">};</span>
 </span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="nf">start_armboot</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">start_armboot</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>               <span class="cm">/*uboot第二阶段入口函数,完成uboot第二阶级的一系列的硬件初始化工作, 然后转入main函数*/</span>
 </span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="kt">init_fnc_t</span> <span class="o">**</span><span class="n">init_fnc_ptr</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">init_fnc_t</span> <span class="o">**</span><span class="n">init_fnc_ptr</span><span class="p">;</span>         <span class="cm">/*init_fnc_t 是各初始化函数的数组 */</span>
 </span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
 </span><span class='line'><span class="cp">#ifndef CFG_NO_FLASH</span>
 </span><span class='line'>  <span class="n">ulong</span> <span class="n">size</span><span class="p">;</span>
@@ -942,7 +1001,7 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(CONFIG_BOOT_MOVINAND)</span>
-</span><span class='line'>  <span class="n">uint</span> <span class="o">*</span><span class="n">magic</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="n">PHYS_SDRAM_1</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">uint</span> <span class="o">*</span><span class="n">magic</span> <span class="o">=</span> <span class="p">(</span><span class="n">uint</span> <span class="o">*</span><span class="p">)</span> <span class="p">(</span><span class="n">PHYS_SDRAM_1</span><span class="p">);</span> <span class="cm">/*指向0x5000 0000*/</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* Pointer is writable since we allocated a register for it */</span>
@@ -959,14 +1018,14 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* compiler optimization barrier needed for GCC &gt;= 3.4 */</span>
-</span><span class='line'>  <span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">:</span> <span class="o">:</span> <span class="o">:</span><span class="s">&quot;memory&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="o">:</span> <span class="o">:</span> <span class="o">:</span><span class="s">&quot;memory&quot;</span><span class="p">);</span>                   <span class="cm">/*禁止编译器优化此处代码*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">memset</span> <span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">gd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">gd_t</span><span class="p">));</span>
 </span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span> <span class="o">=</span> <span class="p">(</span><span class="kt">bd_t</span><span class="o">*</span><span class="p">)((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">gd</span> <span class="o">-</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">bd_t</span><span class="p">));</span>
 </span><span class='line'>  <span class="n">memset</span> <span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">bd_t</span><span class="p">));</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">monitor_flash_len</span> <span class="o">=</span> <span class="n">_bss_start</span> <span class="o">-</span> <span class="n">_armboot_start</span><span class="p">;</span>
-</span><span class='line'>
+</span><span class='line'>  <span class="n">monitor_flash_len</span> <span class="o">=</span> <span class="n">_bss_start</span> <span class="o">-</span> <span class="n">_armboot_start</span><span class="p">;</span>          <span class="cm">/*monitor_flash_len表示从flash中搬来的代码的长度,包络代码段，数据段*/</span>
+</span><span class='line'>                                                          <span class="cm">/*各设置的初始化.当返回值不为0时表示初始化失败 ,此时会调用 hang()函数,打印一错误提示信息,然后进入死循环 */</span>
 </span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">init_fnc_ptr</span> <span class="o">=</span> <span class="n">init_sequence</span><span class="p">;</span> <span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">;</span> <span class="o">++</span><span class="n">init_fnc_ptr</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">)()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>          <span class="n">hang</span> <span class="p">();</span>
@@ -976,36 +1035,35 @@
 </span><span class='line'><span class="cp">#ifndef CFG_NO_FLASH</span>
 </span><span class='line'>  <span class="cm">/* configure available FLASH banks */</span>
 </span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">flash_init</span> <span class="p">();</span>
-</span><span class='line'>  <span class="n">display_flash_config</span> <span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">display_flash_config</span> <span class="p">(</span><span class="n">size</span><span class="p">);</span>                            <span class="cm">/*打印flash的信息*/</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CFG_NO_FLASH */</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
-</span><span class='line'><span class="cp">#    ifndef PAGE_SIZE</span>
-</span><span class='line'><span class="cp">#      define PAGE_SIZE 4096</span>
-</span><span class='line'><span class="cp">#    endif</span>
+</span><span class='line'><span class="cp">#ifndef PAGE_SIZE</span>
+</span><span class='line'><span class="cp">#define PAGE_SIZE 4096                                       </span><span class="cm">/*显存大小*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * reserve memory for VFD display (always full pages)</span>
 </span><span class='line'><span class="cm">  */</span>
 </span><span class='line'>  <span class="cm">/* bss_end is defined in the board-specific linker script */</span>
 </span><span class='line'>  <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">_bss_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">vfd_setmem</span> <span class="p">(</span><span class="n">addr</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>                                        <span class="cm">/*设置显存基地址*/</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_VFD */</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_LCD</span>
-</span><span class='line'><span class="cp">#    ifndef PAGE_SIZE</span>
-</span><span class='line'><span class="cp">#      define PAGE_SIZE 4096</span>
-</span><span class='line'><span class="cp">#    endif</span>
+</span><span class='line'><span class="cp">#ifndef PAGE_SIZE</span>
+</span><span class='line'><span class="cp">#define PAGE_SIZE 4096                                       </span><span class="cm">/*显存大小*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>  <span class="cm">/*</span>
 </span><span class='line'><span class="cm">  * reserve memory for LCD display (always full pages)</span>
 </span><span class='line'><span class="cm">  */</span>
 </span><span class='line'>  <span class="cm">/* bss_end is defined in the board-specific linker script */</span>
 </span><span class='line'>  <span class="n">addr</span> <span class="o">=</span> <span class="p">(</span><span class="n">_bss_end</span> <span class="o">+</span> <span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">&amp;</span> <span class="o">~</span><span class="p">(</span><span class="n">PAGE_SIZE</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">lcd_setmem</span> <span class="p">(</span><span class="n">addr</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">size</span> <span class="o">=</span> <span class="n">lcd_setmem</span> <span class="p">(</span><span class="n">addr</span><span class="p">);</span>                             <span class="cm">/*该函数位于common/lcd.c*/</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">fb_base</span> <span class="o">=</span> <span class="n">addr</span><span class="p">;</span>                                        <span class="cm">/*设置显存基地址*/</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_LCD */</span><span class="cp"></span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* armboot_start is defined in the board-specific linker script */</span>
 </span><span class='line'><span class="cp">#ifdef CONFIG_MEMORY_UPPER_CODE </span><span class="cm">/* by scsuh */</span><span class="cp"></span>
 </span><span class='line'>  <span class="n">mem_malloc_init</span> <span class="p">(</span><span class="n">CFG_UBOOT_BASE</span> <span class="o">+</span> <span class="n">CFG_UBOOT_SIZE</span> <span class="o">-</span> <span class="n">CFG_MALLOC_LEN</span> <span class="o">-</span> <span class="n">CFG_STACK_SIZE</span><span class="p">);</span>
 </span><span class='line'><span class="cp">#else</span>
@@ -1018,7 +1076,7 @@
 </span><span class='line'><span class="cp">#if defined(CONFIG_NAND)</span>
 </span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;NAND:    &quot;</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">nand_init</span><span class="p">();</span>      <span class="cm">/* go init the NAND */</span>
-</span><span class='line'>  <span class="n">NAND_Init</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">NAND_Init</span><span class="p">();</span>      <span class="cm">/*友善提供的闭源代码*/</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(CONFIG_ONENAND)</span>
@@ -1052,18 +1110,18 @@
 </span><span class='line'>  <span class="n">dataflash_print_info</span><span class="p">();</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* initialize environment */</span>
-</span><span class='line'>  <span class="n">env_relocate</span> <span class="p">();</span>
+</span><span class='line'>                              <span class="cm">/* initialize environment */</span>
+</span><span class='line'>  <span class="n">env_relocate</span> <span class="p">();</span>          <span class="cm">/*位于common/env_common.c*/</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_VFD</span>
-</span><span class='line'>  <span class="cm">/* must do this after the framebuffer is allocated */</span>
-</span><span class='line'>  <span class="n">drv_vfd_init</span><span class="p">();</span>
+</span><span class='line'>                              <span class="cm">/* must do this after the framebuffer is allocated */</span>
+</span><span class='line'>  <span class="n">drv_vfd_init</span><span class="p">();</span>               <span class="cm">/*必须在前村初始化完成以后才能调用该初始化函数*/</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_VFD */</span><span class="cp"></span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* IP Address */</span>
-</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_ip_addr</span> <span class="o">=</span> <span class="n">getenv_IPaddr</span> <span class="p">(</span><span class="s">&quot;ipaddr&quot;</span><span class="p">);</span>
+</span><span class='line'>                                                      <span class="cm">/* IP Address */</span>
+</span><span class='line'>  <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_ip_addr</span> <span class="o">=</span> <span class="n">getenv_IPaddr</span> <span class="p">(</span><span class="s">&quot;ipaddr&quot;</span><span class="p">);</span>        <span class="cm">/*位于net/net.c*/</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* MAC Address */</span>
+</span><span class='line'>                                                      <span class="cm">/* MAC Address */</span>
 </span><span class='line'>  <span class="p">{</span>
 </span><span class='line'>      <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
 </span><span class='line'>      <span class="n">ulong</span> <span class="n">reg</span><span class="p">;</span>
@@ -1091,29 +1149,29 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">devices_init</span> <span class="p">();</span>  <span class="cm">/* get the devices list going. */</span>
+</span><span class='line'>  <span class="n">devices_init</span> <span class="p">();</span>                              <span class="cm">/* get the devices list going. */</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#ifdef CONFIG_CMC_PU2</span>
 </span><span class='line'>  <span class="n">load_sernum_ethaddr</span> <span class="p">();</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_CMC_PU2 */</span><span class="cp"></span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">jumptable_init</span> <span class="p">();</span>
+</span><span class='line'>  <span class="n">jumptable_init</span> <span class="p">();</span>                                <span class="cm">/*初始化跳转表,对gd中的jt(函数跳转表)数组进行初始化,其中保存着一些函数的入口地址*/</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">console_init_r</span> <span class="p">();</span>    <span class="cm">/* fully init console as a device */</span>
+</span><span class='line'>  <span class="n">console_init_r</span> <span class="p">();</span>                                <span class="cm">/* fully init console as a device */</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#if defined(CONFIG_MISC_INIT_R)</span>
-</span><span class='line'>  <span class="cm">/* miscellaneous platform dependent initialisations */</span>
+</span><span class='line'>                                                  <span class="cm">/* miscellaneous platform dependent initialisations */</span>
 </span><span class='line'>  <span class="n">misc_init_r</span> <span class="p">();</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* enable exceptions */</span>
-</span><span class='line'>  <span class="n">enable_interrupts</span> <span class="p">();</span>
+</span><span class='line'>                                                  <span class="cm">/* enable exceptions */</span>
+</span><span class='line'>  <span class="n">enable_interrupts</span> <span class="p">();</span>                         <span class="cm">/*设置cpsr的I和F位以充许中断*/</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* Perform network card initialisation if necessary */</span>
+</span><span class='line'>                                                  <span class="cm">/*网卡初始化*/</span>
 </span><span class='line'><span class="cp">#if defined(CONFIG_DRIVER_DM9000) &amp;&amp; defined(CONFIG_DRIVER_DM9000_NO_EEPROM)</span>
-</span><span class='line'><span class="k">extern</span> <span class="kt">int</span> <span class="n">eth_set_mac</span><span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span> <span class="n">bd</span><span class="p">);</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">int</span> <span class="n">eth_set_mac</span><span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span> <span class="n">bd</span><span class="p">);</span>                  <span class="cm">/*位于drivers/dm9000x.c*/</span>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;ethaddr&quot;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">eth_set_mac</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">eth_set_mac</span><span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">);</span>                           <span class="cm">/*设置DM9000的网卡地址*/</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
@@ -1127,7 +1185,7 @@
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_DRIVER_SMC91111 || CONFIG_DRIVER_LAN91C96 */</span><span class="cp"></span>
 </span><span class='line'>
-</span><span class='line'>  <span class="cm">/* Initialize from environment */</span>
+</span><span class='line'>                                                  <span class="cm">/* Initialize from environment */</span>
 </span><span class='line'>  <span class="k">if</span> <span class="p">((</span><span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;loadaddr&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="n">load_addr</span> <span class="o">=</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
 </span><span class='line'>  <span class="p">}</span>
@@ -1148,7 +1206,7 @@
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>  <span class="cm">/* main_loop() can return to retry autoboot, if so just run it again. */</span>
 </span><span class='line'>  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">main_loop</span> <span class="p">();</span>
+</span><span class='line'>      <span class="n">main_loop</span> <span class="p">();</span>                             <span class="cm">/*硬件初始化完成，进入main_loop函数，该函数在common/main.c中*/</span>
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* NOTREACHED - no way out of command loop except booting */</span>
@@ -2738,6 +2796,37 @@
 <span class='line-number'>134</span>
 <span class='line-number'>135</span>
 <span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -2756,6 +2845,13 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***********************************************Size of malloc() pool********************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MALLOC_LEN       (CFG_ENV_SIZE + 1024*1024)</span>
+</span><span class='line'><span class="cp">#define CFG_GBL_DATA_SIZE    128 </span><span class="cm">/* size in bytes reserved for initial data */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_STACK_SIZE       512*1024</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
 </span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
@@ -2781,7 +2877,7 @@
 </span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
 </span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
 </span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
+</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE         </span><span class="cm">/*用户内存位于代码之上*/</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
 </span><span class='line'>
@@ -2874,6 +2970,30 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_CPUINFO</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_BOARDINFO</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************DM9000*********************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000_NO_EEPROM   1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_USE_16BIT 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_BASE   0x18000300</span>
+</span><span class='line'><span class="cp">#define DM9000_IO CONFIG_DM9000_BASE</span>
+</span><span class='line'><span class="cp">#define DM9000_DATA (CONFIG_DM9000_BASE+4)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_INCLUDE_TEST</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ZIMAGE_BOOT</span>
+</span><span class='line'><span class="cp">#define CONFIG_IMAGE_BOOT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define BOARD_LATE_INIT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_SETUP_MEMORY_TAGS</span>
+</span><span class='line'><span class="cp">#define CONFIG_CMDLINE_TAG</span>
+</span><span class='line'><span class="cp">#define CONFIG_INITRD_TAG</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -5591,70 +5711,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 	<a class='category' href='/blog/categories/develop/'>develop</a>, <a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/08/gns3-install/">
-		
-			GNS3_Install</a>
-	</h2>
-	<div class="entry-content">
-		<h2>GNS3模拟器安装步骤</h2>
-
-<ol>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3</a>，并且安装</li>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3 IOU VM虚拟机镜像</a></li>
-<li>下载路由器和交换机的IOS镜像文件(百度搜索并下载)
-
-<ul>
-<li>i86bi-linux-l2-ipbasek9-15.1g.bin(交换机)</li>
-<li>i86bi-linux-l3-adventerprisek9-15.4.1T.bin(路由器)</li>
-</ul>
-</li>
-<li>安装virtualbox</li>
-<li>导入步骤2中下载的GNS3虚拟机镜像，设置网卡为hostonly，并启动虚拟机</li>
-<li>GNS3是基于linux系统的，root用户登录，密码为cisco，然后查看网卡ip地址ifconfig</li>
-<li>在浏览器中输入刚才查找到的IP地址，并指名端口号8000下的upload，例如：<a href="http://192.168.172.101:8000/upload">http://192.168.172.101:8000/upload</a></li>
-<li>打开GNS3软件，在edit->Preference->Server中添加虚拟机的IP地址以及端口(ip地址来自步骤6)</li>
-<li>在edit->Preference->IOS on UNIX中，指名iourc.txt的路径</li>
-<li>在edit->Preference->IOU devices中，添加switch和router镜像路径(路径为上传到虚拟机中的具体路径，例如：/home/gns3/GNS3/images/IOU/i86bi-linux-l2-ipbasek9-15.1g.bin)</li>
-<li>启动设备</li>
-</ol>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-08T11:24:09+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gns3/'>gns3</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

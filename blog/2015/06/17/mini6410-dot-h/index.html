@@ -272,6 +272,37 @@
 <span class='line-number'>134</span>
 <span class='line-number'>135</span>
 <span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -290,6 +321,13 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***********************************************Size of malloc() pool********************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MALLOC_LEN       (CFG_ENV_SIZE + 1024*1024)</span>
+</span><span class='line'><span class="cp">#define CFG_GBL_DATA_SIZE    128 </span><span class="cm">/* size in bytes reserved for initial data */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_STACK_SIZE       512*1024</span>
 </span><span class='line'>
 </span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
 </span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
@@ -315,7 +353,7 @@
 </span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
 </span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
 </span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE</span>
+</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE         </span><span class="cm">/*用户内存位于代码之上*/</span><span class="cp"></span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
 </span><span class='line'>
@@ -408,6 +446,30 @@
 </span><span class='line'>
 </span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_CPUINFO</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_BOARDINFO</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************DM9000*********************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000_NO_EEPROM   1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_USE_16BIT 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_BASE   0x18000300</span>
+</span><span class='line'><span class="cp">#define DM9000_IO CONFIG_DM9000_BASE</span>
+</span><span class='line'><span class="cp">#define DM9000_DATA (CONFIG_DM9000_BASE+4)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_INCLUDE_TEST</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ZIMAGE_BOOT</span>
+</span><span class='line'><span class="cp">#define CONFIG_IMAGE_BOOT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define BOARD_LATE_INIT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_SETUP_MEMORY_TAGS</span>
+</span><span class='line'><span class="cp">#define CONFIG_CMDLINE_TAG</span>
+</span><span class='line'><span class="cp">#define CONFIG_INITRD_TAG</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

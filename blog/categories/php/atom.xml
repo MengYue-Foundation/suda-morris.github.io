@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: php | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/php/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-06-24T16:05:54+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PHP语法基础]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/24/php-knowledge/"/>
+    <updated>2015-06-24T16:00:02+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/24/php-knowledge</id>
+    <content type="html"><![CDATA[<h3>变量</h3>
+
+<ul>
+<li>变量使用$+变量名来定义与使用，比如:
+<code>PHP
+$a = 10;
+$b = 20;
+echo $a+$b;
+</code></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-21T20:32:07+08:00</updated>
+  <updated>2015-06-24T16:05:54+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -19,24 +19,24 @@
     <updated>2015-06-20T15:23:31+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
     <content type="html"><![CDATA[<pre><code class="C include/asm-arm/global_data.h">typedef struct  global_data {
-    bd_t        *bd;
+    bd_t        *bd;                /*与板子相关的结构*/
     unsigned long   flags;
-    unsigned long   baudrate;
+    unsigned long   baudrate;       /*波特率*/
     unsigned long   have_console;   /* serial_init() was called */
-    unsigned long   reloc_off;  /* Relocation Offset */
-    unsigned long   env_addr;   /* Address  of Environment struct */
-    unsigned long   env_valid;  /* Checksum of Environment valid? */
-    unsigned long   fb_base;    /* base address of frame buffer */
+    unsigned long   reloc_off;      /* 重定位偏移*/
+    unsigned long   env_addr;       /* 存放环境变量结构的地址*/
+    unsigned long   env_valid;      /* Checksum of Environment valid? */
+    unsigned long   fb_base;        /* base address of frame buffer */
 #ifdef CONFIG_VFD
-    unsigned char   vfd_type;   /* display type */
+    unsigned char   vfd_type;       /* display type */
 #endif
 #if 0
-    unsigned long   cpu_clk;    /* CPU clock in Hz!     */
-    unsigned long   bus_clk;
-    unsigned long   ram_size;   /* RAM size */
+    unsigned long   cpu_clk;        /* CPU的时钟频率*/
+    unsigned long   bus_clk;        /*总线的时钟频率*/
+    unsigned long   ram_size;       /* RAM size */
     unsigned long   reset_status;   /* reset status register at boot */
 #endif
-    void        **jt;       /* jump table */
+    void        **jt;               /* jump table，保存着某些函数的入口地址，在common/Exoirt.c中进行填充 */
 } gd_t;
 
 /*
@@ -54,6 +54,33 @@ extern gd_t *gd;
 #endif
 
 #endif /* __ASM_GBL_DATA_H */
+</code></pre>
+
+<pre><code class="C include/asm-arm/u-boot.h">#ifndef _U_BOOT_H_
+#define _U_BOOT_H_  1
+
+typedef struct bd_info {
+    int         bi_baudrate;        /* 串口波特率*/
+    unsigned long   bi_ip_addr;     /* IP Address */
+    unsigned char   bi_enetaddr[6]; /* Ethernet adress */
+    struct environment_s    *bi_env;/*环境变量地址指针*/
+    ulong           bi_arch_number; /* unique id for this board's CPU */
+    ulong           bi_boot_params; /* where this board expects params */
+    struct                          /* RAM configuration */
+    {
+    ulong start;                    /*RAM的起始地址*/
+    ulong size;                     /*RAM的大小*/
+    } bi_dram[CONFIG_NR_DRAM_BANKS];
+#ifdef CONFIG_HAS_ETH1
+    /* second onboard ethernet port */
+    unsigned char   bi_enet1addr[6];
+#endif
+} bd_t;
+
+#define bi_env_data bi_env-&gt;data
+#define bi_env_crc  bi_env-&gt;crc
+
+#endif  /* _U_BOOT_H_ */
 </code></pre>
 
 <pre><code class="C board.c">#include &lt;common.h&gt;
@@ -122,10 +149,9 @@ static ulong mem_malloc_brk = 0;
 static
 void mem_malloc_init (ulong dest_addr)
 {
-    mem_malloc_start = dest_addr;
-    mem_malloc_end = dest_addr + CFG_MALLOC_LEN;
-    mem_malloc_brk = mem_malloc_start;
-
+    mem_malloc_start = dest_addr;                   /*缓冲区起始地址*/
+    mem_malloc_end = dest_addr + CFG_MALLOC_LEN;    /*缓冲区结束地址*/
+    mem_malloc_brk = mem_malloc_start;              /*已使用块的地址，初始时应指向起始地址*/
     /* memset ((void *) mem_malloc_start, 0,
             mem_malloc_end - mem_malloc_start); */
 }
@@ -223,57 +249,33 @@ static void display_flash_config (ulong size)
 }
 #endif /* CFG_NO_FLASH */
 
-
-/*
- * Breathe some life into the board...
- *
- * Initialize a serial port as console, and carry out some hardware
- * tests.
- *
- * The first part of initialization is running from Flash memory;
- * its main purpose is to initialize the RAM so that we
- * can relocate the monitor code to RAM.
- */
-
-/*
- * All attempts to come up with a "common" initialization sequence
- * that works for all boards and architectures failed: some of the
- * requirements are just _too_ different. To get rid of the resulting
- * mess of board dependent #ifdef'ed code we now make the whole
- * initialization sequence configurable to the user.
- *
- * The requirements for any new initalization function is simple: it
- * receives a pointer to the "global data" structure as it's only
- * argument, and returns an integer return code, where 0 means
- * "continue" and != 0 means "fatal error, hang the system".
- */
 typedef int (init_fnc_t) (void);
 
 int print_cpuinfo (void); /* test-only */
 
 init_fnc_t *init_sequence[] = {
-    cpu_init,       /* basic cpu dependent setup */
-    board_init,     /* basic board dependent setup */
-    interrupt_init,     /* set up exceptions */
-    env_init,       /* initialize environment */
-    init_baudrate,      /* initialze baudrate settings */
-    serial_init,        /* serial communications setup */
-    console_init_f,     /* stage 1 init of console */
-    display_banner,     /* say that we are here */
+    cpu_init,           /* cpu的初始化，位于cpu/sec64xx/cpu.c*/
+    board_init,         /* 板子初始化，位于board/samsung/mini6410/mini6410.c*/
+    interrupt_init,     /* 中断初始化，位于cpu/s3c64xx/interrupts.c*/
+    env_init,           /* 初始化环境变量，位于common/env_nand.c*/
+    init_baudrate,      /* 初始化波特率设置，位于lib_arm/board.c*/
+    serial_init,        /* 串口通讯设置，位于cpu/s3c64xx/serial.c*/
+    console_init_f,     /* 第一阶段控制台设置，位于common/console.c*/
+    display_banner,     /* 打印banner，位于lib_arm/board.c*/
 #if defined(CONFIG_DISPLAY_CPUINFO)
-    print_cpuinfo,      /* display cpu info (and speed) */
+    print_cpuinfo,      /* 打印CPU信息，位于cpu/s3c64xx/s3c6410/speed.c*/
 #endif
 #if defined(CONFIG_DISPLAY_BOARDINFO)
-    checkboard,     /* display board info */
+    checkboard,         /* 打印板子信息，位于board/samsumg/mini6410/mini6410.c*/
 #endif
-    dram_init,      /* configure available RAM banks */
-    display_dram_config,
-    NULL,
+    dram_init,          /* 配置现有的RAM banks,这里只是对gd中的bi_dram结构中的两个成员赋值,也即BANK的起始地址和大小 位于board/samsumg/mini6410/mini6410.c*/
+    display_dram_config,/*位于lib_arm/board.c*/
+    NULL,               /*用以标识列表数组的结束 */
 };
 
-void start_armboot (void)
+void start_armboot (void)               /*uboot第二阶段入口函数,完成uboot第二阶级的一系列的硬件初始化工作, 然后转入main函数*/
 {
-    init_fnc_t **init_fnc_ptr;
+    init_fnc_t **init_fnc_ptr;          /*init_fnc_t 是各初始化函数的数组 */
     char *s;
 #ifndef CFG_NO_FLASH
     ulong size;
@@ -284,7 +286,7 @@ void start_armboot (void)
 #endif
 
 #if defined(CONFIG_BOOT_MOVINAND)
-    uint *magic = (uint *) (PHYS_SDRAM_1);
+    uint *magic = (uint *) (PHYS_SDRAM_1);  /*指向0x5000 0000*/
 #endif
 
     /* Pointer is writable since we allocated a register for it */
@@ -301,14 +303,14 @@ void start_armboot (void)
 #endif
 
     /* compiler optimization barrier needed for GCC &gt;= 3.4 */
-    __asm__ __volatile__("": : :"memory");
+    __asm__ __volatile__("": : :"memory");                  /*禁止编译器优化此处代码*/
 
     memset ((void*)gd, 0, sizeof (gd_t));
     gd-&gt;bd = (bd_t*)((char*)gd - sizeof(bd_t));
     memset (gd-&gt;bd, 0, sizeof (bd_t));
 
-    monitor_flash_len = _bss_start - _armboot_start;
-
+    monitor_flash_len = _bss_start - _armboot_start;            /*monitor_flash_len表示从flash中搬来的代码的长度,包络代码段，数据段*/
+                                                            /*各设置的初始化.当返回值不为0时表示初始化失败 ,此时会调用 hang()函数,打印一错误提示信息,然后进入死循环 */
     for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
         if ((*init_fnc_ptr)() != 0) {
             hang ();
@@ -318,36 +320,35 @@ void start_armboot (void)
 #ifndef CFG_NO_FLASH
     /* configure available FLASH banks */
     size = flash_init ();
-    display_flash_config (size);
+    display_flash_config (size);                            /*打印flash的信息*/
 #endif /* CFG_NO_FLASH */
 
 #ifdef CONFIG_VFD
-#   ifndef PAGE_SIZE
-#     define PAGE_SIZE 4096
-#   endif
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 4096                                      /*显存大小*/
+#endif
     /*
      * reserve memory for VFD display (always full pages)
      */
     /* bss_end is defined in the board-specific linker script */
     addr = (_bss_end + (PAGE_SIZE - 1)) &amp; ~(PAGE_SIZE - 1);
     size = vfd_setmem (addr);
-    gd-&gt;fb_base = addr;
+    gd-&gt;fb_base = addr;                                     /*设置显存基地址*/
 #endif /* CONFIG_VFD */
 
 #ifdef CONFIG_LCD
-#   ifndef PAGE_SIZE
-#     define PAGE_SIZE 4096
-#   endif
+#ifndef PAGE_SIZE
+#define PAGE_SIZE 4096                                      /*显存大小*/
+#endif
     /*
      * reserve memory for LCD display (always full pages)
      */
     /* bss_end is defined in the board-specific linker script */
     addr = (_bss_end + (PAGE_SIZE - 1)) &amp; ~(PAGE_SIZE - 1);
-    size = lcd_setmem (addr);
-    gd-&gt;fb_base = addr;
+    size = lcd_setmem (addr);                               /*该函数位于common/lcd.c*/
+    gd-&gt;fb_base = addr;                                     /*设置显存基地址*/
 #endif /* CONFIG_LCD */
 
-    /* armboot_start is defined in the board-specific linker script */
 #ifdef CONFIG_MEMORY_UPPER_CODE /* by scsuh */
     mem_malloc_init (CFG_UBOOT_BASE + CFG_UBOOT_SIZE - CFG_MALLOC_LEN - CFG_STACK_SIZE);
 #else
@@ -360,7 +361,7 @@ defined(CONFIG_MINI6410)
 #if defined(CONFIG_NAND)
     puts ("NAND:    ");
     nand_init();        /* go init the NAND */
-    NAND_Init();
+    NAND_Init();        /*友善提供的闭源代码*/
 #endif
 
 #if defined(CONFIG_ONENAND)
@@ -394,18 +395,18 @@ defined(CONFIG_MINI6410)
     dataflash_print_info();
 #endif
 
-    /* initialize environment */
-    env_relocate ();
+                                /* initialize environment */
+    env_relocate ();            /*位于common/env_common.c*/
 
 #ifdef CONFIG_VFD
-    /* must do this after the framebuffer is allocated */
-    drv_vfd_init();
+                                /* must do this after the framebuffer is allocated */
+    drv_vfd_init();             /*必须在前村初始化完成以后才能调用该初始化函数*/
 #endif /* CONFIG_VFD */
 
-    /* IP Address */
-    gd-&gt;bd-&gt;bi_ip_addr = getenv_IPaddr ("ipaddr");
+                                                        /* IP Address */
+    gd-&gt;bd-&gt;bi_ip_addr = getenv_IPaddr ("ipaddr");      /*位于net/net.c*/
 
-    /* MAC Address */
+                                                        /* MAC Address */
     {
         int i;
         ulong reg;
@@ -433,29 +434,29 @@ defined(CONFIG_MINI6410)
 #endif
     }
 
-    devices_init ();    /* get the devices list going. */
+    devices_init ();                                /* get the devices list going. */
 
 #ifdef CONFIG_CMC_PU2
     load_sernum_ethaddr ();
 #endif /* CONFIG_CMC_PU2 */
 
-    jumptable_init ();
+    jumptable_init ();                              /*初始化跳转表,对gd中的jt(函数跳转表)数组进行初始化,其中保存着一些函数的入口地址*/
 
-    console_init_r ();  /* fully init console as a device */
+    console_init_r ();                              /* fully init console as a device */
 
 #if defined(CONFIG_MISC_INIT_R)
-    /* miscellaneous platform dependent initialisations */
+                                                    /* miscellaneous platform dependent initialisations */
     misc_init_r ();
 #endif
 
-    /* enable exceptions */
-    enable_interrupts ();
+                                                    /* enable exceptions */
+    enable_interrupts ();                           /*设置cpsr的I和F位以充许中断*/
 
-    /* Perform network card initialisation if necessary */
+                                                    /*网卡初始化*/
 #if defined(CONFIG_DRIVER_DM9000) &amp;&amp; defined(CONFIG_DRIVER_DM9000_NO_EEPROM)
-extern int eth_set_mac(bd_t * bd);
+extern int eth_set_mac(bd_t * bd);                  /*位于drivers/dm9000x.c*/
     if (getenv ("ethaddr")) {
-        eth_set_mac(gd-&gt;bd);
+        eth_set_mac(gd-&gt;bd);                            /*设置DM9000的网卡地址*/
     }
 #endif
 
@@ -469,7 +470,7 @@ extern int eth_set_mac(bd_t * bd);
     }
 #endif /* CONFIG_DRIVER_SMC91111 || CONFIG_DRIVER_LAN91C96 */
 
-    /* Initialize from environment */
+                                                    /* Initialize from environment */
     if ((s = getenv ("loadaddr")) != NULL) {
         load_addr = simple_strtoul (s, NULL, 16);
     }
@@ -490,7 +491,7 @@ extern int eth_set_mac(bd_t * bd);
 #endif
     /* main_loop() can return to retry autoboot, if so just run it again. */
     for (;;) {
-        main_loop ();
+        main_loop ();                               /*硬件初始化完成，进入main_loop函数，该函数在common/main.c中*/
     }
 
     /* NOTREACHED - no way out of command loop except booting */
@@ -1243,6 +1244,13 @@ mmu_table:
 #define CFG_ENV_OFFSET      0x00040000      /*Uboot中环境变量偏移地址*/
 #define CFG_ENV_SIZE        0x20000         /* Total Size of Environment Sector */
 
+
+/***********************************************Size of malloc() pool********************************/
+#define CFG_MALLOC_LEN      (CFG_ENV_SIZE + 1024*1024)
+#define CFG_GBL_DATA_SIZE   128 /* size in bytes reserved for initial data */
+
+#define CFG_STACK_SIZE      512*1024
+
 /****************************************NANDFlash宏定义*********************************************/
 #define CFG_MAX_NAND_DEVICE     1
 #define CFG_NAND_BASE           (0x70200010)
@@ -1267,7 +1275,7 @@ mmu_table:
 #define CONFIG_NAND
 #define CONFIG_MOVINAND
 
-#define CONFIG_MEMORY_UPPER_CODE
+#define CONFIG_MEMORY_UPPER_CODE            /*用户内存位于代码之上*/
 
 #undef CONFIG_USE_IRQ                       /* Uboot中不使用IRQ/FIQ*/
 
@@ -1360,6 +1368,30 @@ mmu_table:
 
 #define CONFIG_NR_DRAM_BANKS    1      /* we have 2 bank of DRAM */
 #define PHYS_SDRAM_1        MEMORY_BASE_ADDRESS /* SDRAM Bank #1 */
+
+/***************************************************************************************************************/
+#define CONFIG_DISPLAY_CPUINFO
+#define CONFIG_DISPLAY_BOARDINFO
+
+/************************************************DM9000*********************************************************/
+#define CONFIG_DRIVER_DM9000    1
+#define CONFIG_DRIVER_DM9000_NO_EEPROM  1
+#define CONFIG_DM9000_USE_16BIT 1
+#define CONFIG_DM9000_BASE  0x18000300
+#define DM9000_IO CONFIG_DM9000_BASE
+#define DM9000_DATA (CONFIG_DM9000_BASE+4)
+
+/***************************************************************************************************************/
+#define CONFIG_INCLUDE_TEST
+
+#define CONFIG_ZIMAGE_BOOT
+#define CONFIG_IMAGE_BOOT
+
+#define BOARD_LATE_INIT
+
+#define CONFIG_SETUP_MEMORY_TAGS
+#define CONFIG_CMDLINE_TAG
+#define CONFIG_INITRD_TAG
 </code></pre>
 ]]></content>
   </entry>
