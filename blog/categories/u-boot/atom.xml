@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-24T23:27:28+08:00</updated>
+  <updated>2015-06-25T11:14:26+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -81,6 +81,23 @@ typedef struct bd_info {
 #define bi_env_crc  bi_env-&gt;crc
 
 #endif  /* _U_BOOT_H_ */
+</code></pre>
+
+<pre><code class="C include/command.h">struct cmd_tbl_s {                  /*command table结构体*/
+    char        *name;              /* Command Name         */
+    int     maxargs;                /* maximum number of arguments  */
+    int     repeatable;             /* autorepeat allowed?      */
+                                    /* Implementation function  */
+    int     (*cmd)(struct cmd_tbl_s *, int, int, char *[]);
+    char        *usage;             /* Usage message    (short) */
+#ifdef  CFG_LONGHELP
+    char        *help;              /* Help  message    (long)  */
+#endif
+#ifdef CONFIG_AUTO_COMPLETE
+    /* do auto completion on the arguments */
+    int     (*complete)(int argc, char *argv[], char last_char, int maxv, char *cmdv[]);
+#endif
+};
 </code></pre>
 
 <pre><code class="C board.c">#include &lt;common.h&gt;
@@ -825,23 +842,23 @@ static inline void mdm_readline(char *buf, int bufsiz)
 int run_command (const char *cmd, int flag)
 {
     cmd_tbl_t *cmdtp;
-    char cmdbuf[CFG_CBSIZE];    /* working copy of cmd      */
-    char *token;            /* start of token in cmdbuf */
-    char *sep;          /* end of token (separator) in cmdbuf */
+    char cmdbuf[CFG_CBSIZE];            /* working copy of cmd      */
+    char *token;                        /* start of token in cmdbuf */
+    char *sep;                          /* end of token (separator) in cmdbuf */
     char finaltoken[CFG_CBSIZE];
     char *str = cmdbuf;
-    char *argv[CFG_MAXARGS + 1];    /* NULL terminated  */
+    char *argv[CFG_MAXARGS + 1];        /* NULL terminated  */
     int argc, inquotes;
     int repeatable = 1;
     int rc = 0;
-
+                                        /*解析用户命令字符串*/                 
 #ifdef DEBUG_PARSER
     printf ("[RUN_COMMAND] cmd[%p]=\"", cmd);
-    puts (cmd ? cmd : "NULL");  /* use puts - string may be loooong */
+    puts (cmd ? cmd : "NULL");          /* use puts - string may be loooong */
     puts ("\"\n");
 #endif
 
-    clear_ctrlc();      /* forget any previous Control C */
+    clear_ctrlc();                      /* forget any previous Control C */
 
     if (!cmd || !*cmd) {
         return -1;  /* empty command */
@@ -901,9 +918,9 @@ int run_command (const char *cmd, int flag)
             rc = -1;    /* no command at all */
             continue;
         }
-
+                                                        /*用户命令解析完毕，解析结果尊放在argv中*/                                                         
         /* Look up command in command table */
-        if ((cmdtp = find_cmd(argv[0])) == NULL) {
+        if ((cmdtp = find_cmd(argv[0])) == NULL) {      /*根据argv[0]去查询具体命令，返回cmdtp结构体指针*/
             printf ("Unknown command '%s' - try 'help'\n", argv[0]);
             rc = -1;    /* give up after bad command */
             continue;
@@ -946,6 +963,29 @@ int run_command (const char *cmd, int flag)
 
     return rc ? rc : repeatable;
 }
+</code></pre>
+
+<h2>在uboot中添加自定义命令，以led为例</h2>
+
+<ol>
+<li>实现自定义函数do_leds，添加U_BOOT_CMD宏定义，形成源代码文件cmd_leds.c</li>
+<li>将该文件放到common目录下，并修改common/Makefile以使该c文件被编译</li>
+<li>在include/cmd_confdefs.h中增加宏定义CFG_CMD_LEDS，以便使得leds命令能被用户通过include/configs/xxxx.h进行裁剪</li>
+<li>修改include/configs/xxxx.h中对CONFIG_COMMANDS宏的定义，使其包含CFG_CMD_LEDS宏</li>
+</ol>
+
+
+<pre><code class="C include/command.h">#define Struct_Section  __attribute__ ((unused,section (".u_boot_cmd")))
+
+#define U_BOOT_CMD(name,maxargs,rep,cmd,usage,help) \
+cmd_tbl_t __u_boot_cmd_##name Struct_Section = {#name, maxargs, rep, cmd, usage}
+</code></pre>
+
+<pre><code class="C common/cmd_net.c">U_BOOT_CMD(
+    ping,   2,  1,  do_ping,
+    "ping\t- send ICMP ECHO_REQUEST to network host\n",
+    "pingAddress\n"
+);
 </code></pre>
 ]]></content>
   </entry>

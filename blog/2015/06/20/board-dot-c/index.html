@@ -252,6 +252,41 @@ typedef struct &hellip;">
 
 
 
+<figure class='code'><figcaption><span>include/command.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">struct</span> <span class="n">cmd_tbl_s</span> <span class="p">{</span>                 <span class="cm">/*command table结构体*/</span>
+</span><span class='line'>  <span class="kt">char</span>        <span class="o">*</span><span class="n">name</span><span class="p">;</span>             <span class="cm">/* Command Name            */</span>
+</span><span class='line'>  <span class="kt">int</span>     <span class="n">maxargs</span><span class="p">;</span>              <span class="cm">/* maximum number of arguments */</span>
+</span><span class='line'>  <span class="kt">int</span>     <span class="n">repeatable</span><span class="p">;</span>               <span class="cm">/* autorepeat allowed?     */</span>
+</span><span class='line'>                                  <span class="cm">/* Implementation function */</span>
+</span><span class='line'>  <span class="kt">int</span>     <span class="p">(</span><span class="o">*</span><span class="n">cmd</span><span class="p">)(</span><span class="k">struct</span> <span class="n">cmd_tbl_s</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">[]);</span>
+</span><span class='line'>  <span class="kt">char</span>        <span class="o">*</span><span class="n">usage</span><span class="p">;</span>                <span class="cm">/* Usage message   (short) */</span>
+</span><span class='line'><span class="cp">#ifdef   CFG_LONGHELP</span>
+</span><span class='line'>  <span class="kt">char</span>        <span class="o">*</span><span class="n">help</span><span class="p">;</span>             <span class="cm">/* Help  message   (long)  */</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_AUTO_COMPLETE</span>
+</span><span class='line'>  <span class="cm">/* do auto completion on the arguments */</span>
+</span><span class='line'>  <span class="kt">int</span>     <span class="p">(</span><span class="o">*</span><span class="n">complete</span><span class="p">)(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">last_char</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxv</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmdv</span><span class="p">[]);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
 <figure class='code'><figcaption><span>board.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -1856,23 +1891,23 @@ typedef struct &hellip;">
 </span><span class='line'><span class="kt">int</span> <span class="nf">run_command</span> <span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">)</span>
 </span><span class='line'><span class="p">{</span>
 </span><span class='line'>  <span class="kt">cmd_tbl_t</span> <span class="o">*</span><span class="n">cmdtp</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">char</span> <span class="n">cmdbuf</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">];</span>    <span class="cm">/* working copy of cmd     */</span>
-</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">token</span><span class="p">;</span>           <span class="cm">/* start of token in cmdbuf    */</span>
-</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">sep</span><span class="p">;</span>         <span class="cm">/* end of token (separator) in cmdbuf */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="n">cmdbuf</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">];</span>            <span class="cm">/* working copy of cmd     */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">token</span><span class="p">;</span>                       <span class="cm">/* start of token in cmdbuf    */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">sep</span><span class="p">;</span>                         <span class="cm">/* end of token (separator) in cmdbuf */</span>
 </span><span class='line'>  <span class="kt">char</span> <span class="n">finaltoken</span><span class="p">[</span><span class="n">CFG_CBSIZE</span><span class="p">];</span>
 </span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">str</span> <span class="o">=</span> <span class="n">cmdbuf</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[</span><span class="n">CFG_MAXARGS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>  <span class="cm">/* NULL terminated */</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[</span><span class="n">CFG_MAXARGS</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>      <span class="cm">/* NULL terminated */</span>
 </span><span class='line'>  <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">inquotes</span><span class="p">;</span>
 </span><span class='line'>  <span class="kt">int</span> <span class="n">repeatable</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span><span class='line'>  <span class="kt">int</span> <span class="n">rc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>
+</span><span class='line'>                                      <span class="cm">/*解析用户命令字符串*/</span>                 
 </span><span class='line'><span class="cp">#ifdef DEBUG_PARSER</span>
 </span><span class='line'>  <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;[RUN_COMMAND] cmd[%p]=</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cmd</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="n">cmd</span> <span class="o">?</span> <span class="nl">cmd</span> <span class="p">:</span> <span class="s">&quot;NULL&quot;</span><span class="p">);</span>   <span class="cm">/* use puts - string may be loooong */</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="n">cmd</span> <span class="o">?</span> <span class="nl">cmd</span> <span class="p">:</span> <span class="s">&quot;NULL&quot;</span><span class="p">);</span>           <span class="cm">/* use puts - string may be loooong */</span>
 </span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">);</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">clear_ctrlc</span><span class="p">();</span>        <span class="cm">/* forget any previous Control C */</span>
+</span><span class='line'>  <span class="n">clear_ctrlc</span><span class="p">();</span>                        <span class="cm">/* forget any previous Control C */</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cmd</span> <span class="o">||</span> <span class="o">!*</span><span class="n">cmd</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="cm">/* empty command */</span>
@@ -1932,9 +1967,9 @@ typedef struct &hellip;">
 </span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="cm">/* no command at all */</span>
 </span><span class='line'>          <span class="k">continue</span><span class="p">;</span>
 </span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>
+</span><span class='line'>                                                      <span class="cm">/*用户命令解析完毕，解析结果尊放在argv中*/</span>                                                         
 </span><span class='line'>      <span class="cm">/* Look up command in command table */</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">cmdtp</span> <span class="o">=</span> <span class="n">find_cmd</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">cmdtp</span> <span class="o">=</span> <span class="n">find_cmd</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>      <span class="cm">/*根据argv[0]去查询具体命令，返回cmdtp结构体指针*/</span>
 </span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Unknown command &#39;%s&#39; - try &#39;help&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 </span><span class='line'>          <span class="n">rc</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>    <span class="cm">/* give up after bad command */</span>
 </span><span class='line'>          <span class="k">continue</span><span class="p">;</span>
@@ -1978,6 +2013,44 @@ typedef struct &hellip;">
 </span><span class='line'>  <span class="k">return</span> <span class="n">rc</span> <span class="o">?</span> <span class="nl">rc</span> <span class="p">:</span> <span class="n">repeatable</span><span class="p">;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>在uboot中添加自定义命令，以led为例</h2>
+
+<ol>
+<li>实现自定义函数do_leds，添加U_BOOT_CMD宏定义，形成源代码文件cmd_leds.c</li>
+<li>将该文件放到common目录下，并修改common/Makefile以使该c文件被编译</li>
+<li>在include/cmd_confdefs.h中增加宏定义CFG_CMD_LEDS，以便使得leds命令能被用户通过include/configs/xxxx.h进行裁剪</li>
+<li>修改include/configs/xxxx.h中对CONFIG_COMMANDS宏的定义，使其包含CFG_CMD_LEDS宏</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>include/command.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define Struct_Section  __attribute__ ((unused,section (&quot;.u_boot_cmd&quot;)))</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define U_BOOT_CMD(name,maxargs,rep,cmd,usage,help) \</span>
+</span><span class='line'><span class="cp">cmd_tbl_t __u_boot_cmd_##name Struct_Section = {#name, maxargs, rep, cmd, usage}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>common/cmd_net.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">U_BOOT_CMD</span><span class="p">(</span>
+</span><span class='line'>  <span class="n">ping</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>   <span class="mi">1</span><span class="p">,</span>   <span class="n">do_ping</span><span class="p">,</span>
+</span><span class='line'>  <span class="s">&quot;ping</span><span class="se">\t</span><span class="s">- send ICMP ECHO_REQUEST to network host</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s">&quot;pingAddress</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
