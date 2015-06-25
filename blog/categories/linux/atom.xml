@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-25T11:14:26+08:00</updated>
+  <updated>2015-06-25T22:33:19+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[board.c]]></title>
+    <title type="html"><![CDATA[第二阶段代码分析]]></title>
     <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
     <updated>2015-06-20T15:23:31+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
@@ -98,6 +98,26 @@ typedef struct bd_info {
     int     (*complete)(int argc, char *argv[], char last_char, int maxv, char *cmdv[]);
 #endif
 };
+</code></pre>
+
+<blockquote><p>可用于U-Boot的kernel是在常规内核zImage前加了个64byte头的uImage，这个头包含了：
+1. kernel的加载和运行地址
+2. zImage的CRC校验码等信息</p></blockquote>
+
+<pre><code class="C include/image.h">typedef struct image_header {
+    uint32_t    ih_magic;           /* Image Header Magic Number    */
+    uint32_t    ih_hcrc;            /* Image Header CRC Checksum    */
+    uint32_t    ih_time;            /* Image Creation Timestamp */
+    uint32_t    ih_size;            /* Image Data Size      */
+    uint32_t    ih_load;            /* Data  Load  Address      */
+    uint32_t    ih_ep;              /* Entry Point Address      */
+    uint32_t    ih_dcrc;            /* Image Data CRC Checksum  */
+    uint8_t     ih_os;              /* Operating System     */
+    uint8_t     ih_arch;            /* CPU architecture     */
+    uint8_t     ih_type;            /* Image Type           */
+    uint8_t     ih_comp;            /* Compression Type     */
+    uint8_t     ih_name[IH_NMLEN];  /* Image Name       */
+} image_header_t;
 </code></pre>
 
 <pre><code class="C board.c">#include &lt;common.h&gt;
@@ -987,6 +1007,544 @@ cmd_tbl_t __u_boot_cmd_##name Struct_Section = {#name, maxargs, rep, cmd, usage}
     "pingAddress\n"
 );
 </code></pre>
+
+<p><strong>上面代码定义了一个全局已初始化变量__u_boot_cmd_ping,类型是结构体类型cmd_tbl_t,该结构体变量的第一个字段存放的是用户将来会在uboot命令行中输入的命令名称字符串&ndash;“ping”，该结构变量第4个字段存放的是实现该命令的函数的函数名称，该变量存放在uboot.bin的二进制代码的.u_boot_cmd段</strong></p>
+
+<pre><code class="C common/cmd_bootm.c">#ifndef CFG_BOOTM_LEN
+#define CFG_BOOTM_LEN   0x800000        /* use 8MByte as default max gunzip size */
+#endif
+image_header_t header;                  /*这是很重要的全局变量， 会被armlinux.c 里面的do_bootm_linux()使用*/
+ulong load_addr = CFG_LOAD_ADDR;        /* Default Load Address=0x5000_0000 */
+
+int do_bootm (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
+{
+    ulong   iflag;
+    ulong   addr;
+    ulong   data, len, checksum;
+    ulong  *len_ptr = NULL;             /* not to make warning. by scsuh */
+    uint    unc_len = CFG_BOOTM_LEN;
+    int i, verify;
+    char    *name, *s;
+    int (*appl)(int, char *[]);
+    image_header_t *hdr = &amp;header;
+
+    s = getenv ("verify");              /*读取环境变量“verify”*/
+    verify = (s &amp;&amp; (*s == 'n')) ? 0 : 1;
+
+    if (argc &lt; 2) {
+        addr = load_addr;
+    } else {
+        addr = simple_strtoul(argv[1], NULL, 16);   /*addr=kernel在内存中的地址*/
+    }
+
+#ifdef CONFIG_ZIMAGE_BOOT
+#define LINUX_ZIMAGE_MAGIC  0x016f2818
+    if (*(ulong *)(addr + 9*4) == LINUX_ZIMAGE_MAGIC) {
+        printf("Boot with zImage\n");
+        addr = virt_to_phys(addr);
+        hdr-&gt;ih_os = IH_OS_LINUX;
+        hdr-&gt;ih_ep = ntohl(addr);
+        goto after_header_check;
+    }
+#endif
+
+    SHOW_BOOT_PROGRESS (1);
+    //printf ("## Booting image at %08lx ...\n", addr);
+
+    /* Copy header so we can blank CRC field for re-calculation */
+#ifdef CONFIG_HAS_DATAFLASH
+    if (addr_dataflash(addr)){
+        read_dataflash(addr, sizeof(image_header_t), (char *)&amp;header);
+    } else
+#endif
+    memmove (&amp;header, (char *)addr, sizeof(image_header_t));
+
+    if (ntohl(hdr-&gt;ih_magic) != IH_MAGIC) {
+#ifdef __I386__ /* correct image format not implemented yet - fake it */
+        if (fake_header(hdr, (void*)addr, -1) != NULL) {
+            /* to compensate for the addition below */
+            addr -= sizeof(image_header_t);
+            /* turnof verify,
+             * fake_header() does not fake the data crc
+             */
+            verify = 0;
+        } else
+#endif  /* __I386__ */
+        {
+#ifdef CONFIG_IMAGE_BOOT
+        //printf("Boot with Image\n");
+        addr = virt_to_phys(addr);
+        hdr-&gt;ih_os = IH_OS_LINUX;
+        hdr-&gt;ih_ep = ntohl(addr);
+        hdr-&gt;ih_comp = IH_COMP_NONE;
+        goto after_header_check;
+#endif
+        puts ("Bad Magic Number\n");
+        SHOW_BOOT_PROGRESS (-1);
+        return 1;
+        }
+    }
+    SHOW_BOOT_PROGRESS (2);
+
+    data = (ulong)&amp;header;
+    len  = sizeof(image_header_t);      /*header的长度0x40*/
+
+    checksum = ntohl(hdr-&gt;ih_hcrc);
+    hdr-&gt;ih_hcrc = 0;
+
+    if (crc32 (0, (uchar *)data, len) != checksum) {    /*crc头校验*/
+        puts ("Bad Header Checksum\n");
+        SHOW_BOOT_PROGRESS (-2);
+        return 1;
+    }
+    SHOW_BOOT_PROGRESS (3);
+
+#ifdef CONFIG_HAS_DATAFLASH
+    if (addr_dataflash(addr)){
+        len  = ntohl(hdr-&gt;ih_size) + sizeof(image_header_t);
+        read_dataflash(addr, len, (char *)CFG_LOAD_ADDR);
+        addr = CFG_LOAD_ADDR;
+    }
+#endif
+
+
+    /* for multi-file images we need the data part, too */
+    print_image_hdr ((image_header_t *)addr);
+
+    data = addr + sizeof(image_header_t);           /*指向了后面的kernel部分*/
+    len  = ntohl(hdr-&gt;ih_size);                     /*kernel的实际大小就是编译后的大小*/
+
+    if (verify) {
+        puts ("   Verifying Checksum ... ");
+        if (crc32 (0, (uchar *)data, len) != ntohl(hdr-&gt;ih_dcrc)) {
+            printf ("Bad Data CRC\n");
+            SHOW_BOOT_PROGRESS (-3);
+            return 1;
+        }
+        puts ("OK\n");
+    }
+    SHOW_BOOT_PROGRESS (4);
+
+    len_ptr = (ulong *)data;
+
+#if defined(__PPC__)
+    if (hdr-&gt;ih_arch != IH_CPU_PPC)
+#elif defined(__ARM__)
+    if (hdr-&gt;ih_arch != IH_CPU_ARM)
+#elif defined(__I386__)
+    if (hdr-&gt;ih_arch != IH_CPU_I386)
+#elif defined(__mips__)
+    if (hdr-&gt;ih_arch != IH_CPU_MIPS)
+#elif defined(__nios__)
+    if (hdr-&gt;ih_arch != IH_CPU_NIOS)
+#elif defined(__M68K__)
+    if (hdr-&gt;ih_arch != IH_CPU_M68K)
+#elif defined(__microblaze__)
+    if (hdr-&gt;ih_arch != IH_CPU_MICROBLAZE)
+#elif defined(__nios2__)
+    if (hdr-&gt;ih_arch != IH_CPU_NIOS2)
+#elif defined(__blackfin__)
+    if (hdr-&gt;ih_arch != IH_CPU_BLACKFIN)
+#elif defined(__avr32__)
+    if (hdr-&gt;ih_arch != IH_CPU_AVR32)
+#else
+# error Unknown CPU type
+#endif
+    {
+        printf ("Unsupported Architecture 0x%x\n", hdr-&gt;ih_arch);
+        SHOW_BOOT_PROGRESS (-4);
+        return 1;
+    }
+    SHOW_BOOT_PROGRESS (5);
+
+    switch (hdr-&gt;ih_type) {
+    case IH_TYPE_STANDALONE:
+        name = "Standalone Application";
+        /* A second argument overwrites the load address */
+        if (argc &gt; 2) {
+            hdr-&gt;ih_load = htonl(simple_strtoul(argv[2], NULL, 16));
+        }
+        break;
+    case IH_TYPE_KERNEL:
+        name = "Kernel Image";
+        break;
+    case IH_TYPE_MULTI:
+        name = "Multi-File Image";
+        len  = ntohl(len_ptr[0]);
+        /* OS kernel is always the first image */
+        data += 8; /* kernel_len + terminator */
+        for (i=1; len_ptr[i]; ++i)
+            data += 4;
+        break;
+    default: printf ("Wrong Image Type for %s command\n", cmdtp-&gt;name);
+        SHOW_BOOT_PROGRESS (-5);
+        return 1;
+    }
+    SHOW_BOOT_PROGRESS (6);
+
+    /*
+     * We have reached the point of no return: we are going to
+     * overwrite all exception vector code, so we cannot easily
+     * recover from any failures any more...
+     */
+
+    iflag = disable_interrupts();
+
+#ifdef CONFIG_AMIGAONEG3SE
+    /*
+     * We've possible left the caches enabled during
+     * bios emulation, so turn them off again
+     */
+    icache_disable();
+    invalidate_l1_instruction_cache();
+    flush_data_cache();
+    dcache_disable();
+#endif
+                                        /*下面开始搬运kernel到ih_load指定的地址上去*/
+    switch (hdr-&gt;ih_comp) {
+    case IH_COMP_NONE:
+        if(ntohl(hdr-&gt;ih_load) == addr) {
+            printf ("   XIP %s ... ", name);    /*XIP:原地执行*/
+        } else {
+#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)
+            size_t l = len;
+            void *to = (void *)ntohl(hdr-&gt;ih_load);
+            void *from = (void *)data;
+
+            printf ("   Loading %s ... ", name);
+
+            while (l &gt; 0) {
+                size_t tail = (l &gt; CHUNKSZ) ? CHUNKSZ : l;
+                WATCHDOG_RESET();
+                memmove (to, from, tail);
+                to += tail;
+                from += tail;
+                l -= tail;
+            }
+#else   /* !(CONFIG_HW_WATCHDOG || CONFIG_WATCHDOG) */
+            memmove ((void *) ntohl(hdr-&gt;ih_load), (uchar *)data, len); /*搬运代码*/
+#endif  /* CONFIG_HW_WATCHDOG || CONFIG_WATCHDOG */
+        }
+        break;
+    case IH_COMP_GZIP:
+        printf ("   Uncompressing %s ... ", name);
+        if (gunzip ((void *)ntohl(hdr-&gt;ih_load), unc_len,       /*把它解压到 ih_load的位置上去*/
+                (uchar *)data, &amp;len) != 0) {
+            puts ("GUNZIP ERROR - must RESET board to recover\n");
+            SHOW_BOOT_PROGRESS (-6);
+            do_reset (cmdtp, flag, argc, argv);
+        }
+        break;
+#ifdef CONFIG_BZIP2
+    case IH_COMP_BZIP2:
+        printf ("   Uncompressing %s ... ", name);
+        /*
+         * If we've got less than 4 MB of malloc() space,
+         * use slower decompression algorithm which requires
+         * at most 2300 KB of memory.
+         */
+        i = BZ2_bzBuffToBuffDecompress ((char*)ntohl(hdr-&gt;ih_load),
+                        &amp;unc_len, (char *)data, len,
+                        CFG_MALLOC_LEN &lt; (4096 * 1024), 0);
+        if (i != BZ_OK) {
+            printf ("BUNZIP2 ERROR %d - must RESET board to recover\n", i);
+            SHOW_BOOT_PROGRESS (-6);
+            udelay(100000);
+            do_reset (cmdtp, flag, argc, argv);
+        }
+        break;
+#endif /* CONFIG_BZIP2 */
+    default:
+        if (iflag)
+            enable_interrupts();
+        printf ("Unimplemented compression type %d\n", hdr-&gt;ih_comp);
+        SHOW_BOOT_PROGRESS (-7);
+        return 1;
+    }
+    puts ("OK\n");                          /*搬运完毕*/
+    SHOW_BOOT_PROGRESS (7);
+
+    switch (hdr-&gt;ih_type) {
+    case IH_TYPE_STANDALONE:
+        if (iflag)
+            enable_interrupts();
+
+        /* load (and uncompress), but don't start if "autostart"
+         * is set to "no"
+         */
+        if (((s = getenv("autostart")) != NULL) &amp;&amp; (strcmp(s,"no") == 0)) {
+            char buf[32];
+            sprintf(buf, "%lX", len);
+            setenv("filesize", buf);
+            return 0;
+        }
+        appl = (int (*)(int, char *[]))ntohl(hdr-&gt;ih_ep);
+        (*appl)(argc-1, &amp;argv[1]);
+        return 0;
+    case IH_TYPE_KERNEL:
+    case IH_TYPE_MULTI:
+        /* handled below */
+        break;
+    default:
+        if (iflag)
+            enable_interrupts();
+        printf ("Can't boot image type %d\n", hdr-&gt;ih_type);
+        SHOW_BOOT_PROGRESS (-8);
+        return 1;
+    }
+    SHOW_BOOT_PROGRESS (8);
+
+#if defined(CONFIG_ZIMAGE_BOOT) || defined(CONFIG_IMAGE_BOOT)
+after_header_check:
+#endif
+    switch (hdr-&gt;ih_os) {               /*判断何种操作系统*/
+    default:            /* handled by (original) Linux case */
+    case IH_OS_LINUX:
+#ifdef CONFIG_SILENT_CONSOLE
+        fixup_silent_linux();
+#endif
+        do_bootm_linux  (cmdtp, flag, argc, argv,       /*开始启动linux内核*/
+                 addr, len_ptr, verify);
+        break;
+    case IH_OS_NETBSD:
+        do_bootm_netbsd (cmdtp, flag, argc, argv,
+                 addr, len_ptr, verify);
+        break;
+
+#ifdef CONFIG_LYNXKDI
+    case IH_OS_LYNXOS:
+        do_bootm_lynxkdi (cmdtp, flag, argc, argv,
+                 addr, len_ptr, verify);
+        break;
+#endif
+
+    case IH_OS_RTEMS:
+        do_bootm_rtems (cmdtp, flag, argc, argv,
+                 addr, len_ptr, verify);
+        break;
+
+#if (CONFIG_COMMANDS &amp; CFG_CMD_ELF)
+    case IH_OS_VXWORKS:
+        do_bootm_vxworks (cmdtp, flag, argc, argv,
+                  addr, len_ptr, verify);
+        break;
+    case IH_OS_QNX:
+        do_bootm_qnxelf (cmdtp, flag, argc, argv,
+                  addr, len_ptr, verify);
+        break;
+#endif /* CFG_CMD_ELF */
+#ifdef CONFIG_ARTOS
+    case IH_OS_ARTOS:
+        do_bootm_artos  (cmdtp, flag, argc, argv,
+                 addr, len_ptr, verify);
+        break;
+#endif
+    }
+
+    SHOW_BOOT_PROGRESS (-9);
+#ifdef DEBUG
+    puts ("\n## Control returned to monitor - resetting...\n");
+    do_reset (cmdtp, flag, argc, argv);
+#endif
+    return 1;
+}
+</code></pre>
+
+<pre><code class="C lib_arm/armlinux.c">extern image_header_t header;   /* from cmd_bootm.c */
+void do_bootm_linux (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[],
+             ulong addr, ulong *len_ptr, int verify)
+{
+    ulong len = 0, checksum;
+    ulong initrd_start, initrd_end;
+    ulong data;
+    void (*theKernel)(int zero, int arch, uint params);
+    image_header_t *hdr = &amp;header;
+    bd_t *bd = gd-&gt;bd;
+
+#ifdef CONFIG_CMDLINE_TAG
+    char *commandline = getenv ("bootargs");
+#endif
+
+    theKernel = (void (*)(int, int, uint))ntohl(hdr-&gt;ih_ep);
+
+    /*
+     * Check if there is an initrd image
+     */
+    if (argc &gt;= 3) {
+        SHOW_BOOT_PROGRESS (9);
+
+        addr = simple_strtoul (argv[2], NULL, 16);
+
+        printf ("## Loading Ramdisk Image at %08lx ...\n", addr);
+
+        /* Copy header so we can blank CRC field for re-calculation */
+#ifdef CONFIG_HAS_DATAFLASH
+        if (addr_dataflash (addr)) {
+            read_dataflash (addr, sizeof (image_header_t),
+                    (char *) &amp;header);
+        } else
+#endif
+            memcpy (&amp;header, (char *) addr,
+                sizeof (image_header_t));
+
+        if (ntohl (hdr-&gt;ih_magic) != IH_MAGIC) {
+            printf ("Bad Magic Number\n");
+            SHOW_BOOT_PROGRESS (-10);
+            do_reset (cmdtp, flag, argc, argv);
+        }
+
+        data = (ulong) &amp; header;
+        len = sizeof (image_header_t);
+
+        checksum = ntohl (hdr-&gt;ih_hcrc);
+        hdr-&gt;ih_hcrc = 0;
+
+        if (crc32 (0, (unsigned char *) data, len) != checksum) {
+            printf ("Bad Header Checksum\n");
+            SHOW_BOOT_PROGRESS (-11);
+            do_reset (cmdtp, flag, argc, argv);
+        }
+
+        SHOW_BOOT_PROGRESS (10);
+
+        print_image_hdr (hdr);
+
+        data = addr + sizeof (image_header_t);
+        len = ntohl (hdr-&gt;ih_size);
+
+#ifdef CONFIG_HAS_DATAFLASH
+        if (addr_dataflash (addr)) {
+            read_dataflash (data, len, (char *) CFG_LOAD_ADDR);
+            data = CFG_LOAD_ADDR;
+        }
+#endif
+
+        if (verify) {
+            ulong csum = 0;
+
+            printf ("   Verifying Checksum ... ");
+            csum = crc32 (0, (unsigned char *) data, len);
+            if (csum != ntohl (hdr-&gt;ih_dcrc)) {
+                printf ("Bad Data CRC\n");
+                SHOW_BOOT_PROGRESS (-12);
+                do_reset (cmdtp, flag, argc, argv);
+            }
+            printf ("OK\n");
+        }
+
+        SHOW_BOOT_PROGRESS (11);
+
+        if ((hdr-&gt;ih_os != IH_OS_LINUX) ||
+            (hdr-&gt;ih_arch != IH_CPU_ARM) ||
+            (hdr-&gt;ih_type != IH_TYPE_RAMDISK)) {
+            printf ("No Linux ARM Ramdisk Image\n");
+            SHOW_BOOT_PROGRESS (-13);
+            do_reset (cmdtp, flag, argc, argv);
+        }
+
+#if defined(CONFIG_B2) || defined(CONFIG_EVB4510) || defined(CONFIG_ARMADILLO)
+        /*
+         *we need to copy the ramdisk to SRAM to let Linux boot
+         */
+        memmove ((void *) ntohl(hdr-&gt;ih_load), (uchar *)data, len);
+        data = ntohl(hdr-&gt;ih_load);
+#endif /* CONFIG_B2 || CONFIG_EVB4510 */
+
+        /*
+         * Now check if we have a multifile image
+         */
+    } else if ((hdr-&gt;ih_type == IH_TYPE_MULTI) &amp;&amp; (len_ptr[1])) {
+        ulong tail = ntohl (len_ptr[0]) % 4;
+        int i;
+
+        SHOW_BOOT_PROGRESS (13);
+
+        /* skip kernel length and terminator */
+        data = (ulong) (&amp;len_ptr[2]);
+        /* skip any additional image length fields */
+        for (i = 1; len_ptr[i]; ++i)
+            data += 4;
+        /* add kernel length, and align */
+        data += ntohl (len_ptr[0]);
+        if (tail) {
+            data += 4 - tail;
+        }
+
+        len = ntohl (len_ptr[1]);
+
+    } else {
+        /*
+         * no initrd image
+         */
+        SHOW_BOOT_PROGRESS (14);
+
+        len = data = 0;
+    }
+
+#ifdef  DEBUG
+    if (!data) {
+        printf ("No initrd\n");
+    }
+#endif
+
+    if (data) {
+        initrd_start = data;
+        initrd_end = initrd_start + len;
+    } else {
+        initrd_start = 0;
+        initrd_end = 0;
+    }
+
+    SHOW_BOOT_PROGRESS (15);
+
+    debug ("## Transferring control to Linux (at address %08lx) ...\n",
+           (ulong) theKernel);
+
+#if defined (CONFIG_SETUP_MEMORY_TAGS) || \
+    defined (CONFIG_CMDLINE_TAG) || \
+    defined (CONFIG_INITRD_TAG) || \
+    defined (CONFIG_SERIAL_TAG) || \
+    defined (CONFIG_REVISION_TAG) || \
+    defined (CONFIG_LCD) || \
+    defined (CONFIG_VFD)
+    setup_start_tag (bd);
+#ifdef CONFIG_SERIAL_TAG
+    setup_serial_tag (&amp;params);
+#endif
+#ifdef CONFIG_REVISION_TAG
+    setup_revision_tag (&amp;params);
+#endif
+#ifdef CONFIG_SETUP_MEMORY_TAGS
+    setup_memory_tags (bd);
+#endif
+#ifdef CONFIG_CMDLINE_TAG
+    setup_commandline_tag (bd, commandline);
+#endif
+#ifdef CONFIG_INITRD_TAG
+    if (initrd_start &amp;&amp; initrd_end)
+        setup_initrd_tag (bd, initrd_start, initrd_end);
+#endif
+#if defined (CONFIG_VFD) || defined (CONFIG_LCD)
+    setup_videolfb_tag ((gd_t *) gd);
+#endif
+    setup_end_tag (bd);
+#endif
+
+    /* we assume that the kernel is in place */
+    //printf ("\nStarting kernel ...\n\n");
+
+#ifdef CONFIG_USB_DEVICE
+    {
+        extern void udc_disconnect (void);
+        udc_disconnect ();
+    }
+#endif
+
+    cleanup_before_linux ();
+
+    theKernel (0, bd-&gt;bi_arch_number, bd-&gt;bi_boot_params);  /*相当于执行mov r0,#0;mov r1 #2520;mov r2,#0x50000100;ldr pc,=0x50008000*/
+}
+</code></pre>
 ]]></content>
   </entry>
   
@@ -1829,6 +2387,10 @@ mmu_table:
 #define CFG_PBSIZE      384     /* Print Buffer Size */
 #define CFG_MAXARGS     16      /* max number of command args   */
 #define CFG_BARGSIZE        CFG_CBSIZE  /* Boot Argument Buffer Size    */
+
+/*************************************************************************************************************************/
+#define MACH_TYPE       2520
+#define UBOOT_MAGIC     (0x43090000 | MACH_TYPE)
 </code></pre>
 ]]></content>
   </entry>

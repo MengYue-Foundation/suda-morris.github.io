@@ -355,6 +355,10 @@
 <span class='line-number'>217</span>
 <span class='line-number'>218</span>
 <span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -574,6 +578,10 @@
 </span><span class='line'><span class="cp">#define CFG_PBSIZE       384     </span><span class="cm">/* Print Buffer Size */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_MAXARGS      16      </span><span class="cm">/* max number of command args   */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_BARGSIZE     CFG_CBSIZE  </span><span class="cm">/* Boot Argument Buffer Size    */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*************************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define MACH_TYPE        2520</span>
+</span><span class='line'><span class="cp">#define UBOOT_MAGIC      (0x43090000 | MACH_TYPE)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>

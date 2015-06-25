@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-25T11:14:26+08:00</updated>
+  <updated>2015-06-25T22:33:19+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -63,7 +63,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[board.c]]></title>
+    <title type="html"><![CDATA[第二阶段代码分析]]></title>
     <link href="http://suda-morris.github.io/blog/2015/06/20/board-dot-c/"/>
     <updated>2015-06-20T15:23:31+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/06/20/board-dot-c</id>
@@ -229,6 +229,41 @@
 </span><span class='line'>  <span class="kt">int</span>     <span class="p">(</span><span class="o">*</span><span class="n">complete</span><span class="p">)(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span> <span class="kt">char</span> <span class="n">last_char</span><span class="p">,</span> <span class="kt">int</span> <span class="n">maxv</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmdv</span><span class="p">[]);</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>可用于U-Boot的kernel是在常规内核zImage前加了个64byte头的uImage，这个头包含了：
+1. kernel的加载和运行地址
+2. zImage的CRC校验码等信息</p></blockquote>
+
+<figure class='code'><figcaption><span>include/image.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">typedef</span> <span class="k">struct</span> <span class="n">image_header</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_magic</span><span class="p">;</span>         <span class="cm">/* Image Header Magic Number   */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_hcrc</span><span class="p">;</span>          <span class="cm">/* Image Header CRC Checksum   */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_time</span><span class="p">;</span>          <span class="cm">/* Image Creation Timestamp    */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_size</span><span class="p">;</span>          <span class="cm">/* Image Data Size     */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_load</span><span class="p">;</span>          <span class="cm">/* Data     Load  Address      */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_ep</span><span class="p">;</span>                <span class="cm">/* Entry Point Address     */</span>
+</span><span class='line'>  <span class="kt">uint32_t</span>    <span class="n">ih_dcrc</span><span class="p">;</span>          <span class="cm">/* Image Data CRC Checksum */</span>
+</span><span class='line'>  <span class="kt">uint8_t</span>     <span class="n">ih_os</span><span class="p">;</span>                <span class="cm">/* Operating System        */</span>
+</span><span class='line'>  <span class="kt">uint8_t</span>     <span class="n">ih_arch</span><span class="p">;</span>          <span class="cm">/* CPU architecture        */</span>
+</span><span class='line'>  <span class="kt">uint8_t</span>     <span class="n">ih_type</span><span class="p">;</span>          <span class="cm">/* Image Type          */</span>
+</span><span class='line'>  <span class="kt">uint8_t</span>     <span class="n">ih_comp</span><span class="p">;</span>          <span class="cm">/* Compression Type        */</span>
+</span><span class='line'>  <span class="kt">uint8_t</span>     <span class="n">ih_name</span><span class="p">[</span><span class="n">IH_NMLEN</span><span class="p">];</span>  <span class="cm">/* Image Name      */</span>
+</span><span class='line'><span class="p">}</span> <span class="kt">image_header_t</span><span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1998,6 +2033,1080 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p><strong>上面代码定义了一个全局已初始化变量__u_boot_cmd_ping,类型是结构体类型cmd_tbl_t,该结构体变量的第一个字段存放的是用户将来会在uboot命令行中输入的命令名称字符串&ndash;“ping”，该结构变量第4个字段存放的是实现该命令的函数的函数名称，该变量存放在uboot.bin的二进制代码的.u_boot_cmd段</strong></p>
+
+<figure class='code'><figcaption><span>common/cmd_bootm.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifndef CFG_BOOTM_LEN</span>
+</span><span class='line'><span class="cp">#define CFG_BOOTM_LEN    0x800000        </span><span class="cm">/* use 8MByte as default max gunzip size */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="kt">image_header_t</span> <span class="n">header</span><span class="p">;</span>                  <span class="cm">/*这是很重要的全局变量， 会被armlinux.c 里面的do_bootm_linux()使用*/</span>
+</span><span class='line'><span class="n">ulong</span> <span class="n">load_addr</span> <span class="o">=</span> <span class="n">CFG_LOAD_ADDR</span><span class="p">;</span>       <span class="cm">/* Default Load Address=0x5000_0000 */</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">do_bootm</span> <span class="p">(</span><span class="kt">cmd_tbl_t</span> <span class="o">*</span><span class="n">cmdtp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">,</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">ulong</span>    <span class="n">iflag</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span>    <span class="n">addr</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span>    <span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="n">checksum</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span>  <span class="o">*</span><span class="n">len_ptr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>          <span class="cm">/* not to make warning. by scsuh */</span>
+</span><span class='line'>  <span class="n">uint</span> <span class="n">unc_len</span> <span class="o">=</span> <span class="n">CFG_BOOTM_LEN</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">verify</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">char</span>    <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">appl</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">[]);</span>
+</span><span class='line'>  <span class="kt">image_header_t</span> <span class="o">*</span><span class="n">hdr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">header</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;verify&quot;</span><span class="p">);</span>              <span class="cm">/*读取环境变量“verify”*/</span>
+</span><span class='line'>  <span class="n">verify</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">*</span><span class="n">s</span> <span class="o">==</span> <span class="sc">&#39;n&#39;</span><span class="p">))</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">load_addr</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">simple_strtoul</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>    <span class="cm">/*addr=kernel在内存中的地址*/</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ZIMAGE_BOOT</span>
+</span><span class='line'><span class="cp">#define LINUX_ZIMAGE_MAGIC   0x016f2818</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">ulong</span> <span class="o">*</span><span class="p">)(</span><span class="n">addr</span> <span class="o">+</span> <span class="mi">9</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="n">LINUX_ZIMAGE_MAGIC</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Boot with zImage</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">virt_to_phys</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_os</span> <span class="o">=</span> <span class="n">IH_OS_LINUX</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_ep</span> <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">goto</span> <span class="n">after_header_check</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//printf (&quot;## Booting image at %08lx ...\n&quot;, addr);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* Copy header so we can blank CRC field for re-calculation */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">addr_dataflash</span><span class="p">(</span><span class="n">addr</span><span class="p">)){</span>
+</span><span class='line'>      <span class="n">read_dataflash</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">),</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">header</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">memmove</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_magic</span><span class="p">)</span> <span class="o">!=</span> <span class="n">IH_MAGIC</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="cp">#ifdef __I386__  </span><span class="cm">/* correct image format not implemented yet - fake it */</span><span class="cp"></span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">fake_header</span><span class="p">(</span><span class="n">hdr</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">addr</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="cm">/* to compensate for the addition below */</span>
+</span><span class='line'>          <span class="n">addr</span> <span class="o">-=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>
+</span><span class='line'>          <span class="cm">/* turnof verify,</span>
+</span><span class='line'><span class="cm">          * fake_header() does not fake the data crc</span>
+</span><span class='line'><span class="cm">          */</span>
+</span><span class='line'>          <span class="n">verify</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* __I386__ */</span><span class="cp"></span>
+</span><span class='line'>      <span class="p">{</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_IMAGE_BOOT</span>
+</span><span class='line'>      <span class="c1">//printf(&quot;Boot with Image\n&quot;);</span>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">virt_to_phys</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_os</span> <span class="o">=</span> <span class="n">IH_OS_LINUX</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_ep</span> <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_comp</span> <span class="o">=</span> <span class="n">IH_COMP_NONE</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">goto</span> <span class="n">after_header_check</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>      <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;Bad Magic Number</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ulong</span><span class="p">)</span><span class="o">&amp;</span><span class="n">header</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">len</span>  <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>       <span class="cm">/*header的长度0x40*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">checksum</span> <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_hcrc</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_hcrc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">crc32</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">)</span> <span class="o">!=</span> <span class="n">checksum</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/*crc头校验*/</span>
+</span><span class='line'>      <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;Bad Header Checksum</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">addr_dataflash</span><span class="p">(</span><span class="n">addr</span><span class="p">)){</span>
+</span><span class='line'>      <span class="n">len</span>  <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_size</span><span class="p">)</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">read_dataflash</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">CFG_LOAD_ADDR</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">CFG_LOAD_ADDR</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* for multi-file images we need the data part, too */</span>
+</span><span class='line'>  <span class="n">print_image_hdr</span> <span class="p">((</span><span class="kt">image_header_t</span> <span class="o">*</span><span class="p">)</span><span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">data</span> <span class="o">=</span> <span class="n">addr</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>          <span class="cm">/*指向了后面的kernel部分*/</span>
+</span><span class='line'>  <span class="n">len</span>  <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_size</span><span class="p">);</span>                      <span class="cm">/*kernel的实际大小就是编译后的大小*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">verify</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;   Verifying Checksum ... &quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">crc32</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_dcrc</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bad Data CRC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;OK</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">len_ptr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ulong</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(__PPC__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_PPC</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__ARM__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_ARM</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__I386__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_I386</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__mips__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_MIPS</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__nios__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_NIOS</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__M68K__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_M68K</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__microblaze__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_MICROBLAZE</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__nios2__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_NIOS2</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__blackfin__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_BLACKFIN</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#elif defined(__avr32__)</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_AVR32</span><span class="p">)</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp"># error Unknown CPU type</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Unsupported Architecture 0x%x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">switch</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_STANDALONE</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Standalone Application&quot;</span><span class="p">;</span>
+</span><span class='line'>      <span class="cm">/* A second argument overwrites the load address */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">simple_strtoul</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">16</span><span class="p">));</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_KERNEL</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Kernel Image&quot;</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_MULTI</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Multi-File Image&quot;</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">len</span>  <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>      <span class="cm">/* OS kernel is always the first image */</span>
+</span><span class='line'>      <span class="n">data</span> <span class="o">+=</span> <span class="mi">8</span><span class="p">;</span> <span class="cm">/* kernel_len + terminator */</span>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">len_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">data</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">default</span><span class="o">:</span> <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Wrong Image Type for %s command</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cmdtp</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * We have reached the point of no return: we are going to</span>
+</span><span class='line'><span class="cm">  * overwrite all exception vector code, so we cannot easily</span>
+</span><span class='line'><span class="cm">  * recover from any failures any more...</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">iflag</span> <span class="o">=</span> <span class="n">disable_interrupts</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_AMIGAONEG3SE</span>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * We&#39;ve possible left the caches enabled during</span>
+</span><span class='line'><span class="cm">  * bios emulation, so turn them off again</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">icache_disable</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">invalidate_l1_instruction_cache</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">flush_data_cache</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">dcache_disable</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>                                      <span class="cm">/*下面开始搬运kernel到ih_load指定的地址上去*/</span>
+</span><span class='line'>  <span class="k">switch</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_comp</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_COMP_NONE</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">)</span> <span class="o">==</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;   XIP %s ... &quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>    <span class="cm">/*XIP:原地执行*/</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'><span class="cp">#if defined(CONFIG_HW_WATCHDOG) || defined(CONFIG_WATCHDOG)</span>
+</span><span class='line'>          <span class="kt">size_t</span> <span class="n">l</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+</span><span class='line'>          <span class="kt">void</span> <span class="o">*</span><span class="n">to</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">);</span>
+</span><span class='line'>          <span class="kt">void</span> <span class="o">*</span><span class="n">from</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;   Loading %s ... &quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="k">while</span> <span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>              <span class="kt">size_t</span> <span class="n">tail</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">CHUNKSZ</span><span class="p">)</span> <span class="o">?</span> <span class="nl">CHUNKSZ</span> <span class="p">:</span> <span class="n">l</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">WATCHDOG_RESET</span><span class="p">();</span>
+</span><span class='line'>              <span class="n">memmove</span> <span class="p">(</span><span class="n">to</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">tail</span><span class="p">);</span>
+</span><span class='line'>              <span class="n">to</span> <span class="o">+=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">from</span> <span class="o">+=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">l</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'><span class="cp">#else    </span><span class="cm">/* !(CONFIG_HW_WATCHDOG || CONFIG_WATCHDOG) */</span><span class="cp"></span>
+</span><span class='line'>          <span class="n">memmove</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">),</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>    <span class="cm">/*搬运代码*/</span>
+</span><span class='line'><span class="cp">#endif   </span><span class="cm">/* CONFIG_HW_WATCHDOG || CONFIG_WATCHDOG */</span><span class="cp"></span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_COMP_GZIP</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;   Uncompressing %s ... &quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">gunzip</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">),</span> <span class="n">unc_len</span><span class="p">,</span>      <span class="cm">/*把它解压到 ih_load的位置上去*/</span>
+</span><span class='line'>              <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">len</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;GUNZIP ERROR - must RESET board to recover</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_BZIP2</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_COMP_BZIP2</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;   Uncompressing %s ... &quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * If we&#39;ve got less than 4 MB of malloc() space,</span>
+</span><span class='line'><span class="cm">      * use slower decompression algorithm which requires</span>
+</span><span class='line'><span class="cm">      * at most 2300 KB of memory.</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="n">i</span> <span class="o">=</span> <span class="n">BZ2_bzBuffToBuffDecompress</span> <span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">),</span>
+</span><span class='line'>                      <span class="o">&amp;</span><span class="n">unc_len</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span>
+</span><span class='line'>                      <span class="n">CFG_MALLOC_LEN</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">4096</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">BZ_OK</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;BUNZIP2 ERROR %d - must RESET board to recover</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">udelay</span><span class="p">(</span><span class="mi">100000</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_BZIP2 */</span><span class="cp"></span>
+</span><span class='line'>  <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">iflag</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">enable_interrupts</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Unimplemented compression type %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_comp</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;OK</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>                         <span class="cm">/*搬运完毕*/</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">switch</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_type</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_STANDALONE</span><span class="p">:</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">iflag</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">enable_interrupts</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* load (and uncompress), but don&#39;t start if &quot;autostart&quot;</span>
+</span><span class='line'><span class="cm">      * is set to &quot;no&quot;</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(((</span><span class="n">s</span> <span class="o">=</span> <span class="n">getenv</span><span class="p">(</span><span class="s">&quot;autostart&quot;</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="s">&quot;no&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+</span><span class='line'>          <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;%lX&quot;</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">setenv</span><span class="p">(</span><span class="s">&quot;filesize&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>      <span class="n">appl</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">[]))</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_ep</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">(</span><span class="o">*</span><span class="n">appl</span><span class="p">)(</span><span class="n">argc</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_KERNEL</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_TYPE_MULTI</span><span class="p">:</span>
+</span><span class='line'>      <span class="cm">/* handled below */</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">iflag</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">enable_interrupts</span><span class="p">();</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Can&#39;t boot image type %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_type</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_ZIMAGE_BOOT) || defined(CONFIG_IMAGE_BOOT)</span>
+</span><span class='line'><span class="nl">after_header_check</span><span class="p">:</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="k">switch</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_os</span><span class="p">)</span> <span class="p">{</span>               <span class="cm">/*判断何种操作系统*/</span>
+</span><span class='line'>  <span class="k">default</span><span class="o">:</span>          <span class="cm">/* handled by (original) Linux case */</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_LINUX</span><span class="p">:</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_SILENT_CONSOLE</span>
+</span><span class='line'>      <span class="n">fixup_silent_linux</span><span class="p">();</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>      <span class="n">do_bootm_linux</span>  <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>     <span class="cm">/*开始启动linux内核*/</span>
+</span><span class='line'>               <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_NETBSD</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_netbsd</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>               <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_LYNXKDI</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_LYNXOS</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_lynxkdi</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>               <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_RTEMS</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_rtems</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>               <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if (CONFIG_COMMANDS &amp; CFG_CMD_ELF)</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_VXWORKS</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_vxworks</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>                <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_QNX</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_qnxelf</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>                <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CFG_CMD_ELF */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ARTOS</span>
+</span><span class='line'>  <span class="k">case</span> <span class="nl">IH_OS_ARTOS</span><span class="p">:</span>
+</span><span class='line'>      <span class="n">do_bootm_artos</span>  <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+</span><span class='line'>               <span class="n">addr</span><span class="p">,</span> <span class="n">len_ptr</span><span class="p">,</span> <span class="n">verify</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#ifdef DEBUG</span>
+</span><span class='line'>  <span class="n">puts</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">## Control returned to monitor - resetting...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>lib_arm/armlinux.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">extern</span> <span class="kt">image_header_t</span> <span class="n">header</span><span class="p">;</span>  <span class="cm">/* from cmd_bootm.c */</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">do_bootm_linux</span> <span class="p">(</span><span class="kt">cmd_tbl_t</span> <span class="o">*</span><span class="n">cmdtp</span><span class="p">,</span> <span class="kt">int</span> <span class="n">flag</span><span class="p">,</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span>
+</span><span class='line'>           <span class="n">ulong</span> <span class="n">addr</span><span class="p">,</span> <span class="n">ulong</span> <span class="o">*</span><span class="n">len_ptr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">verify</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">checksum</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">initrd_start</span><span class="p">,</span> <span class="n">initrd_end</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">ulong</span> <span class="n">data</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">theKernel</span><span class="p">)(</span><span class="kt">int</span> <span class="n">zero</span><span class="p">,</span> <span class="kt">int</span> <span class="n">arch</span><span class="p">,</span> <span class="n">uint</span> <span class="n">params</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">image_header_t</span> <span class="o">*</span><span class="n">hdr</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">header</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span> <span class="o">=</span> <span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_CMDLINE_TAG</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">commandline</span> <span class="o">=</span> <span class="n">getenv</span> <span class="p">(</span><span class="s">&quot;bootargs&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">theKernel</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">,</span> <span class="n">uint</span><span class="p">))</span><span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_ep</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/*</span>
+</span><span class='line'><span class="cm">  * Check if there is an initrd image</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">9</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">addr</span> <span class="o">=</span> <span class="n">simple_strtoul</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;## Loading Ramdisk Image at %08lx ...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* Copy header so we can blank CRC field for re-calculation */</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">addr_dataflash</span> <span class="p">(</span><span class="n">addr</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">read_dataflash</span> <span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">image_header_t</span><span class="p">),</span>
+</span><span class='line'>                  <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">header</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span> <span class="k">else</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>          <span class="n">memcpy</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">header</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">addr</span><span class="p">,</span>
+</span><span class='line'>              <span class="k">sizeof</span> <span class="p">(</span><span class="kt">image_header_t</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">ntohl</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_magic</span><span class="p">)</span> <span class="o">!=</span> <span class="n">IH_MAGIC</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bad Magic Number</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ulong</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">header</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">checksum</span> <span class="o">=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_hcrc</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_hcrc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">crc32</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">)</span> <span class="o">!=</span> <span class="n">checksum</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bad Header Checksum</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">11</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">print_image_hdr</span> <span class="p">(</span><span class="n">hdr</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">data</span> <span class="o">=</span> <span class="n">addr</span> <span class="o">+</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">image_header_t</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">len</span> <span class="o">=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_size</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_HAS_DATAFLASH</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">addr_dataflash</span> <span class="p">(</span><span class="n">addr</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">read_dataflash</span> <span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">CFG_LOAD_ADDR</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">data</span> <span class="o">=</span> <span class="n">CFG_LOAD_ADDR</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">verify</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">ulong</span> <span class="n">csum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;   Verifying Checksum ... &quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">csum</span> <span class="o">=</span> <span class="n">crc32</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span><span class='line'>          <span class="k">if</span> <span class="p">(</span><span class="n">csum</span> <span class="o">!=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_dcrc</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>              <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Bad Data CRC</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>              <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">);</span>
+</span><span class='line'>              <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;OK</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">11</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_os</span> <span class="o">!=</span> <span class="n">IH_OS_LINUX</span><span class="p">)</span> <span class="o">||</span>
+</span><span class='line'>          <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_arch</span> <span class="o">!=</span> <span class="n">IH_CPU_ARM</span><span class="p">)</span> <span class="o">||</span>
+</span><span class='line'>          <span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_type</span> <span class="o">!=</span> <span class="n">IH_TYPE_RAMDISK</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;No Linux ARM Ramdisk Image</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="o">-</span><span class="mi">13</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">do_reset</span> <span class="p">(</span><span class="n">cmdtp</span><span class="p">,</span> <span class="n">flag</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_B2) || defined(CONFIG_EVB4510) || defined(CONFIG_ARMADILLO)</span>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      *we need to copy the ramdisk to SRAM to let Linux boot</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="n">memmove</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">),</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">data</span> <span class="o">=</span> <span class="n">ntohl</span><span class="p">(</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_load</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif </span><span class="cm">/* CONFIG_B2 || CONFIG_EVB4510 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * Now check if we have a multifile image</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">((</span><span class="n">hdr</span><span class="o">-&gt;</span><span class="n">ih_type</span> <span class="o">==</span> <span class="n">IH_TYPE_MULTI</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">ulong</span> <span class="n">tail</span> <span class="o">=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">%</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">13</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/* skip kernel length and terminator */</span>
+</span><span class='line'>      <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">ulong</span><span class="p">)</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span><span class='line'>      <span class="cm">/* skip any additional image length fields */</span>
+</span><span class='line'>      <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">len_ptr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">data</span> <span class="o">+=</span> <span class="mi">4</span><span class="p">;</span>
+</span><span class='line'>      <span class="cm">/* add kernel length, and align */</span>
+</span><span class='line'>      <span class="n">data</span> <span class="o">+=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="n">tail</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="n">data</span> <span class="o">+=</span> <span class="mi">4</span> <span class="o">-</span> <span class="n">tail</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">len</span> <span class="o">=</span> <span class="n">ntohl</span> <span class="p">(</span><span class="n">len_ptr</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * no initrd image</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">14</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">len</span> <span class="o">=</span> <span class="n">data</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef   DEBUG</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;No initrd</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">initrd_start</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">initrd_end</span> <span class="o">=</span> <span class="n">initrd_start</span> <span class="o">+</span> <span class="n">len</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">initrd_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">initrd_end</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">SHOW_BOOT_PROGRESS</span> <span class="p">(</span><span class="mi">15</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">debug</span> <span class="p">(</span><span class="s">&quot;## Transferring control to Linux (at address %08lx) ...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+</span><span class='line'>         <span class="p">(</span><span class="n">ulong</span><span class="p">)</span> <span class="n">theKernel</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined (CONFIG_SETUP_MEMORY_TAGS) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_CMDLINE_TAG) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_INITRD_TAG) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_SERIAL_TAG) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_REVISION_TAG) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_LCD) || \</span>
+</span><span class='line'><span class="cp">    defined (CONFIG_VFD)</span>
+</span><span class='line'>  <span class="n">setup_start_tag</span> <span class="p">(</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_SERIAL_TAG</span>
+</span><span class='line'>  <span class="n">setup_serial_tag</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_REVISION_TAG</span>
+</span><span class='line'>  <span class="n">setup_revision_tag</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_SETUP_MEMORY_TAGS</span>
+</span><span class='line'>  <span class="n">setup_memory_tags</span> <span class="p">(</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_CMDLINE_TAG</span>
+</span><span class='line'>  <span class="n">setup_commandline_tag</span> <span class="p">(</span><span class="n">bd</span><span class="p">,</span> <span class="n">commandline</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_INITRD_TAG</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">initrd_start</span> <span class="o">&amp;&amp;</span> <span class="n">initrd_end</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">setup_initrd_tag</span> <span class="p">(</span><span class="n">bd</span><span class="p">,</span> <span class="n">initrd_start</span><span class="p">,</span> <span class="n">initrd_end</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'><span class="cp">#if defined (CONFIG_VFD) || defined (CONFIG_LCD)</span>
+</span><span class='line'>  <span class="n">setup_videolfb_tag</span> <span class="p">((</span><span class="kt">gd_t</span> <span class="o">*</span><span class="p">)</span> <span class="n">gd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>  <span class="n">setup_end_tag</span> <span class="p">(</span><span class="n">bd</span><span class="p">);</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* we assume that the kernel is in place */</span>
+</span><span class='line'>  <span class="c1">//printf (&quot;\nStarting kernel ...\n\n&quot;);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_USB_DEVICE</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>      <span class="k">extern</span> <span class="kt">void</span> <span class="n">udc_disconnect</span> <span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">udc_disconnect</span> <span class="p">();</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">cleanup_before_linux</span> <span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">theKernel</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_arch_number</span><span class="p">,</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_boot_params</span><span class="p">);</span>   <span class="cm">/*相当于执行mov r0,#0;mov r1 #2520;mov r2,#0x50000100;ldr pc,=0x50008000*/</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
@@ -3432,6 +4541,10 @@
 <span class='line-number'>217</span>
 <span class='line-number'>218</span>
 <span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
@@ -3651,6 +4764,10 @@
 </span><span class='line'><span class="cp">#define CFG_PBSIZE       384     </span><span class="cm">/* Print Buffer Size */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_MAXARGS      16      </span><span class="cm">/* max number of command args   */</span><span class="cp"></span>
 </span><span class='line'><span class="cp">#define CFG_BARGSIZE     CFG_CBSIZE  </span><span class="cm">/* Boot Argument Buffer Size    */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*************************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define MACH_TYPE        2520</span>
+</span><span class='line'><span class="cp">#define UBOOT_MAGIC      (0x43090000 | MACH_TYPE)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
