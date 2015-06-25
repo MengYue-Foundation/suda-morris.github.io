@@ -3214,6 +3214,97 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<blockquote><ol>
+<li>在将内核映像复制到RAM空间中后，就可以准备启动Linux内核了。但是在调用内核之前应该作一步准备工作，即设置Linux内核的启动参数（根文件系统在Nand Flash上的位置是其中的1个参数）。Uboot必须将正确的内核的启动参数放到内存0x50000100处，然后将存放地址（0x50000100）告知内核。内核启动后，到0x50000100处去取得参数，内核必须取得正确的根文件系统在NandFlash上的位置参数后，才能挂载根文件系统。</li>
+<li>Linux2.4.x以后的内核都期望以标记列表(tagged list)的形式来传递启动参数。启动参数标记列表以标记ATAG_CORE开始，以标记ATAG_NONE结束。每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成。数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中，Uboot复制了该定义，放在include/asm-arm/setup.h中</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span>include/asm-arm/setup.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/* The list ends with an ATAG_NONE node. */</span>
+</span><span class='line'><span class="cp">#define ATAG_NONE    0x00000000</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">tag_header</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">size</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">tag</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* The list must start with an ATAG_CORE node */</span>
+</span><span class='line'><span class="cp">#define ATAG_CORE    0x54410001</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">tag_core</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">flags</span><span class="p">;</span>     <span class="cm">/* bit 0 = read-only */</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">pagesize</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">u32</span> <span class="n">rootdev</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">struct</span> <span class="n">tag</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">struct</span> <span class="n">tag_header</span> <span class="n">hdr</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">union</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_core</span>       <span class="n">core</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_mem32</span>  <span class="n">mem</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_videotext</span>  <span class="n">videotext</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_ramdisk</span>    <span class="n">ramdisk</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_initrd</span> <span class="n">initrd</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_serialnr</span>   <span class="n">serialnr</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_revision</span>   <span class="n">revision</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_videolfb</span>   <span class="n">videolfb</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_cmdline</span>    <span class="n">cmdline</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * Acorn specific</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_acorn</span>  <span class="n">acorn</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="cm">/*</span>
+</span><span class='line'><span class="cm">      * DC21285 specific</span>
+</span><span class='line'><span class="cm">      */</span>
+</span><span class='line'>      <span class="k">struct</span> <span class="n">tag_memclk</span> <span class="n">memclk</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span> <span class="n">u</span><span class="p">;</span>
+</span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 
 		

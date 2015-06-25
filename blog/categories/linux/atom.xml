@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-25T22:33:19+08:00</updated>
+  <updated>2015-06-25T22:40:19+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -1544,6 +1544,55 @@ void do_bootm_linux (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[],
 
     theKernel (0, bd-&gt;bi_arch_number, bd-&gt;bi_boot_params);  /*相当于执行mov r0,#0;mov r1 #2520;mov r2,#0x50000100;ldr pc,=0x50008000*/
 }
+</code></pre>
+
+<blockquote><ol>
+<li>在将内核映像复制到RAM空间中后，就可以准备启动Linux内核了。但是在调用内核之前应该作一步准备工作，即设置Linux内核的启动参数（根文件系统在Nand Flash上的位置是其中的1个参数）。Uboot必须将正确的内核的启动参数放到内存0x50000100处，然后将存放地址（0x50000100）告知内核。内核启动后，到0x50000100处去取得参数，内核必须取得正确的根文件系统在NandFlash上的位置参数后，才能挂载根文件系统。</li>
+<li>Linux2.4.x以后的内核都期望以标记列表(tagged list)的形式来传递启动参数。启动参数标记列表以标记ATAG_CORE开始，以标记ATAG_NONE结束。每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成。数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中，Uboot复制了该定义，放在include/asm-arm/setup.h中</li>
+</ol>
+</blockquote>
+
+<pre><code class="C include/asm-arm/setup.h">/* The list ends with an ATAG_NONE node. */
+#define ATAG_NONE   0x00000000
+
+struct tag_header {
+    u32 size;
+    u32 tag;
+};
+
+/* The list must start with an ATAG_CORE node */
+#define ATAG_CORE   0x54410001
+
+struct tag_core {
+    u32 flags;      /* bit 0 = read-only */
+    u32 pagesize;
+    u32 rootdev;
+};
+
+struct tag {
+    struct tag_header hdr;
+    union {
+        struct tag_core     core;
+        struct tag_mem32    mem;
+        struct tag_videotext    videotext;
+        struct tag_ramdisk  ramdisk;
+        struct tag_initrd   initrd;
+        struct tag_serialnr serialnr;
+        struct tag_revision revision;
+        struct tag_videolfb videolfb;
+        struct tag_cmdline  cmdline;
+
+        /*
+         * Acorn specific
+         */
+        struct tag_acorn    acorn;
+
+        /*
+         * DC21285 specific
+         */
+        struct tag_memclk   memclk;
+    } u;
+};
 </code></pre>
 ]]></content>
   </entry>
