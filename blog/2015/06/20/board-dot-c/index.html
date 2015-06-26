@@ -3153,7 +3153,7 @@ typedef struct &hellip;">
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="cp">#endif</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">cleanup_before_linux</span> <span class="p">();</span>
+</span><span class='line'>  <span class="n">cleanup_before_linux</span> <span class="p">();</span>      <span class="cm">/*关闭中断，清空数据cache，关闭数据cache*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">theKernel</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_arch_number</span><span class="p">,</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_boot_params</span><span class="p">);</span>   <span class="cm">/*相当于执行mov r0,#0;mov r1 #2520;mov r2,#0x50000100;ldr pc,=0x50008000*/</span>
 </span><span class='line'><span class="p">}</span>
@@ -3163,6 +3163,7 @@ typedef struct &hellip;">
 <blockquote><ol>
 <li>在将内核映像复制到RAM空间中后，就可以准备启动Linux内核了。但是在调用内核之前应该作一步准备工作，即设置Linux内核的启动参数（根文件系统在Nand Flash上的位置是其中的1个参数）。Uboot必须将正确的内核的启动参数放到内存0x50000100处，然后将存放地址（0x50000100）告知内核。内核启动后，到0x50000100处去取得参数，内核必须取得正确的根文件系统在NandFlash上的位置参数后，才能挂载根文件系统。</li>
 <li>Linux2.4.x以后的内核都期望以标记列表(tagged list)的形式来传递启动参数。启动参数标记列表以标记ATAG_CORE开始，以标记ATAG_NONE结束。每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成。数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中，Uboot复制了该定义，放在include/asm-arm/setup.h中</li>
+<li>内核至少需要4个tag：start_tag、end_tag、memory_tags、commandline_tag才能正确启动</li>
 </ol>
 </blockquote>
 
@@ -3248,6 +3249,157 @@ typedef struct &hellip;">
 </span><span class='line'>      <span class="k">struct</span> <span class="n">tag_memclk</span> <span class="n">memclk</span><span class="p">;</span>
 </span><span class='line'>  <span class="p">}</span> <span class="n">u</span><span class="p">;</span>
 </span><span class='line'><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>lib_arm/armlinux.c中标记列表的建立</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">setup_start_tag</span> <span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">tag</span> <span class="o">*</span><span class="p">)</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_boot_params</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_CORE</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">tag_size</span> <span class="p">(</span><span class="n">tag_core</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">pagesize</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">rootdev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span> <span class="o">=</span> <span class="n">tag_next</span> <span class="p">(</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">setup_memory_tags</span> <span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">CONFIG_NR_DRAM_BANKS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_MEM</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">tag_size</span> <span class="p">(</span><span class="n">tag_mem32</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">mem</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_dram</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">start</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">mem</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">bd</span><span class="o">-&gt;</span><span class="n">bi_dram</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="n">params</span> <span class="o">=</span> <span class="n">tag_next</span> <span class="p">(</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">setup_commandline_tag</span> <span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">commandline</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">char</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">commandline</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* eat leading white space */</span>
+</span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">p</span> <span class="o">=</span> <span class="n">commandline</span><span class="p">;</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">;</span> <span class="n">p</span><span class="o">++</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* skip non-existent command lines so the kernel will still</span>
+</span><span class='line'><span class="cm">  * use its default command line.</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;\0&#39;</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_CMDLINE</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span>
+</span><span class='line'>      <span class="p">(</span><span class="k">sizeof</span> <span class="p">(</span><span class="k">struct</span> <span class="n">tag_header</span><span class="p">)</span> <span class="o">+</span> <span class="n">strlen</span> <span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">strcpy</span> <span class="p">(</span><span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">cmdline</span><span class="p">.</span><span class="n">cmdline</span><span class="p">,</span> <span class="n">p</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span> <span class="o">=</span> <span class="n">tag_next</span> <span class="p">(</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">setup_initrd_tag</span> <span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">initrd_start</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">initrd_end</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="cm">/* an ATAG_INITRD node tells the kernel where the compressed</span>
+</span><span class='line'><span class="cm">  * ramdisk can be found. ATAG_RDIMG is a better name, actually.</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_INITRD2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">tag_size</span> <span class="p">(</span><span class="n">tag_initrd</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">initrd</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">initrd_start</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">u</span><span class="p">.</span><span class="n">initrd</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">initrd_end</span> <span class="o">-</span> <span class="n">initrd_start</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">params</span> <span class="o">=</span> <span class="n">tag_next</span> <span class="p">(</span><span class="n">params</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">void</span> <span class="nf">setup_end_tag</span> <span class="p">(</span><span class="kt">bd_t</span> <span class="o">*</span><span class="n">bd</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">tag</span> <span class="o">=</span> <span class="n">ATAG_NONE</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">params</span><span class="o">-&gt;</span><span class="n">hdr</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

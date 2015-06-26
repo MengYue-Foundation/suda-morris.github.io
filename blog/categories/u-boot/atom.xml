@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-25T22:40:19+08:00</updated>
+  <updated>2015-06-26T11:25:38+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -1540,7 +1540,7 @@ void do_bootm_linux (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[],
     }
 #endif
 
-    cleanup_before_linux ();
+    cleanup_before_linux ();        /*关闭中断，清空数据cache，关闭数据cache*/
 
     theKernel (0, bd-&gt;bi_arch_number, bd-&gt;bi_boot_params);  /*相当于执行mov r0,#0;mov r1 #2520;mov r2,#0x50000100;ldr pc,=0x50008000*/
 }
@@ -1549,6 +1549,7 @@ void do_bootm_linux (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[],
 <blockquote><ol>
 <li>在将内核映像复制到RAM空间中后，就可以准备启动Linux内核了。但是在调用内核之前应该作一步准备工作，即设置Linux内核的启动参数（根文件系统在Nand Flash上的位置是其中的1个参数）。Uboot必须将正确的内核的启动参数放到内存0x50000100处，然后将存放地址（0x50000100）告知内核。内核启动后，到0x50000100处去取得参数，内核必须取得正确的根文件系统在NandFlash上的位置参数后，才能挂载根文件系统。</li>
 <li>Linux2.4.x以后的内核都期望以标记列表(tagged list)的形式来传递启动参数。启动参数标记列表以标记ATAG_CORE开始，以标记ATAG_NONE结束。每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成。数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中，Uboot复制了该定义，放在include/asm-arm/setup.h中</li>
+<li>内核至少需要4个tag：start_tag、end_tag、memory_tags、commandline_tag才能正确启动</li>
 </ol>
 </blockquote>
 
@@ -1593,6 +1594,81 @@ struct tag {
         struct tag_memclk   memclk;
     } u;
 };
+</code></pre>
+
+<pre><code class="C lib_arm/armlinux.c中标记列表的建立">static void setup_start_tag (bd_t *bd)
+{
+    params = (struct tag *) bd-&gt;bi_boot_params;
+
+    params-&gt;hdr.tag = ATAG_CORE;
+    params-&gt;hdr.size = tag_size (tag_core);
+
+    params-&gt;u.core.flags = 0;
+    params-&gt;u.core.pagesize = 0;
+    params-&gt;u.core.rootdev = 0;
+
+    params = tag_next (params);
+}
+
+static void setup_memory_tags (bd_t *bd)
+{
+    int i;
+
+    for (i = 0; i &lt; CONFIG_NR_DRAM_BANKS; i++) {
+        params-&gt;hdr.tag = ATAG_MEM;
+        params-&gt;hdr.size = tag_size (tag_mem32);
+
+        params-&gt;u.mem.start = bd-&gt;bi_dram[i].start;
+        params-&gt;u.mem.size = bd-&gt;bi_dram[i].size;
+
+        params = tag_next (params);
+    }
+}
+
+static void setup_commandline_tag (bd_t *bd, char *commandline)
+{
+    char *p;
+
+    if (!commandline)
+        return;
+
+    /* eat leading white space */
+    for (p = commandline; *p == ' '; p++);
+
+    /* skip non-existent command lines so the kernel will still
+     * use its default command line.
+     */
+    if (*p == '\0')
+        return;
+
+    params-&gt;hdr.tag = ATAG_CMDLINE;
+    params-&gt;hdr.size =
+        (sizeof (struct tag_header) + strlen (p) + 1 + 4) &gt;&gt; 2;
+
+    strcpy (params-&gt;u.cmdline.cmdline, p);
+
+    params = tag_next (params);
+}
+
+static void setup_initrd_tag (bd_t *bd, ulong initrd_start, ulong initrd_end)
+{
+    /* an ATAG_INITRD node tells the kernel where the compressed
+     * ramdisk can be found. ATAG_RDIMG is a better name, actually.
+     */
+    params-&gt;hdr.tag = ATAG_INITRD2;
+    params-&gt;hdr.size = tag_size (tag_initrd);
+
+    params-&gt;u.initrd.start = initrd_start;
+    params-&gt;u.initrd.size = initrd_end - initrd_start;
+
+    params = tag_next (params);
+}
+
+static void setup_end_tag (bd_t *bd)
+{
+    params-&gt;hdr.tag = ATAG_NONE;
+    params-&gt;hdr.size = 0;
+}
 </code></pre>
 ]]></content>
   </entry>
@@ -2403,7 +2479,7 @@ mmu_table:
                         CFG_CMD_LOADB   | \
                         CFG_CMD_ENV     | \
                         CFG_CMD_NAND    | \
-            CFG_CMD_PING    | \
+                        CFG_CMD_PING    | \
                         CFG_CMD_MOVINAND) \
                         &amp; ~(CFG_CMD_AUTOSCRIPT  | \
                                 CFG_CMD_BOOTD   | \
@@ -2411,8 +2487,8 @@ mmu_table:
                                 CFG_CMD_RUN     | \
                                 CFG_CMD_CONSOLE | \
                                 CFG_CMD_DOCG3P3 | \
-                                CFG_CMD_EEPROM | \
-                                CFG_CMD_I2C      | \
+                                CFG_CMD_EEPROM  | \
+                                CFG_CMD_I2C     | \
                                 0)
 
 /*********************************************************************************************************************/
