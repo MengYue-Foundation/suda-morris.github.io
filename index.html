@@ -157,15 +157,22 @@
 
 <h2>Makefile文件精解</h2>
 
-<p>``C
-obj-$(CONFIG_ATL1) += atl1/
-obj-$(CONFIG_GIANFAR) += gianfar_driver.o</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>gianfar_driver-objs := gianfar.o\
-                        gianfar_ethtool.o\
-                        gianfar_mii.o\
-                        gianfar_sysfs.o
-```</p>
 
 		
 		

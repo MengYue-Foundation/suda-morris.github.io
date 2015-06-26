@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kernel | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/kernel/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-26T15:06:56+08:00</updated>
+  <updated>2015-06-26T15:07:43+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -82,15 +82,14 @@
 
 <h2>Makefile文件精解</h2>
 
-<p>``C
-obj-$(CONFIG_ATL1) += atl1/
-obj-$(CONFIG_GIANFAR) += gianfar_driver.o</p>
+<pre><code class="C ">obj-$(CONFIG_ATL1) += atl1/
+obj-$(CONFIG_GIANFAR) += gianfar_driver.o
 
-<p>gianfar_driver-objs := gianfar.o\
+gianfar_driver-objs := gianfar.o\
                         gianfar_ethtool.o\
                         gianfar_mii.o\
                         gianfar_sysfs.o
-```</p>
+</code></pre>
 ]]></content>
   </entry>
   
