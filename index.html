@@ -103,6 +103,70 @@
 </ol>
 
 
+<h2>KBuild机制实现原理</h2>
+
+<ol>
+<li>从编译过程来看，每一个被编译的目录下都会生成一个build-in.o文件，他们都由自己目录下的源代码编译生成，所有目录下的build-in.o文件最终链接生成vmlinux文件，最后由内核压缩程序加工vmlinux生成内核压缩镜像文件zImage</li>
+<li>总原理来看，Kbuild机制只会把obj-y的值编译进内核。每个Makefile文件中都有这个变量，只不过obj-后面一半都跟着一个变量，这个变量的值来自于.config。</li>
+<li>待编译目录下的Makefile，如有Kbuild，则Kbuild优先，唯一使用Kbuild而不是Makefile的就是顶层目录</li>
+</ol>
+
+
+<h2>Kconfig语法</h2>
+
+<ol>
+<li>config
+
+<ul>
+<li>为menu或者choice中的一个选项条目</li>
+<li>config后面常跟一个变量名，比如ARM，那么在.config中将以CONFIG_ARM=y或n的形式出现</li>
+<li>下一行写该变量的取值类型,可以是bool,tristate,string,hex,int</li>
+<li>default为变量缺省值，可以被用户设置值覆盖</li>
+<li>prompt后边是出现在配置菜单中的对应于一个配置选项的文字，没有prompt条目，将使得用户不能在配置界面中显示并配置该配置选项</li>
+<li>depends on var表示该变量必须在var被设置的情况下才能进行设置，否则取值为n，即使default为y</li>
+<li>select var表示它将影响到变量var，使得var至少应该配置为y或者m</li>
+<li>help中的文字将作为配置界面中的帮助信息</li>
+</ul>
+</li>
+<li>menu
+
+<ul>
+<li>在menu和endmenu中间可配置若干config条目</li>
+</ul>
+</li>
+<li>choice
+
+<ul>
+<li>在choice和endchoice之间可定义若干config条目。choice中的config条目只能有2种类型：bool或者tristate，且不能同时有这两种变量。对于bool型变量只能在多个选择中选择1个为y；对于tristate型变量，要么将多个设置为m，要么仅将1个设为y，其余为n。</li>
+</ul>
+</li>
+<li>comment
+
+<ul>
+<li>用于定于帮助信息，将出现在配置界面的第一行，并且还会出现在配置文件.config中作为注释</li>
+</ul>
+</li>
+<li>source
+
+<ul>
+<li>由于内核源代码中大多数目录下都有各自的Kconfig文件，因此需要一种手段将所有的Kconfig文件组织为一个整体。这就是source的功能，它用于引入另一个Kconfig文件，有点类似于C语言中的#include</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>Makefile文件精解</h2>
+
+<p>``C
+obj-$(CONFIG_ATL1) += atl1/
+obj-$(CONFIG_GIANFAR) += gianfar_driver.o</p>
+
+<p>gianfar_driver-objs := gianfar.o\
+                        gianfar_ethtool.o\
+                        gianfar_mii.o\
+                        gianfar_sysfs.o
+```</p>
+
 		
 		
 	</div>
@@ -220,7 +284,7 @@
 		
 		<a href="/blog/2015/06/20/board-dot-c/">
 		
-			第二阶段代码分析</a>
+			Uboot第二阶段代码分析</a>
 	</h2>
 	<div class="entry-content">
 		<figure class='code'><figcaption><span>include/asm-arm/global_data.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
