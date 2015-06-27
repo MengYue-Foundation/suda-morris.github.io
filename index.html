@@ -90,7 +90,7 @@
 		
 		<a href="/blog/2015/06/27/c-language-review/">
 		
-			C_Language_Review</a>
+			C语言知识点</a>
 	</h2>
 	<div class="entry-content">
 		<h2><code>#ifdef和#if defined的差别</code></h2>
@@ -4680,7 +4680,7 @@
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1</span>
 </span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPECON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0设置为输出，GPE1~GPE15设置为输入*/</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPEDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0输出低电平*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPEDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0输出低电平,LCD_BL_EN=0*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
 </span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2A5AAAAA</span>

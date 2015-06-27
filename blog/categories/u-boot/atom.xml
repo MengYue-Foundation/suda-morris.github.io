@@ -4,7 +4,7 @@
   <title><![CDATA[Category: u-boot | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/u-boot/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-27T15:20:14+08:00</updated>
+  <updated>2015-06-27T19:23:28+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -1974,7 +1974,7 @@ lowlevel_init:
     ldr r1, =0x1
     str r1, [r0, #GPECON_OFFSET]    /*GPE0设置为输出，GPE1~GPE15设置为输入*/
     ldr r1, =0x0
-    str r1, [r0, #GPEDAT_OFFSET]    /*GPE0输出低电平*/
+    str r1, [r0, #GPEDAT_OFFSET]    /*GPE0输出低电平,LCD_BL_EN=0*/
 
     ldr r0, =ELFIN_GPIO_BASE
     ldr r1, =0x2A5AAAAA
