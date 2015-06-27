@@ -157,14 +157,31 @@ make根据. &hellip;">
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
+</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
 </span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>zImage文件生成过程</h2>
+
+<ol>
+<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
+<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
+<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
+<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
+<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
+</ol>
 
 </div>
 

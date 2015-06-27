@@ -88,6 +88,101 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/27/c-language-review/">
+		
+			C_Language_Review</a>
+	</h2>
+	<div class="entry-content">
+		<h2><code>#ifdef和#if defined的差别</code></h2>
+
+<p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:</p>
+
+<figure class='code'><figcaption><span>只能在两者中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  XXX</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于后者，常用法是：</p>
+
+<figure class='code'><figcaption><span>可以在多个中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#if defined xxx1</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#elif defined xxx2</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#elif defined xxx3</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-27T15:17:24+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/c/'>c</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/26/kbuild-makefile/">
 		
 			Linux内核构造机制</a>
@@ -164,14 +259,31 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
+</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
 </span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>zImage文件生成过程</h2>
+
+<ol>
+<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
+<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
+<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
+<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
+<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
+</ol>
 
 
 		
@@ -7623,118 +7735,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 <time datetime="2015-06-13T23:15:44+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/13/u-boot-dot-lds/">
-		
-			u-boot.lds</a>
-	</h2>
-	<div class="entry-content">
-		<figure class='code'><figcaption><span>u-boot.lds</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">OUTPUT_FORMAT</span><span class="p">(</span><span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">OUTPUT_ARCH</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
-</span><span class='line'><span class="n">ENTRY</span><span class="p">(</span><span class="n">_start</span><span class="p">)</span>
-</span><span class='line'><span class="n">SECTIONS</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="mh">0x00000000</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">text</span>      <span class="p">:</span>
-</span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">start</span><span class="p">.</span><span class="n">o</span>  <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">s3c6410</span><span class="o">/</span><span class="n">cpu_init</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">onenand_cp</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">nand_cp</span><span class="p">.</span><span class="n">o</span>    <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">board</span><span class="o">/</span><span class="n">samsung</span><span class="o">/</span><span class="n">mini6410</span><span class="o">/</span><span class="n">nand_6410</span><span class="p">.</span><span class="n">fo</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">movi</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">*</span><span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">lib_arm</span><span class="o">/</span><span class="n">div0</span><span class="p">.</span><span class="n">o</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">rodata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">rodata</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">data</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">data</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">got</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">got</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">__u_boot_cmd_start</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">u_boot_cmd</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">u_boot_cmd</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">__u_boot_cmd_end</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">mmudata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">mmudata</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">__bss_start</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">bss</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">bss</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">_end</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-13T23:06:13+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 

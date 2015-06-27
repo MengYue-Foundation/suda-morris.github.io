@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-26T15:07:43+08:00</updated>
+  <updated>2015-06-27T15:20:14+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C_Language_Review]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/27/c-language-review/"/>
+    <updated>2015-06-27T15:17:24+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/27/c-language-review</id>
+    <content type="html"><![CDATA[<h2><code>#ifdef和#if defined的差别</code></h2>
+
+<p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:</p>
+
+<figure class='code'><figcaption><span>只能在两者中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  XXX</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于后者，常用法是：</p>
+
+<figure class='code'><figcaption><span>可以在多个中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#if defined xxx1</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#elif defined xxx2</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#elif defined xxx3</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="p">....</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Linux内核构造机制]]></title>
@@ -89,14 +152,31 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
 </span><span class='line'>
+</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
+</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
 </span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
 </span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<h2>zImage文件生成过程</h2>
+
+<ol>
+<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
+<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
+<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
+<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
+<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
+</ol>
 
 ]]></content>
   </entry>
@@ -8457,105 +8537,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 </span><span class='line'>  <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress学习手记]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/18/think-in-octopress/"/>
-    <updated>2015-05-18T13:22:49+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/18/think-in-octopress</id>
-    <content type="html"><![CDATA[<h2>Windows下环境搭建</h2>
-
-<ol>
-<li>安装好Git，配置Git全局参数
-
-<ul>
-<li><code>git config --global user.name "suda-morris"</code></li>
-<li><code>git config --global user.email "362953310@qq.com"</code></li>
-<li><code>git config --global --list</code></li>
-</ul>
-</li>
-<li>生成SSH密钥并与github关联
-
-<ul>
-<li><code>ssh-keygen -t rsa -C "362953310@qq.com"</code></li>
-<li><code>将id_rsa.pub里面的内容拷贝到github中新建的SSH密钥中保存</code></li>
-<li>测试是否关联成功<code>ssh -T git@github.com</code></li>
-</ul>
-</li>
-<li>安装Ruby，安装时选择将Ruby添加到系统环境变量中</li>
-<li>安装Ruby后测试是否成功,终端下使用命令<code>ruby -v</code></li>
-<li>安装DevKit，进入DevKit文件夹下运行<code>ruby dk.rb init</code>和<code>ruby dk.rb install</code></li>
-<li>安装Octopress源码并且设置默认主题
-
-<ul>
-<li><code>git clone git://github.com/imathis/octopress.git Octopress</code></li>
-<li>修改gem的软件源<code>gem sources -a http://ruby.taobao.org</code></li>
-<li>移除原始gem软件源<code>gem sources -r http://rubygems.org</code></li>
-<li>打开Octopress文件夹下的Gemfile文件，将里面<code>source "http://rubygems.org"</code>修改为<code>source "http://ruby.taobao.org"</code></li>
-<li>安装bundler<code>gem install bundler</code></li>
-<li>安装bundler里面的软件包<code>bundle install</code></li>
-</ul>
-</li>
-<li>安装默认主题<code>rake install</code></li>
-</ol>
-
-
-<h2>常用命令</h2>
-
-<ul>
-<li>新建博客                      <code>rake new_post['New Blog']</code></li>
-<li>新建单页面                       <code>rake new_page['New Page']</code></li>
-<li>编译生成网页                    <code>rake generate</code></li>
-<li>本地服务器预览（默认4000端口）   <code>rake preview</code></li>
-<li>发布网页                      <code>rake deploy</code></li>
-</ul>
-
-
-<h2>基本语法</h2>
-
-<ul>
-<li>一级标题      <code>#</code></li>
-<li>二级标题      <code>##</code></li>
-<li>三级标题      <code>###</code></li>
-<li>引用            <code>&gt;</code></li>
-<li>加粗            <code>**内容**</code></li>
-<li>斜体            <code>*内容*</code></li>
-<li>列表            <code>*</code>或者<code>-</code></li>
-<li>图片            <code>！[图片的描述](链接地址)</code></li>
-</ul>
-
-
-<h2>优化</h2>
-
-<ul>
-<li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
-<li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
-</ul>
-
-
-<h2>将博客包装成App</h2>
-
-<ol>
-<li><a href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/">搭建Corvoda开发环境</a></li>
-<li><code>cordova create WenRisBlog com.morris.blog WenRisBlog</code></li>
-<li>进入到新建的项目目录中，<code>cordova platform add android</code>,增加对安卓平台的支持</li>
-<li>用eclipse将文件夹下面的platforms目录下的android项目导入(不要拷贝到工作空间)，一定要先clean一下后编译</li>
-<li>然后进入项目目下，执行<code>cordova build</code>进行编译，该编译会把www文件夹下的资源添加到项目中，因此在www文件夹下面的改动需要执行该命令才能生效</li>
-<li>在eclipse运行该项目或者在项目目录下执行命令<code>corvoda run --device</code></li>
-</ol>
-
-
-<h2>参考文献</h2>
-
-<ol>
-<li><a href="http://www.appinn.com/markdown/">MarkDown中文语法详解</a></li>
-<li><a href="http://wenku.baidu.com/view/1e250851240c844769eaeec6">极客学院Octopress课件</a></li>
-</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>

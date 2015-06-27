@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-26T15:07:43+08:00</updated>
+  <updated>2015-06-27T15:20:14+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[C_Language_Review]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/27/c-language-review/"/>
+    <updated>2015-06-27T15:17:24+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/27/c-language-review</id>
+    <content type="html"><![CDATA[<h2><code>#ifdef和#if defined的差别</code></h2>
+
+<p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:
+```C 只能在两者中选择是否有定义</p>
+
+<h1>ifdef  XXX</h1>
+
+<p>   &hellip;.</p>
+
+<h1>else</h1>
+
+<p>   &hellip;.</p>
+
+<h1>endif</h1>
+
+<pre><code>对于后者，常用法是：
+</code></pre>
+
+<h1>if defined xxx1</h1>
+
+<p>   &hellip;.</p>
+
+<h1>elif defined xxx2</h1>
+
+<p>   &hellip;.</p>
+
+<h1>elif defined xxx3</h1>
+
+<p>   &hellip;.</p>
+
+<h1>endif</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[GNS3_Install]]></title>
@@ -223,15 +264,6 @@ sys.modules[__name__] = _const()
 <h2>API</h2>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[nuvoton-m451-pwm]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/23/nuvoton-m451-pwm/"/>
-    <updated>2015-05-23T18:03:13+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/23/nuvoton-m451-pwm</id>
-    <content type="html"><![CDATA[<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   

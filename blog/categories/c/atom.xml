@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: c | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/c/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-06-27T15:20:14+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[C_Language_Review]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/27/c-language-review/"/>
+    <updated>2015-06-27T15:17:24+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/27/c-language-review</id>
+    <content type="html"><![CDATA[<h2><code>#ifdef和#if defined的差别</code></h2>
+
+<p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:
+```C 只能在两者中选择是否有定义</p>
+
+<h1>ifdef  XXX</h1>
+
+<p>   &hellip;.</p>
+
+<h1>else</h1>
+
+<p>   &hellip;.</p>
+
+<h1>endif</h1>
+
+<pre><code>对于后者，常用法是：
+</code></pre>
+
+<h1>if defined xxx1</h1>
+
+<p>   &hellip;.</p>
+
+<h1>elif defined xxx2</h1>
+
+<p>   &hellip;.</p>
+
+<h1>elif defined xxx3</h1>
+
+<p>   &hellip;.</p>
+
+<h1>endif</h1>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
