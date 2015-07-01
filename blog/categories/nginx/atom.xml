@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: nginx | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/nginx/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-07-01T15:53:21+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[初识Nginx]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/29/about-nginx/"/>
+    <updated>2015-06-29T10:21:37+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/29/about-nginx</id>
+    <content type="html"><![CDATA[<h2>Nginx简介</h2>
+
+<blockquote><ol>
+<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
+<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
+<li>优点：高并发，部署简单，内存消耗少，成本低</li>
+<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
+</ol>
+</blockquote>
+
+<h2>其它服务器</h2>
+
+<ol>
+<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
+<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
+<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
+</ol>
+
+
+<h2>Nginx环境的搭建</h2>
+
+<ol>
+<li><a href="http://nginx.org">进入官网下载最新版</a></li>
+<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
+<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
+<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
+<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
+<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

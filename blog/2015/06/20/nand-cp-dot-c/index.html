@@ -254,10 +254,10 @@
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'>      <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好    */</span>
+</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>   <span class="cm">/*从NandFlash数据寄存器读取*/</span>
+</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
@@ -292,12 +292,12 @@
 </span><span class='line'>  
 </span><span class='line'>    <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
 </span><span class='line'>    <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              <span class="cm">/*取第二次的返回值*/</span>
+</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* wait for a while */</span>
 </span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               <span class="cm">/*取第二次的返回值*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>                    <span class="c1">//判断读取的id是否大于0x80</span>
 </span><span class='line'>      <span class="n">large_block</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>

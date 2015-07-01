@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kdm | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/kdm/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-27T19:23:28+08:00</updated>
+  <updated>2015-07-01T15:53:21+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -347,7 +347,7 @@ void start_armboot (void)               /*uboot第二阶段入口函数,完成ub
     memset (gd-&gt;bd, 0, sizeof (bd_t));
 
     monitor_flash_len = _bss_start - _armboot_start;            /*monitor_flash_len表示从flash中搬来的代码的长度,包络代码段，数据段*/
-                                                            /*各设置的初始化.当返回值不为0时表示初始化失败 ,此时会调用 hang()函数,打印一错误提示信息,然后进入死循环 */
+
     for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
         if ((*init_fnc_ptr)() != 0) {
             hang ();
@@ -1709,10 +1709,10 @@ static int nandll_read_page (uchar *buf, ulong addr, int large_block)
     if (large_block)
         NFCMD_REG = NAND_CMD_READSTART;
 
-        NF_TRANSRnB();                  /*循环判断是否已经准备好 */
+        NF_TRANSRnB();                  /*循环判断是否已经准备好*/
 
     for(i=0; i &lt; page_size; i++) {
-                *buf++ = NFDATA8_REG;   /*从NandFlash数据寄存器读取*/
+                *buf++ = NFDATA8_REG;               
         }
 
         NAND_DISABLE_CE();
@@ -1747,12 +1747,12 @@ int copy_uboot_to_ram (void)
 
     NAND_ENABLE_CE();               /*使能芯片*/
     NFCMD_REG = NAND_CMD_READID;
-    NFADDR_REG =  0x00;             /*取第二次的返回值*/
+    NFADDR_REG =  0x00;             
 
     /* wait for a while */
         for (i=0; i&lt;200; i++);
     id = NFDATA8_REG;
-    id = NFDATA8_REG;
+    id = NFDATA8_REG;               /*取第二次的返回值*/
 
     if (id &gt; 0x80)                  //判断读取的id是否大于0x80
         large_block = 1;

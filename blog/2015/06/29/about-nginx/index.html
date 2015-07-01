@@ -1,0 +1,217 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>初识Nginx - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="Nginx简介 Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能
+所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">初识Nginx</h2>
+	<div class="entry-content"><h2>Nginx简介</h2>
+
+<blockquote><ol>
+<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
+<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
+<li>优点：高并发，部署简单，内存消耗少，成本低</li>
+<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
+</ol>
+</blockquote>
+
+<h2>其它服务器</h2>
+
+<ol>
+<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
+<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
+<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
+</ol>
+
+
+<h2>Nginx环境的搭建</h2>
+
+<ol>
+<li><a href="http://nginx.org">进入官网下载最新版</a></li>
+<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
+<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
+<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
+<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
+<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-29T10:21:37+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/06/29/about-nginx" data-title="初识Nginx" data-url="http://suda-morris.github.io/blog/2015/06/29/about-nginx/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

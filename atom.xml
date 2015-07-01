@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-27T19:23:28+08:00</updated>
+  <updated>2015-07-01T15:53:21+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初识Nginx]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/29/about-nginx/"/>
+    <updated>2015-06-29T10:21:37+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/29/about-nginx</id>
+    <content type="html"><![CDATA[<h2>Nginx简介</h2>
+
+<blockquote><ol>
+<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
+<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
+<li>优点：高并发，部署简单，内存消耗少，成本低</li>
+<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
+</ol>
+</blockquote>
+
+<h2>其它服务器</h2>
+
+<ol>
+<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
+<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
+<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
+</ol>
+
+
+<h2>Nginx环境的搭建</h2>
+
+<ol>
+<li><a href="http://nginx.org">进入官网下载最新版</a></li>
+<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
+<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
+<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
+<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
+<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C语言知识点]]></title>
@@ -1182,7 +1220,7 @@
 </span><span class='line'>  <span class="n">memset</span> <span class="p">(</span><span class="n">gd</span><span class="o">-&gt;</span><span class="n">bd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="kt">bd_t</span><span class="p">));</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="n">monitor_flash_len</span> <span class="o">=</span> <span class="n">_bss_start</span> <span class="o">-</span> <span class="n">_armboot_start</span><span class="p">;</span>          <span class="cm">/*monitor_flash_len表示从flash中搬来的代码的长度,包络代码段，数据段*/</span>
-</span><span class='line'>                                                          <span class="cm">/*各设置的初始化.当返回值不为0时表示初始化失败 ,此时会调用 hang()函数,打印一错误提示信息,然后进入死循环 */</span>
+</span><span class='line'>                                                          
 </span><span class='line'>  <span class="k">for</span> <span class="p">(</span><span class="n">init_fnc_ptr</span> <span class="o">=</span> <span class="n">init_sequence</span><span class="p">;</span> <span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">;</span> <span class="o">++</span><span class="n">init_fnc_ptr</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="o">*</span><span class="n">init_fnc_ptr</span><span class="p">)()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span><span class='line'>          <span class="n">hang</span> <span class="p">();</span>
@@ -3645,10 +3683,10 @@
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
 </span><span class='line'>      <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好    */</span>
+</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>   <span class="cm">/*从NandFlash数据寄存器读取*/</span>
+</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
@@ -3683,12 +3721,12 @@
 </span><span class='line'>  
 </span><span class='line'>    <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
 </span><span class='line'>    <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              <span class="cm">/*取第二次的返回值*/</span>
+</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              
 </span><span class='line'>
 </span><span class='line'>  <span class="cm">/* wait for a while */</span>
 </span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
 </span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               <span class="cm">/*取第二次的返回值*/</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>                    <span class="c1">//判断读取的id是否大于0x80</span>
 </span><span class='line'>      <span class="n">large_block</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
@@ -8252,294 +8290,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
     <updated>2015-05-23T18:03:13+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/05/23/nuvoton-m451-pwm</id>
     <content type="html"><![CDATA[<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Nuvoton-M451-Timer]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/20/nuvoton-m451-timer/"/>
-    <updated>2015-05-20T11:03:28+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/20/nuvoton-m451-timer</id>
-    <content type="html"><![CDATA[<h2>新唐CortexM4内核芯片M451学习之&mdash;-定时器Timer</h2>
-
-<blockquote><ul>
-<li>4组32位定时器TIMER0~TIMER3,带24位向上计数器和一个8位的预分频器</li>
-<li>支持两个中断标志：一个是<code>TIF</code>，该标志在当定时器计数器值CNT与定时器比价值CMPDAT相匹配时置位，另一个是<code>CAPIF</code>标志，该标志在当Tx_ENT管脚的变化与CAPEDGE的设置一致是置位</li>
-<li>定时器计数模式：one-shot(单周期),periodic(多周期),toggle-output(翻转输出)和continuous counting(连续计数)计数模式</li>
-<li>可以选择Tx管脚上的信号作为计数器CNT的时钟(外部事件计数模式)，输入事件的频率必须小于1/8PCLK。此外，Tx管脚还可作为toggle-output模式下的输出引脚</li>
-<li>事件捕捉功能是当检测到Tx_EXT管脚边沿有变化时，当时的CNT值会送到CAPDAT中。Tx_EXT管脚的信号变化率必须小于1/8PCLK。如果CPU不清除CAPIF状态标志，定时器会保持TIMERx_CAP寄存器的值不变，且不会保存新的捕捉值。</li>
-<li>注意当使用<code>事件计数模式</code>或者<code>事件捕捉模式</code>时候，相应定时器的时钟源必须选择为HCLK或者PCLK;CAPFUNCS为0对应事件捕捉，为1对应事件复位，即会复位CNT的值</li>
-<li>注意当使用事件计数功能时候，定时器的工作模式不能设置为TIMER_TOGGLE_MODE</li>
-<li>超时溢出周期 = (定时器输入时钟周期) * (8-bit PSC + 1) * (24-bit CMPDAT)</li>
-</ul>
-</blockquote>
-
-<h2>API</h2>
-
-<ul>
-<li><code>TIMER_SET_CMP_VALUE(timer,u32Value)</code></li>
-<li><code>TIMER_SET_PRESCALE_VALUE(timer,u32Value)</code></li>
-<li><code>TIMER_IS_ACTIVE(timer)</code></li>
-<li><code>TIMER_SELECT_TOUT_PIN(timer,u32ToutSel)</code></li>
-<li><code>TIMER_Start(TIMER_T *timer)</code></li>
-<li><code>TIMER_Stop(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableWakeup(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableWakeup(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableCaptureDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableCaptureDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableEventCounterDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableEventCounterDebounce(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableCaptureInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_DisableCaptureInt(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCaptureIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearCaptureIntFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetWakeupFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_ClearWakeupFlag(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCaptureData(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetCounter(TIMER_T *timer)</code></li>
-<li><code>TIMER_Open(TIMER_T *timer,uint32_t u32Mode,uint32_t u32Freq)</code></li>
-<li><code>TIMER_Close(TIMER_T *timer)</code></li>
-<li><code>TIMER_Delay(TIMER_t *timer)</code></li>
-<li><code>TIMER_EnableCapture(TIMER_T *timer,uint32_t u32CapMode,uint32_t u32Edge)</code></li>
-<li><code>TIMER_DisableCapture(TIMER_T *timer)</code></li>
-<li><code>TIMER_EnableEventCounter(TIMER_T *timer,uint32_t u32Edge)</code></li>
-<li><code>TIMER_DisableEventCounter(TIMER_T *timer)</code></li>
-<li><code>TIMER_GetModuleClock(TIMER_T *timer)</code></li>
-</ul>
-
-
-<blockquote><ul>
-<li>TIMER_T *timer的取值有<code>TIMER0</code>,<code>TIMER1</code>,<code>TIMER2</code>,<code>TIMER3</code></li>
-<li>u32ToutSel的取值有<code>TIMER_TOUT_PIN_FROM_TX</code>,<code>TIMER_TOUT_PIN_FROM_TX_EXT</code></li>
-<li>u32CapMode的取值有<code>TIMER_CAPTURE_FREE_COUNTING_MODE</code>,<code>TIMER_CAPTURE_COUNTER_RESET_MODE</code></li>
-<li>捕获模式中u32Edge的取值有<code>TIMER_CAPTURE_FALLING_EDGE</code>,<code>TIMER_CAPTURE_RISING_EDGE</code>,<code>TIMER_CAPTURE_FALLING_AND_RISING_EDGE</code></li>
-<li>事件计数模式中u32Edge的取值有<code>TIMER_COUNTER_FALLING_EDGE</code>,<code>TIMER_COUNTER_RISING_EDGE</code></li>
-<li>u32Mode的取值有<code>TIMER_ONESHOT_MODE</code>,<code>TIMER_PERIODIC_MODE</code>,<code>TIMER_TOGGLE_MODE</code>,<code>TIMER_CONTINUOUS_MODE</code></li>
-</ul>
-</blockquote>
-
-<h2>定时器TMR0的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR0:toggle-output模式，频率1000Hz(PD4实际产生的方波频率500Hz)，关闭中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR0 ClK Source with PCLK0*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR0SEL_PCLK0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR0 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR0_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR0 Module, working at toggle mode, with Freq=1000Hz*/</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer0_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">1000</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD4[PIN18] Multifuntion Pin as T0 for Toggle Output*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD4MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD4MFP_T0</span><span class="p">;</span>
-</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
-</span><span class='line'><span class="c">/*Enable Int for TMR0 Module*/</span>
-</span><span class='line'><span class="c">TIMER_EnableInt(TIMER0);</span>
-</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR0_IRQn);</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'><span class="cm">/*Start TMR0 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER0</span><span class="p">);</span>
-</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR0 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer0_freq</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR3的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR3：toggle-output模式，频率2Hz(PD11实际产生的方波频率2Hz)，关闭中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR3 ClK Source with PCLK1*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR3SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR3 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR3_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR3 Module, working at toggle mode, with Freq=2Hz*/</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">real_timer3_freq</span> <span class="o">=</span> <span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">,</span><span class="n">TIMER_TOGGLE_MODE</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD11[PIN27] Multifuntion Pin as T3 for Toggle Output*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPH</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPH_PD11MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPH_PD11MFP_T3</span><span class="p">;</span>
-</span><span class='line'><span class="cp">#if 0</span><span class="c"></span>
-</span><span class='line'><span class="c">/*Enable Int for TMR3 Module*/</span>
-</span><span class='line'><span class="c">TIMER_EnableInt(TIMER3);</span>
-</span><span class='line'><span class="c">NVIC_EnableIRQ(TMR3_IRQn);</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'><span class="cm">/*Start TMR3 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER3</span><span class="p">);</span>
-</span><span class='line'><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Real TMR3 Freq=%dHz</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">real_timer3_freq</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR2的配置程序</h2>
-
-<figure class='code'><figcaption><span>配置TMR2: continuous模式，开启事件计数器功能(PD3)，开启捕获功能(PA5)，开启捕获中断</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*Enable TMR2 Clk Source with PCLK1*/</span>
-</span><span class='line'><span class="n">CLK_EnableModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="n">CLK_SetModuleClock</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">,</span><span class="n">CLK_CLKSEL1_TMR2SEL_PCLK1</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Reset TMR2 Module*/</span>
-</span><span class='line'><span class="n">SYS_ResetModule</span><span class="p">(</span><span class="n">TMR2_MODULE</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Open TMR2 Module,working at continuous mode,with Freq=1Hz*/</span>
-</span><span class='line'><span class="n">TIMER_Open</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_CONTINUOUS_MODE</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Event Counter for TMR2, Enable Event Counter Debounce*/</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounter</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_COUNTER_FALLING_EDGE</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableEventCounterDebounce</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_PRESCALE_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_SET_CMP_VALUE</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="mh">0xFFFFFF</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Enable Capture Counting for TMR2, Enable Capture Debounce*/</span>
-</span><span class='line'><span class="n">TIMER_EnableCapture</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">,</span><span class="n">TIMER_CAPTURE_FREE_COUNTING_MODE</span><span class="p">,</span><span class="n">TIMER_CAPTURE_FALLING_EDGE</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableCaptureDebounce</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Set PD3[PIN17] Multifuntion Pin as T2 for Event Counter*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPD_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPD_MFPL_PD3MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPD_MFPL_PD3MFP_T2</span><span class="p">;</span>
-</span><span class='line'><span class="cm">/*Set PA5[PIN61] Multifuntion Pin as T2_EXT for Capture*/</span>
-</span><span class='line'><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPA_MFPL</span> <span class="o">=</span> <span class="p">(</span><span class="n">SYS</span><span class="o">-&gt;</span><span class="n">GPA_MFPL</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">SYS_GPA_MFPL_PA5MFP_Msk</span><span class="p">)</span> <span class="o">|</span> <span class="n">SYS_GPA_MFPL_PA5MFP_T2_EXT</span><span class="p">;</span>
-</span><span class='line'><span class="cm">/*Enable Int for TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_EnableInt</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">TIMER_EnableCaptureInt</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'><span class="n">NVIC_EnableIRQ</span><span class="p">(</span><span class="n">TMR2_IRQn</span><span class="p">);</span>
-</span><span class='line'><span class="cm">/*Start TMR2 Module*/</span>
-</span><span class='line'><span class="n">TIMER_Start</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>定时器TMR2中断程序</h2>
-
-<figure class='code'><figcaption><span>TMR2中断程序</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * @brief       Timer2 IRQ</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @param       None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @return      None</span>
-</span><span class='line'><span class="cm"> *</span>
-</span><span class='line'><span class="cm"> * @details     The Timer2 default IRQ, declared in startup_M451Series.s.</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">capCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">TMR2_IRQHandler</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer2 time-out interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;TMR2 Time-Out Interrupt occured</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">TIMER_GetCaptureIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* Clear Timer2 capture trigger interrupt flag */</span>
-</span><span class='line'>        <span class="n">TIMER_ClearCaptureIntFlag</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">capCount</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>主函数测试代码</h2>
-
-<figure class='code'><figcaption><span>main函数主要测试代码,测试结果为500</span><a href='http://suda-morris.github.io'>author</a></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">uint32_t</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">};</span>
-</span><span class='line'><span class="kt">uint32_t</span> <span class="n">initCount</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">capCount</span> <span class="o">&lt;=</span> <span class="mi">10</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">capCount</span><span class="o">%</span><span class="mi">2</span> <span class="o">!=</span> <span class="n">initCount</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>      <span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">TIMER_GetCaptureData</span><span class="p">(</span><span class="n">TIMER2</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;diff=%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">capValue</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">capValue</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</span><span class='line'>      <span class="n">initCount</span> <span class="o">=</span> <span class="n">capCount</span><span class="o">%</span><span class="mi">2</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   

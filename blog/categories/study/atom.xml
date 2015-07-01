@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-06-27T19:23:28+08:00</updated>
+  <updated>2015-07-01T15:53:21+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初识Nginx]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/29/about-nginx/"/>
+    <updated>2015-06-29T10:21:37+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/29/about-nginx</id>
+    <content type="html"><![CDATA[<h2>Nginx简介</h2>
+
+<blockquote><ol>
+<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
+<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
+<li>优点：高并发，部署简单，内存消耗少，成本低</li>
+<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
+</ol>
+</blockquote>
+
+<h2>其它服务器</h2>
+
+<ol>
+<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
+<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
+<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
+</ol>
+
+
+<h2>Nginx环境的搭建</h2>
+
+<ol>
+<li><a href="http://nginx.org">进入官网下载最新版</a></li>
+<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
+<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
+<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
+<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
+<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C语言知识点]]></title>
@@ -226,42 +264,6 @@ sys.modules[__name__] = _const()
 <li>Cordova插件可用</li>
 </ol>
 
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Nuvoton-M451-EADC]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/05/23/nuvoton-m451-eadc/"/>
-    <updated>2015-05-23T22:28:12+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/05/23/nuvoton-m451-eadc</id>
-    <content type="html"><![CDATA[<h2>新唐CortexM4内核芯片M451学习之&mdash;-模数转换EADC</h2>
-
-<blockquote><ul>
-<li>包含一个12位带16个外部输入通道或者8对差分模拟输入通道和3个内部通道的SAR-ADC(逐次逼近型模数转换器)</li>
-<li>可以通过软件触发，PWM0/1触发，timer0~3溢出脉冲触发，ADINT0，ADINT1中断EOC(转换结束)脉冲触发和外部管脚(STADC)输入信号来启动转换</li>
-<li>Vref最大5V，12位分辨率，保证10位精度</li>
-<li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
-<li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
-<li>最大ADC时钟频率是20MHz</li>
-<li>高达1Msps采样频率</li>
-<li>内部采样时间可配置</li>
-<li>双缓存用于采样控制逻辑模块0~3</li>
-<li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
-<li>支持PDMA</li>
-<li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
-<li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
-<li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位</li>
-<li>触发延时时间=<code>TRGDLYCNT*ADC_CLK*n</code>(n=1,2,4,16来自TRGDLYDIV设置).</li>
-</ul>
-</blockquote>
-
-<h2>中断源</h2>
-
-<p><img src="http://i.imgur.com/6HZ5VTs.png" alt="Nuvoton-M451-EADC中断源" /></p>
-
-<h2>API</h2>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
