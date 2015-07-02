@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-02T08:42:53+08:00</updated>
+  <updated>2015-07-02T16:50:37+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -7844,7 +7844,50 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <li><process>表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”</li>
 </ul>
 </li>
-<li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。
+<li>手工构建/dev目录：新建dev文件夹，在里面<code>sudo mknod console c 5 1</code>,它表示穿件console字符设备文件，主设备号是5，次设备号是1</li>
+<li>构建/dev目录的方法是使用udev(user dev),mdev是busybox中对udev的简化实现，其工作原理是：操作系统启动的时候会将识别到的所有设备的信息自动导出到/sys目录，在此基础上，用户态的应用程序mdev -s就可以扫描/sys/class和/sys/block中所有的类设备目录，如果在目录中含有名为“dev”的文件，且文件中包含的是设备号，则mdev就利用这些信息为这个设备在/dev下创建设备节点文件</li>
+<li>Linux系统下实现热插拔的机制：当有热插拔事件产生时，内核就会调用位于/sbin目录下的mdev。这时mdev通过环境变量中的ACTION和DEVPATH(这两个变量是系统自带的)来确定此次热插拔事件的动作以及影响了/dev中的哪个目录。接着会看看这个目录中是否有“dev”的属性文件，如果有就利用这些信息为这个设备在/dev下创建或删除设备节点文件。我们需要告知操作系统，当它发现热插拔事件时应调用mdev，而不是别的程序。</li>
+<li>嵌入式Linux对文件系统的要求：
+
+<ul>
+<li>要求文件系统在频繁的文件操作下能够保持较高的读写性能，要求低碎片化</li>
+<li>Linux下的日志文件系统(XFS,ReiserFS,Ext3等)能保持数据的完整性，但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用。并且这些都是专门为硬盘类的存储设备进行了优化，对于Flash这类的存储介质并不适用</li>
+<li>嵌入式文件系统的载体是以Flash为主的存储介质，Flash的擦除次数是有限的，所以为了延长Flash的使用寿命，应该尽量减少对Flash的读写操作，并尽量使对Flash的写入操作均匀分布在整个Flash上</li>
+</ul>
+</li>
+<li>在内核的配置菜单中可以看到块设备中有哟个ramdisk选项，并可以设置它的大小，默认的大小为4096KB，在配置内核的时候用户也可以指定ramdisk的大小。ramdisk是基于ram的块设备，所以它占据了一块固定内存的大小，并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容。由于ramdisk在很多场合并不太实用，在Linux的2.4版本开始支持了ramfs文件系统，它是一个简单的基于Linux的。可以动态分配大小的内存文件系统，它属于内核虚拟文件系统层(VFS)，与ramdisk相比，并不是基于虚拟在内存中的其他文件系统，例如ext2文件系统。使用方法：
+
+<ul>
+<li>mkdir /mnt/ramfs</li>
+<li>mount -t ramfs none /mnt/ramfs(缺省大小，被限制最大maxsize为内存总和/2)</li>
+<li>mount -t ramfs none /mnt/ramfs -o maxsize=1000(创建最大大小为1M的ramfs文件系统)</li>
+</ul>
+</li>
+<li>tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质，并且它的大小和ramfs一样，可以动态分配。<strong>它主要用于减少对闪存不必要的写操作</strong>这唯一目的。因为tmpfs驻留在RAM中，所以写/读/擦除的操作发生在RAM中而不是在闪存中。因此，当将日志消息写入挂载为tmpfs文件系统的目录时，是将其写入RAM而不是闪存中，在重新引导时不会保留它们。它的原理是：
+
+<ul>
+<li>在Linux内核中有虚拟内存的概念，而虚拟内存是由物理内存RAM和交换分区swap组成，这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理。tmpfs会向虚拟内存子系统申请页来存储文件，但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区</li>
+</ul>
+</li>
+<li>tmpfs文件系统在内核中的打开方式为：
+
+<ul>
+<li>在内核中选择“File systems&ndash;Pseudo filesystems&ndash;Virtual memory filesystem support”一项来支持对tmpfs虚拟文件系统的管理</li>
+</ul>
+</li>
+<li>在启动时，经常可以看到启动脚本中有以下内容：
+
+<ul>
+<li><code>mount none /dev -t tmpfs</code></li>
+<li>这也是由于Linux系统的设备可以热插拔的原因</li>
+</ul>
+</li>
+<li>ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放，这样虚拟内存管理系统就不会将这些page释放或者交换到swap，从而实现文件总在物理内存中。tmpfs也是存放于内存中，但它可以被VM交换到swap，它其实是ramfs的一个变体</li>
+<li>jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中</li>
+<li>yaffs文件系统在mount的时候需要很少的内存（如果是小页&ndash;512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）</li>
+<li>yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料</li>
+<li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。</li>
+<li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。
 <img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
 </ol>
 
