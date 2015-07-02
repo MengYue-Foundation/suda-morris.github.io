@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-01T15:53:21+08:00</updated>
+  <updated>2015-07-02T08:42:53+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -7784,6 +7784,66 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <h2>yaffs文件系统</h2>
 
 <ol>
+<li>所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
+
+<ul>
+<li>/bin：必备的用户命令，例如ls,cp等</li>
+<li>/sbin:必备的系统管理员命令，例如ifconfig，reboot</li>
+<li>/dev:设备文件，例如mtdblock0，tty1等</li>
+<li>/etc:系统配置文件，包括启动文件，例如inittab</li>
+<li>/lib:必要的链接库，例如C链接库、内核模块</li>
+<li>/home:普通用户主目录</li>
+<li>/root:root用户主目录</li>
+<li>/usr/bin:非必备的用户程序，例如find、du等</li>
+<li>/usr/sbin:非必备的管理员程序，例如chroot，inetd等</li>
+<li>/usr/lib：库文件</li>
+<li>/var:守护进程和工具程序所存放的可变，例如日志文件</li>
+<li>/proc:用来提供内核和进程信息的虚拟文件系统，有内核自动生成目录下的内容</li>
+<li>/sys:用来提供内核与设备信息的虚拟文件系统，由内核自动生成目录下的内容</li>
+<li>/mnt:文件系统挂载点，用于临时安装文件系统</li>
+<li>/tmp:临时性的文件，重启后将自动清除</li>
+</ul>
+</li>
+<li>编译安装busybox：
+
+<ul>
+<li>下载源码包，解压缩后进入文件夹根目录</li>
+<li>make defconfig</li>
+<li>make menuconfig
+
+<ul>
+<li>Busybox Settings:选择动态链接C库，指定交叉编译器的prefix为arm-linux-，为各命令安装为指向busybox的软连接，指定busybox的安装位置，选择支持Tab completion和Username completion</li>
+<li>Applets：基本保持默认设置</li>
+</ul>
+</li>
+<li>make -j4</li>
+<li>make install</li>
+</ul>
+</li>
+<li>busybox只用到了2个库，通用C库(libc)、数学库(libm),每个库有4个文件，四个文件中，.a文件是静态库文件，另外三个是：实际的共享链接库（libLIBRARY_NAME-GLIBC_VERSION.so），主修订版本的符号链接，指向实际的共享链接库(libLIBRARY_NAME.so.MAJOR_REVISION_VERSION,一旦程序连接了特定的链接库，将会参用该符号链接)，与版本无关的符号链接，指向主修订版本的符号链接(libLIBRARY_NAME.so,是为编译程序时提供一个通用条目)</li>
+<li>当使用<code>gcc hello.c -o hello -lm</code>编译程序的时候，gcc会根据-lm的提示，加头(lib)添尾(.so)得到libm.so，从而沿着与版本无关的符号链接(libm.so->libm.so.6)找到libm.so.6并记录在案(hello的ELF头中)，表示hello需要使用libm.so.6这个库文件所代表的数学库中的库函数。而当hello被执行的时候，动态链接库加载器会从hello的ELF头中找到libm.so.6这个记录，然后沿着主修订版本的符号链接(libm.so.6->libm-2.3.6.so)找到实际的共享链接库libm-2.3.6.so从而将其与hello做动态链接。可见<strong>与版本无关的符号链接是供编译器使用的，主修订版本的符号链接是供动态链接库加载器使用的，而实际的共享链接库则是供应用程序使用的</strong></li>
+<li>init进程的主配置文件inittab用于决定init进程要启动哪些子进程，以及如何启动这些子进程。busybox的inittab文件的语法、语义和传统的SYSV的inittab有所不同
+
+<ul>
+<li>inittab文件中每个条目用来定义需要init启动的子进程，并确定它的启动方式，格式为<id>:<runlevel>:<action>:<process>,例如：ttySAC0：：ask-first:-/bin/sh</li>
+<li><id>表示子进程要使用的控制台，若省略则使用与init进程一样的控制台</li>
+<li><runlevel>表示运行级别，busybox init程序这个字段没有意义</li>
+<li><action>表示init进程如何空着这个子进程
+
+<ul>
+<li>sysinit：以该方式启动的子进程最先被init启动，该子进程只会被启动一次，如该子进程结束，init将不会重新启动它</li>
+<li>wait：系统执行完sysinit条目后才启动该子进程，该子进程只执行一次，init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作</li>
+<li>once:系统执行完wait条目后才启动该子进程，该子进程只执行一次，init进程不必等待该子进程的结束就可以执行启动其他子进程的动作</li>
+<li>respawn：系统执行完once条目后才能启动该子进程，init进程会持续监测该子进程的状态，若发现该子进程退出，会重新启动它</li>
+<li>askfirst：系统启动完respawn条目后才能启动该子进程，与respawn类似，不过init进程先输出“Please press Enter to active this console”，等用户输入回车后才启动子进程</li>
+<li>shutdown：当系统关机时启动该子进程</li>
+<li>restart：Busybox中配置了CONFIG_FEATURE_USE_INITAB，并且init进程接收到SIGUP信号时执行，先重新读取、解析/etc/inittab文件，再执行restart程序</li>
+<li>ctrlaltdel：按下Ctrl+Alt+Del键时启动该子进程，不过在串口控制台中无法输入它</li>
+</ul>
+</li>
+<li><process>表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”</li>
+</ul>
+</li>
 <li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。
 <img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
 </ol>
