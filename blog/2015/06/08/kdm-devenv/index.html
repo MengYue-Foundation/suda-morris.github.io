@@ -388,7 +388,7 @@
 </ol>
 
 
-<h2>yaffs文件系统</h2>
+<h2>根文件系统</h2>
 
 <ol>
 <li>所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
@@ -494,8 +494,315 @@
 <li>yaffs文件系统在mount的时候需要很少的内存（如果是小页&ndash;512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）</li>
 <li>yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料</li>
 <li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。</li>
-<li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。
-<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
+<li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。</li>
+</ol>
+
+
+<h2>新建用户与用户组</h2>
+
+<ul>
+<li>在/etc/passwd中第一行新增：root:x:0:0:Root,,,:/root:/bin/sh</li>
+<li>passwd root,设置root用户密码</li>
+<li>chown root:root /bin/busybox,改变busybox的属主，否则将来u+s后第一个用户进程init的权限将不是root的权限</li>
+<li>chmod u+s /bin/busybox，这使得普通用户能使用passwd修改自己的密码，同时也使login程序能够正常工作</li>
+<li>adduser morris -h /home/morris -s /bin/sh -G morris</li>
+<li>adduser ftp -h /var/ftp -s /bin/sh -G ftp</li>
+<li>adduser ftpuser -h /sdcard/local -s /bin/sh -G ftp</li>
+<li>adduser ftproot -h /sdcard/tmp -s /bin/sh -G ftp</li>
+</ul>
+
+
+<h2>移植telnet服务器</h2>
+
+<ol>
+<li>如上创建好用户</li>
+<li>修改/etc/inittab,使得telnetd开机自动启动：
+
+<ul>
+<li>::once/usr/sbin/telnetd#这里一定要使用once，不能使用respawn，因为telnetd是守护进程，其实现会fork自己后让自己结束</li>
+</ul>
+</li>
+<li>创建并挂载/dev/pts,它将供telnetd服务使用
+
+<ul>
+<li>mkdir /dev/pts</li>
+<li>mount -t devpts devpts /dev/pts</li>
+</ul>
+</li>
+<li>更改/dev/tty和/dev/console的权限，以使普通用户登录系统时也能读写控制终端
+
+<ul>
+<li>chmod 666 /dev/tty</li>
+<li>chmod 600 /dev/console</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>移植ftp服务器</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download/0001000/19.shtml">下载vsftpd2.3.5并解压</a></li>
+<li>修改Makefile，指定交叉编译器<code>CC=arm-linux-gcc</code></li>
+<li>修改vsf_findlibs.sh,将所有/lib和/usr/lib前面加上交叉编译器的库目录地址，比如<code>/embeded/crosstool/arm-wenris-linux-gnueabi/sysroot</code></li>
+<li>make -j4,将生成的vsftp复制到开发板根文件系统相应目录/usr/sbin</li>
+<li>复制vsftpd依赖的动态库文件到开发板根文件系统相应目录</li>
+<li>将模板配置文件vsftpd.conf复制到开发板/etc目录，修改该配置文件，使有效配置如下：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">local_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">write_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">anon_upload_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">anon_mkdir_write_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">dirmessage_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">xferlog_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">connect_from_port_20</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">xferlog_file</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">vsftpd</span><span class="p">.</span><span class="n">log</span>
+</span><span class='line'><span class="n">xferlog_std_format</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">idle_session_timeout</span><span class="o">=</span><span class="mi">600</span>
+</span><span class='line'><span class="n">data_connection_timeout</span><span class="o">=</span><span class="mi">120</span>
+</span><span class='line'><span class="n">nopriv_user</span><span class="o">=</span><span class="n">ftp</span>
+</span><span class='line'><span class="n">ftpd_banner</span><span class="o">=</span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">WenRis</span> <span class="n">FTP</span> <span class="n">service</span>
+</span><span class='line'><span class="n">listen</span><span class="o">=</span><span class="n">YES</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>由于vsftp源代码程序一定要使用一个目录/usr/share/empty,所以必须要预先创建它</li>
+<li>修改/etc/inittab,使得vsftpd在开机时候自动启动：
+
+<ul>
+<li>::respawn:/usr/sbin/vsftpd</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>移植httpd服务器</h2>
+
+<ol>
+<li>增加用户www：<code>adduser -S -D -H www</code></li>
+<li>修改/etc/inittab文件，指名httpd的目录和运行账户：
+
+<ul>
+<li><code>::once:/usr/sbin/httpd -h /www -u www</code></li>
+</ul>
+</li>
+<li>httpd运行时会以普通用户www的身份访问/dev/null设备，因此需要在rcS脚本中修改/dev/null的权限：<code>chmod 666 /dev/null</code></li>
+<li>创建http服务器的主目录和主文件
+
+<ul>
+<li><code>mkdir /www</code></li>
+<li><code>echo "this is my first web site" &gt; /www/index.html</code></li>
+</ul>
+</li>
+</ol>
+
+
+<h2>移植SQLite数据库</h2>
+
+<ol>
+<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
+<li>配置并进行交叉编译和安装
+
+<ul>
+<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
+<li><code>make -j4 &amp;&amp; make install</code></li>
+</ul>
+</li>
+<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
+<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
+<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
+<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
+</ol>
+
+
+<h2>移植boa网页服务器</h2>
+
+<ol>
+<li><a href="http://download.csdn.net/detail/szbaud/4050364">获取源码，并解压缩</a></li>
+<li>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">由于</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="err">编译器版本过高，对语法的支持有一些改变，所以需要修改</span><span class="n">compat</span><span class="p">.</span><span class="n">h</span><span class="err">中的</span>
+</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff</span>
+</span><span class='line'><span class="err">为：</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff</span>
+</span><span class='line'><span class="err">不然在编译的时候会提示如下错误：</span>
+</span><span class='line'>    <span class="n">util</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make</span><span class="p">:</span> <span class="p">[</span><span class="n">util</span><span class="p">.</span><span class="n">o</span><span class="p">]</span> <span class="n">Error1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">将</span><span class="n">boa</span><span class="p">.</span><span class="n">c</span> <span class="err">文件</span><span class="mi">225</span><span class="o">-</span><span class="mi">227</span><span class="err">三行的文件注释掉</span>
+</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="n">setuid</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                        <span class="n">DIE</span><span class="p">(</span><span class="err">”</span><span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!</span><span class="err">”</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'><span class="err">为</span>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm">         if (setuid(0) != -1) {</span>
+</span><span class='line'><span class="cm">                        DIE(”icky Linux kernel bug!”);</span>
+</span><span class='line'><span class="cm">                }</span>
+</span><span class='line'><span class="cm">*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">，否则，但以</span><span class="n">root</span><span class="err">权限启动</span><span class="n">boa</span><span class="err">服务器的时候，会出现以下错误：</span><span class="n">boa</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span><span class="mi">226</span> <span class="o">-</span> <span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!:</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>然后生成Makefile：./configure</li>
+<li>修改生成的Makefile：默认生成的Makefile针对x86平台，我们的目标是针对嵌入式平台，所以需要修改编译器:</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">更改</span><span class="n">Makefile</span><span class="err">的</span><span class="mi">31</span><span class="err">行和</span><span class="mi">32</span><span class="err">行：</span>
+</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
+</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
+</span><span class='line'><span class="err">更改为</span>
+</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
+</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在当前目录下编译Boa源文件： make</li>
+<li>将生成的boa可执行程序复制到根文件系统的/usr/sbin目录下</li>
+<li>将boa.conf文件复制到根文件系统/etc/boa文件夹下面，并且作如下修改：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">修改</span><span class="mi">25</span><span class="err">行的</span><span class="n">port</span><span class="err">端口，用来设置服务器监听的端口：</span>
+</span><span class='line'><span class="cp"># Port: The port Boa runs on.  The default port for http servers is 80.</span>
+</span><span class='line'><span class="cp"># If it is less than 1024, the server must be started as root.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Port</span> <span class="mi">80</span>
+</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="err">注释</span><span class="mi">43</span><span class="err">行的监听</span><span class="n">IP</span><span class="err">地址：默认监听该主机上的所有</span><span class="n">IP</span><span class="err">地址</span>
+</span><span class='line'><span class="cp">#Listen 192.68.0.5</span>
+</span><span class='line'><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="err">修改</span><span class="mi">53</span><span class="err">、</span><span class="mi">54</span><span class="err">行的</span><span class="n">user</span><span class="err">和</span><span class="n">Group</span> <span class="err">启动的</span><span class="n">UID</span><span class="err">和</span><span class="n">GID</span><span class="err">，使其以</span><span class="n">root</span><span class="err">身份启动</span>
+</span><span class='line'><span class="cp">#  User: The name or UID the server should run as.</span>
+</span><span class='line'><span class="cp"># Group: The group name or GID the server should run as.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">User</span> <span class="n">root</span>
+</span><span class='line'><span class="n">Group</span> <span class="n">root</span>
+</span><span class='line'><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="err">修改</span><span class="mi">116</span><span class="err">行的</span><span class="n">DocumentRoot</span><span class="err">地址，即客户端要显示的</span><span class="n">HTML</span><span class="err">页面存放位置</span>
+</span><span class='line'><span class="cp"># DocumentRoot: The root directory of the HTML documents.</span>
+</span><span class='line'><span class="cp"># Comment out to disable server non user files.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">DocumentRoot</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span>
+</span><span class='line'><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="err">修改输入网页输入主机</span><span class="n">IP</span><span class="err">时要显示的页面：这里设为</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
+</span><span class='line'> <span class="cp"># DirectoryIndex: Name of the file to use as a pre-written HTML</span>
+</span><span class='line'><span class="cp"># directory index.  Please MAKE AND USE THESE FILES.  On the</span>
+</span><span class='line'><span class="cp"># fly creation of directory indexes can be _slow_.</span>
+</span><span class='line'><span class="cp"># Comment out to always use DirectoryMaker</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">DirectoryIndex</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+</span><span class='line'><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="err">修改</span><span class="n">CGI</span><span class="err">程序存放的位置：以</span><span class="nl">http</span><span class="p">:</span><span class="c1">//IP/cgi-bin/cginame 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序</span>
+</span><span class='line'><span class="cp"># ScriptAlias: Maps a virtual path to a directory for serving scripts</span>
+</span><span class='line'><span class="cp"># Example: ScriptAlias /htbin/ /www/htbin/</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>创建/var/log/boa/ 目录，这样Boa服务器启动时会在该目录下创建日志文件</li>
+<li>将Linux系统上/etc/mime.types 文件复制到根文件系统的/etc 目录下，否则Boa服务器启动不起来</li>
+<li>修改/etc/inittab,使得vsftpd在开机时候自动启动：
+
+<ul>
+<li>::once:/usr/sbin/boa</li>
+</ul>
+</li>
+<li>注意事项：
+
+<ul>
+<li>有时候boa服务器并不能随系统启动，运行 /sbin/boa 命令会提示：gethostbyname:: Success，需要如下修改
+
+<ul>
+<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code>
+
+<h2>Qt移植</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包</a></li>
+<li><p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
 </ol>
 
 </div>

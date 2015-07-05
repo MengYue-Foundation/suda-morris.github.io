@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-02T16:50:37+08:00</updated>
+  <updated>2015-07-05T12:07:10+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -43,389 +43,722 @@
 <ol>
 <li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
 <li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：
-```
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;for SDHC Card,total sectors=15523840&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030&lt;/h1&gt;&lt;/li&gt;
+</span><span class='line'>&lt;/ol&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;for SD Card,total sectors=1961984&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
+</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
+</span><span class='line'>sync&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>3. 进入Uboot后，测试能否ping通虚拟主机：ping 192.168.1.88。在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内，使用UBoot下的命令：pri
+</span><span class='line'>4. 使用nfs命令获取虚拟主机上的uboot二进制文件供烧写(次UBoot是用来从NandFlash启动的，不能错选从SD卡启动的UBoot),成功以后会提示用户该文件的大小，这里记为filesize(切记要使用十六进制表示的数字)
+</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/u-boot.bin
+</span><span class='line'>5. 烧写uboot至NandFlash中
+</span><span class='line'>    * nand write.i 50000000 0 $(filesize)   从0地址开始烧写UBoot
+</span><span class='line'>6. 使用nfs命令获取虚拟主机上的kernel文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
+</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/Image
+</span><span class='line'>7. 烧写kernel到NandFlash中
+</span><span class='line'>    * nand write.i 50000000 80000 $(filesize)
+</span><span class='line'>8. 使用nfs命令获取虚拟主机上的根文件系统文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
+</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/yaff2.img
+</span><span class='line'>9. 烧写根文件系统到NandFlash中
+</span><span class='line'>    * nand write.yaffs 50000000 580000 $(filesize)
+</span><span class='line'>10. 根据需要修改启动参数并保存,例如
+</span><span class='line'>    * setenv bootargs root=/dev/mtdblock2 console=ttySAC0,115200
+</span><span class='line'>    * saveenv
+</span><span class='line'>
+</span><span class='line'>##测试图形界面程序
+</span><span class='line'> * 图形界面工具使用的触摸屏校准程序为tslib源码附带的校准程序ts_calibrate,所以如果触摸屏没有校准，可以在Linux系统启动后运行/usr/local/bin/ts_calibrate程序对触摸屏进行校准(通过删除/etc/pointercal文件，可以使得图形界面工具自动调用ts_calibrate程序)，校准完毕会在etc目录下生成pointercal标准文件，供触摸屏库程序转换成符合屏幕的坐标，从而达到校准目的。
+</span><span class='line'>
+</span><span class='line'>##交叉编译器
+</span><span class='line'>* arm-linux-gcc是一个“集合命令”，它包含了4个步骤：预处理，汇编，编译和链接，通过链接阶段便生成ELF格式的可执行文件。4个步骤对应执行的程序为arm-linux-cpp，arm-linux-as，ccl，arm-linux-ld。前三个步骤对应的命令行选项为：-E,-S，-c，如果没有任何参数，则代表经过这4个步骤产生可执行文件。
+</span><span class='line'>* ELF文件的not stripped属性告诉我们在编译的时候产生的编译阶段需要的符号没有被删除
+</span><span class='line'>* 通常被编译出的程序都会使用到系统的动态库，而这些基本的动态库大部分也都是glibc库中的。例如open,read,write,select,ioctl等应用程序中的函数都是libc.so动态库中提供的，而glibc还提供了libm.so(数学库)，libcrypt.so(安全库)，libld.so(加载库)等。其中libld.so作为加载库负责在应用程序运行时，加载程序所使用到的动态库文件。在我们移植系统的过程中，这些最基本的动态库也需要被移植到根文件系统中去，这样才能保证程序被正常启动。
+</span><span class='line'>* arm-linux-strip test可以删除可执行文件中不需要的编译符号和段描述信息
+</span><span class='line'>* arm-linux-objcopy -O binary -S test test.bin 通常被用来将生成的ELF格式的文件转化为只含有二进制指令和程序数据的文件test.bin.也只有这样的二进制指令文件才能直接被硬件执行。
+</span><span class='line'>* arm-linux-dump -D test &gt; test.dis则是反编译，将ELF格式的可执行文件反编译成汇编信息文件test.dis，有助于代码的查看和调试
+</span><span class='line'>* arm-linux-readelf -a test | grep 'Shared'用来获取ELF的头信息，grep 'Shared'是获取头信息中test可执行文件调用到的动态文件
+</span><span class='line'>* arm-linux-gcc 针对arm11的设置：
+</span><span class='line'>    1. --with-cpu=arm1176jzf-s
+</span><span class='line'>    2. --with-tune=arm1176jzf-s
+</span><span class='line'>    3. --with-float=softfp
+</span><span class='line'>
+</span><span class='line'>##bootloader
+</span><span class='line'>* 目标机上的Bootloader通过串口与主机之间进行文件传输，传输协议通常是xmodem/ymodem/zmodem协议中的一种，但是，串口传输速度有限，因此通过以太网连接并借助tftp或者nfs协议来下载文件是个更好的选择
+</span><span class='line'>* bootloader的stage1通常包括的步骤：
+</span><span class='line'>    1. 硬件设备初始化
+</span><span class='line'>        * 屏蔽所有中断
+</span><span class='line'>        * 设置CPU的速度和时钟频率
+</span><span class='line'>        * RAM初始化
+</span><span class='line'>        * 关闭CPU内部指令/数据cache
+</span><span class='line'>    2. 为加载Bootloader的stage2准备RAM空间
+</span><span class='line'>    3. 复制bootloader的stage2到RAM空间
+</span><span class='line'>    4. 设置好堆栈指针sp
+</span><span class='line'>    5. 跳转到stage2的C入口点（修改PC寄存器为核实的地址来实现）
+</span><span class='line'>* bootloader的stage2通常包括的步骤：
+</span><span class='line'>    1. 初始化本阶段要使用到的硬件设备
+</span><span class='line'>        * 至少一个串口用来和终端用户进行I/O输出信息
+</span><span class='line'>    2. 检测系统内存映射
+</span><span class='line'>    3. 将kernel镜像和根文件系统镜像从Flash上读到RAM空间中(需要编写Nand Flash裸驱动)
+</span><span class='line'>    4. 为内核设置启动参数
+</span><span class='line'>        * linux2.4以后的内核都期望以标记列表的形式来传递启动参数，启动参数标记列表以标记ATAG_CORE尅是，以标记ATAG_NONE结束
+</span><span class='line'>        * 每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成，数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中
+</span><span class='line'>        * 在嵌入式Linux系统中，通常需要由Bootloader设置的常见启动参数有：ATAG_CORE,ATAG_MEN,ATAG_CMDLINE
+</span><span class='line'>    5. 调用内核，跳转到内核第一条指令处，跳转时要满足下列条件
+</span><span class='line'>        1. CPU寄存器的设置
+</span><span class='line'>            * R0=0
+</span><span class='line'>            * R1=机器类型ID，关于Machine Type Number可以参见linux/arch/arm/tools/mach-types
+</span><span class='line'>            * R2=启动参数标记列表在RAM中的起始基地址
+</span><span class='line'>        2. CPU模式
+</span><span class='line'>            *  必须禁止中断(IRQs和FIQs)
+</span><span class='line'>            * CPU必须处于SVC模式
+</span><span class='line'>        3. Cache和MMU的设置
+</span><span class='line'>            * MMU必须关闭
+</span><span class='line'>            * 指令Cache可以打开亦可以关闭
+</span><span class='line'>            * 数据Cache必须关闭
+</span><span class='line'>* U-boot目录结构
+</span><span class='line'>    1. 与处理器体系结构或者开发板硬件直接相关
+</span><span class='line'>    2. 通用的函数或者驱动程序
+</span><span class='line'>    3. U-Boot的应用程序、工具或者文档
+</span><span class='line'>
+</span><span class='line'>##Qt
+</span><span class='line'>* Qt支持的嵌入式Linux平台需要有frambuffer支持
+</span><span class='line'>* 编译Qt源码
+</span><span class='line'>    1. 
+</span><span class='line'>
+</span><span class='line'>##编译tslib
+</span><span class='line'>1. [源码下载地址](http://download.csdn.net/detail/liuqiqi677/3177449)
+</span><span class='line'>2. 解压缩，进入tslib源码文件夹
+</span><span class='line'>3. `./autogen.sh`生成configure源代码配置文件
+</span><span class='line'>4. `./configure --host=arm-linux --disable-h3600 --disable-arctic2 --disable-mk712 --disable-collie --disable-corgi --disable-ucb1x00 --with-gnu-ld --prefix=/embeded/tslib_install ac_cv_func_malloc_0_nonnull=yes` 这里，--host的含义是你要安装的目标系统，后面的--disable 是因为我们不编译对指定触摸屏的支持，我们选择支持的是Linux的input子系统，--with-gnu-ld是确认使用GNU的LD连接器，因为我们使用的就是GNU的编译器，所以选择这一项。--prefix选项是指定安装的位置。ac_cv_func_malloc_0_nonnull会在./configure执行阶段测试GNU内置的malloc函数的功能是否可用或者说是否兼容
+</span><span class='line'>5. 进入安装目录，这里是/embeded/tslib_install,进入etc目录，打开ts.conf进行修改.其中pthres主要用于处理触摸屏的灵敏度，而variance和dejitter分别用于处理触摸屏的滤波和去噪的算法，linear是触摸屏的坐标变换。
+</span><span class='line'>    * module_raw input
+</span><span class='line'>    * module pthres pmin=1
+</span><span class='line'>    * module variance delta=30
+</span><span class='line'>    * module dejitter delta=100
+</span><span class='line'>    * module linear
+</span><span class='line'>
+</span><span class='line'>##Uboot常用命令
+</span><span class='line'>&gt; 1. 使用命令时，可以使用其开头的若干个字母代替它
+</span><span class='line'>&gt; 2. 当运行一个命令之后，如果它是可重复执行的（代码中使用U_BOOT_CMD定义这个命令时，第三个参数是1），若想再次运行可以直接输入回车
+</span><span class='line'>&gt; 3. Uboot接受的数据都是16进制，输入时可以省略前缀0x
+</span><span class='line'>
+</span><span class='line'>1. 运行`help`命令可以看到所有命令的作用，如果要查看某个命令的使用方法，运行`help 命令名`。可以使用`?`来代替`help`
+</span><span class='line'>2. Uboot支持串口下载，网络下载，USB下载，相关命令有：loadb,loads,loadx,loady;tftpboot,nfs;usbslave。使用方法：
+</span><span class='line'>    * loadx [off] [baud];off表示文件下载后存放的内存地址，baud表示使用的波特率，如果off参数省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR
+</span><span class='line'>    * tftpboot [loadAddress] [bootfilename]; loadAddress表示文件下载后存放的内存地址，bootfilename表示要下载的文件名称。loadAddress省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR。如果bootfilename省略，则使用单板的IP地址构造一个文件名
+</span><span class='line'>    * nfs [loadAddress] [host ip addr:bootfilename];host ip addr表示服务器的IP地址
+</span><span class='line'>    * usbslave [wait] [loadAddress]；在PC端使用dnw工具发送文件，U-boot通过USB Device接口接收文件。wait可以取值1或0，表示是否等得数据传输完成，当wait取0时，在后台进行下载，这时在Uboot仍可执行其他操作。下载文件成功后，Uboot会自动创建或者更新环境变量filezise，它表示下载的文件长度，可以在后续命令中使用$(filesize)来引用它
+</span><span class='line'>3. 常用的内存操作命令有：查看内存命令md，修改内存命令mm,填充内存命令mw,复制命令cp。这些命令都可以带上后缀".b",".w",".l"表示以字节、字、双字为单位进行操作。
+</span><span class='line'>    * md[.b,.w,.l] address [count],表示以字节、字、双字（默认是双字）为单位，显示从地址address开始的内存数据，显示的数据个数为count
+</span><span class='line'>    * mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出
+</span><span class='line'>    * mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。
+</span><span class='line'>    * cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存
+</span><span class='line'>4. 常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
+</span><span class='line'>    * nand info，查看Nand Flash信息
+</span><span class='line'>    * nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash
+</span><span class='line'>    * nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同
+</span><span class='line'>    * nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同
+</span><span class='line'>    * nand read.yaffs addr off size，从Nand Flash偏移地址off处读出size个字节的数据（包括OOB区域），存放到开始地址为addr的内存中
+</span><span class='line'>    * nand write.yaffs addr off size，把开始地址为addr的内存中的size个字节数据(只要有要写入OOB区域的数据)，写到Nand Flash的偏移地址off处
+</span><span class='line'>    * nand dump off，将Nand Flash偏移地址off的一个山区的数据打印出来，包括OOB数据
+</span><span class='line'>5. 环境变量命令(下面的命令只是在内存中进行，最后需要使用`saveenv`命令将更改后的所有环境变量写入Flash中)
+</span><span class='line'>    * `printenv`命令打印全部环境变量，“printenv name1 name2 ...”打印名字为name1,name2......的环境变量
+</span><span class='line'>    * `setenv name value`设置名字为name的环境变量的值为value
+</span><span class='line'>    * `setenv name`删除名字为name的环境变量
+</span><span class='line'>6. 启动命令,不带参数的`boot`,`bootm`命令都是执行环境变量bootcmd所指定的命令
+</span><span class='line'>    * "bootm [addr [arg ...]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg ...]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR
+</span><span class='line'>    * go addr [arg ...]与bootm命令类似，启动存放在地址addr处的二进制文件，[arg ...]表示参数
+</span><span class='line'>    * nboot [[[loadAddr] dev] offset]命令将Nand Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处，然后，如果环境变量autostart的值为yes，就启动这个映像，如果loadAddr参数省略，存放地址为配置文件中定义的宏CFG_LOAD_ADDR。如果dev参数省略，则它的取值为环境变量bootdevice的值，如果offset参数省略，则默认为0
+</span><span class='line'>
+</span><span class='line'>##根文件系统
+</span><span class='line'>1. 所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
+</span><span class='line'>    * /bin：必备的用户命令，例如ls,cp等
+</span><span class='line'>    * /sbin:必备的系统管理员命令，例如ifconfig，reboot
+</span><span class='line'>    * /dev:设备文件，例如mtdblock0，tty1等
+</span><span class='line'>    * /etc:系统配置文件，包括启动文件，例如inittab
+</span><span class='line'>    * /lib:必要的链接库，例如C链接库、内核模块
+</span><span class='line'>    * /home:普通用户主目录
+</span><span class='line'>    * /root:root用户主目录
+</span><span class='line'>    * /usr/bin:非必备的用户程序，例如find、du等
+</span><span class='line'>    * /usr/sbin:非必备的管理员程序，例如chroot，inetd等
+</span><span class='line'>    * /usr/lib：库文件
+</span><span class='line'>    * /var:守护进程和工具程序所存放的可变，例如日志文件
+</span><span class='line'>    * /proc:用来提供内核和进程信息的虚拟文件系统，有内核自动生成目录下的内容
+</span><span class='line'>    * /sys:用来提供内核与设备信息的虚拟文件系统，由内核自动生成目录下的内容
+</span><span class='line'>    * /mnt:文件系统挂载点，用于临时安装文件系统
+</span><span class='line'>    * /tmp:临时性的文件，重启后将自动清除
+</span><span class='line'>2. 编译安装busybox：
+</span><span class='line'>    * 下载源码包，解压缩后进入文件夹根目录
+</span><span class='line'>    * make defconfig
+</span><span class='line'>    * make menuconfig
+</span><span class='line'>        * Busybox Settings:选择动态链接C库，指定交叉编译器的prefix为arm-linux-，为各命令安装为指向busybox的软连接，指定busybox的安装位置，选择支持Tab completion和Username completion
+</span><span class='line'>        * Applets：基本保持默认设置
+</span><span class='line'>    * make -j4
+</span><span class='line'>    * make install
+</span><span class='line'>3. busybox只用到了2个库，通用C库(libc)、数学库(libm),每个库有4个文件，四个文件中，.a文件是静态库文件，另外三个是：实际的共享链接库（libLIBRARY_NAME-GLIBC_VERSION.so），主修订版本的符号链接，指向实际的共享链接库(libLIBRARY_NAME.so.MAJOR_REVISION_VERSION,一旦程序连接了特定的链接库，将会参用该符号链接)，与版本无关的符号链接，指向主修订版本的符号链接(libLIBRARY_NAME.so,是为编译程序时提供一个通用条目)
+</span><span class='line'>4. 当使用`gcc hello.c -o hello -lm`编译程序的时候，gcc会根据-lm的提示，加头(lib)添尾(.so)得到libm.so，从而沿着与版本无关的符号链接(libm.so-&gt;libm.so.6)找到libm.so.6并记录在案(hello的ELF头中)，表示hello需要使用libm.so.6这个库文件所代表的数学库中的库函数。而当hello被执行的时候，动态链接库加载器会从hello的ELF头中找到libm.so.6这个记录，然后沿着主修订版本的符号链接(libm.so.6-&gt;libm-2.3.6.so)找到实际的共享链接库libm-2.3.6.so从而将其与hello做动态链接。可见**与版本无关的符号链接是供编译器使用的，主修订版本的符号链接是供动态链接库加载器使用的，而实际的共享链接库则是供应用程序使用的** 
+</span><span class='line'>5. init进程的主配置文件inittab用于决定init进程要启动哪些子进程，以及如何启动这些子进程。busybox的inittab文件的语法、语义和传统的SYSV的inittab有所不同
+</span><span class='line'>    * inittab文件中每个条目用来定义需要init启动的子进程，并确定它的启动方式，格式为&lt;id&gt;:&lt;runlevel&gt;:&lt;action&gt;:&lt;process&gt;,例如：ttySAC0：：ask-first:-/bin/sh
+</span><span class='line'>    * &lt;id&gt;表示子进程要使用的控制台，若省略则使用与init进程一样的控制台
+</span><span class='line'>    * &lt;runlevel&gt;表示运行级别，busybox init程序这个字段没有意义
+</span><span class='line'>    * &lt;action&gt;表示init进程如何空着这个子进程
+</span><span class='line'>        * sysinit：以该方式启动的子进程最先被init启动，该子进程只会被启动一次，如该子进程结束，init将不会重新启动它
+</span><span class='line'>        * wait：系统执行完sysinit条目后才启动该子进程，该子进程只执行一次，init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作
+</span><span class='line'>        * once:系统执行完wait条目后才启动该子进程，该子进程只执行一次，init进程不必等待该子进程的结束就可以执行启动其他子进程的动作
+</span><span class='line'>        * respawn：系统执行完once条目后才能启动该子进程，init进程会持续监测该子进程的状态，若发现该子进程退出，会重新启动它
+</span><span class='line'>        * askfirst：系统启动完respawn条目后才能启动该子进程，与respawn类似，不过init进程先输出“Please press Enter to active this console”，等用户输入回车后才启动子进程
+</span><span class='line'>        * shutdown：当系统关机时启动该子进程
+</span><span class='line'>        * restart：Busybox中配置了CONFIG_FEATURE_USE_INITAB，并且init进程接收到SIGUP信号时执行，先重新读取、解析/etc/inittab文件，再执行restart程序
+</span><span class='line'>        * ctrlaltdel：按下Ctrl+Alt+Del键时启动该子进程，不过在串口控制台中无法输入它
+</span><span class='line'>    * &lt;process&gt;表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”
+</span><span class='line'>6. 手工构建/dev目录：新建dev文件夹，在里面`sudo mknod console c 5 1`,它表示穿件console字符设备文件，主设备号是5，次设备号是1
+</span><span class='line'>7. 构建/dev目录的方法是使用udev(user dev),mdev是busybox中对udev的简化实现，其工作原理是：操作系统启动的时候会将识别到的所有设备的信息自动导出到/sys目录，在此基础上，用户态的应用程序mdev -s就可以扫描/sys/class和/sys/block中所有的类设备目录，如果在目录中含有名为“dev”的文件，且文件中包含的是设备号，则mdev就利用这些信息为这个设备在/dev下创建设备节点文件
+</span><span class='line'>8. Linux系统下实现热插拔的机制：当有热插拔事件产生时，内核就会调用位于/sbin目录下的mdev。这时mdev通过环境变量中的ACTION和DEVPATH(这两个变量是系统自带的)来确定此次热插拔事件的动作以及影响了/dev中的哪个目录。接着会看看这个目录中是否有“dev”的属性文件，如果有就利用这些信息为这个设备在/dev下创建或删除设备节点文件。我们需要告知操作系统，当它发现热插拔事件时应调用mdev，而不是别的程序。
+</span><span class='line'>9. 嵌入式Linux对文件系统的要求：
+</span><span class='line'>    * 要求文件系统在频繁的文件操作下能够保持较高的读写性能，要求低碎片化
+</span><span class='line'>    * Linux下的日志文件系统(XFS,ReiserFS,Ext3等)能保持数据的完整性，但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用。并且这些都是专门为硬盘类的存储设备进行了优化，对于Flash这类的存储介质并不适用
+</span><span class='line'>    * 嵌入式文件系统的载体是以Flash为主的存储介质，Flash的擦除次数是有限的，所以为了延长Flash的使用寿命，应该尽量减少对Flash的读写操作，并尽量使对Flash的写入操作均匀分布在整个Flash上
+</span><span class='line'>10. 在内核的配置菜单中可以看到块设备中有哟个ramdisk选项，并可以设置它的大小，默认的大小为4096KB，在配置内核的时候用户也可以指定ramdisk的大小。ramdisk是基于ram的块设备，所以它占据了一块固定内存的大小，并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容。由于ramdisk在很多场合并不太实用，在Linux的2.4版本开始支持了ramfs文件系统，它是一个简单的基于Linux的。可以动态分配大小的内存文件系统，它属于内核虚拟文件系统层(VFS)，与ramdisk相比，并不是基于虚拟在内存中的其他文件系统，例如ext2文件系统。使用方法：
+</span><span class='line'>    * mkdir /mnt/ramfs
+</span><span class='line'>    * mount -t ramfs none /mnt/ramfs(缺省大小，被限制最大maxsize为内存总和/2)
+</span><span class='line'>    * mount -t ramfs none /mnt/ramfs -o maxsize=1000(创建最大大小为1M的ramfs文件系统)
+</span><span class='line'>11. tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质，并且它的大小和ramfs一样，可以动态分配。**它主要用于减少对闪存不必要的写操作**这唯一目的。因为tmpfs驻留在RAM中，所以写/读/擦除的操作发生在RAM中而不是在闪存中。因此，当将日志消息写入挂载为tmpfs文件系统的目录时，是将其写入RAM而不是闪存中，在重新引导时不会保留它们。它的原理是：
+</span><span class='line'>    * 在Linux内核中有虚拟内存的概念，而虚拟内存是由物理内存RAM和交换分区swap组成，这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理。tmpfs会向虚拟内存子系统申请页来存储文件，但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区
+</span><span class='line'>12. tmpfs文件系统在内核中的打开方式为：
+</span><span class='line'>    * 在内核中选择“File systems--Pseudo filesystems--Virtual memory filesystem support”一项来支持对tmpfs虚拟文件系统的管理
+</span><span class='line'>13. 在启动时，经常可以看到启动脚本中有以下内容：
+</span><span class='line'>    * `mount none /dev -t tmpfs`
+</span><span class='line'>    * 这也是由于Linux系统的设备可以热插拔的原因
+</span><span class='line'>14. ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放，这样虚拟内存管理系统就不会将这些page释放或者交换到swap，从而实现文件总在物理内存中。tmpfs也是存放于内存中，但它可以被VM交换到swap，它其实是ramfs的一个变体
+</span><span class='line'>15. jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中
+</span><span class='line'>16. yaffs文件系统在mount的时候需要很少的内存（如果是小页--512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）
+</span><span class='line'>17. yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料 
+</span><span class='line'>18. yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。
+</span><span class='line'>19. ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。
+</span><span class='line'>
+</span><span class='line'>##新建用户与用户组
+</span><span class='line'>* 在/etc/passwd中第一行新增：root:x:0:0:Root,,,:/root:/bin/sh
+</span><span class='line'>* passwd root,设置root用户密码
+</span><span class='line'>* chown root:root /bin/busybox,改变busybox的属主，否则将来u+s后第一个用户进程init的权限将不是root的权限
+</span><span class='line'>* chmod u+s /bin/busybox，这使得普通用户能使用passwd修改自己的密码，同时也使login程序能够正常工作
+</span><span class='line'>* adduser morris -h /home/morris -s /bin/sh -G morris
+</span><span class='line'>* adduser ftp -h /var/ftp -s /bin/sh -G ftp
+</span><span class='line'>* adduser ftpuser -h /sdcard/local -s /bin/sh -G ftp
+</span><span class='line'>* adduser ftproot -h /sdcard/tmp -s /bin/sh -G ftp
+</span><span class='line'>
+</span><span class='line'>##移植telnet服务器
+</span><span class='line'>1. 如上创建好用户
+</span><span class='line'>2. 修改/etc/inittab,使得telnetd开机自动启动：
+</span><span class='line'>    * ::once/usr/sbin/telnetd#这里一定要使用once，不能使用respawn，因为telnetd是守护进程，其实现会fork自己后让自己结束
+</span><span class='line'>3. 创建并挂载/dev/pts,它将供telnetd服务使用
+</span><span class='line'>    * mkdir /dev/pts
+</span><span class='line'>    * mount -t devpts devpts /dev/pts
+</span><span class='line'>4. 更改/dev/tty和/dev/console的权限，以使普通用户登录系统时也能读写控制终端
+</span><span class='line'>    * chmod 666 /dev/tty
+</span><span class='line'>    * chmod 600 /dev/console
+</span><span class='line'>
+</span><span class='line'>##移植ftp服务器
+</span><span class='line'>1. [下载vsftpd2.3.5并解压](http://download.chinaunix.net/download/0001000/19.shtml)
+</span><span class='line'>2. 修改Makefile，指定交叉编译器`CC=arm-linux-gcc`
+</span><span class='line'>3. 修改vsf_findlibs.sh,将所有/lib和/usr/lib前面加上交叉编译器的库目录地址，比如`/embeded/crosstool/arm-wenris-linux-gnueabi/sysroot`
+</span><span class='line'>4. make -j4,将生成的vsftp复制到开发板根文件系统相应目录/usr/sbin
+</span><span class='line'>5. 复制vsftpd依赖的动态库文件到开发板根文件系统相应目录
+</span><span class='line'>6. 将模板配置文件vsftpd.conf复制到开发板/etc目录，修改该配置文件，使有效配置如下：
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;anonymous_enable=NO
+</span><span class='line'>local_enable=YES
+</span><span class='line'>write_enable=YES
+</span><span class='line'>anon_upload_enable=NO
+</span><span class='line'>anon_mkdir_write_enable=NO
+</span><span class='line'>dirmessage_enable=YES
+</span><span class='line'>xferlog_enable=YES
+</span><span class='line'>connect_from_port_20=YES
+</span><span class='line'>xferlog_file=/var/log/vsftpd.log
+</span><span class='line'>xferlog_std_format=YES
+</span><span class='line'>idle_session_timeout=600
+</span><span class='line'>data_connection_timeout=120
+</span><span class='line'>nopriv_user=ftp
+</span><span class='line'>ftpd_banner=Welcome to WenRis FTP service
+</span><span class='line'>listen=YES</span></code></pre></td></tr></table></div></figure>
+7. 由于vsftp源代码程序一定要使用一个目录/usr/share/empty,所以必须要预先创建它
+8. 修改/etc/inittab,使得vsftpd在开机时候自动启动：
+    * ::respawn:/usr/sbin/vsftpd</p>
 
-<h1>!/bin/sh</h1>
-
-<h1>for SDHC Card,total sectors=15523840</h1>
-
-<h1>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798</h1>
-
-<h1>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030</h1></li>
-</ol>
-
-
-<h1>for SD Card,total sectors=1961984</h1>
-
-<p>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
-dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
-sync</p>
-
-<h1>BL1:total sectors - 2 - 1024(if your SD Card Size > 2G) -16</h1>
-
-<h1>BL2:total sectors - 2 - 1024(if your SD Card Size > 2G) -16 - 512 - 256</h1>
-
-<p>```</p>
+<h2>移植httpd服务器</h2>
 
 <ol>
-<li>进入Uboot后，测试能否ping通虚拟主机：ping 192.168.1.88。在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内，使用UBoot下的命令：pri</li>
-<li>使用nfs命令获取虚拟主机上的uboot二进制文件供烧写(次UBoot是用来从NandFlash启动的，不能错选从SD卡启动的UBoot),成功以后会提示用户该文件的大小，这里记为filesize(切记要使用十六进制表示的数字)
+<li>增加用户www：<code>adduser -S -D -H www</code></li>
+<li>修改/etc/inittab文件，指名httpd的目录和运行账户：
 
 <ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/u-boot.bin</li>
+<li><code>::once:/usr/sbin/httpd -h /www -u www</code></li>
 </ul>
 </li>
-<li>烧写uboot至NandFlash中
+<li>httpd运行时会以普通用户www的身份访问/dev/null设备，因此需要在rcS脚本中修改/dev/null的权限：<code>chmod 666 /dev/null</code></li>
+<li>创建http服务器的主目录和主文件
 
 <ul>
-<li>nand write.i 50000000 0 $(filesize)   从0地址开始烧写UBoot</li>
-</ul>
-</li>
-<li>使用nfs命令获取虚拟主机上的kernel文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-
-<ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/Image</li>
-</ul>
-</li>
-<li>烧写kernel到NandFlash中
-
-<ul>
-<li>nand write.i 50000000 80000 $(filesize)</li>
-</ul>
-</li>
-<li>使用nfs命令获取虚拟主机上的根文件系统文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-
-<ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/yaff2.img</li>
-</ul>
-</li>
-<li>烧写根文件系统到NandFlash中
-
-<ul>
-<li>nand write.yaffs 50000000 580000 $(filesize)</li>
-</ul>
-</li>
-<li>根据需要修改启动参数并保存,例如
-
-<ul>
-<li>setenv bootargs root=/dev/mtdblock2 console=ttySAC0,115200</li>
-<li>saveenv</li>
+<li><code>mkdir /www</code></li>
+<li><code>echo "this is my first web site" &gt; /www/index.html</code></li>
 </ul>
 </li>
 </ol>
 
 
-<h2>测试图形界面程序</h2>
-
-<ul>
-<li>图形界面工具使用的触摸屏校准程序为tslib源码附带的校准程序ts_calibrate,所以如果触摸屏没有校准，可以在Linux系统启动后运行/usr/local/bin/ts_calibrate程序对触摸屏进行校准(通过删除/etc/pointercal文件，可以使得图形界面工具自动调用ts_calibrate程序)，校准完毕会在etc目录下生成pointercal标准文件，供触摸屏库程序转换成符合屏幕的坐标，从而达到校准目的。</li>
-</ul>
-
-
-<h2>交叉编译器</h2>
-
-<ul>
-<li>arm-linux-gcc是一个“集合命令”，它包含了4个步骤：预处理，汇编，编译和链接，通过链接阶段便生成ELF格式的可执行文件。4个步骤对应执行的程序为arm-linux-cpp，arm-linux-as，ccl，arm-linux-ld。前三个步骤对应的命令行选项为：-E,-S，-c，如果没有任何参数，则代表经过这4个步骤产生可执行文件。</li>
-<li>ELF文件的not stripped属性告诉我们在编译的时候产生的编译阶段需要的符号没有被删除</li>
-<li>通常被编译出的程序都会使用到系统的动态库，而这些基本的动态库大部分也都是glibc库中的。例如open,read,write,select,ioctl等应用程序中的函数都是libc.so动态库中提供的，而glibc还提供了libm.so(数学库)，libcrypt.so(安全库)，libld.so(加载库)等。其中libld.so作为加载库负责在应用程序运行时，加载程序所使用到的动态库文件。在我们移植系统的过程中，这些最基本的动态库也需要被移植到根文件系统中去，这样才能保证程序被正常启动。</li>
-<li>arm-linux-strip test可以删除可执行文件中不需要的编译符号和段描述信息</li>
-<li>arm-linux-objcopy -O binary -S test test.bin 通常被用来将生成的ELF格式的文件转化为只含有二进制指令和程序数据的文件test.bin.也只有这样的二进制指令文件才能直接被硬件执行。</li>
-<li>arm-linux-dump -D test > test.dis则是反编译，将ELF格式的可执行文件反编译成汇编信息文件test.dis，有助于代码的查看和调试</li>
-<li>arm-linux-readelf -a test | grep &lsquo;Shared'用来获取ELF的头信息，grep 'Shared'是获取头信息中test可执行文件调用到的动态文件</li>
-<li>arm-linux-gcc 针对arm11的设置：
+<h2>移植SQLite数据库</h2>
 
 <ol>
-<li>&ndash;with-cpu=arm1176jzf-s</li>
-<li>&ndash;with-tune=arm1176jzf-s</li>
-<li>&ndash;with-float=softfp</li>
-</ol>
-</li>
-</ul>
-
-
-<h2>bootloader</h2>
+<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
+<li>配置并进行交叉编译和安装
 
 <ul>
-<li>目标机上的Bootloader通过串口与主机之间进行文件传输，传输协议通常是xmodem/ymodem/zmodem协议中的一种，但是，串口传输速度有限，因此通过以太网连接并借助tftp或者nfs协议来下载文件是个更好的选择</li>
-<li>bootloader的stage1通常包括的步骤：
+<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
+<li><code>make -j4 &amp;&amp; make install</code></li>
+</ul>
+</li>
+<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
+<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
+<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
+<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
+</ol>
+
+
+<h2>移植boa网页服务器</h2>
 
 <ol>
-<li>硬件设备初始化
-
-<ul>
-<li>屏蔽所有中断</li>
-<li>设置CPU的速度和时钟频率</li>
-<li>RAM初始化</li>
-<li>关闭CPU内部指令/数据cache</li>
-</ul>
-</li>
-<li>为加载Bootloader的stage2准备RAM空间</li>
-<li>复制bootloader的stage2到RAM空间</li>
-<li>设置好堆栈指针sp</li>
-<li>跳转到stage2的C入口点（修改PC寄存器为核实的地址来实现）</li>
+<li><a href="http://download.csdn.net/detail/szbaud/4050364">获取源码，并解压缩</a></li>
+<li><p>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>由于arm-linux-gcc 编译器版本过高，对语法的支持有一些改变，所以需要修改compat.h中的
+</span><span class='line'>  #define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff
+</span><span class='line'>为：&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;   #define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff
+</span><span class='line'>不然在编译的时候会提示如下错误：
+</span><span class='line'>  util.c: 100: 1: pasting “t” and “-&gt;” does not give a valid preprocessing token make: [util.o] Error1</span></code></pre></td></tr></table></div></figure></p></li>
 </ol>
-</li>
-<li>bootloader的stage2通常包括的步骤：
+
+
+<pre><code>将boa.c 文件225-227三行的文件注释掉
+ if (setuid(0) != -1) {
+                        DIE(”icky Linux kernel bug!”);
+        }
+为
+/*
+         if (setuid(0) != -1) {
+                        DIE(”icky Linux kernel bug!”);
+                }
+*/
+
+，否则，但以root权限启动boa服务器的时候，会出现以下错误：boa.c:226 - icky Linux kernel bug!:
+</code></pre>
 
 <ol>
-<li>初始化本阶段要使用到的硬件设备
-
-<ul>
-<li>至少一个串口用来和终端用户进行I/O输出信息</li>
-</ul>
-</li>
-<li>检测系统内存映射</li>
-<li>将kernel镜像和根文件系统镜像从Flash上读到RAM空间中(需要编写Nand Flash裸驱动)</li>
-<li>为内核设置启动参数
-
-<ul>
-<li>linux2.4以后的内核都期望以标记列表的形式来传递启动参数，启动参数标记列表以标记ATAG_CORE尅是，以标记ATAG_NONE结束</li>
-<li>每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成，数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中</li>
-<li>在嵌入式Linux系统中，通常需要由Bootloader设置的常见启动参数有：ATAG_CORE,ATAG_MEN,ATAG_CMDLINE</li>
-</ul>
-</li>
-<li>调用内核，跳转到内核第一条指令处，跳转时要满足下列条件
-
-<ol>
-<li>CPU寄存器的设置
-
-<ul>
-<li>R0=0</li>
-<li>R1=机器类型ID，关于Machine Type Number可以参见linux/arch/arm/tools/mach-types</li>
-<li>R2=启动参数标记列表在RAM中的起始基地址</li>
-</ul>
-</li>
-<li>CPU模式
-
-<ul>
-<li> 必须禁止中断(IRQs和FIQs)</li>
-<li>CPU必须处于SVC模式</li>
-</ul>
-</li>
-<li>Cache和MMU的设置
-
-<ul>
-<li>MMU必须关闭</li>
-<li>指令Cache可以打开亦可以关闭</li>
-<li>数据Cache必须关闭</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>U-boot目录结构
-
-<ol>
-<li>与处理器体系结构或者开发板硬件直接相关</li>
-<li>通用的函数或者驱动程序</li>
-<li>U-Boot的应用程序、工具或者文档</li>
-</ol>
-</li>
-</ul>
-
-
-<h2>Qt</h2>
-
-<ul>
-<li>Qt支持的嵌入式Linux平台需要有frambuffer支持</li>
-<li>编译Qt源码
-
-<ol>
-<li></li>
-</ol>
-</li>
-</ul>
-
-
-<h2>编译tslib</h2>
-
-<ol>
-<li><a href="http://download.csdn.net/detail/liuqiqi677/3177449">源码下载地址</a></li>
-<li>解压缩，进入tslib源码文件夹</li>
-<li><code>./autogen.sh</code>生成configure源代码配置文件</li>
-<li><code>./configure --host=arm-linux --disable-h3600 --disable-arctic2 --disable-mk712 --disable-collie --disable-corgi --disable-ucb1x00 --with-gnu-ld --prefix=/embeded/tslib_install ac_cv_func_malloc_0_nonnull=yes</code> 这里，&ndash;host的含义是你要安装的目标系统，后面的&ndash;disable 是因为我们不编译对指定触摸屏的支持，我们选择支持的是Linux的input子系统，&ndash;with-gnu-ld是确认使用GNU的LD连接器，因为我们使用的就是GNU的编译器，所以选择这一项。&ndash;prefix选项是指定安装的位置。ac_cv_func_malloc_0_nonnull会在./configure执行阶段测试GNU内置的malloc函数的功能是否可用或者说是否兼容</li>
-<li>进入安装目录，这里是/embeded/tslib_install,进入etc目录，打开ts.conf进行修改.其中pthres主要用于处理触摸屏的灵敏度，而variance和dejitter分别用于处理触摸屏的滤波和去噪的算法，linear是触摸屏的坐标变换。
-
-<ul>
-<li>module_raw input</li>
-<li>module pthres pmin=1</li>
-<li>module variance delta=30</li>
-<li>module dejitter delta=100</li>
-<li>module linear</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>Uboot常用命令</h2>
-
-<blockquote><ol>
-<li>使用命令时，可以使用其开头的若干个字母代替它</li>
-<li>当运行一个命令之后，如果它是可重复执行的（代码中使用U_BOOT_CMD定义这个命令时，第三个参数是1），若想再次运行可以直接输入回车</li>
-<li>Uboot接受的数据都是16进制，输入时可以省略前缀0x</li>
-</ol>
-</blockquote>
-
-<ol>
-<li>运行<code>help</code>命令可以看到所有命令的作用，如果要查看某个命令的使用方法，运行<code>help 命令名</code>。可以使用<code>?</code>来代替<code>help</code></li>
-<li>Uboot支持串口下载，网络下载，USB下载，相关命令有：loadb,loads,loadx,loady;tftpboot,nfs;usbslave。使用方法：
-
-<ul>
-<li>loadx [off] [baud];off表示文件下载后存放的内存地址，baud表示使用的波特率，如果off参数省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR</li>
-<li>tftpboot [loadAddress] [bootfilename]; loadAddress表示文件下载后存放的内存地址，bootfilename表示要下载的文件名称。loadAddress省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR。如果bootfilename省略，则使用单板的IP地址构造一个文件名</li>
-<li>nfs [loadAddress] [host ip addr:bootfilename];host ip addr表示服务器的IP地址</li>
-<li>usbslave [wait] [loadAddress]；在PC端使用dnw工具发送文件，U-boot通过USB Device接口接收文件。wait可以取值1或0，表示是否等得数据传输完成，当wait取0时，在后台进行下载，这时在Uboot仍可执行其他操作。下载文件成功后，Uboot会自动创建或者更新环境变量filezise，它表示下载的文件长度，可以在后续命令中使用$(filesize)来引用它</li>
-</ul>
-</li>
-<li>常用的内存操作命令有：查看内存命令md，修改内存命令mm,填充内存命令mw,复制命令cp。这些命令都可以带上后缀".b",&ldquo;.w&rdquo;,&ldquo;.l"表示以字节、字、双字为单位进行操作。
-
-<ul>
-<li>md[.b,.w,.l] address [count],表示以字节、字、双字（默认是双字）为单位，显示从地址address开始的内存数据，显示的数据个数为count</li>
-<li>mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出</li>
-<li>mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。</li>
-<li>cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存</li>
-</ul>
-</li>
-<li>常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
-
-<ul>
-<li>nand info，查看Nand Flash信息</li>
-<li>nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash</li>
-<li>nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
-<li>nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
-<li>nand read.yaffs addr off size，从Nand Flash偏移地址off处读出size个字节的数据（包括OOB区域），存放到开始地址为addr的内存中</li>
-<li>nand write.yaffs addr off size，把开始地址为addr的内存中的size个字节数据(只要有要写入OOB区域的数据)，写到Nand Flash的偏移地址off处</li>
-<li>nand dump off，将Nand Flash偏移地址off的一个山区的数据打印出来，包括OOB数据</li>
-</ul>
-</li>
-<li>环境变量命令(下面的命令只是在内存中进行，最后需要使用<code>saveenv</code>命令将更改后的所有环境变量写入Flash中)
-
-<ul>
-<li><code>printenv</code>命令打印全部环境变量，“printenv name1 name2 &hellip;”打印名字为name1,name2&hellip;&hellip;的环境变量</li>
-<li><code>setenv name value</code>设置名字为name的环境变量的值为value</li>
-<li><code>setenv name</code>删除名字为name的环境变量</li>
-</ul>
-</li>
-<li>启动命令,不带参数的<code>boot</code>,<code>bootm</code>命令都是执行环境变量bootcmd所指定的命令
-
-<ul>
-<li>&ldquo;bootm [addr [arg &hellip;]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg &hellip;]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</li>
-<li>go addr [arg &hellip;]与bootm命令类似，启动存放在地址addr处的二进制文件，[arg &hellip;]表示参数</li>
-<li>nboot [[[loadAddr] dev] offset]命令将Nand Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处，然后，如果环境变量autostart的值为yes，就启动这个映像，如果loadAddr参数省略，存放地址为配置文件中定义的宏CFG_LOAD_ADDR。如果dev参数省略，则它的取值为环境变量bootdevice的值，如果offset参数省略，则默认为0</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>yaffs文件系统</h2>
+<li>然后生成Makefile：./configure</li>
+<li><p>修改生成的Makefile：默认生成的Makefile针对x86平台，我们的目标是针对嵌入式平台，所以需要修改编译器:
+<code>
+更改Makefile的31行和32行：
+CC = gcc
+CPP = gcc -E
+更改为
+CC = arm-linux-gcc
+CPP = arm-linux-gcc -E
+</code></p></li>
+<li><p>在当前目录下编译Boa源文件： make</p></li>
+<li>将生成的boa可执行程序复制到根文件系统的/usr/sbin目录下</li>
+<li>将boa.conf文件复制到根文件系统/etc/boa文件夹下面，并且作如下修改：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1) 修改25行的port端口，用来设置服务器监听的端口：
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Port: The port Boa runs on.  The default port for http servers is 80.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;If it is less than 1024, the server must be started as root.&lt;/h1&gt;&lt;/li&gt;
+</span><span class='line'>&lt;/ol&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;Port 80
+</span><span class='line'>(2) 注释43行的监听IP地址：默认监听该主机上的所有IP地址&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Listen 192.68.0.5&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;(3) 修改53、54行的user和Group 启动的UID和GID，使其以root身份启动&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;User: The name or UID the server should run as.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Group: The group name or GID the server should run as.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;User root
+</span><span class='line'>Group root
+</span><span class='line'>(4) 修改116行的DocumentRoot地址，即客户端要显示的HTML页面存放位置&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;DocumentRoot: The root directory of the HTML documents.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Comment out to disable server non user files.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DocumentRoot /usr/local/boa
+</span><span class='line'>(5) 修改输入网页输入主机IP时要显示的页面：这里设为index.html
+</span><span class='line'> # DirectoryIndex: Name of the file to use as a pre-written HTML&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;directory index.  Please MAKE AND USE THESE FILES.  On the&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;fly creation of directory indexes can be &lt;em&gt;slow&lt;/em&gt;.&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Comment out to always use DirectoryMaker&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DirectoryIndex index.html
+</span><span class='line'>(6) 修改CGI程序存放的位置：以&lt;a href="http://IP/cgi-bin/cginame"&gt;http://IP/cgi-bin/cginame&lt;/a&gt; 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;ScriptAlias: Maps a virtual path to a directory for serving scripts&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;Example: ScriptAlias /htbin/ /www/htbin/&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;ScriptAlias /cgi-bin/ /usr/local/boa/cgi-bin/</span></code></pre></td></tr></table></div></figure></p>
 
 <ol>
-<li>所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
+<li>创建/var/log/boa/ 目录，这样Boa服务器启动时会在该目录下创建日志文件</li>
+<li>将Linux系统上/etc/mime.types 文件复制到根文件系统的/etc 目录下，否则Boa服务器启动不起来</li>
+<li>修改/etc/inittab,使得vsftpd在开机时候自动启动：
 
 <ul>
-<li>/bin：必备的用户命令，例如ls,cp等</li>
-<li>/sbin:必备的系统管理员命令，例如ifconfig，reboot</li>
-<li>/dev:设备文件，例如mtdblock0，tty1等</li>
-<li>/etc:系统配置文件，包括启动文件，例如inittab</li>
-<li>/lib:必要的链接库，例如C链接库、内核模块</li>
-<li>/home:普通用户主目录</li>
-<li>/root:root用户主目录</li>
-<li>/usr/bin:非必备的用户程序，例如find、du等</li>
-<li>/usr/sbin:非必备的管理员程序，例如chroot，inetd等</li>
-<li>/usr/lib：库文件</li>
-<li>/var:守护进程和工具程序所存放的可变，例如日志文件</li>
-<li>/proc:用来提供内核和进程信息的虚拟文件系统，有内核自动生成目录下的内容</li>
-<li>/sys:用来提供内核与设备信息的虚拟文件系统，由内核自动生成目录下的内容</li>
-<li>/mnt:文件系统挂载点，用于临时安装文件系统</li>
-<li>/tmp:临时性的文件，重启后将自动清除</li>
+<li>::once:/usr/sbin/boa</li>
 </ul>
 </li>
-<li>编译安装busybox：
+<li>注意事项：
 
 <ul>
-<li>下载源码包，解压缩后进入文件夹根目录</li>
-<li>make defconfig</li>
-<li>make menuconfig
+<li>有时候boa服务器并不能随系统启动，运行 /sbin/boa 命令会提示：gethostbyname:: Success，需要如下修改
 
 <ul>
-<li>Busybox Settings:选择动态链接C库，指定交叉编译器的prefix为arm-linux-，为各命令安装为指向busybox的软连接，指定busybox的安装位置，选择支持Tab completion和Username completion</li>
-<li>Applets：基本保持默认设置</li>
-</ul>
-</li>
-<li>make -j4</li>
-<li>make install</li>
-</ul>
-</li>
-<li>busybox只用到了2个库，通用C库(libc)、数学库(libm),每个库有4个文件，四个文件中，.a文件是静态库文件，另外三个是：实际的共享链接库（libLIBRARY_NAME-GLIBC_VERSION.so），主修订版本的符号链接，指向实际的共享链接库(libLIBRARY_NAME.so.MAJOR_REVISION_VERSION,一旦程序连接了特定的链接库，将会参用该符号链接)，与版本无关的符号链接，指向主修订版本的符号链接(libLIBRARY_NAME.so,是为编译程序时提供一个通用条目)</li>
-<li>当使用<code>gcc hello.c -o hello -lm</code>编译程序的时候，gcc会根据-lm的提示，加头(lib)添尾(.so)得到libm.so，从而沿着与版本无关的符号链接(libm.so->libm.so.6)找到libm.so.6并记录在案(hello的ELF头中)，表示hello需要使用libm.so.6这个库文件所代表的数学库中的库函数。而当hello被执行的时候，动态链接库加载器会从hello的ELF头中找到libm.so.6这个记录，然后沿着主修订版本的符号链接(libm.so.6->libm-2.3.6.so)找到实际的共享链接库libm-2.3.6.so从而将其与hello做动态链接。可见<strong>与版本无关的符号链接是供编译器使用的，主修订版本的符号链接是供动态链接库加载器使用的，而实际的共享链接库则是供应用程序使用的</strong></li>
-<li>init进程的主配置文件inittab用于决定init进程要启动哪些子进程，以及如何启动这些子进程。busybox的inittab文件的语法、语义和传统的SYSV的inittab有所不同
+<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code>
 
-<ul>
-<li>inittab文件中每个条目用来定义需要init启动的子进程，并确定它的启动方式，格式为<id>:<runlevel>:<action>:<process>,例如：ttySAC0：：ask-first:-/bin/sh</li>
-<li><id>表示子进程要使用的控制台，若省略则使用与init进程一样的控制台</li>
-<li><runlevel>表示运行级别，busybox init程序这个字段没有意义</li>
-<li><action>表示init进程如何空着这个子进程
-
-<ul>
-<li>sysinit：以该方式启动的子进程最先被init启动，该子进程只会被启动一次，如该子进程结束，init将不会重新启动它</li>
-<li>wait：系统执行完sysinit条目后才启动该子进程，该子进程只执行一次，init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作</li>
-<li>once:系统执行完wait条目后才启动该子进程，该子进程只执行一次，init进程不必等待该子进程的结束就可以执行启动其他子进程的动作</li>
-<li>respawn：系统执行完once条目后才能启动该子进程，init进程会持续监测该子进程的状态，若发现该子进程退出，会重新启动它</li>
-<li>askfirst：系统启动完respawn条目后才能启动该子进程，与respawn类似，不过init进程先输出“Please press Enter to active this console”，等用户输入回车后才启动子进程</li>
-<li>shutdown：当系统关机时启动该子进程</li>
-<li>restart：Busybox中配置了CONFIG_FEATURE_USE_INITAB，并且init进程接收到SIGUP信号时执行，先重新读取、解析/etc/inittab文件，再执行restart程序</li>
-<li>ctrlaltdel：按下Ctrl+Alt+Del键时启动该子进程，不过在串口控制台中无法输入它</li>
+<h2>Qt移植</h2></li>
 </ul>
 </li>
-<li><process>表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”</li>
 </ul>
 </li>
-<li>手工构建/dev目录：新建dev文件夹，在里面<code>sudo mknod console c 5 1</code>,它表示穿件console字符设备文件，主设备号是5，次设备号是1</li>
-<li>构建/dev目录的方法是使用udev(user dev),mdev是busybox中对udev的简化实现，其工作原理是：操作系统启动的时候会将识别到的所有设备的信息自动导出到/sys目录，在此基础上，用户态的应用程序mdev -s就可以扫描/sys/class和/sys/block中所有的类设备目录，如果在目录中含有名为“dev”的文件，且文件中包含的是设备号，则mdev就利用这些信息为这个设备在/dev下创建设备节点文件</li>
-<li>Linux系统下实现热插拔的机制：当有热插拔事件产生时，内核就会调用位于/sbin目录下的mdev。这时mdev通过环境变量中的ACTION和DEVPATH(这两个变量是系统自带的)来确定此次热插拔事件的动作以及影响了/dev中的哪个目录。接着会看看这个目录中是否有“dev”的属性文件，如果有就利用这些信息为这个设备在/dev下创建或删除设备节点文件。我们需要告知操作系统，当它发现热插拔事件时应调用mdev，而不是别的程序。</li>
-<li>嵌入式Linux对文件系统的要求：
-
-<ul>
-<li>要求文件系统在频繁的文件操作下能够保持较高的读写性能，要求低碎片化</li>
-<li>Linux下的日志文件系统(XFS,ReiserFS,Ext3等)能保持数据的完整性，但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用。并且这些都是专门为硬盘类的存储设备进行了优化，对于Flash这类的存储介质并不适用</li>
-<li>嵌入式文件系统的载体是以Flash为主的存储介质，Flash的擦除次数是有限的，所以为了延长Flash的使用寿命，应该尽量减少对Flash的读写操作，并尽量使对Flash的写入操作均匀分布在整个Flash上</li>
-</ul>
-</li>
-<li>在内核的配置菜单中可以看到块设备中有哟个ramdisk选项，并可以设置它的大小，默认的大小为4096KB，在配置内核的时候用户也可以指定ramdisk的大小。ramdisk是基于ram的块设备，所以它占据了一块固定内存的大小，并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容。由于ramdisk在很多场合并不太实用，在Linux的2.4版本开始支持了ramfs文件系统，它是一个简单的基于Linux的。可以动态分配大小的内存文件系统，它属于内核虚拟文件系统层(VFS)，与ramdisk相比，并不是基于虚拟在内存中的其他文件系统，例如ext2文件系统。使用方法：
-
-<ul>
-<li>mkdir /mnt/ramfs</li>
-<li>mount -t ramfs none /mnt/ramfs(缺省大小，被限制最大maxsize为内存总和/2)</li>
-<li>mount -t ramfs none /mnt/ramfs -o maxsize=1000(创建最大大小为1M的ramfs文件系统)</li>
-</ul>
-</li>
-<li>tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质，并且它的大小和ramfs一样，可以动态分配。<strong>它主要用于减少对闪存不必要的写操作</strong>这唯一目的。因为tmpfs驻留在RAM中，所以写/读/擦除的操作发生在RAM中而不是在闪存中。因此，当将日志消息写入挂载为tmpfs文件系统的目录时，是将其写入RAM而不是闪存中，在重新引导时不会保留它们。它的原理是：
-
-<ul>
-<li>在Linux内核中有虚拟内存的概念，而虚拟内存是由物理内存RAM和交换分区swap组成，这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理。tmpfs会向虚拟内存子系统申请页来存储文件，但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区</li>
-</ul>
-</li>
-<li>tmpfs文件系统在内核中的打开方式为：
-
-<ul>
-<li>在内核中选择“File systems&ndash;Pseudo filesystems&ndash;Virtual memory filesystem support”一项来支持对tmpfs虚拟文件系统的管理</li>
-</ul>
-</li>
-<li>在启动时，经常可以看到启动脚本中有以下内容：
-
-<ul>
-<li><code>mount none /dev -t tmpfs</code></li>
-<li>这也是由于Linux系统的设备可以热插拔的原因</li>
-</ul>
-</li>
-<li>ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放，这样虚拟内存管理系统就不会将这些page释放或者交换到swap，从而实现文件总在物理内存中。tmpfs也是存放于内存中，但它可以被VM交换到swap，它其实是ramfs的一个变体</li>
-<li>jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中</li>
-<li>yaffs文件系统在mount的时候需要很少的内存（如果是小页&ndash;512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）</li>
-<li>yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料</li>
-<li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。</li>
-<li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。
-<img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></li>
+<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包</a></li>
+<li><p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
 </ol>
 
 ]]></content>
