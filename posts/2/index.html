@@ -2030,17 +2030,156 @@
 <li>有时候boa服务器并不能随系统启动，运行 /sbin/boa 命令会提示：gethostbyname:: Success，需要如下修改
 
 <ul>
-<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code>
-
-<h2>Qt移植</h2></li>
+<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包</a></li>
-<li><p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
 </ol>
 
+
+<h2>移植zlib库</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download.php?id=24014&amp;ResourceID=12241">下载zlib库,解压缩</a></li>
+<li>进入终端，声明几个重要的环境变量：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
+</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
+</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
+</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
+</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
+</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>./configure &ndash;shared &ndash;prefix=$PWD/results</li>
+<li>make -j4</li>
+<li>make install</li>
+<li>成功后把lib里面的库文件复制到根文件系统对应目录，并把库文件和头文件复制到交叉编译器的对应文件夹中，注意复制到时候带上参数 <em>-P</em></li>
+</ol>
+
+
+<h2>移植libxml2库</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download/0007000/6095.shtml">下载libxml2库，解压缩</a></li>
+<li>进入终端，声明几个重要的环境变量：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
+</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
+</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
+</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
+</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
+</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>./configure &ndash;prefix=$PWD/results &ndash;host=arm-linux &ndash;target=arm-linux</li>
+<li>make &amp;&amp; make install</li>
+<li>将生成的lib和include移植到交叉编译器，将bin文件，lib文件移植到开发板根文件系统中的bin目录和lib目录中</li>
+</ol>
+
+
+<h2>移植PHP5+Xcache加速器</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download/0001000/43.shtml">下载php源代码，解压缩</a></li>
+<li>执行如下配置选项：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
+</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
+</span><span class='line'><span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">arm</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">debug</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">rpath</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cli</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">bcmath</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">ftp</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="kr">inline</span><span class="o">-</span><span class="n">optimization</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sockets</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">wddx</span> \
+</span><span class='line'><span class="o">--</span><span class="n">sysconfdir</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">appweb</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pic</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span><span class="n">system</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pear</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">xmlrpc</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pdo</span><span class="o">=</span><span class="n">shared</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=</span><span class="n">shared</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pdo</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=</span><span class="n">shared</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">libxml</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">libxml</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">iconv</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">iconv</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">embed</span><span class="o">=</span><span class="n">shared</span> \
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径</li>
+<li>make &amp;&amp; make install</li>
+<li><a href="http://xcache.lighttpd.net/wiki/Release-3.2.0">下载Xcache源码包，解压缩</a></li>
+<li></li>
+</ol>
+
+
+<h2>AppWeb服务器移植</h2>
+
+<ol>
+<li><a href="https://embedthis.com/appweb/download.html">下载源代码，解压缩</a></li>
+<li></li>
+</ol>
+
+
+<h2>Qt移植</h2>
+
+<ol>
+<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包，解压缩</a></li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 
 		
 		

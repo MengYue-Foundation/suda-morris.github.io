@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-05T12:07:10+08:00</updated>
+  <updated>2015-07-06T09:47:10+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -750,17 +750,106 @@ CPP = arm-linux-gcc -E
 <li>有时候boa服务器并不能随系统启动，运行 /sbin/boa 命令会提示：gethostbyname:: Success，需要如下修改
 
 <ul>
-<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code>
-
-<h2>Qt移植</h2></li>
+<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包</a></li>
-<li><p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p></li>
 </ol>
 
+
+<h2>移植zlib库</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download.php?id=24014&amp;ResourceID=12241">下载zlib库,解压缩</a></li>
+<li>进入终端，声明几个重要的环境变量：
+<code>
+export CC=arm-linux-gcc
+export AR=arm-linux-ar
+export LD=arm-linux-ld
+export RANLIB=arm-linux-ranlib
+export STRIP=arm-linux-strip
+export CC_FOR_BUILD=gcc
+</code></li>
+<li>./configure &ndash;shared &ndash;prefix=$PWD/results</li>
+<li>make -j4</li>
+<li>make install</li>
+<li>成功后把lib里面的库文件复制到根文件系统对应目录，并把库文件和头文件复制到交叉编译器的对应文件夹中，注意复制到时候带上参数 <em>-P</em></li>
+</ol>
+
+
+<h2>移植libxml2库</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download/0007000/6095.shtml">下载libxml2库，解压缩</a></li>
+<li>进入终端，声明几个重要的环境变量：
+<code>
+export CC=arm-linux-gcc
+export AR=arm-linux-ar
+export LD=arm-linux-ld
+export RANLIB=arm-linux-ranlib
+export STRIP=arm-linux-strip
+export CC_FOR_BUILD=gcc
+</code></li>
+<li>./configure &ndash;prefix=$PWD/results &ndash;host=arm-linux &ndash;target=arm-linux</li>
+<li>make &amp;&amp; make install</li>
+<li>将生成的lib和include移植到交叉编译器，将bin文件，lib文件移植到开发板根文件系统中的bin目录和lib目录中</li>
+</ol>
+
+
+<h2>移植PHP5+Xcache加速器</h2>
+
+<ol>
+<li><a href="http://download.chinaunix.net/download/0001000/43.shtml">下载php源代码，解压缩</a></li>
+<li><p>执行如下配置选项：
+<code>
+./configure --prefix=$PWD/results \
+--host=arm-linux \
+--target=arm \
+--disable-debug \
+--disable-rpath \
+--disable-cli \
+--enable-bcmath \
+--enable-ftp \
+--enable-inline-optimization \
+--enable-sockets \
+--enable-wddx \
+--sysconfdir=/etc/appweb \
+--with-pic \
+--with-regex=system \
+--with-pear \
+--with-xmlrpc \
+--enable-pdo=shared \
+--with-sqlite=shared \
+--with-pdo-sqlite=shared \
+--with-libxml-dir=/embeded/WenRisOS/rootfs/third-libs/libxml \
+--with-zlib-dir=/embeded/WenRisOS/rootfs/third-libs/zlib \
+--with-iconv-dir=/embeded/WenRisOS/rootfs/third-libs/iconv \
+--enable-embed=shared \
+</code></p></li>
+<li><p>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径</p></li>
+<li>make &amp;&amp; make install</li>
+<li><a href="http://xcache.lighttpd.net/wiki/Release-3.2.0">下载Xcache源码包，解压缩</a></li>
+<li></li>
+</ol>
+
+
+<h2>AppWeb服务器移植</h2>
+
+<ol>
+<li><a href="https://embedthis.com/appweb/download.html">下载源代码，解压缩</a></li>
+<li></li>
+</ol>
+
+
+<h2>Qt移植</h2>
+
+<ol>
+<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包，解压缩</a></li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 ]]></content>
   </entry>
   
