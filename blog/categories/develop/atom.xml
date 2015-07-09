@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-06T09:47:10+08:00</updated>
+  <updated>2015-07-09T16:38:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -576,28 +576,10 @@
 </ol>
 
 
-<h2>移植SQLite数据库</h2>
-
-<ol>
-<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
-<li>配置并进行交叉编译和安装
-
-<ul>
-<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
-<li><code>make -j4 &amp;&amp; make install</code></li>
-</ul>
-</li>
-<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
-<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
-<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
-<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
-</ol>
-
-
 <h2>移植boa网页服务器</h2>
 
 <ol>
-<li><a href="http://download.csdn.net/detail/szbaud/4050364">获取源码，并解压缩</a></li>
+<li><a href="http://www.boa.org/">获取源码，并解压缩</a></li>
 <li><p>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -797,48 +779,202 @@ export CC_FOR_BUILD=gcc
 </ol>
 
 
-<h2>移植PHP5+Xcache加速器</h2>
+<h2>移植SQLite数据库</h2>
 
 <ol>
-<li><a href="http://download.chinaunix.net/download/0001000/43.shtml">下载php源代码，解压缩</a></li>
-<li><p>执行如下配置选项：
-<code>
-./configure --prefix=$PWD/results \
---host=arm-linux \
---target=arm \
---disable-debug \
---disable-rpath \
---disable-cli \
---enable-bcmath \
---enable-ftp \
---enable-inline-optimization \
---enable-sockets \
---enable-wddx \
---sysconfdir=/etc/appweb \
---with-pic \
---with-regex=system \
---with-pear \
---with-xmlrpc \
---enable-pdo=shared \
---with-sqlite=shared \
---with-pdo-sqlite=shared \
---with-libxml-dir=/embeded/WenRisOS/rootfs/third-libs/libxml \
---with-zlib-dir=/embeded/WenRisOS/rootfs/third-libs/zlib \
---with-iconv-dir=/embeded/WenRisOS/rootfs/third-libs/iconv \
---enable-embed=shared \
-</code></p></li>
-<li><p>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径</p></li>
-<li>make &amp;&amp; make install</li>
-<li><a href="http://xcache.lighttpd.net/wiki/Release-3.2.0">下载Xcache源码包，解压缩</a></li>
-<li></li>
+<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
+<li>配置并进行交叉编译和安装
+
+<ul>
+<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
+<li><code>make -j4 &amp;&amp; make install</code></li>
+</ul>
+</li>
+<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
+<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
+<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
+<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
 </ol>
 
 
-<h2>AppWeb服务器移植</h2>
+<h2>移植PHP5.4.42</h2>
 
 <ol>
-<li><a href="https://embedthis.com/appweb/download.html">下载源代码，解压缩</a></li>
-<li></li>
+<li><a href="http://php.net/downloads.php">下载php源代码，解压缩</a></li>
+<li><p>执行如下配置选项,配置之前需要先交叉编译好zlib，libxml2，sqlite3，iconv的库文件，然后在下面的脚本中指名其路径
+<code>
+./configure --prefix=/opt/php-arm \
+--with-config-file-path=/opt/php-arm/etc \
+--host=arm-linux \
+--disable-cli \
+--disable-fileinfo \
+--disable-debug \
+--disable-rpath \
+--enable-ftp \
+--enable-inline-optimization \
+--enable-pdo \
+--enable-bcmath \
+--enable-calendar
+--enable-sockets \
+--enable-wddx \
+--enable-mbstring \
+--enable-mbregex \
+--enable-sysvsem \
+--with-pear \
+--with-regex=system \
+--with-xmlrpc \
+--with-gettext \
+--with-sqlite3 \
+--with-pdo-sqlite=/embeded/WenRisOS/rootfs/sqlite-3.8.10.2/result \
+--with-libxml-dir=/embeded/WenRisOS/rootfs/third-libs/libxml2 \
+--with-zlib-dir=/embeded/WenRisOS/rootfs/third-libs/zlib \
+--with-iconv-dir=/embeded/WenRisOS/rootfs/third-libs/iconv \
+</code></p></li>
+<li><p>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径(将所有的/usr/include替换掉交叉编译器对应的/usr/include)</p></li>
+<li>make &amp;&amp; make install</li>
+<li>将prefix所指路径的文件安装到开发板对应的地方(在这里也是开发板的/opt/php-arm文件下)</li>
+<li>在开发板/opt/php-arm夹下新建文件夹etc，存放php配置文件php.ini(从源代码中复制一份修改名字即可)</li>
+</ol>
+
+
+<h2>嵌入式web服务器（Linux+lighttpd+Sqlite+PHP）移植 之lighttpd</h2>
+
+<ol>
+<li><a href="http://www.lighttpd.net/download/">下载lighttpd源码包，解压缩</a></li>
+<li><p>执行如下配置：
+<code>
+./configure --prefix=/opt/lighttpd-arm \
+--host=arm-linux \
+--enable-shared \
+--disable-static \
+--disable-ipv6 \
+--without-bzip2 \
+--without-pcre \
+--with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib
+</code></p></li>
+<li><p>configure执行完成后，检查Makefile文件CC是否指向了arm-linux-gcc，然后make &amp;&amp; make install</p></li>
+<li>把生成的文件全都拷贝到目标板上对应的地方(prefix指名的路径下)。删除share文件夹，再新建cgi-bin,config,sockets,upload,vhosts,webpages路径</li>
+<li>把lighttpd源代码里面doc/config路径下的conf.d,lighttpd.conf,modules.conf拷贝到上一步骤新建的config文件夹中</li>
+<li>修改lighttpd.conf文件:
+
+<ol>
+<li>将16行至20行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>var.log_root    = &ldquo;/var/log/lighttpd&rdquo;</li>
+<li>var.server_root = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.state_dir   = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.home_dir    = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.conf_dir    = &ldquo;/opt/lighttpd-arm/config&rdquo;</li>
+</ul>
+</li>
+<li>将61行和93行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>var.cache_dir   = &ldquo;/var/cache/lighttpd&rdquo;</li>
+<li>server.use-ipv6 = &ldquo;disable&rdquo;</li>
+</ul>
+</li>
+<li>将104和105行注释掉，如下所示：
+
+<ul>
+<li><h1>server.username  = &ldquo;lighttpd&rdquo;</h1></li>
+<li><h1>server.groupname = &ldquo;lighttpd&rdquo;</h1></li>
+</ul>
+</li>
+<li>将115行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>server.document-root = server_root + &ldquo;/webpages&rdquo;</li>
+</ul>
+</li>
+<li>将127行注释掉，如下所示：
+
+<ul>
+<li><h1>server.pid-file = state_dir + &ldquo;/lighttpd.pid&rdquo;</h1></li>
+</ul>
+</li>
+<li>如果不需要查看错误日志文件，可以将141行注释掉，如下所示：
+
+<ul>
+<li><h1>server.errorlog             = log_root + &ldquo;/error.log&rdquo;</h1></li>
+</ul>
+</li>
+<li>将152行、158行、191行注释掉，如下所示：
+
+<ul>
+<li><h1>include &ldquo;conf.d/access_log.conf&rdquo;</h1></li>
+<li><h1>include &ldquo;conf.d/debug.conf&rdquo;</h1></li>
+<li><h1>server.network-backend = &ldquo;linux-sendfile&rdquo;</h1></li>
+</ul>
+</li>
+<li>根据系统资源设置207行和225行的数值，本系统的设置分别如下褐色加粗字体所示：
+
+<ul>
+<li>server.max-fds = 256</li>
+<li>server.max-connections = 128</li>
+</ul>
+</li>
+<li>将314至316行注释掉，如下所示：
+
+<ul>
+<li><h1>$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</h1></li>
+<li><h1>server.range-requests = &ldquo;disable&rdquo;</h1></li>
+<li><h1>}</h1></li>
+</ul>
+</li>
+<li>将373行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>server.upload-dirs = ( &ldquo;/opt/lighttpd-arm/upload&rdquo; )</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>修改modules.conf文件
+
+<ol>
+<li>找到43行，将光标定位到逗号后面，回车，插入如下内容(如果有就不用插入了)：
+
+<ul>
+<li>&ldquo;mod_alias&rdquo;,</li>
+</ul>
+</li>
+<li>使能fastcgi模块，将132行的注释符去掉，如下所示：
+
+<ul>
+<li>include &ldquo;conf.d/fastcgi.conf&rdquo;</li>
+</ul>
+</li>
+<li>使能cgi模块，将137行的注释符去掉，如下所示：
+
+<ul>
+<li>include &ldquo;conf.d/cgi.conf&rdquo;</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>修改conf.d/fastcgi.conf文件，在server.modules += (&ldquo;mod_fastcgi&rdquo;)下面添加如下：
+<code>
+fastcgi.server = (
+ ".php" =&gt;
+ (
+     "localhost" =&gt;
+         (
+         "socket" =&gt; "/tmp/php-fastcgi.socket",
+         "bin-path" =&gt; "/opt/php-arm/bin/php-cgi",
+         "max-procs" =&gt; 1,
+         "check-local" =&gt; "disable"
+         )
+ )
+)
+</code></p></li>
+<li><p>修改conf.d/cgi.conf文件，在server.modules += ( &ldquo;mod_cgi&rdquo; )下面添加如下,接着去掉注释：<code>alias.url += ( "/cgi-bin" =&gt; server_root + "/cgi-bin" )</code>
+<code>
+cgi.assign      = (".cgi" =&gt; "")
+</code></p></li>
+<li>在webpages文件夹下面添加网页文件和php文件进行测试</li>
+<li>开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></li>
 </ol>
 
 

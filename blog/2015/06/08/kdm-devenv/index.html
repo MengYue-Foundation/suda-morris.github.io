@@ -616,28 +616,10 @@
 </ol>
 
 
-<h2>移植SQLite数据库</h2>
-
-<ol>
-<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
-<li>配置并进行交叉编译和安装
-
-<ul>
-<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
-<li><code>make -j4 &amp;&amp; make install</code></li>
-</ul>
-</li>
-<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
-<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
-<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
-<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
-</ol>
-
-
 <h2>移植boa网页服务器</h2>
 
 <ol>
-<li><a href="http://download.csdn.net/detail/szbaud/4050364">获取源码，并解压缩</a></li>
+<li><a href="http://www.boa.org/">获取源码，并解压缩</a></li>
 <li>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：</li>
 </ol>
 
@@ -863,11 +845,29 @@
 </ol>
 
 
-<h2>移植PHP5+Xcache加速器</h2>
+<h2>移植SQLite数据库</h2>
 
 <ol>
-<li><a href="http://download.chinaunix.net/download/0001000/43.shtml">下载php源代码，解压缩</a></li>
-<li>执行如下配置选项：</li>
+<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
+<li>配置并进行交叉编译和安装
+
+<ul>
+<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
+<li><code>make -j4 &amp;&amp; make install</code></li>
+</ul>
+</li>
+<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
+<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
+<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
+<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
+</ol>
+
+
+<h2>移植PHP5.4.42</h2>
+
+<ol>
+<li><a href="http://php.net/downloads.php">下载php源代码，解压缩</a></li>
+<li>执行如下配置选项,配置之前需要先交叉编译好zlib，libxml2，sqlite3，iconv的库文件，然后在下面的脚本中指名其路径</li>
 </ol>
 
 
@@ -894,47 +894,220 @@
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">path</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">etc</span> \
 </span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="n">arm</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cli</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">fileinfo</span> \
 </span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">debug</span> \
 </span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">rpath</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cli</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">bcmath</span> \
 </span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">ftp</span> \
 </span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="kr">inline</span><span class="o">-</span><span class="n">optimization</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pdo</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">bcmath</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">calendar</span>
 </span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sockets</span> \
 </span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">wddx</span> \
-</span><span class='line'><span class="o">--</span><span class="n">sysconfdir</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">appweb</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pic</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span><span class="n">system</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbstring</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbregex</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sysvsem</span> \
 </span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pear</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span><span class="n">system</span> \
 </span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">xmlrpc</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pdo</span><span class="o">=</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pdo</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">libxml</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">libxml</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">gettext</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">sqlite3</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pdo</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">sqlite</span><span class="o">-</span><span class="mf">3.8.10.2</span><span class="o">/</span><span class="n">result</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">libxml</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">libxml2</span> \
 </span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span> \
 </span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">iconv</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">iconv</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">embed</span><span class="o">=</span><span class="n">shared</span> \
 </span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
-<li>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径</li>
+<li>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径(将所有的/usr/include替换掉交叉编译器对应的/usr/include)</li>
 <li>make &amp;&amp; make install</li>
-<li><a href="http://xcache.lighttpd.net/wiki/Release-3.2.0">下载Xcache源码包，解压缩</a></li>
-<li></li>
+<li>将prefix所指路径的文件安装到开发板对应的地方(在这里也是开发板的/opt/php-arm文件下)</li>
+<li>在开发板/opt/php-arm夹下新建文件夹etc，存放php配置文件php.ini(从源代码中复制一份修改名字即可)</li>
 </ol>
 
 
-<h2>AppWeb服务器移植</h2>
+<h2>嵌入式web服务器（Linux+lighttpd+Sqlite+PHP）移植 之lighttpd</h2>
 
 <ol>
-<li><a href="https://embedthis.com/appweb/download.html">下载源代码，解压缩</a></li>
-<li></li>
+<li><a href="http://www.lighttpd.net/download/">下载lighttpd源码包，解压缩</a></li>
+<li>执行如下配置：</li>
 </ol>
 
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">lighttpd</span><span class="o">-</span><span class="n">arm</span> \
+</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
+</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">shared</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="k">static</span> \
+</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">ipv6</span> \
+</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">bzip2</span> \
+</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">pcre</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>configure执行完成后，检查Makefile文件CC是否指向了arm-linux-gcc，然后make &amp;&amp; make install</li>
+<li>把生成的文件全都拷贝到目标板上对应的地方(prefix指名的路径下)。删除share文件夹，再新建cgi-bin,config,sockets,upload,vhosts,webpages路径</li>
+<li>把lighttpd源代码里面doc/config路径下的conf.d,lighttpd.conf,modules.conf拷贝到上一步骤新建的config文件夹中</li>
+<li>修改lighttpd.conf文件:
+
+<ol>
+<li>将16行至20行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>var.log_root    = &ldquo;/var/log/lighttpd&rdquo;</li>
+<li>var.server_root = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.state_dir   = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.home_dir    = &ldquo;/opt/lighttpd-arm&rdquo;</li>
+<li>var.conf_dir    = &ldquo;/opt/lighttpd-arm/config&rdquo;</li>
+</ul>
+</li>
+<li>将61行和93行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>var.cache_dir   = &ldquo;/var/cache/lighttpd&rdquo;</li>
+<li>server.use-ipv6 = &ldquo;disable&rdquo;</li>
+</ul>
+</li>
+<li>将104和105行注释掉，如下所示：
+
+<ul>
+<li><h1>server.username  = &ldquo;lighttpd&rdquo;</h1></li>
+<li><h1>server.groupname = &ldquo;lighttpd&rdquo;</h1></li>
+</ul>
+</li>
+<li>将115行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>server.document-root = server_root + &ldquo;/webpages&rdquo;</li>
+</ul>
+</li>
+<li>将127行注释掉，如下所示：
+
+<ul>
+<li><h1>server.pid-file = state_dir + &ldquo;/lighttpd.pid&rdquo;</h1></li>
+</ul>
+</li>
+<li>如果不需要查看错误日志文件，可以将141行注释掉，如下所示：
+
+<ul>
+<li><h1>server.errorlog             = log_root + &ldquo;/error.log&rdquo;</h1></li>
+</ul>
+</li>
+<li>将152行、158行、191行注释掉，如下所示：
+
+<ul>
+<li><h1>include &ldquo;conf.d/access_log.conf&rdquo;</h1></li>
+<li><h1>include &ldquo;conf.d/debug.conf&rdquo;</h1></li>
+<li><h1>server.network-backend = &ldquo;linux-sendfile&rdquo;</h1></li>
+</ul>
+</li>
+<li>根据系统资源设置207行和225行的数值，本系统的设置分别如下褐色加粗字体所示：
+
+<ul>
+<li>server.max-fds = 256</li>
+<li>server.max-connections = 128</li>
+</ul>
+</li>
+<li>将314至316行注释掉，如下所示：
+
+<ul>
+<li><h1>$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</h1></li>
+<li><h1>server.range-requests = &ldquo;disable&rdquo;</h1></li>
+<li><h1>}</h1></li>
+</ul>
+</li>
+<li>将373行修改为如下褐色加粗字体所示：
+
+<ul>
+<li>server.upload-dirs = ( &ldquo;/opt/lighttpd-arm/upload&rdquo; )</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>修改modules.conf文件
+
+<ol>
+<li>找到43行，将光标定位到逗号后面，回车，插入如下内容(如果有就不用插入了)：
+
+<ul>
+<li>&ldquo;mod_alias&rdquo;,</li>
+</ul>
+</li>
+<li>使能fastcgi模块，将132行的注释符去掉，如下所示：
+
+<ul>
+<li>include &ldquo;conf.d/fastcgi.conf&rdquo;</li>
+</ul>
+</li>
+<li>使能cgi模块，将137行的注释符去掉，如下所示：
+
+<ul>
+<li>include &ldquo;conf.d/cgi.conf&rdquo;</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>修改conf.d/fastcgi.conf文件，在server.modules += (&ldquo;mod_fastcgi&rdquo;)下面添加如下：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">fastcgi</span><span class="p">.</span><span class="n">server</span> <span class="o">=</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;.php&quot;</span> <span class="o">=&gt;</span>
+</span><span class='line'>  <span class="p">(</span>
+</span><span class='line'>      <span class="s">&quot;localhost&quot;</span> <span class="o">=&gt;</span>
+</span><span class='line'>          <span class="p">(</span>
+</span><span class='line'>          <span class="s">&quot;socket&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/tmp/php-fastcgi.socket&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s">&quot;bin-path&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/opt/php-arm/bin/php-cgi&quot;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s">&quot;max-procs&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+</span><span class='line'>          <span class="s">&quot;check-local&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;disable&quot;</span>
+</span><span class='line'>          <span class="p">)</span>
+</span><span class='line'>  <span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>修改conf.d/cgi.conf文件，在server.modules += ( &ldquo;mod_cgi&rdquo; )下面添加如下,接着去掉注释：<code>alias.url += ( "/cgi-bin" =&gt; server_root + "/cgi-bin" )</code></li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">cgi</span><span class="p">.</span><span class="n">assign</span>         <span class="o">=</span> <span class="p">(</span><span class="s">&quot;.cgi&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+10. 在webpages文件夹下面添加网页文件和php文件进行测试
+11. 开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></p>
 
 <h2>Qt移植</h2>
 
