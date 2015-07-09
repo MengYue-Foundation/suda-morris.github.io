@@ -975,8 +975,8 @@
 <li>将104和105行注释掉，如下所示：
 
 <ul>
-<li><h1>server.username  = &ldquo;lighttpd&rdquo;</h1></li>
-<li><h1>server.groupname = &ldquo;lighttpd&rdquo;</h1></li>
+<li>#server.username  = &ldquo;lighttpd&rdquo;</li>
+<li>#server.groupname = &ldquo;lighttpd&rdquo;</li>
 </ul>
 </li>
 <li>将115行修改为如下褐色加粗字体所示：
@@ -988,21 +988,21 @@
 <li>将127行注释掉，如下所示：
 
 <ul>
-<li><h1>server.pid-file = state_dir + &ldquo;/lighttpd.pid&rdquo;</h1></li>
+<li>#server.pid-file = state_dir + &ldquo;/lighttpd.pid&rdquo;</li>
 </ul>
 </li>
 <li>如果不需要查看错误日志文件，可以将141行注释掉，如下所示：
 
 <ul>
-<li><h1>server.errorlog             = log_root + &ldquo;/error.log&rdquo;</h1></li>
+<li>#server.errorlog             = log_root + &ldquo;/error.log&rdquo;</li>
 </ul>
 </li>
 <li>将152行、158行、191行注释掉，如下所示：
 
 <ul>
-<li><h1>include &ldquo;conf.d/access_log.conf&rdquo;</h1></li>
-<li><h1>include &ldquo;conf.d/debug.conf&rdquo;</h1></li>
-<li><h1>server.network-backend = &ldquo;linux-sendfile&rdquo;</h1></li>
+<li>#include &ldquo;conf.d/access_log.conf&rdquo;</li>
+<li>#include &ldquo;conf.d/debug.conf&rdquo;</li>
+<li>#server.network-backend = &ldquo;linux-sendfile&rdquo;</li>
 </ul>
 </li>
 <li>根据系统资源设置207行和225行的数值，本系统的设置分别如下褐色加粗字体所示：
