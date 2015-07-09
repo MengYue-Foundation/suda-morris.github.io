@@ -1015,9 +1015,9 @@
 <li>将314至316行注释掉，如下所示：
 
 <ul>
-<li><h1>$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</h1></li>
-<li><h1>server.range-requests = &ldquo;disable&rdquo;</h1></li>
-<li><h1>}</h1></li>
+<li>#$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</li>
+<li>#  server.range-requests = &ldquo;disable&rdquo;</li>
+<li>#}</li>
 </ul>
 </li>
 <li>将373行修改为如下褐色加粗字体所示：
@@ -1092,9 +1092,13 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>
-10. 在webpages文件夹下面添加网页文件和php文件进行测试
-11. 开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></p>
+<p></p>
+
+<ol>
+<li>在webpages文件夹下面添加网页文件和php文件进行测试</li>
+<li>开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></li>
+</ol>
+
 
 <h2>Qt移植(Qt支持的嵌入式Linux平台需要有frambuffer支持)</h2>
 

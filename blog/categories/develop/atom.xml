@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-09T16:42:35+08:00</updated>
+  <updated>2015-07-09T16:43:58+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -908,9 +908,9 @@ export CC_FOR_BUILD=gcc
 <li>将314至316行注释掉，如下所示：
 
 <ul>
-<li><h1>$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</h1></li>
-<li><h1>server.range-requests = &ldquo;disable&rdquo;</h1></li>
-<li><h1>}</h1></li>
+<li>#$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</li>
+<li>#  server.range-requests = &ldquo;disable&rdquo;</li>
+<li>#}</li>
 </ul>
 </li>
 <li>将373行修改为如下褐色加粗字体所示：
@@ -959,11 +959,11 @@ fastcgi.server = (
  )
 )
 </code></li>
-<li>修改conf.d/cgi.conf文件，在server.modules += ( &ldquo;mod_cgi&rdquo; )下面添加如下,接着去掉注释：<code>alias.url += ( "/cgi-bin" =&gt; server_root + "/cgi-bin" )</code>
+<li><p>修改conf.d/cgi.conf文件，在server.modules += ( &ldquo;mod_cgi&rdquo; )下面添加如下,接着去掉注释：<code>alias.url += ( "/cgi-bin" =&gt; server_root + "/cgi-bin" )</code>
 <code>
 cgi.assign      = (".cgi" =&gt; "")
-</code></li>
-<li>在webpages文件夹下面添加网页文件和php文件进行测试</li>
+</code></p></li>
+<li><p>在webpages文件夹下面添加网页文件和php文件进行测试</p></li>
 <li>开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></li>
 </ol>
 
