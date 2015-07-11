@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-09T16:47:06+08:00</updated>
+  <updated>2015-07-11T15:01:15+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -7779,26 +7779,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 </ul>
 
 
-<h2>编译tslib</h2>
-
-<ol>
-<li><a href="http://download.csdn.net/detail/liuqiqi677/3177449">源码下载地址</a></li>
-<li>解压缩，进入tslib源码文件夹</li>
-<li><code>./autogen.sh</code>生成configure源代码配置文件</li>
-<li><code>./configure --host=arm-linux --disable-h3600 --disable-arctic2 --disable-mk712 --disable-collie --disable-corgi --disable-ucb1x00 --with-gnu-ld --prefix=/embeded/tslib_install ac_cv_func_malloc_0_nonnull=yes</code> 这里，&ndash;host的含义是你要安装的目标系统，后面的&ndash;disable 是因为我们不编译对指定触摸屏的支持，我们选择支持的是Linux的input子系统，&ndash;with-gnu-ld是确认使用GNU的LD连接器，因为我们使用的就是GNU的编译器，所以选择这一项。&ndash;prefix选项是指定安装的位置。ac_cv_func_malloc_0_nonnull会在./configure执行阶段测试GNU内置的malloc函数的功能是否可用或者说是否兼容</li>
-<li>进入安装目录，这里是/embeded/tslib_install,进入etc目录，打开ts.conf进行修改.其中pthres主要用于处理触摸屏的灵敏度，而variance和dejitter分别用于处理触摸屏的滤波和去噪的算法，linear是触摸屏的坐标变换。
-
-<ul>
-<li>module_raw input</li>
-<li>module pthres pmin=1</li>
-<li>module variance delta=30</li>
-<li>module dejitter delta=100</li>
-<li>module linear</li>
-</ul>
-</li>
-</ol>
-
-
 <h2>Uboot常用命令</h2>
 
 <blockquote><ol>
@@ -7966,6 +7946,18 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 <li>yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料</li>
 <li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。</li>
 <li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。</li>
+</ol>
+
+
+<h2>交叉编译移植所要修改的环境变量</h2>
+
+<ol>
+<li>CC编译器，系统默认gcc，需要修改为arm-linux-gcc</li>
+<li>AR库工具，用以创建和修改库，需要修改为arm-linux-ar</li>
+<li>LD链接器，系统默认为ld，需要修改为arm-linux-ld</li>
+<li>RANLIB随机库创建器，系统默认为ranlib，需要修改为arm-linux-ranlib</li>
+<li>AS汇编器，系统默认为as，需要修改为arm-linux-as</li>
+<li>NM库查看工具，系统默认为nm，需要修改为arm-linux-nm</li>
 </ol>
 
 
@@ -8584,11 +8576,64 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 </ol>
 
 
+<h2>MP3播放器madplay移植</h2>
+
+<ol>
+<li><a href="ftp://ftp.mars.org/pub/mpeg/">进入官网下载3个源码包</a></li>
+<li>移植libid3tag库需要依赖zlib库，所以需要先前把zlib的头文件和动态链接库文件保存在交叉编译器的头文件路径和库文件路径下</li>
+<li>进入libid3tag源码文件夹，执行配置命令：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
+<li>make &amp;&amp; make install，把生成的头文件和库文件放入交叉编译器中</li>
+<li>进入libmad源码文件夹，执行配置命令：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
+<li>make &amp;&amp; make install,把生成的头文件和库文件放入交叉编译器中</li>
+<li>进入madplay源码文件夹，执行配置文件：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
+<li>make &amp;&amp; make install</li>
+</ol>
+
+
+<h2>移植嵌入式ssh服务器-dropbear</h2>
+
+<ol>
+<li><a href="http://matt.ucc.asn.au/dropbear/">下载源码包，解压缩</a></li>
+</ol>
+
+
+<h2>编译tslib</h2>
+
+<ol>
+<li><a href="http://download.csdn.net/detail/liuqiqi677/3177449">源码下载地址</a></li>
+<li>解压缩，进入tslib源码文件夹</li>
+<li><code>./autogen.sh</code>生成configure源代码配置文件</li>
+<li><code>./configure --host=arm-linux --disable-h3600 --disable-arctic2 --disable-mk712 --disable-collie --disable-corgi --disable-ucb1x00 --with-gnu-ld --prefix=/embeded/tslib_install ac_cv_func_malloc_0_nonnull=yes</code> 这里，&ndash;host的含义是你要安装的目标系统，后面的&ndash;disable 是因为我们不编译对指定触摸屏的支持，我们选择支持的是Linux的input子系统，&ndash;with-gnu-ld是确认使用GNU的LD连接器，因为我们使用的就是GNU的编译器，所以选择这一项。&ndash;prefix选项是指定安装的位置。ac_cv_func_malloc_0_nonnull会在./configure执行阶段测试GNU内置的malloc函数的功能是否可用或者说是否兼容</li>
+<li>进入安装目录，这里是/embeded/tslib_install,进入etc目录，打开ts.conf进行修改.其中pthres主要用于处理触摸屏的灵敏度，而variance和dejitter分别用于处理触摸屏的滤波和去噪的算法，linear是触摸屏的坐标变换。
+
+<ul>
+<li>module_raw input</li>
+<li>module pthres pmin=1</li>
+<li>module variance delta=30</li>
+<li>module dejitter delta=100</li>
+<li>module linear</li>
+</ul>
+</li>
+</ol>
+
+
 <h2>Qt移植(Qt支持的嵌入式Linux平台需要有frambuffer支持)</h2>
 
 <ol>
 <li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包，解压缩</a></li>
+<li>进入源代码根文件目录，执行配置命令如下：</li>
 </ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
+</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
