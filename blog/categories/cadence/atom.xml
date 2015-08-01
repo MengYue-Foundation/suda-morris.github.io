@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: cadence | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/cadence/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-08-01T21:04:18+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cadence-Allegro]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/07/27/cadence-allegro/"/>
+    <updated>2015-07-27T21:55:59+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/07/27/cadence-allegro</id>
+    <content type="html"><![CDATA[<h2>Cadence简介</h2>
+
+<ol>
+<li>Cadence公司著名的软件有Cadence Allegro（布局布线设计工具），Cadence LDV，Cadence IC，Cadence OrCAD等</li>
+<li></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

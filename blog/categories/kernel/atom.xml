@@ -4,7 +4,7 @@
   <title><![CDATA[Category: kernel | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/kernel/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-11T15:01:15+08:00</updated>
+  <updated>2015-08-01T21:04:18+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Linux内核构造机制]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/26/kbuild-makefile/"/>
-    <updated>2015-06-26T11:10:28+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/26/kbuild-makefile</id>
+    <title type="html"><![CDATA[Linux_Kernel]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/07/20/linux-kernel/"/>
+    <updated>2015-07-20T23:30:54+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/07/20/linux-kernel</id>
     <content type="html"><![CDATA[<h2>内核make流程</h2>
 
 <ol>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-07-11T15:01:15+08:00</updated>
+  <updated>2015-08-01T21:04:18+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -978,8 +978,32 @@ cgi.assign      = (".cgi" =&gt; "")
 
 <ol>
 <li><a href="http://matt.ucc.asn.au/dropbear/">下载源码包，解压缩</a></li>
-</ol>
-
+<li>配置：
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>./configure &ndash;prefix=$PWD/results \
+</span><span class='line'>&ndash;host=arm-linux \
+</span><span class='line'>&ndash;with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib&lt;/li&gt;
+</span><span class='line'>&lt;/ol&gt;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;make
+</span><span class='line'>make scp
+</span><span class='line'>make install
+</span><span class='line'>cp scp results/bin
+</span><span class='line'>arm-linux-strip results/bin/&lt;em&gt; results/sbin/&lt;/em&gt;</span></code></pre></td></tr></table></div></figure>
+3. 将生成的bin，sin放到开发板相应文件夹下</p>
 
 <h2>编译tslib</h2>
 
@@ -1008,10 +1032,115 @@ cgi.assign      = (".cgi" =&gt; "")
 <li>进入源代码根文件目录，执行配置命令如下：
 <code>
 \#!/bin/sh
-./configure --prefix=$PWD/results \
---host=arm-linux \
---with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib
+./configure -prefix /opt/qt4.8.5-arm \
+-opensource \
+-confirm-license \
+-release \
+-shared \
+-embedded arm \                         #选择Qt的嵌入式平台为arm平台
+-xplatform qws/linux-arm-g++ \
+-platform qws/linux-x86-g++ \
+-depths 4,8,16,18,24,32 \
+-optimized-qmake \
+-qt-sql-sqlite \
+-qt-zlib \
+-webkit \
+-qt-gfx-transformed \
+-qt-libjpeg \                           #使Qt支持jpeg图片显示
+-qt-libpng \
+-qt-libtiff \
+-qt-libmng  \
+-qt-freetype \
+-little-endian \
+-host-little-endian \
+-make libs \
+-nomake tools \
+-nomake docs \
+-make examples \
+-make demos \
+-qt-kbd-linuxinput \
+-no-qt3support \
+-no-phonon \
+-no-phonon-backend \
+-no-gif \
+-no-dbus \
+-no-rpath \
+-qt-mouse-tslib \                       #使Qt支持触摸方式，需要额外指定tslib的路径
+-qt-mouse-pc \
+-no-mouse-linuxtp \
+-qt-gfx-linuxfb \
+-no-neon \
+-no-nis \
+-no-cups \
+-no-openssl \
+-no-fast \
+-no-scripttools \
+-no-mmx \
+-no-3dnow \
+-no-sse \
+-no-sse2 \
+-I /embeded/WenRisOS/rootfs/tslib/target-arm/include \
+-L /embeded/WenRisOS/rootfs/tslib/target-arm/lib \
+-R /embeded/WenRisOS/rootfs/tslib/target-arm/lib \
+-D__ARM_ARCH_5TEJ_                      #选择处理器平台
 </code></li>
+<li>make &amp;&amp; make install</li>
+<li>将生成的lib文件和plugins文件部署到根文件系统中，字体保存在lib下的fonts目录下</li>
+</ol>
+
+
+<h2>gdb/gdbserver</h2>
+
+<blockquote><p>gdb和gdbserver可以看作两个不同的命令。gdb放在宿主机上运行，而gdbserver被放在开发板上运行。启动gdbserver运行制定的需要调试的可执行文件，而在宿主机中使用gdb来运行同样的可执行文件，通过串口或者tcp就可以达到远程调试的目的。由于宿主机gdb所运行的程序和gdbserver是一样的，都是arm指令的elf文件，那么作为宿主机gdb工具必须能够明确地知道遵循ABI接口的ARM的ELF文件格式。因此，传统的宿主机自身携带的gdb不能用于调试嵌入式ARM程序，我们需要下载gdb的源代码，增加对ARM的ELF格式的支持才能够调试ARM程序。</p></blockquote>
+
+<ol>
+<li>编译宿主机上的arm-linux-gdb程序（如果在busybox中添加过了gdb的选项，不必再编译arm-linux-gdb了，已经有了）
+
+<ul>
+<li>./configure &ndash;target=arm-linux &ndash;enable-werror=no</li>
+<li>&ndash;target指定宿主机调试的目标机类型，在编译的时候会编译出符合arm-linux的调试的gdb工具</li>
+<li>&ndash;enable-werror的含义是在编译的时候增加-Werror选项，这样会把一些原本的警告信息当做错误。由于gdb的部分代码写的并不规范，所以-Werror会报出一些错误</li>
+</ul>
+</li>
+<li>进入gdb/gdbserver目录下，执行以下命令：
+
+<ul>
+<li>./configure &ndash;host=arm-linux &ndash;target=arm-linux</li>
+<li>make</li>
+<li>arm-linux-strip gdbserver</li>
+<li>&ndash;host指定编译出的工具运行在什么平台</li>
+<li>&ndash;target为指定的编译器配置目标环境</li>
+</ul>
+</li>
+<li>gdb远程调试命令
+
+<ul>
+<li>Target remote ip：port executable；target命令用于连接一个远程的gdbserver，ip和port为远程主机的ip和端口号，executable为gdbserver需要调试的程序，这个文件在gdb所在的宿主机上不能被strip，否在调试需要的symbols就不存在了</li>
+<li>file executable；在gdb调试之前，需要使用file命令获取可执行文件的符号，以获得调试需要的符号列表</li>
+<li>show/set sysroot；因为调试的时候需要用到交叉编译器的库文件和工具，所以必须制定，set用于设置sysroot路径，show用于显示gdb内置变量的值</li>
+<li>show/set solib-search-path;solib-search-path必须设置，因为远程调试的程序在运行时会调用到动态库，需要把所有的动态库都加载到这个变量中，像LD_LIBRARY_PATH一样</li>
+<li>List/l;调试的时候我们可以通过这个命令查看源代码</li>
+<li>break/b linenumber/function;设置断点，在运行时会停止在设置的断点处，断点可以设置为代码的行号，也可以在指定的函数处停止</li>
+<li>continue/c;继续，使用gdb/gdbserver，没有run这个命令，因为程序实际通过stub在gdbserver所对应的开发板上运行</li>
+<li>next/n;执行一条指令，但不会进入函数内部</li>
+<li>print/p;打印变量的值</li>
+<li>step/s;单步跟踪，如果有函数，会进入函数内部，可以通过finish命令退出函数</li>
+<li>quit/q;退出gdb调试环境</li>
+</ul>
+</li>
+<li>步骤演示
+
+<ul>
+<li>开发板执行arm-linux-gdbserver命令，开启调试服务端程序test：arm-linux-gdbserver 192.168.1.230:6410 test;命令的参数类型为<ip>:<port> <app>,ip为开发板的网络地址，端口号由用户指定，代表服务应用程序所使用的网络端口，app为需要调试的应用程序的名字</li>
+<li>宿主机把调试文件载入gdb调试器（可执行文件必须要有调试信息，比如编译时候加上-g，Qt下是qmake CONFIG+=debug）：arm-linux-gdb test</li>
+<li>向应用程序传递参数，比如：set args -qws</li>
+<li>确认参数是否被正学设置：show args</li>
+<li>设置交叉编译器动态库文件路径：set sysroot /embeded/wenris-xtools/arm-wenris-linux-gnueabi/sysroot;如果在交叉编译的时候指定&ndash;with-sysroot，则可以省略。最后通过show sysroot命令查看是否设置成功</li>
+<li>设置程序运行时的动态库：set solib-search-path /work/qt/qt-4.7-arm/lib:/work/qt/tslib_install/lib:/work/qt/tslib_install/lib/ts</li>
+<li>链接到gdbserver：target remote 192.168.1.230:6410</li>
+<li>执行gdb相关的代码调试命令进行远程调试</li>
+</ul>
+</li>
 </ol>
 
 

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: qt4 | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/qt4/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-08-01T21:04:18+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CPP-Knowledges]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/07/20/cpp-knowledges/"/>
+    <updated>2015-07-20T09:42:10+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/07/20/cpp-knowledges</id>
+    <content type="html"><![CDATA[<h2>流</h2>
+
+<ol>
+<li>标准C++中，iostream中常见的操作算子(manipulator):flush,endl,oct(后面跟的数据解析成八进制)，hex(后面跟的数解析成十六进制)，dec(后面跟的数解析成十进制)，boolalpha(后面跟的数据解析成布尔类型，并用true和false来显示)，showpos(后面跟的数据显示正负号)，fixed(后面跟的数不要四舍五入),noshowpos(后面跟的数如果是正数就显示+号),showpoint(后面跟的数据显示小数点)，scientific(后面跟的数据以科学计数法的形式表示);在Qt中附加的一些操作算子：forcesign(后面的数据显示正负号),forcepoint(后面的数据显示小数点),noforcesign(后面的数据如果是正数就不显示+号)</li>
+<li>标准C++的iostream中，getline(cin,your_string)语句能够从标准输入流中提取一行字符串</li>
+<li>在Qt中很容易用与iostream对应的同一个名称定义QTextStream，由于控制台输入和输出主要用在调试过程，所以Qt提供了一个全局函数qDebug(),用它可以方便地将消息发送到控制台，且具有灵活的接口</li>
+<li>流被用来读取/写入文件、连接网络和处理字符串，它有一个有用的特性是易于从混合数据类型中得到字符串。</li>
+<li>STL中的字符串流：std::ostringstream,常用来定义一个string_buffer;</li>
+<li>STL中的文件流std::ofstream,用来定义一个文件流管道如ofstream outf后绑定一个文件：outf.open(&ldquo;file path&rdquo;)</li>
+<li>STL中的输入文件流std::ifstream,打开文件instream inf;inf.open(&ldquo;file path&rdquo;),判断是否读到了文件末尾inf.eof(),读取一行数据getline(inf,newstr)</li>
+<li>STL中的stringstream对应于Qt里面的QString，STL中的fstream对应于Qt里面的QFile，STL中的iostream对应于Qt中的QTextStream</li>
+</ol>
+
+
+<h2>运算符new和delete</h2>
+
+<ul>
+<li>new运算符从堆(heap)中分配内存空间，并且返回指向新分配的对象的指针，如果由于某种原因无法完成内存分配，就会抛出一个异常</li>
+<li>delete运算符的作用是释放动态分配的内存并将其返回给堆。delete操作只能用于由new运算符返回的指针或者空指针。</li>
+</ul>
+
+
+<h2>智能指针</h2>
+
+<ul>
+<li>智能指针是一个对象，它用来保存和管理指向堆对象的指针，其行为与常规的指针非常类似，只是它会在合适的时刻自动删除堆对象。这个类在Qt中对应的是QPointer，在标准库中是std::auto_ptr,在Boost中是shared_ptr</li>
+</ul>
+
+
+<h2>引用</h2>
+
+<ul>
+<li>在C++中，引用提供了一种给左值赋予一个别名的机制，对于避免费事或者不必要的复制引用是非常有用的，例如向函数传送一个非常大的对象作为参数。<strong>引用必须在声明时进行初始化且其初始化器也必须是一个左值</strong>,例如：<code>int n;int&amp; rn=n;</code>引用变量rn是实际变量n的别名</li>
+<li>一种好的编程实践是：对于不需要通过函数来进行变化的指针和引用参数，应使用const来保护它们。只读引用参数的能力在于：对按引用传递参数提供了高效性，而对按值传递参数提供了安全性</li>
+</ul>
+
+
+<h2>类的友元</h2>
+
+<ul>
+<li>友元机制允许非成员函数访问一个类的私有数据，关键字friend可以放在类的生命或者函数声明之前，友元声明位于类定义之内</li>
+<li>通常而言，为了达到下面两个目的才会使用友元函数：
+
+<ol>
+<li>为了使用工厂方法，此时需要对某个类强制实施某些创建规则</li>
+<li>为了使用全局运算符函数，比如operator&lt;&lt;()和operator>>()，此时不希望将运算符作为某个类的成员函数，或者没有写入类定义的权利</li>
+</ol>
+</li>
+</ul>
+
+
+<h2>运算符重载</h2>
+
+<ol>
+<li>C++使用关键字operator为运算符赋予新的含义</li>
+<li>例如重载&lt;&lt;运算符：friend ostream&amp; operator&lt;&lt;(ostream&amp; out,const Complex&amp; c);</li>
+</ol>
+
+
+<h2>define与inline的区别</h2>
+
+<blockquote><p>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</p></blockquote>
+
+<h2>其他</h2>
+
+<ul>
+<li>C++中使用struct的大多数情形是需要将数据项分组在一起，但是不需要成员函数</li>
+<li>const成员函数中不允许对数据成员进行修改，如果修改，编译器将报错，任何不会修改数据成员的函数都应该声明为const类型。如果在编写const成员函数时，不慎修改了数据成员，或者调用了其它非const成员函数，编译器将指出错误。注意可以在const成员函数里面更改可变成员(mutable member)的值，而常规的数据成员的值不能改变</li>
+<li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
+<li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
+<li>const数据成员的初始化必须写在初始化列表中</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[QT4知识点]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/07/19/qt4-knowldegs/"/>
+    <updated>2015-07-19T20:52:44+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/07/19/qt4-knowldegs</id>
+    <content type="html"><![CDATA[<h2>Qt核心模块</h2>
+
+<p>Qt是一个大库，由数个较小的库或者模块组成，其中最为常见的有如下这些，除了core和gui，其余模块都需要在qmake的工程文件中启用：</p>
+
+<ol>
+<li>core：包括QObject，QThread，QFile，Qvariant等等</li>
+<li>gui：所有从QWidget派生的类外加一些相关的类</li>
+<li>xml：用于解析和序列化XML</li>
+<li>sql：用于与SQL数据库通信</li>
+<li>phonon：用于播放多媒体文件</li>
+<li>webkit：用于使用一种嵌入式web浏览器，QtWebkit</li>
+</ol>
+
+
+<h2>工程文件.pro</h2>
+
+<ol>
+<li>对于Qt程序，程序不必编写Makefile文件，Qt提供了一个qmake工具，它会根据工程文件来产生对应的Makefile文件。亦可以用qmake -project命令产生一个简单的工程文件，当执行这个命令的时候，qmake会将当前工作目录下的全部源文件(<em>.cpp)作为SOURCES列出来，而将该目录下的全部头文件(</em>.h)作为HEADERS列出来。最终生成的可执行文件的名称由TARGET变量指定，其默认为工程的名称</li>
+<li>TEMPLATE=app，表明qmake应该以一个适合建立这个应用的模板化的Makefile开始，如果这个工程文件用于建立库，则应当使用语句TEMPLATE=lib，以表明应使用Makefile库模板。第三种可能是源代码文件分布在多个子目录下，而每一个子目录下的文件都具有自己的工程文件，这种情况下，位于父目录的工程文件中应该包含语句TMPLATE=subdirs，这会导致在父目录和每一个子目录下都生成Malefile</li>
+</ol>
+
+
+<h2>Qt中获取命令行参数</h2>
+
+<ul>
+<li>QCoreApplication app(argc,argv);</li>
+<li>QStringList arglist = app.arguments();</li>
+<li>arglist.size等于命令行参数的个数</li>
+</ul>
+
+
+<h2>Qt中的字符串</h2>
+
+<ol>
+<li>const char*，主要用于与C语言库的接口</li>
+<li>来自C++标准库的string，任何地方都可以使用这种类型</li>
+<li>QString，优于STL中的字符串类型，有着更加丰富的API而且更加容易使用。</li>
+<li>在Qt中使用类似于iostream中的cin，cout：
+
+<ul>
+<li><h1>include &lt;QString></h1></li>
+<li><h1>include &lt;QTextStream></h1></li>
+<li>QTextStream cout(stdout)</li>
+<li>QTextStream cin(stdin)</li>
+<li>cin.readLine()</li>
+</ul>
+</li>
+<li>sizeof(QString)=4,sizeof(QChar)=2,sizeof(QDate)=4,sizeof(qint32)=4,sizeof(qint64)=8;QString是一个使用动态内存的复杂类，因此必须调用length()来获得字符串中QChar的数量。由于QChar的大小为char的两倍，所以在计算内存中QString中实际大小时需要将长度乘以2，在运行时，QString能够与具有同一个值的另一个字符串共享内存</li>
+</ol>
+
+
+<h2>去掉最大、最小、关闭按钮</h2>
+
+<blockquote><p>setWindowFlags(windowFlags()|Qt::FramelessWindowHint|Qt::WindowTitleHint);</p></blockquote>
+
+<h2>使用中文</h2>
+
+<blockquote><ol>
+<li>下载qpf格式的font_wenquanyi字体，将下载的字库文件复制到qt安装目录的lib/fonts子目录下</li>
+</ol>
+</blockquote>
+
+<pre><code>\#include &lt;QTextCodec&gt;
+    QApplication a(argc, argv);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));   //中文支持
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));       //支持Tr中文
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); //支持中文文件名显示
+    QFont font;
+    font.setPointSize(160);                                             //实际上是16的字号，但设成16却不行
+    font.setFamily(("wenquanyi"));
+    font.setBold(false);
+    a.setFont(font);
+</code></pre>
+
+<h2>隐藏鼠标箭头</h2>
+
+<blockquote><ol>
+<li>对于整个程序: QApplication::setOverrideCursor(Qt::BlankCursor);</li>
+<li>对单个控件：lable->setCursor(Qt::BlankCursor);//隐藏鼠标  label->setCursor(Qt::ArrowCursor);//显示正常鼠标</li>
+</ol>
+</blockquote>
+
+<h2>QStringList与迭代</h2>
+
+<blockquote><ol>
+<li>QStringList实际上就是一个QList<QString>,此外，QStringList还具有一些特别针对字符串的方便函数，例如indexOf(),join()和replaceInStrings()。利用split()函数和join()函数，在列表与字符串之间进行转换相当简单
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="n">winter</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">December</span><span class="p">,</span><span class="n">January</span><span class="p">,</span><span class="n">February</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">spring</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">March</span><span class="p">,</span><span class="n">April</span><span class="p">,</span><span class="n">May</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">summer</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">June</span><span class="p">,</span><span class="n">July</span><span class="p">,</span><span class="n">August</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">fall</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">September</span><span class="p">,</span><span class="n">October</span><span class="p">,</span><span class="n">November</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;;</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">blockquote</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">QStringList</span> <span class="n">list</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">winter</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span> <span class="o">+=</span> <span class="n">spring</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">summer</span><span class="p">);</span>
+</span><span class='line'><span class="n">list</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span> <span class="n">fall</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">QString</span> <span class="n">allmonths</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;);</span> <span class="o">/&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="err">从列表到字符串，以逗号为分隔符</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'><span class="n">QStringList</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">allmonths</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;,</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;);</span> <span class="o">/&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="err">从字符串到列表，以逗号为分隔符</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">foreach</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="n">str</span><span class="p">,</span><span class="n">list</span><span class="p">){</span> <span class="o">/&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">Qt</span> <span class="n">foreach</span><span class="err">循环</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'>    <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">for</span><span class="p">(</span><span class="n">QStringList</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">){</span>
+</span><span class='line'>    <span class="n">QString</span> <span class="n">current</span> <span class="o">=</span> <span class="o">*</span><span class="n">it</span><span class="p">;</span>
+</span><span class='line'>    <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">QListIterator</span><span class="o">&lt;</span><span class="n">QString</span><span class="o">&gt;</span> <span class="n">itr</span><span class="p">(</span><span class="n">list2</span><span class="p">);</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="n">hasNext</span><span class="p">()){</span>
+</span><span class='line'>    <span class="n">QString</span> <span class="n">current</span> <span class="o">=</span> <span class="n">itr</span><span class="p">.</span><span class="n">next</span><span class="p">();</span>
+</span><span class='line'>    <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<h2>QDir，QFileInfo和QDirIterator</h2>
+
+<pre><code class="C 利用QDir类和QFileInfo类获取目录的内容列表以及关于每一个项的信息">void recurseAddDir(QDir d,bool recursive=true,bool symlinks=false){
+    d.setSorting(QDir::Name);
+    QDir::Filters df = QDir::Files | QDir::NoDotAndDotDot;
+    if(recursive) df |= QDir::Dirs;
+    if(not symlinks) df |= QDir::NoSymLinks;
+    QStringList qsl = d.entryList(df,QDir::Name|QDir::DirsFirst);
+
+    foreach(const QString &amp;entry,qsl){
+        QFileInfo finfo(d,entry);
+        if(finfo.isDir()){
+            QDir sd(finfo.absoluteFilePath());
+            recurseAddDir(sd);
+        }else{
+            if(finfo.completeSuffix()=="mp3"){
+                addMp3File(finfo.absoluteFilePath());
+            }
+        }
+    }
+}
+</code></pre>
+
+<pre><code class="C 使用QDirIterator实现相同功能">QDir dir = QDir::current();
+QDirIterator qdi(dir.absolutePath(), QStringList() &lt;&lt; "*.mp3", QDir::NoSymLinks | QDir::Files, QDirIterator::Subdirectories);
+while(qdi.hasNext){
+    addMp3File(qdi.next());
+    //TODO
+}
+</code></pre>
+
+<h2>QDate</h2>
+
+<blockquote><ol>
+<li>static QDate currentDate = QDate::currentDate();</li>
+</ol>
+</blockquote>
+]]></content>
+  </entry>
+  
+</feed>

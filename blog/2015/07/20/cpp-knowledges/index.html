@@ -1,0 +1,259 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CPP-Knowledges - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="流 标准C++中，iostream中常见的操作算子(manipulator):flush,endl,oct(后面跟的数据解析成八进制)，hex(后面跟的数解析成十六进制)，dec(后面跟的数解析成十进制)，boolalpha(后面跟的数据解析成布尔类型，并用true和false来显示)， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">CPP-Knowledges</h2>
+	<div class="entry-content"><h2>流</h2>
+
+<ol>
+<li>标准C++中，iostream中常见的操作算子(manipulator):flush,endl,oct(后面跟的数据解析成八进制)，hex(后面跟的数解析成十六进制)，dec(后面跟的数解析成十进制)，boolalpha(后面跟的数据解析成布尔类型，并用true和false来显示)，showpos(后面跟的数据显示正负号)，fixed(后面跟的数不要四舍五入),noshowpos(后面跟的数如果是正数就显示+号),showpoint(后面跟的数据显示小数点)，scientific(后面跟的数据以科学计数法的形式表示);在Qt中附加的一些操作算子：forcesign(后面的数据显示正负号),forcepoint(后面的数据显示小数点),noforcesign(后面的数据如果是正数就不显示+号)</li>
+<li>标准C++的iostream中，getline(cin,your_string)语句能够从标准输入流中提取一行字符串</li>
+<li>在Qt中很容易用与iostream对应的同一个名称定义QTextStream，由于控制台输入和输出主要用在调试过程，所以Qt提供了一个全局函数qDebug(),用它可以方便地将消息发送到控制台，且具有灵活的接口</li>
+<li>流被用来读取/写入文件、连接网络和处理字符串，它有一个有用的特性是易于从混合数据类型中得到字符串。</li>
+<li>STL中的字符串流：std::ostringstream,常用来定义一个string_buffer;</li>
+<li>STL中的文件流std::ofstream,用来定义一个文件流管道如ofstream outf后绑定一个文件：outf.open(&ldquo;file path&rdquo;)</li>
+<li>STL中的输入文件流std::ifstream,打开文件instream inf;inf.open(&ldquo;file path&rdquo;),判断是否读到了文件末尾inf.eof(),读取一行数据getline(inf,newstr)</li>
+<li>STL中的stringstream对应于Qt里面的QString，STL中的fstream对应于Qt里面的QFile，STL中的iostream对应于Qt中的QTextStream</li>
+</ol>
+
+
+<h2>运算符new和delete</h2>
+
+<ul>
+<li>new运算符从堆(heap)中分配内存空间，并且返回指向新分配的对象的指针，如果由于某种原因无法完成内存分配，就会抛出一个异常</li>
+<li>delete运算符的作用是释放动态分配的内存并将其返回给堆。delete操作只能用于由new运算符返回的指针或者空指针。</li>
+</ul>
+
+
+<h2>智能指针</h2>
+
+<ul>
+<li>智能指针是一个对象，它用来保存和管理指向堆对象的指针，其行为与常规的指针非常类似，只是它会在合适的时刻自动删除堆对象。这个类在Qt中对应的是QPointer，在标准库中是std::auto_ptr,在Boost中是shared_ptr</li>
+</ul>
+
+
+<h2>引用</h2>
+
+<ul>
+<li>在C++中，引用提供了一种给左值赋予一个别名的机制，对于避免费事或者不必要的复制引用是非常有用的，例如向函数传送一个非常大的对象作为参数。<strong>引用必须在声明时进行初始化且其初始化器也必须是一个左值</strong>,例如：<code>int n;int&amp; rn=n;</code>引用变量rn是实际变量n的别名</li>
+<li>一种好的编程实践是：对于不需要通过函数来进行变化的指针和引用参数，应使用const来保护它们。只读引用参数的能力在于：对按引用传递参数提供了高效性，而对按值传递参数提供了安全性</li>
+</ul>
+
+
+<h2>类的友元</h2>
+
+<ul>
+<li>友元机制允许非成员函数访问一个类的私有数据，关键字friend可以放在类的生命或者函数声明之前，友元声明位于类定义之内</li>
+<li>通常而言，为了达到下面两个目的才会使用友元函数：
+
+<ol>
+<li>为了使用工厂方法，此时需要对某个类强制实施某些创建规则</li>
+<li>为了使用全局运算符函数，比如operator&lt;&lt;()和operator>>()，此时不希望将运算符作为某个类的成员函数，或者没有写入类定义的权利</li>
+</ol>
+</li>
+</ul>
+
+
+<h2>运算符重载</h2>
+
+<ol>
+<li>C++使用关键字operator为运算符赋予新的含义</li>
+<li>例如重载&lt;&lt;运算符：friend ostream&amp; operator&lt;&lt;(ostream&amp; out,const Complex&amp; c);</li>
+</ol>
+
+
+<h2>define与inline的区别</h2>
+
+<blockquote><p>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</p></blockquote>
+
+<h2>其他</h2>
+
+<ul>
+<li>C++中使用struct的大多数情形是需要将数据项分组在一起，但是不需要成员函数</li>
+<li>const成员函数中不允许对数据成员进行修改，如果修改，编译器将报错，任何不会修改数据成员的函数都应该声明为const类型。如果在编写const成员函数时，不慎修改了数据成员，或者调用了其它非const成员函数，编译器将指出错误。注意可以在const成员函数里面更改可变成员(mutable member)的值，而常规的数据成员的值不能改变</li>
+<li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
+<li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
+<li>const数据成员的初始化必须写在初始化列表中</li>
+</ul>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-20T09:42:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/c-plus-plus/'>c++</a>, <a class='category' href='/blog/categories/qt4/'>qt4</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/07/20/cpp-knowledges" data-title="CPP-Knowledges" data-url="http://suda-morris.github.io/blog/2015/07/20/cpp-knowledges/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

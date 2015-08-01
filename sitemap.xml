@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/27/cadence-allegro/</loc>
+    <lastmod>2015-07-27T21:55:59+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/22/tl-wr740n/</loc>
+    <lastmod>2015-07-22T09:51:38+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/20/linux-kernel/</loc>
+    <lastmod>2015-07-20T23:30:54+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/20/cpp-knowledges/</loc>
+    <lastmod>2015-07-20T09:42:10+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/19/qt4-knowldegs/</loc>
+    <lastmod>2015-07-19T20:52:44+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/07/13/ut4418-introduce/</loc>
+    <lastmod>2015-07-13T13:10:17+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2015/07/06/poe-introduce/</loc>
     <lastmod>2015-07-06T20:16:12+08:00</lastmod>
   </url>
@@ -11,10 +35,6 @@
   <url>
     <loc>http://suda-morris.github.io/blog/2015/06/27/c-language-review/</loc>
     <lastmod>2015-06-27T15:17:24+08:00</lastmod>
-  </url>
-  <url>
-    <loc>http://suda-morris.github.io/blog/2015/06/26/kbuild-makefile/</loc>
-    <lastmod>2015-06-26T11:10:28+08:00</lastmod>
   </url>
   <url>
     <loc>http://suda-morris.github.io/blog/2015/06/24/php-knowledge/</loc>
@@ -156,9 +176,6 @@
     <loc>http://suda-morris.github.io/blog/categories/php/</loc>
   </url>
   <url>
-    <loc>http://suda-morris.github.io/blog/categories/kernel/</loc>
-  </url>
-  <url>
     <loc>http://suda-morris.github.io/blog/categories/c/</loc>
   </url>
   <url>
@@ -166,5 +183,20 @@
   </url>
   <url>
     <loc>http://suda-morris.github.io/blog/categories/poe/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/categories/s5pv4418/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/categories/qt4/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/categories/c-plus-plus/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/categories/kernel/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/categories/cadence/</loc>
   </url>
 </urlset>

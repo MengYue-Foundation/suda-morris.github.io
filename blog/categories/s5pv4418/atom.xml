@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: s5pv4418 | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/s5pv4418/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-08-01T21:04:18+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[UT4418_Introduce]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/07/13/ut4418-introduce/"/>
+    <updated>2015-07-13T13:10:17+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/07/13/ut4418-introduce</id>
+    <content type="html"><![CDATA[<h2>S5PV4418简介</h2>
+
+<blockquote><p>S5PV4418处理器是三星2014年推出的4核处理器，使用Cortex-A9四核心，整体性能比Cortex-A8核心高出50%，提供6.4GB/s内存带宽，支持1080P的全高清视频输出，以及3D图形显示，支持LCD显示1080P高清电视输出等。完全是Exynos4412的升级版芯片，性能远远超过Exynos4412，并且基本兼容Exynos412</p></blockquote>
+
+<h2>开发板配置</h2>
+
+<ol>
+<li>4G iNand(SDIN5C1-4G),1G DDR3(H5TQ4G63AFR-PBC),三星电源管理芯片&ndash;NXE2000</li>
+<li>尺寸：120mm*90mm</li>
+<li>TF卡支持热插拔，容量最大支持32G</li>
+<li>设有开机键，长按3秒后开机</li>
+<li>设有复位键，长按3秒后硬件复位，在系统启动后，可以通过软件去配置PMU来改变复位键长按时间的长短</li>
+<li>通过SDA7123转换出VGA信号，VGA支持LCD同步显示，支持1080P视频输出</li>
+<li>HDMI信号通过MCU直接引出，减少了转换芯片的链接，支持与LCD同步播放视频，支持的视频输出格式为480P，720P,1080P</li>
+<li>以太网接口采用RTL8211E-VB-CG芯片，支持10M，100M，1000M网自适应</li>
+<li>配置了USB接口的wifi模块&ndash;RTL8188</li>
+<li>配置了FT-009红外接收头，支持红外遥控接收</li>
+</ol>
+
+
+<h2>开发环境搭建</h2>
+
+<ol>
+<li>使用虚拟机VirtualBox安装Ubuntu14.04.2LTS系统</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

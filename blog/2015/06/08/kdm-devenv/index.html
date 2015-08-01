@@ -1110,6 +1110,35 @@
 
 <ol>
 <li><a href="http://matt.ucc.asn.au/dropbear/">下载源码包，解压缩</a></li>
+<li>配置：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
+</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
+</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">make</span>
+</span><span class='line'><span class="n">make</span> <span class="n">scp</span>
+</span><span class='line'><span class="n">make</span> <span class="n">install</span>
+</span><span class='line'><span class="n">cp</span> <span class="n">scp</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span>
+</span><span class='line'><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span><span class="o">/*</span> <span class="n">results</span><span class="o">/</span><span class="n">sbin</span><span class="o">/*</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>将生成的bin，sin放到开发板相应文件夹下</li>
 </ol>
 
 
@@ -1145,11 +1174,168 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
 </pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
+</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">-</span><span class="n">prefix</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">qt4</span><span class="mf">.8.5</span><span class="o">-</span><span class="n">arm</span> \
+</span><span class='line'><span class="o">-</span><span class="n">opensource</span> \
+</span><span class='line'><span class="o">-</span><span class="n">confirm</span><span class="o">-</span><span class="n">license</span> \
+</span><span class='line'><span class="o">-</span><span class="n">release</span> \
+</span><span class='line'><span class="o">-</span><span class="n">shared</span> \
+</span><span class='line'><span class="o">-</span><span class="n">embedded</span> <span class="n">arm</span> <span class="err">\</span>                         <span class="err">#选择</span><span class="n">Qt</span><span class="err">的嵌入式平台为</span><span class="n">arm</span><span class="err">平台</span>
+</span><span class='line'><span class="o">-</span><span class="n">xplatform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
+</span><span class='line'><span class="o">-</span><span class="n">platform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
+</span><span class='line'><span class="o">-</span><span class="n">depths</span> <span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">32</span> \
+</span><span class='line'><span class="o">-</span><span class="n">optimized</span><span class="o">-</span><span class="n">qmake</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">sql</span><span class="o">-</span><span class="n">sqlite</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">zlib</span> \
+</span><span class='line'><span class="o">-</span><span class="n">webkit</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">transformed</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libjpeg</span> <span class="err">\</span>                            <span class="err">#使</span><span class="n">Qt</span><span class="err">支持</span><span class="n">jpeg</span><span class="err">图片显示</span>
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libpng</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libtiff</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libmng</span>  \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">freetype</span> \
+</span><span class='line'><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
+</span><span class='line'><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
+</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">libs</span> \
+</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">tools</span> \
+</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">docs</span> \
+</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">examples</span> \
+</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">demos</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">kbd</span><span class="o">-</span><span class="n">linuxinput</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">qt3support</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span><span class="o">-</span><span class="n">backend</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">gif</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">dbus</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">rpath</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">tslib</span> <span class="err">\</span>                      <span class="err">#使</span><span class="n">Qt</span><span class="err">支持触摸方式，需要额外指定</span><span class="n">tslib</span><span class="err">的路径</span>
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">pc</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">linuxtp</span> \
+</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">linuxfb</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">neon</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">nis</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">cups</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">openssl</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">fast</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">scripttools</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mmx</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="mi">3</span><span class="n">dnow</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse</span> \
+</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse2</span> \
+</span><span class='line'><span class="o">-</span><span class="n">I</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">include</span> \
+</span><span class='line'><span class="o">-</span><span class="n">L</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
+</span><span class='line'><span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
+</span><span class='line'><span class="o">-</span><span class="n">D__ARM_ARCH_5TEJ_</span>                      <span class="err">#选择处理器平台</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>make &amp;&amp; make install</li>
+<li>将生成的lib文件和plugins文件部署到根文件系统中，字体保存在lib下的fonts目录下</li>
+</ol>
+
+
+<h2>gdb/gdbserver</h2>
+
+<blockquote><p>gdb和gdbserver可以看作两个不同的命令。gdb放在宿主机上运行，而gdbserver被放在开发板上运行。启动gdbserver运行制定的需要调试的可执行文件，而在宿主机中使用gdb来运行同样的可执行文件，通过串口或者tcp就可以达到远程调试的目的。由于宿主机gdb所运行的程序和gdbserver是一样的，都是arm指令的elf文件，那么作为宿主机gdb工具必须能够明确地知道遵循ABI接口的ARM的ELF文件格式。因此，传统的宿主机自身携带的gdb不能用于调试嵌入式ARM程序，我们需要下载gdb的源代码，增加对ARM的ELF格式的支持才能够调试ARM程序。</p></blockquote>
+
+<ol>
+<li>编译宿主机上的arm-linux-gdb程序（如果在busybox中添加过了gdb的选项，不必再编译arm-linux-gdb了，已经有了）
+
+<ul>
+<li>./configure &ndash;target=arm-linux &ndash;enable-werror=no</li>
+<li>&ndash;target指定宿主机调试的目标机类型，在编译的时候会编译出符合arm-linux的调试的gdb工具</li>
+<li>&ndash;enable-werror的含义是在编译的时候增加-Werror选项，这样会把一些原本的警告信息当做错误。由于gdb的部分代码写的并不规范，所以-Werror会报出一些错误</li>
+</ul>
+</li>
+<li>进入gdb/gdbserver目录下，执行以下命令：
+
+<ul>
+<li>./configure &ndash;host=arm-linux &ndash;target=arm-linux</li>
+<li>make</li>
+<li>arm-linux-strip gdbserver</li>
+<li>&ndash;host指定编译出的工具运行在什么平台</li>
+<li>&ndash;target为指定的编译器配置目标环境</li>
+</ul>
+</li>
+<li>gdb远程调试命令
+
+<ul>
+<li>Target remote ip：port executable；target命令用于连接一个远程的gdbserver，ip和port为远程主机的ip和端口号，executable为gdbserver需要调试的程序，这个文件在gdb所在的宿主机上不能被strip，否在调试需要的symbols就不存在了</li>
+<li>file executable；在gdb调试之前，需要使用file命令获取可执行文件的符号，以获得调试需要的符号列表</li>
+<li>show/set sysroot；因为调试的时候需要用到交叉编译器的库文件和工具，所以必须制定，set用于设置sysroot路径，show用于显示gdb内置变量的值</li>
+<li>show/set solib-search-path;solib-search-path必须设置，因为远程调试的程序在运行时会调用到动态库，需要把所有的动态库都加载到这个变量中，像LD_LIBRARY_PATH一样</li>
+<li>List/l;调试的时候我们可以通过这个命令查看源代码</li>
+<li>break/b linenumber/function;设置断点，在运行时会停止在设置的断点处，断点可以设置为代码的行号，也可以在指定的函数处停止</li>
+<li>continue/c;继续，使用gdb/gdbserver，没有run这个命令，因为程序实际通过stub在gdbserver所对应的开发板上运行</li>
+<li>next/n;执行一条指令，但不会进入函数内部</li>
+<li>print/p;打印变量的值</li>
+<li>step/s;单步跟踪，如果有函数，会进入函数内部，可以通过finish命令退出函数</li>
+<li>quit/q;退出gdb调试环境</li>
+</ul>
+</li>
+<li>步骤演示
+
+<ul>
+<li>开发板执行arm-linux-gdbserver命令，开启调试服务端程序test：arm-linux-gdbserver 192.168.1.230:6410 test;命令的参数类型为<ip>:<port> <app>,ip为开发板的网络地址，端口号由用户指定，代表服务应用程序所使用的网络端口，app为需要调试的应用程序的名字</li>
+<li>宿主机把调试文件载入gdb调试器（可执行文件必须要有调试信息，比如编译时候加上-g，Qt下是qmake CONFIG+=debug）：arm-linux-gdb test</li>
+<li>向应用程序传递参数，比如：set args -qws</li>
+<li>确认参数是否被正学设置：show args</li>
+<li>设置交叉编译器动态库文件路径：set sysroot /embeded/wenris-xtools/arm-wenris-linux-gnueabi/sysroot;如果在交叉编译的时候指定&ndash;with-sysroot，则可以省略。最后通过show sysroot命令查看是否设置成功</li>
+<li>设置程序运行时的动态库：set solib-search-path /work/qt/qt-4.7-arm/lib:/work/qt/tslib_install/lib:/work/qt/tslib_install/lib/ts</li>
+<li>链接到gdbserver：target remote 192.168.1.230:6410</li>
+<li>执行gdb相关的代码调试命令进行远程调试</li>
+</ul>
+</li>
+</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
