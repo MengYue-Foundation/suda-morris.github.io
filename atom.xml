@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-08-01T21:04:18+08:00</updated>
+  <updated>2015-08-21T10:31:22+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Basic-Analog-Knowledge]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge/"/>
+    <updated>2015-08-20T12:22:41+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge</id>
+    <content type="html"><![CDATA[<h2>磁珠</h2>
+
+<ol>
+<li>全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著</li>
+<li>磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化</li>
+<li>磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用</li>
+<li>主要特性参数：
+
+<ol>
+<li>直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值</li>
+<li>额定电流(mA)</li>
+<li>阻抗[z]@100MHz(ohm):这里指的是交流阻抗</li>
+<li>阻抗频率特性</li>
+<li>电阻频率特性</li>
+<li>感抗频率特性</li>
+</ol>
+</li>
+<li>用途：
+
+<ol>
+<li>抑制信号线、电源线上的高频干扰和尖峰脉冲。它也具有吸收景点放点脉冲干扰的能力</li>
+<li>电感是储能元件，而磁珠时能量转换器件。电感多用于电源滤波回路，侧重于抑制传导性干扰；磁珠多用于信号回路，主要用于EMI(电磁兼容)方面。磁珠用来吸收超高频信号，例如在一些RF电路、PLL、振荡电路、含超高频存储器电路等，都需要在电源输入部分加磁珠</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[W5500-Introduce]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/08/17/w5500-introduce/"/>
+    <updated>2015-08-17T09:50:48+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/08/17/w5500-introduce</id>
+    <content type="html"><![CDATA[<h2>W5500网络模块简介</h2>
+
+<ol>
+<li>公司：Wiznet</li>
+<li>使用硬件逻辑门电路实现TCP/IP协议栈的传输层及网络层（如：TCP，UDP，ICMP，IPv4，ARP，IGMP，PPPoE等协议），并集成了数据链路层，物理层(10BaseT/100BaseTX)，以及32K字节片上RAM作为数据收发缓存，使得上位机主控芯片只需承担TCP/IP应用层控制信息的处理任务，大大节省了上位机对于数据复制、协议处理和中断处理等方面的工作量，提升了系统利用率及可靠性</li>
+<li>操作过程中，用户可以近似将W5500作为MCU的一个外设RAM来使用，非常简易。W5500对外接口通常为通用的80MHz高速SPI</li>
+<li>W5500支持同时的8个socket，方便和不同的IP和设备进行通讯；为了减小系统能耗，W5500提供了网络环形模式(WOL)以及掉电模式供客户选择使用；W5500是非可攻击性的硬件网络引擎，可以防止类似于洪流，诈骗式以及注入式网络攻击，提高了网络安全</li>
+<li>支自动协商(10/100-Based全双工/半双工)</li>
+<li>3.3V工作电压，I/O信号口5V耐压</li>
+<li>W5500 不支持Auto-MDI-X，也就是不支持交叉直连自动切换，对于某些比较老的设备，可能需要特定的交叉线或者直连线。比如模块连模块，需要使用交叉线，模块连路由器或者交换机需要使用直连线。</li>
+</ol>
+
+
+<h2>W5500初始化主要使用的几个函数：</h2>
+
+<ol>
+<li>W5500_conf.c->主要配置W5500的MAC、IP地址，W5500基本的数据读写过程，复位设置函数等</li>
+<li>Socket.c->主要介绍了W5500的SOCKET相关配置函数，比如SOCKET的打开、关闭以及接收数据、发送数据等等</li>
+<li>Utility.c->主要介绍了基本的延时函数，还有数据格式转化函数</li>
+<li>w5500.c->主要介绍W5500的寄存器读写过程</li>
+</ol>
+
+
+<h2>W5500的Socket初始化</h2>
+
+<ol>
+<li>W5500的操作需要设置一下寄存器的参数：
+
+<ol>
+<li>模式寄存器(MR)</li>
+<li>中断屏蔽寄存器(IMR)</li>
+<li>重发时间寄存器(RTR)</li>
+<li>重发计数寄存器(RCR)</li>
+</ol>
+</li>
+<li>设置网络信息，下面的寄存器是关于网络的基本设置，需要根据网络环境来进行设置
+
+<ol>
+<li>网关地址寄存器(GAR)</li>
+<li>本机物理地址寄存器(SHAR)</li>
+<li>子网掩码寄存器(SUBR)</li>
+<li>本机IP地址寄存器(SIPR)</li>
+</ol>
+</li>
+<li>设置端口存储信息，这一步设置端口TX/RX存储信息，每个端口的基地址和屏蔽地址在这里确定并保存。
+
+<ol>
+<li>W5500有一个通用寄存器，8个Socket寄存器区，以及对应每个Socket的收发缓存区。每一个Socket的发送缓存区都在一个16KB的物理接收内存中，初始化分配为2KB。无论给每个Socket分配多达的收发缓存，都必须在16为的偏移地址范围内(0x0000~0xFFFF).16KB的发送内存初始化被分配为每个SOcket 2KB发送缓存区(2KB*8=16KB)。</li>
+<li>初始化分配的2KB Socket发送缓存，可以通过使用Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)重新分配，一旦所有的Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)配置完成，16KB的发送内存就会按照配置分配给每个Socket的发送缓存，并按照从Socket0到7顺序分配。16KB物理内存的地址是可以自增的，但是为了避免数据传输错误，需要避免发送缓存大小寄存器(Sn_TXBUF_SIZE)的和超过16</li>
+<li>16KB的发送内存中分配了对应Socket n的发送缓存区，用于为来自主机传输的数据做缓存。Socket n发送缓存区的16位偏移地址支持64KB的寻址范围(从0x0000到0xFFFF),</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Cadence-Allegro]]></title>
@@ -22,7 +118,57 @@
 
 <ol>
 <li>Cadence公司著名的软件有Cadence Allegro（布局布线设计工具），Cadence LDV，Cadence IC，Cadence OrCAD等</li>
-<li></li>
+<li>整个软件系统主要功能模块：
+
+<ol>
+<li>Design Entry HDL：提供了一个原理图输入和分析环境</li>
+<li>Design Entry CIS：是Cadence收钩原OrCAD公司的产品，是国际上通用的标准的原理图输入工具，与Allegro实现了无缝连接</li>
+<li>Design Entry HDL Rules Checker：Design Entry HDL的规则检查工具</li>
+<li>Library Explorer：进行数字设计库管理的软件，可以调用Design Entry HDL、PCB Librarian、PCB Designer、Allegro System Architect等工具建立的元件符号和模型</li>
+<li>Package Designer：芯片和封装的设计分析软件</li>
+<li>PCB Editor：高性能PCB设计软件</li>
+<li>PCB Librairan：Allegro库开发</li>
+<li>PCB Router：CCT布线器</li>
+<li>PCB SI：提供一个集成的高速设计与分析环境</li>
+<li>Physical Viewer：Allegro浏览器模块</li>
+<li>Project Manager：Design Entry HDL的项目管理器</li>
+<li>AMS Simulator：工业标准的模拟、数字及模拟/数字混合信号仿真系统</li>
+<li>PCB Editor Utilities：包含Pad Designer、DB Doctor和Bach DRC等工具</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>快捷键</h2>
+
+<ol>
+<li>原理图编辑：
+
+<ol>
+<li>原理图放大：I，或者Ctrl+滚轮向上滚</li>
+<li>原理图缩小：O，或者Ctrl+滚动向下</li>
+<li>原理图向上走：PGUP</li>
+<li>原理图向下走：PGDN</li>
+<li>原理图向左走：Ctrl+PGUP</li>
+<li>原理图向右走：Ctrl+PGDN</li>
+<li>元器件旋转：R</li>
+</ol>
+</li>
+<li>SCH库编辑：
+
+<ol>
+<li>进入下一个分片元件的编辑：Ctrl+N</li>
+<li>返回上一个分片元件的编辑：Ctrl+B</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>补充知识</h2>
+
+<ol>
+<li>0.1inch = 2.54mm</li>
+<li>总线的命名：Basename[0:len-1]表示总线名Basename，位长len</li>
 </ol>
 
 ]]></content>
@@ -225,7 +371,116 @@
 
 <h2>define与inline的区别</h2>
 
-<blockquote><p>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</p></blockquote>
+<blockquote><ol>
+<li>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</li>
+<li>inline函数必须在调用之前<strong>定义</strong></li>
+<li>在一个源代码模块中只能有一次inline定义</li>
+</ol>
+</blockquote>
+
+<h2>带变长实参表的函数</h2>
+
+<blockquote><ol>
+<li>在C和C++中，可以定义其参数表以省略号结尾的函数。省略号使调用者能够制定参数的数量以及类型。</li>
+<li>为了定义使用省略号的函数，需要包含cstdarg库</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">double</span> <span class="nf">mean</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="p">...){</span>
+</span><span class='line'>  <span class="kt">va_list</span> <span class="n">ap</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">count</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>               <span class="cm">/*ap执行第一个未命名实参*/</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">sum</span> <span class="o">+=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="kt">double</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span>                 <span class="cm">/*返回之前清除栈*/</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">sum</span><span class="o">/</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>预处理宏主要应用场合</h2>
+
+<blockquote><ol>
+<li>使用#ifndef/#define/#endif将头文件包裹起来，以避免多次包含某个头文件</li>
+<li>使用#ifdef/#else/#endif对某些代码部分进行条件编译</li>
+<li><strong>FILE</strong>宏和<strong>LINE</strong>宏用于调试并给出框架信息</li>
+</ol>
+</blockquote>
+
+<h2>C++中的多态性</h2>
+
+<blockquote><ol>
+<li>C++源于C语言，它的编译器也试图在编译时绑定函数调用，这主要是基于性能方面的考虑。编译器无法仅凭集成关系和基类指针就确定它正在操作何种对象。如果没有运行时检查，就无法保证运行时调用正确的函数。C++要求使用一个特殊的关键字来允许运行时通过指针和引用进行函数调用的绑定，这个关键字就是virtual，它能够使得程序具有多态性。</li>
+<li>由于this是在执行它的构造函数时被初始化的，在执行它的析构函数的时候被销毁，因此不要指望在这两种条件下能够执行正确的运行时绑定。当在构造函数或者析构函数里面调用任何this方法时，将由编译时绑定决定应该调用哪一个方法，就好像不存在virtual关键字一样。</li>
+<li>一般而言，如果类中包含一个或者多个virtual函数，则也应包含一个虚析构函数。这是因为，当对对台对象集合进行操作时，通常是通过基类指针删除这些对象，这会导致对析构函数的间接调用，如果析构函数不为virtual类型，在编译时绑定将决定应该调用哪一个析构函数，从而可能导致派生对象的不完整析构</li>
+</ol>
+</blockquote>
+
+<h2>纯virtual函数的声明</h2>
+
+<blockquote><ol>
+<li>virtual returnType functionName(parameterList)=0;</li>
+<li>抽象基类中至少要有一个virtual函数</li>
+<li>抽象基类中不能有public的构造函数</li>
+<li>抽象基类的任何具体派生类都必须重写并定义全部的纯virtual基类函数，话句话说，任何没有重写并定义全部纯virtual基类函数的派生类都是抽象类</li>
+</ol>
+</blockquote>
+
+<h2>重载，隐藏与重写</h2>
+
+<blockquote><ol>
+<li>当函数foo在同一个作用域内存在两个或者多个版本(具有不同的签名)时，就称foo函数被<strong>重载</strong>了</li>
+<li>当基类中的一个virtual函数在培生累中也存在，并且他们具有相同的签名和返回类型时，就称派生类中的版本“重写”了基类中的版本</li>
+<li>派生类中的成员函数，会隐藏基类中与之同名的全部函数，如果出现这种情况，则：
+
+<ul>
+<li>只有派生类函数可以被直接调用</li>
+<li>类作用域解析运算符::西部用来显式地调用基类函数</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>有三种特殊的成员函数从来不会被继承，编译器会为没有定义它们的类自动生成这三种函数</h2>
+
+<ol>
+<li>拷贝构造函数：类名（const 类名&amp; 变量名）</li>
+<li>复制赋值运算符</li>
+<li>析构函数</li>
+</ol>
+
+
+<h2>构造函数</h2>
+
+<blockquote><p>如果一个类没有构造函数，那么编译器就会自动产生一个默认的public构造函数，而这个构造函数会调用它的每一个基类的默认构造函数。如果某个类有一些构造函数但是没有默认构造函数，那么它就不会进行默认的初始化工作，这种情况下，任何派生类构造函数都必须在其初始化列表中明确地指名应该调用哪一个基类构造函数</p></blockquote>
+
+<h2>类的前置声明</h2>
+
+<blockquote><ol>
+<li>类的前置声明将它的名称声明成一个有效的类名称，但不给出类的定义。这会使得类名称能够被用作<strong>指针</strong>和<strong>引用</strong>的类型，在遇到类的定义之前，不会将这些指针和引用进行解引操作。</li>
+<li><strong>如果可以使用前置声明，就不要使用#include指令</strong></li>
+</ol>
+</blockquote>
+
+<h2>范型与模板</h2>
+
+<blockquote><p>1.模板为C++编译器提供了一个途径，能够为带有参数化类型和相同行为的类和函数生成多个版本。模板使用关键字template以及用尖括号&lt;>包围的模板参数进行区分。与函数参数不同，模板参数不仅可以传递变量和值，还可以传递类型表达式。例如：template <class T,int max> Buffer{T v[max];}
+2. 每当编译器看到一个特定参数类型的组合首次用于一个模板函数时，就称此模板进行了实例化。
+3. 类模板主要用来生成数据的通用容器，其参数能够指名容器中的内容。所有的Qt容器类以及标准模板库(STL)中的所有容器类都是参数化的。
+4. 所有模板的定义(类和函数)都必须出现在头文件中，这是因为编译器需要用这些定义来根据模板声明生成代码</p></blockquote>
 
 <h2>其他</h2>
 
@@ -235,6 +490,9 @@
 <li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
 <li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
 <li>const数据成员的初始化必须写在初始化列表中</li>
+<li>M_PI来自于&lt;math.h>,它位于cstdlib库中</li>
+<li>foreach()宏需要赋值它所遍历的容器，这就要求使用foreach必须要有拷贝构造函数</li>
+<li>C++类型可以分成两类：值类型和对象类型，值类型的有Anything*，int，char，QString，QDate和QVariant。带有共有默认构造函数、拷贝构造函数和复制赋值运算符的任何类型都是值类型</li>
 </ul>
 
 ]]></content>
@@ -264,6 +522,16 @@
 <ol>
 <li>对于Qt程序，程序不必编写Makefile文件，Qt提供了一个qmake工具，它会根据工程文件来产生对应的Makefile文件。亦可以用qmake -project命令产生一个简单的工程文件，当执行这个命令的时候，qmake会将当前工作目录下的全部源文件(<em>.cpp)作为SOURCES列出来，而将该目录下的全部头文件(</em>.h)作为HEADERS列出来。最终生成的可执行文件的名称由TARGET变量指定，其默认为工程的名称</li>
 <li>TEMPLATE=app，表明qmake应该以一个适合建立这个应用的模板化的Makefile开始，如果这个工程文件用于建立库，则应当使用语句TEMPLATE=lib，以表明应使用Makefile库模板。第三种可能是源代码文件分布在多个子目录下，而每一个子目录下的文件都具有自己的工程文件，这种情况下，位于父目录的工程文件中应该包含语句TMPLATE=subdirs，这会导致在父目录和每一个子目录下都生成Malefile</li>
+<li>添加库：LIBS += -Lpathtolibs</li>
+<li>CONFIG += console表示是控制台程序</li>
+<li>当编写并测试完库之后，在编译链接过程结束后它将被安装到由qmake变量DESTDIR指定的目录下。例如，dataobjects库的工程文件包含如下相关的行：
+
+<ul>
+<li>TEMPLATE = lib</li>
+<li>DESTDIR = pathto_install_libs</li>
+</ul>
+</li>
+<li>对于库模板，qmake将产生一个包含install目标的Makefile，这样，在成功编译链接之后执行命令make install将会把这个库复制到某个特定的位置</li>
 </ol>
 
 
@@ -341,6 +609,7 @@
 
 <blockquote><ol>
 <li>QStringList实际上就是一个QList<QString>,此外，QStringList还具有一些特别针对字符串的方便函数，例如indexOf(),join()和replaceInStrings()。利用split()函数和join()函数，在列表与字符串之间进行转换相当简单</li>
+<li>QStringList对象可以调用方法takeFirst()来依次获得列表中的字符串对象</li>
 </ol>
 </blockquote>
 
@@ -467,6 +736,823 @@
 
 <blockquote><ol>
 <li>static QDate currentDate = QDate::currentDate();</li>
+</ol>
+</blockquote>
+
+<h2>Qt中字符串的数据流操作</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="n">Student</span><span class="o">::</span><span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">retval</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QTextStream</span> <span class="nf">os</span><span class="p">(</span><span class="o">&amp;</span><span class="n">retval</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;name:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_Name</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;;ID:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_StudentID</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<h2>qDeleteAll(container)只对包含指针的容器有意义，该函数将释放所有对象，但并不删除容器中的指针；删除容器中的指针需要调用容器的clear()函数</h2>
+
+<h2>容器（Qt容器被定义成模板类）</h2>
+
+<blockquote><ol>
+<li>QList<T>是用数组实现的，数组的两端都有预分配的空间。它针对按索引的随机访问以及少于1000项的列表进行了优化。对于prepend()和append()这样的操作，它有很好的性能表现</li>
+<li>QStringList是派生自QList<QString>的一个便利类</li>
+<li>QLinkedList<T>针对迭代器的顺序访问以及快速、常量时间的列表插入操作进行了优化，但排序和搜索比较缓慢。它提供多个便利函数来处理那些经常用到的操作
+QVector<T>以连续的内存位置保存数据，并针对按索引的随机访问进行了优化。通常而言，QVector对象都是用其初始大小进行构造的，在其两端都不存在预先自动分配的内存空间，所以中间掺入、末端插入以及前端插入都是耗时的</li>
+<li>QStack<T>是派生自QVector<T>的public类，所以QVector类的public接口可以用于QStack对象。不过，push(),pop()以及top()函数采用的是后入先出(LIFO)的语法</li>
+<li>QMap&lt;Key,T>是一个有序的关联容器，它保存的是键/值对，其作用是根据键来快速找到对应的值。它也被设计成支持适量的快速插入操作和删除操作。它将键有序排列，以便能够快速搜索和快速缩小搜索范围，采用的是一个跳跃列表字典，这个字典在概率上是平衡的并且高效的利用了内存。键的类型必须是operator&lt;()和operator==()</li>
+<li>QHash&lt;Key,T>也是一个关联容器，它使用哈希表来进行键的查找。它提供快速的查找(键精确匹配)和插入操作，但其搜索速度较慢，且没有排序功能。键的类型必须是operator==()</li>
+<li>QMultiMap&lt;Key,T>是QMap的一个子类，而QMultiHash&lt;Key,T>是QHash的一个子类。这两个类是的一个键可以与多个值关联</li>
+<li>QCache&lt;Key,T>是一个关联容器，它对最近使用过的项提供最快速的访问，并会根据几个开销函数的结果自动移除哪些不常用的项</li>
+<li>QSet<T>用QHash保存T类型的值，QHash中的键位于T中，而其中的哑值与每一个键相关联。这种安排可优化查找和插入操作。QSet中的几个函数用于常规的集合操作。它的默认构造函数会创建一个空集合</li>
+</ol>
+
+
+<p><strong>用于模板容器类的类型参数T，或者用于关联容器的键类型都必须为可赋值数据类型，即值类型。这意味着T必须具有public类型的默认构造函数、拷贝构造函数和赋值运算符。基本类例如int，double，char和指针都是可赋值的，有些Qt类型是可赋值的，例如QString，QDate，QTime。QObject以及派生自QObject的类型都是不可赋值的，如果需要使用某种不可赋值类型的对象，则可以定义一个指针容器，例如QList&lt;QFile*></strong></p></blockquote>
+
+<h2>QFile</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QFile</span> <span class="nf">outf</span><span class="p">((</span><span class="s">&quot;filename&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">outf</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">);</span>
+</span><span class='line'><span class="n">QTextStream</span> <span class="nf">outstr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">outf</span><span class="p">);</span>
+</span><span class='line'><span class="n">outstr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;content&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">outf</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>序列化器模式：QTextStream和QDataStream</h2>
+
+<blockquote><ol>
+<li>序列化器是一种只负责读取或者写入对象的对象，Qt的QTextStream序列化器用于读写人可读的文件，而QDataStream序列化器用于读写结构化的二进制数据。这些类都是用序列化器模式实现的</li>
+<li>利用QDataStream就可以序列化和解序列化QVariant支持的全部类型，包括QList，QMap，QVector以及其他类型。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QFile</span> <span class="nf">textFile</span><span class="p">(</span><span class="s">&quot;playlist1.tsv&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">QFile</span> <span class="nf">binaryFile</span><span class="p">(</span><span class="s">&quot;playlist1.bin&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">QTextStream</span> <span class="n">textStream</span><span class="err">；</span>
+</span><span class='line'><span class="n">QDataStream</span> <span class="n">dataStream</span><span class="err">；</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="n">textFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">ReadOnly</span><span class="p">)){</span>
+</span><span class='line'>  <span class="n">textStream</span><span class="p">.</span><span class="n">setDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">textFile</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="n">binaryFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">)){</span>
+</span><span class='line'>  <span class="n">dataStream</span><span class="p">.</span><span class="n">setDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryFile</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">QList</span><span class="o">&lt;</span><span class="n">MetaDataValue</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">textStream</span><span class="p">.</span><span class="n">atEnd</span><span class="p">()){</span>
+</span><span class='line'>  <span class="n">MetaDataValue</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">textStream</span> <span class="o">&gt;&gt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">values</span> <span class="o">&lt;&lt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">dataStream</span> <span class="o">&lt;&lt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QObject</h2>
+
+<blockquote><ol>
+<li>QObject是Qt库中许多重要的类的基类，如QEvent，QApplication，QLayout和QWidget。</li>
+<li>QObject使基于事件的编程成为了可能，其中用到了QApplication和Qt的事件循环</li>
+<li>QObject没有公有的拷贝构造函数或复制赋值运算符。QObject类定义的结尾处有一个宏Q_DISABLE_COPY(QObject)，它显示地确保任何QObject都不能被复制。QObject不是设计用于复制的，QObject会用来代表具有唯一身份的对象。这种不带拷贝构造函数策略的一个直接后果就是永远无法通过值传递方式向函数传递OBject。</li>
+<li>QObject及其派生类的单参数构造函数应当予以显式声明explicit，以免意外的隐式转换的发生。</li>
+<li>每个QObject都可以有（至多）一个父QObject，且可以拥有任意数量的子QObject。</li>
+<li>每个QObject都将指向各个子对象的指针存放在一个QObjectList中，在调用QObject的析构函数时会自动销毁该对象的子对象</li>
+<li>通常而言，没有父对象的QObject应当在程序栈区(stack)中进行定义，而那些有父对象的QObject则应当在堆区(heap)动态创建出来，这样可有助于确保发生正确的析构操作。</li>
+<li>QObject有一个成员函数，可以返回一个指向主对象中全部子对象的指针列表：const QObjeectList&amp; QObject::children() const</li>
+<li>QObject还提供了两个名称为findChildren()的重载(递归)每个都会返回一个满足特定条件的子对象列表：QList<T> parentObj.findChildren<T>(const QString&amp; name=QString()) const 该函数返回一个类型为T的子对象列表，其对象名与name相等。如果name是空字符串，那么将会起到一个类过滤器的作用，返回结果是一个QList，其中包含指向全部子对象的指针，而这些子对象都可以通过类型转换变成类型T的对象</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QList</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">*&gt;</span> <span class="n">custlist</span> <span class="o">=</span> <span class="n">parent</span><span class="p">.</span><span class="n">findChildren</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">*&gt;</span><span class="p">();</span>
+</span><span class='line'><span class="n">foreach</span> <span class="p">(</span><span class="k">const</span> <span class="n">Customer</span><span class="o">*</span> <span class="n">current</span><span class="p">,</span><span class="n">custlist</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">toString</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QEvent</h2>
+
+<blockquote><ol>
+<li>QEvent类封装了底层事件的概念。QEvent类是若干特定事件类的基类，例如QActionEvent,QFileOpenEvent,QHoverEvent,QInputEvent,QMouseEvent等。QEvent对象可以由窗口系统创建以响应用户的动作(例如，QMouseEvent)或按照指定的时间间隔(QTimerEvent)完成创建，也可以由应用程序显式地创建。成员type()会返回一个美剧，其中含有近百个特定的值，以区分不同种类的各式事件(例如,关闭、DragEnter、DragMove、放下、输入、GrabMouse、HoverEnter、KeyPress、MouseButtonDblClick、MouseMove、Resize)</li>
+<li>一个典型的Qt程序会创建对象，连接各个对象，然后再告诉应用程序开始发送exec()，在运行时，应用程序就进入了事件循环，各个对象之间可以通过各种方式相互发送消息。</li>
+<li>只有在事件循环，特别是QApplication::exec()进入的事件循环中，信号才能发送到槽上。这是因为信号和槽在其外表之下是使用事件循环来传递消息的。</li>
+<li>QObject支持一些普通C++对象通常没有的特性：信号和槽，元对象、元属性、元方法，qobject_cast</li>
+<li>元对象编辑器，即moc，会针对每个使用Q_OBJECT宏的QObject派生类生成额外的函数，生成的代码可以在名称为moc_filename.cpp的文件中找到。</li>
+</ol>
+</blockquote>
+
+<h2>信号和槽</h2>
+
+<blockquote><ol>
+<li>信号是在类定义中给出的类似于void函数声明的一种消息。它有参数列表却没有函数体。信号时一个类的接口的一部分，它看起来想函数，但不用同样的方式进行调用&mdash;它被此类的对象发射</li>
+<li>槽通常是一个void成员函数，它可以像普通的成员函数一样进行调用，或者可以由QMetaObject系统进行间接调用</li>
+<li>连接语句的语法：bool QObject::connect(senderQObjectPtr,SIGNAL(signalName(argumentList)),receiverQObjectPtr,SLOT(slotName(argumentList))optionalConnectionType);optionalConnectionType让你可以明确说明，你是否希望从发射点处同步(阻塞)或者非同步(排队)地调用目标槽</li>
+<li>如果有多个信号连接到同一个槽上且需要知道是那哟个QPbject发射的信号，则可以在该槽中调用sender(),它会返回一个指向那个对象的指针</li>
+</ol>
+</blockquote>
+
+<h2>堆还是栈</h2>
+
+<blockquote><p>一般情况下，没有父对象的QObject应当在栈上创建，或者定义成另一个类的子对象。有父对象的QObject不应该在栈上创建，因为那样的话，它有可能会被删除两次。
+不推荐直接删除QObject，在带有事件循环的程序中，最好利用QObject::deleteLater()来删除QObject。这样做，可以在应用程序处理事件并在当前槽返回之后就安排该对象的销毁。希望能够在槽内删除信号的sender(),这么做实际上是必须的</p></blockquote>
+
+<h2>QWidget和其余GUI开发中常用的类</h2>
+
+<blockquote><ol>
+<li>QWidget是一个采用了多重继承的类，首先，QWidget是一个QObject，因此它可以有父对象、信号、槽以及可受管理的子对象。同时QWidget也是一个QPaintDevice，这个类是所有可在屏幕上进行绘制的对象的基类</li>
+<li>Qt数据类型——QPoint,QSize,QColor,QImage和QPixmap是在处理图形对象时常用到的类型</li>
+<li>布局——这些类能够动态地管理Widget的布局，其中有些事常用的特殊布局，包括QHBoxLayout，QVBoxLayout，QGridLayout，QFormLayout等</li>
+<li>模型——QAbstractItemModel及其各个派生类，如QAbstractListModel和QAbstractTableModel，外加一些已有的可继承实体类，如QSqlQueryModel和QFileSystemModel，都是Qt模型/视图框架中的一部分，该框架内置将一个模型和其他不同视图相连接的机制，以便对一个组件的修改可以自动变换到其他组件上</li>
+<li>控制类——QApplication和QAction两者都是管理GUI应用程序控制流的对象。QItemDelegate用作模型和视图之间的控制器</li>
+</ol>
+</blockquote>
+
+<h2>对话框</h2>
+
+<blockquote><ol>
+<li>QDialog是Qt所有对话框的基类。对话框窗口可以是模态(modal)对话框也可以是非模态(nonmodal)对话框。</li>
+<li>当程序调用静态的便利函数"QMessageBox::&ldquo;或者"QFileDialog::"时，弹出的对话框就是模态对话框。当模态对话框显示在屏幕上时，它会冻结同一应用程序中的其他所有可见窗口的输入功能。用户解除模态对话框后，与应用程序的常规交互才可以继续下去。QDialog::exec()是将模态对话框放到屏幕上的另一种方式。当用户完成了所需的响应后，对话框就可以返回数据，也可以返回对话框代码(QDialog::Accepted或者QDialog::Rejected);</li>
+<li>可以像QWidget一样通过show()显示一个QDialog，在此情况下，对话框是非模态的，用户也就可以与应用程序的其他窗口继续交互。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QApplication</span> <span class="nf">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">);</span>
+</span><span class='line'><span class="n">QProgressDialog</span> <span class="n">nonModal</span><span class="p">;</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&quot;Non Modal Parent Dialog&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nonModal</span><span class="p">,</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">finished</span><span class="p">()),</span><span class="o">&amp;</span><span class="n">app</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>图标、图像与资源</h2>
+
+<blockquote><ol>
+<li>Qt提供了至少两种方式来获得标准的图标。一种方式来自于桌面样式的QStyle::standardIcon()，另一种则来自插件型图标主题:QIcon::fromTheme()</li>
+<li>把所需的二进制数据文件作为资源附加到工程中会让工程更为健壮。源代码无须为资源文件使用一些不可移植的路径名。要引用一个存储成资源的文件，可以使用在.rcc文件中指定的别名并在前面带一个前缀":/&ldquo;。于是，每个资源好像位于一个私有虚文件系统中，其根为&rdquo;:/&ldquo;。然而，得到这些好处是需要付出代价的，可执行文件会更大，程序也会需要更多的内存</li>
+<li>有3个Qt类可以简化处理图片：
+
+<ul>
+<li>QImage——用于离屏操作，输入输出操作，并可直接访问像素</li>
+<li>QPixmap——用于在屏幕上进行绘制并优化，仅用在主线程中</li>
+<li>QIcon——用于视频内存的缓冲且经常用到，但仅用在主线程中</li>
+<li>QPicture——存储绘制的操作而不是实际的位图图片</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>布局</h2>
+
+<blockquote><ol>
+<li>布局可以将它们的Widgets排列成如下几种形式：
+
+<ul>
+<li>垂直型(QVBoxLayout)</li>
+<li>水平型(QHBoxLayout)</li>
+<li>网格型(QGridLayout)</li>
+<li>窗体型(QFormLayout)</li>
+<li>栈型，任何时候都只有一个窗件可见(QStackedLayout)</li>
+</ul>
+</li>
+<li>可以使用addWidget()函数向QLayout添加窗件，当窗件添加到布局中时，它会称为拥有该布局的窗件的子对象。窗件永远不会称为布局的子对象</li>
+<li>为了能够顺利地管理其几何形状，每个QLayout对象都必须有一个父对象，这可以是一个QWidget，也可以是一个QLayout。可以在创建布局时通过向构造函数传递一个指向父窗件或者布局的指针来指定其父对象。当然，也可以先创建一个QLayout而不指定QLayout的父对象，这种情况下，可以稍后通过调用QWidget::addLayout()来指定其父对象</li>
+<li>布局可以拥有子布局，通过调用addLayout()函数，可以将一个布局添加为另外一个布局的子布局。如果布局的父对象是一个窗件，那么该窗件将再也无法称为另外一个布局的父对象</li>
+<li>不使用Qt设计师时，可以使用QLayout类的API来直接指定各个窗件之间的分割、伸展和支撑
+
+<ul>
+<li>addSpacing(int size)会向布局的末尾添加固定数量的像素</li>
+<li>addStretch(int stretch = 0)会添加数目不定的像素。此函数由一个最小的数目开始，然后逐渐扩展到使用所有的可用空间。如果在同一个布局中进行多次扩展，可以用此作为一个增长因子</li>
+<li>addStrut(int size)讲给处置方向施加一个最小的数值(也就是，QVBoxLayout的宽度或者QHBoxLayout的高度)</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>QTimer</h2>
+
+<blockquote><ol>
+<li>QTimer对象是一个倒数计时器，以毫秒级时间间隔启动，当其到达零时会发出一个timeout()信号.QTimer可用来以规则的间隔来发射信号，或者如果singleShot属性已设置成true，则在给定的时间间隔后仅发射一次信号。QTimer有一个静态函数singleShot()，可以在给定的时间间隔后调用一次槽。如果倒数间隔设置成0，QTimer会在事件队列中的全部事件处理完后就立刻发出timeout()信号</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QTimer</span><span class="o">::</span><span class="n">singleShot</span><span class="p">(</span><span class="n">m_expInterval</span><span class="p">,</span><span class="n">this</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">timerDisplayRandStr</span><span class="p">()));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>绘制事件和画图</h2>
+
+<blockquote><ol>
+<li>一个Widget应当在其paintEvent()方法中执行适当的绘制操作。这是QWidget中唯一可以创建QPainter painter(this)的地方。有下面几个原因使得QPaintEvent可以被发送到QWidget上。
+
+<ol>
+<li>窗件是隐藏的，然后又显露了出来</li>
+<li>窗件改变了大小或者进行了重新排布</li>
+<li>调用了update()或者repaint()。repaint()在paintEvent()得到调用后才会返回。update()在QPaintEvent被放进事件队列后会立即返回</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="n">LifeWidget</span><span class="o">::</span><span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span><span class="o">*</span> <span class="n">evt</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">m_image</span><span class="p">.</span><span class="n">isNull</span><span class="p">()){</span>
+</span><span class='line'>      <span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">m_image</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QMainWindow</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">MyMainWindow</span><span class="p">:</span><span class="n">public</span> <span class="n">QMainWindow</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">Q_OBJECT</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">explicit</span> <span class="n">MyMainWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">parent</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="n">QCloseEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">);</span>
+</span><span class='line'><span class="n">protected</span> <span class="nl">slots</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">void</span> <span class="n">newFile</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">void</span> <span class="nf">open</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">bool</span> <span class="nf">save</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QAction</h2>
+
+<blockquote><ol>
+<li>QAction从QObject派生而来，是用于用户选定动作的一个基类。它提供了丰富的接口，它还可以用于许多种动作中。QWidget接口使得每个窗件都可以维护一个QList&lt;QAction*>。所有QWidget都可以拥有QAction，一些窗件借助上下文提供了QAction的清单，其他借助菜单栏。</li>
+<li>QMenu是一个能够给QAction集合提供特殊视图的QWidget。QMenuBar是菜单的一个集合，常见于QMainWindow中。</li>
+<li>每次调用QMenu::addAction(text,target,slot,shortcut)函数，都会窗件一个未命名的QAction，并且会将其添加到这个QMenu上。然后会调用它的积累函数，QWidget::addAction(QAction*),这样把新建的QAction添加到用于上下文菜单的QMenu的QAction清单中。</li>
+</ol>
+</blockquote>
+
+<h2>QSettings</h2>
+
+<blockquote><ol>
+<li>QSettings会管理键/值对的永久映射关系，它是一个QObject，并且会使用一些与QObject相似的属性接口——setValue()和value()——来设置和获取它的值。这个类可以用来存储任何需要在多次执行之间进行记忆的数据</li>
+<li>QSettings需要一个组织名和一个应用程序名，但当使用默认的构造函数时，QSettings会从QApplication中获得这些值。每个名称组合都会定义一个唯一的永久映射，这使得不会与其他命名的Qt应用程序产生冲突</li>
+<li>允许多个实例共享相同状态的类，可以看成是Monodtate模式的一种实现。拥有相同组织/应用程序名称的两个QSettings实例，可以访问同一个永久映射数据。这简化了应用程序从不同源文件访问公共设置值的过程。QSettings是Monostate模式的一种实现</li>
+</ol>
+</blockquote>
+
+<h2>剪切板</h2>
+
+<blockquote><ol>
+<li>每个Qt应用程序都可以使用qApp->clipboard()访问系统的剪贴板。剪贴板会保存带类型的数据(文本，图片，URL或者自定义数据)。要往剪贴板中放置数据，可以创建一个QMimeData，以一定的方式对数据进行编码，并且调用QClipBoard->setMimeData()。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">connect</span><span class="p">(</span><span class="n">qApp</span><span class="o">-&gt;</span><span class="n">clipboard</span><span class="p">(),</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">changed</span><span class="p">(</span><span class="n">QClipboard</span><span class="o">::</span><span class="n">Mode</span><span class="p">)),</span><span class="n">this</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">clipboardChanged</span><span class="p">(</span><span class="n">QClipboard</span><span class="o">::</span><span class="n">Mode</span><span class="p">)));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QImage</h2>
+
+<blockquote><ol>
+<li>QImage在像素处理上得到了优化，QPixmap使用了视频存储器，它也是需要在屏幕上显示图片的多种窗件要用到的类。可以吧QImage转换成QPixmap并将其在QLabel进行显示</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">h</span><span class="p">(</span><span class="n">m_Image</span><span class="p">.</span><span class="n">height</span><span class="p">()),</span><span class="n">w</span><span class="p">(</span><span class="n">m_Image</span><span class="p">.</span><span class="n">width</span><span class="p">());</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+</span><span class='line'><span class="n">QRgb</span> <span class="n">oldpix</span><span class="p">,</span><span class="n">newpix</span><span class="p">;</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">y</span><span class="o">&lt;</span><span class="n">h</span><span class="p">;</span><span class="n">y</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">x</span><span class="o">&lt;</span><span class="n">w</span><span class="p">;</span><span class="n">x</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">oldpix</span><span class="o">=</span><span class="n">m_Image</span><span class="p">.</span><span class="n">pixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">r</span><span class="o">=</span><span class="n">qRed</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">radj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">g</span><span class="o">=</span><span class="n">qGreen</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">gadj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">b</span><span class="o">=</span><span class="n">qBlue</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">badj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">newpix</span><span class="o">=</span><span class="n">qRgb</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_Image</span><span class="p">.</span><span class="n">setPix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">newpix</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>模板类</h2>
+
+<blockquote><p>因为每个Q_OBJECT都需要通过moc为其生成代码，而且moc并未智能到知道如何生成模板类的特化，孤儿不允许使一个已经标记为Q_OBJECT的类再次成为模板类</p></blockquote>
+
+<h2>qSort</h2>
+
+<blockquote><ol>
+<li>qSort()函数是一个使用堆分类算法进行实现的范型方法。qSort()可以应用到任何Qt容器，只要容器内的对象拥有公共接口operator&lt;()和operator==()。基本数据类型的容器也可以使用此函数进行排序</li>
+</ol>
+</blockquote>
+
+<h2>反射与元对象</h2>
+
+<blockquote><ol>
+<li>所谓反射，就是指对象成员的自我检查，使用反射编程，就可以编写出通用的操作，可对具有各种不同结构的类进行操作。使用通用的值存储器QVariant，就可以按照一种统一的方式来对基本类型和其他普通类型进行操作</li>
+<li>所谓元对象就是描述另一个对象结构的对象。QMetaObject是元对象模式的一个Qt实现，它提供了一个QObject对象所拥有的属性和方法的信息。元对象模式有时也称为反射模式</li>
+<li>一个拥有元对象的类就可以支持反射。这是一个许多面向对象语言都具有的性质。虽然C++中不存在反射，但Qt的元对象编译器(moc)可以为QObject生成支持这种机制的代码</li>
+<li>只要满足一定条件(每个类都必须在头文件中定义，并且列举在工程文件的HEADERS中，同时此类的定义中还必须包括Q_OBJECT宏)，每个派生自QObject的类都会拥有一个有moc为其生成的QMetaObject。QObject拥有有个成员函数，它能够返回指向对象的QMetaObject的指针，这个函数原型是：QMetaObject* QObject：：metaObject() const[virtual]</li>
+<li>可以使用QMetaObject的下面这些方法来获取一个QObject的信息：
+
+<ul>
+<li>className(),它会将类的名称以const char*格式返回</li>
+<li>superClass(),如果存在基类的QMetaObject，则返回其指针，如果不存在返回0</li>
+<li>mathodCount(),返回类的成员函数的个数</li>
+</ul>
+</li>
+<li>信号和槽机制同样需要依赖与QMetaObject</li>
+<li>通过使用QMetaObject和QMetaProperty就可以编写足够通用的代码来处理所有具有自我描述能力的类</li>
+<li>除了C++的RTTI运算符dynamic_cast和typeid之外，Qt还提供了两种运行时的类型识别机制：
+
+<ul>
+<li>qobject_cast</li>
+<li>QObject::inherits()</li>
+</ul>
+</li>
+<li>qobject_cast是一个ANSI风格的类型转换运算符：DestType<em> qobject_cast&lt;DestType</em>> (QObject* qoptr),如果转换失败返回NULL。qobject_cast实际是一个向下转换运算符，类似于dynamic_cast。拥有指向派生类的基类指针时，向下转换允许调用在基类接口中不存在的派生类方法。</li>
+<li>访问数据成员的方式：
+
+<ul>
+<li>直接访问，通过经典的gettet/settet，速度快，更为有效</li>
+<li>间接访问，通过QObject/QMetaObject接口，可让代码复用性更好</li>
+</ul>
+</li>
+<li>使用Q_PROPERTY宏来描述QObject的属性：Q_PROPERTY(type name READ getFunction [WRITE setFunction] [RESET resetFunction] [NOTIFY notifySignal] [DESIGNABLE bool] [SCRIPTABLE bool] [STORED bool]),例如：</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span>customer-props.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">Customer</span><span class="p">:</span><span class="n">public</span> <span class="n">QObject</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">Q_OBJECT</span>         <span class="c1">//moc预处理类需要的宏</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">id</span> <span class="n">READ</span> <span class="n">getId</span> <span class="n">WRITE</span> <span class="n">setId</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">name</span> <span class="n">READ</span> <span class="n">getName</span> <span class="n">WRITE</span> <span class="n">setName</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">address</span> <span class="n">READ</span> <span class="n">getAddress</span> <span class="n">WRITE</span> <span class="n">setAddress</span> <span class="n">NOTIFY</span> <span class="n">addressChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">phone</span> <span class="n">READ</span> <span class="n">getPhone</span> <span class="n">WRITE</span> <span class="n">setPhone</span> <span class="n">NOTIFY</span> <span class="n">phoneChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QDate</span> <span class="n">dateEstablished</span> <span class="n">READ</span> <span class="n">getDateEstablished</span><span class="p">);</span>     <span class="c1">//只读属性</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">type</span> <span class="n">READ</span> <span class="n">getType</span> <span class="n">WRITE</span> <span class="n">setType</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">enum</span> <span class="n">CustomerType</span><span class="p">{</span>
+</span><span class='line'>              <span class="n">Corporate</span><span class="p">,</span><span class="n">Individual</span><span class="p">,</span><span class="n">Educational</span><span class="p">,</span><span class="n">Government</span>
+</span><span class='line'>                  <span class="p">};</span>                                               <span class="c1">//枚举类型定义必须与Q_ENUMS宏的定义出现在同一类定义中</span>
+</span><span class='line'>  <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">CustomerType</span><span class="p">);</span>                                          <span class="c1">//特殊的宏可以实现生成字符串到枚举之间的转换功能；必须在同一个类中</span>
+</span><span class='line'>  <span class="n">explicit</span> <span class="nf">Customer</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">QString</span><span class="p">(),</span><span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span><span class="c1">//之所以声明为explicit，是因为不希望从QString转换到Customer时出现意外</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">getId</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">m_id</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">setType</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">newType</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">setType</span><span class="p">(</span><span class="n">QString</span> <span class="n">newType</span><span class="p">);</span>
+</span><span class='line'><span class="nl">signals</span><span class="p">:</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">addressChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">newAddress</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">propertyName</span><span class="p">,</span><span class="n">QVariant</span> <span class="n">newValue</span><span class="p">,</span><span class="n">QVariant</span> <span class="n">oldValue</span><span class="o">=</span><span class="n">QVariant</span><span class="p">());</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">phoneChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">newPhone</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">typeChanged</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">type</span><span class="p">);</span>
+</span><span class='line'><span class="nl">private</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">m_id</span><span class="p">,</span><span class="n">m_name</span><span class="p">,</span><span class="n">m_address</span><span class="p">,</span><span class="n">m_phone</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QDate</span> <span class="n">m_date</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">CustomerType</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>customer-props.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">Customer</span><span class="o">::</span><span class="n">Customer</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="n">name</span><span class="p">,</span><span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span><span class="p">)</span><span class="o">:</span><span class="n">QObject</span><span class="p">(</span><span class="n">parent</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">setObjectName</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setId</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">newId</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">newId</span> <span class="o">!=</span> <span class="n">m_id</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">QString</span> <span class="n">oldId</span> <span class="o">=</span> <span class="n">m_id</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_id</span> <span class="o">=</span> <span class="n">newId</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="n">newId</span><span class="p">,</span><span class="n">oldId</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setType</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">theType</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">m_type</span> <span class="o">!=</span> <span class="n">theType</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">CustomerType</span> <span class="n">oldType</span> <span class="o">=</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_type</span> <span class="o">=</span> <span class="n">theType</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="n">theType</span><span class="p">,</span><span class="n">oldType</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setType</span><span class="p">(</span><span class="n">QString</span> <span class="n">newType</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">static</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">metaObject</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">propindex</span> <span class="o">=</span> <span class="n">meta</span><span class="o">-&gt;</span><span class="n">indexOfProperty</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">static</span> <span class="k">const</span> <span class="n">QMetaProperty</span> <span class="n">mp</span> <span class="o">=</span> <span class="n">meta</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">propindex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">QMetaEnum</span> <span class="n">menum</span> <span class="o">=</span> <span class="n">mp</span><span class="p">.</span><span class="n">enumerator</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ntyp</span> <span class="o">=</span> <span class="n">newType</span><span class="p">.</span><span class="n">toAscii</span><span class="p">().</span><span class="n">data</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">CustomerType</span> <span class="n">theType</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">CustomerType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">menum</span><span class="p">.</span><span class="n">keyToValue</span><span class="p">(</span><span class="n">ntyp</span><span class="p">));</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">theType</span> <span class="o">!=</span> <span class="n">m_type</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">CustomerType</span> <span class="n">oldType</span> <span class="o">=</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_type</span> <span class="o">=</span> <span class="n">theType</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="n">theType</span><span class="p">,</span><span class="n">oldType</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">Customer</span><span class="o">::</span><span class="n">getTypeString</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">property</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">).</span><span class="n">toString</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>可以通多下面的函数来获得任意属性的值：QVariant QObject::property(QString propertyName);
+QVariant是一个联合体的封装，其中包含了所有基本类型和所允许的全部Q_PROPERTY类型。QVariant有一个toString()函数能够为它支持的许多类型返回其QString表示。
+QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
+同一类的所有对象会共享同一个metaObject，因而会有相同元属性组</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="nf">objTOString</span><span class="p">(</span><span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">QStringList</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">+=</span> <span class="n">QString</span><span class="p">(</span><span class="s">&quot;class %1:public %2 {&quot;</span><span class="p">).</span><span class="n">arg</span><span class="p">(</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">()).</span><span class="n">arg</span><span class="p">(</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">superClass</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">());</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">propertyCount</span><span class="p">();</span><span class="o">++</span><span class="n">i</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">const</span> <span class="n">QMetaProperty</span> <span class="n">qmp</span><span class="o">=</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">QVariant</span> <span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">name</span><span class="p">());</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="p">(</span><span class="n">QVariant</span><span class="o">::</span><span class="n">String</span><span class="p">)){</span>
+</span><span class='line'>          <span class="n">result</span> <span class="o">+=</span> <span class="n">QString</span><span class="p">(</span><span class="s">&quot;%1 %2=%3;&quot;</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">typeName</span><span class="p">())</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">name</span><span class="p">())</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">());</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">+=</span> <span class="s">&quot;};&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QMetaType</h2>
+
+<blockquote><ol>
+<li>QMetaType是一个用于值类型的辅助类，对于60多种内置类型，QMetaType为每个类型ID关联了一个类型名，从而使构造和析构可以在运行时动态发生。有一个名称为QMetaType::Type的公共枚举，它有所有QVariant兼容类型的值。在QMetaType::Type中的枚举值与QVariant::Type中的枚举值一样
+通过使用Q_ENUMS宏可以在QVariant系统中加入一些自定义的枚举类型。
+使用Q_DECLARE_METATYPE(MyType)宏也有可能把自己的值类型加到QMetaType列表中。如果MyType有公共的默认复制构造函数和公共的复制构造函数以及一个公共的析构函数，Q_DECLARE_METATYPE宏使得它可用作QVariant中的自定义类型
+要注册的元类型必须已经用Q_DECLARE_METATYPE声明过。模板函数qRegisterMetaType<T>()会注册类型T并返回由QMetaType使用的内部ID。这个函数有一个重载版本，qRegisterMetaType<T>(const char* name),它可以让你注册一个名称作为类型T的名称。对于这个函数的调用必须早早地出现在主程序中。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span>fraction.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">Fraction</span><span class="p">:</span><span class="n">public</span> <span class="n">QPair</span><span class="o">&lt;</span><span class="n">qint32</span><span class="p">,</span><span class="n">qint32</span><span class="o">&gt;</span><span class="p">{</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">Fraction</span><span class="p">(</span><span class="n">qint32</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">qint32</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">QPair</span><span class="o">&lt;</span><span class="n">qint32</span><span class="p">,</span><span class="n">qint32</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">d</span><span class="p">){}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span><span class="n">Fraction</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>metatype.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+</span><span class='line'>  <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">qRegissterMetaType</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Fraction&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">twoThirds</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QVariant</span> <span class="n">var</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">var</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">twoThirds</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="n">var</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">==</span> <span class="n">twoThirds</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">oneHalf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">threeQuarters</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QList</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span> <span class="n">fractions</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">fractions</span><span class="o">&lt;&lt;</span><span class="n">oneHalf</span><span class="o">&lt;&lt;</span><span class="n">twoThirds</span><span class="o">&lt;&lt;</span><span class="n">threeQuarters</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QFile</span> <span class="n">binaryTestFile</span><span class="p">(</span><span class="s">&quot;testMetaType.bin&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QDataStream</span> <span class="n">dout</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryTestFile</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">dout</span><span class="o">&lt;&lt;</span><span class="n">fractions</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">ReadOnly</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QDataStream</span> <span class="n">din</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryTestFile</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QList</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span> <span class="n">frac2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">din</span> <span class="o">&gt;&gt;</span> <span class="n">frac2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="n">fractions</span> <span class="o">==</span> <span class="n">frac2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">creatTest</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">creatTest</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">fracType</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">type</span><span class="p">(</span><span class="s">&quot;Fraction&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span><span class="o">*</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">construct</span><span class="p">(</span><span class="n">fracType</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span><span class="o">*</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">vp</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">first</span>  <span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="o">*</span><span class="n">fp</span> <span class="o">==</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>invokeMethod()</h2>
+
+<blockquote><ol>
+<li>Qt把信号连接到槽需要一种机制：通过名称以类型安全的方式来间接调用这些槽，当调用槽时，实际是由invokeMethod()完成的。</li>
+<li>与QObject::connect()类似，invokeMethod()接受一个可选参数Qt::ConnectionType,该参数可让你来决定是要用同步调用还是要用异步调用。默认情况下是Qt::AutoConnection，表示发射者和接收者处于同一线程中时会同步执行一个槽</li>
+<li>要通过invokeMethod()向函数传递类型参数，可以用Q_ARG宏创建一些值，这样会返回一个QGenericArgument，它封装了单个参数的类型和值信息</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="n">AutoSaver</span><span class="o">::</span><span class="n">saveIfNecessary</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">QMetaObject</span><span class="o">::</span><span class="n">invokeMethod</span><span class="p">(</span><span class="n">parent</span><span class="p">(),</span><span class="s">&quot;save&quot;</span><span class="p">)){</span>
+</span><span class='line'>      <span class="n">qWarning</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="s">&quot;AutoSaver:error invoking save() on parent&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QByteArray</span> <span class="n">buffer</span><span class="o">=</span><span class="p">...;</span>
+</span><span class='line'><span class="k">const</span> <span class="kt">bool</span> <span class="n">b</span> <span class="o">=</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">invokeMethod</span><span class="p">(</span><span class="n">m_thread</span><span class="p">,</span><span class="s">&quot;caculateSpectrum&quot;</span><span class="p">,</span><span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span><span class="p">,</span><span class="n">Q_ARG</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">,</span><span class="n">buffer</span><span class="p">),</span><span class="n">Q_ARG</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="n">format</span><span class="p">.</span><span class="n">frequency</span><span class="p">()),</span><span class="n">Q_ARG</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="n">bytesPerSample</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>MVC设计模式</h2>
+
+<blockquote><ol>
+<li>MVC由三类对象组成。模型是应用程序对象，视图是它的屏幕展示，控制器定义了用户界面对用户输入的反应行为。</li>
+<li>在Qt中，不同的控制器类的基类是QAbstractItemDelegate。那些连接信号与槽的connect语句也可以认为是控制器代码</li>
+<li>Qt中包含有一个模型/视图框架，用于维护数据的组织管理和向用户的呈现方式之间的分离。三个最常用的视图类(列表、树和表格)都是默认提供的。另外，它还提供了抽象的和具体的数据模型，这些数据模型可被扩展和自定义以保存不同类型的数据。</li>
+<li>视图是获取、修改和呈现数据的对象。QAbstractItemModel定义了视图(还有委托)访问数据的一个标准接口。模型中存储供显示和操作的具体数据。通过信号和槽，他们将数据的变化通知给所有相关联的视图。每个视图对象都有一个指向模型对象的指针，视图对象会频繁访问模型的方法以获取或设置数据，或者做各种其他操作。</li>
+<li>模型中每个数据项都用一个模型索引来表示。模型索引为视图和委托提供了在不知道其底层数据结构的情况下间接访问模型中数据项的方法。QModeIndex对象由模型创建，可以被模型、视图或委托代码用于定位数据模型中特定项。QModeIndex对象具有很短的生命周期，可能在刚刚创建后就变成无效的状态，因此它们应该被立即使用而后丢弃</li>
+<li>如果使用一个在若干指令操作前已经存在的QModeIndex，那么应该先调用QModelIndex::isValid（）。QPersistentModelIndex对象具有更长的生命周期，但是在使用前任然应该先调用isValid()来进行检查</li>
+</ol>
+</blockquote>
+
+<h2>智能指针</h2>
+
+<blockquote><ol>
+<li>一个重写了指针解引用操作operator*()和operator->()的类被称为智能指针。</li>
+<li>QScopedPointer是一个在指针作用域结束后自动删除所引用对象的智能指针。它类似于std::auto_ptr。复制QScopedPointer是毫无意义的，因为它会导致所引用的对象重复删除</li>
+<li>QSharedPointer是一个自动删除它所引用的对象的智能指针，但是它允许被复制，而且QSharedPointer会保持一个引用计数。共享的堆对象只有在最后一个指向它的只能指针销毁时才会被删除。</li>
+</ol>
+</blockquote>
+
+<h2>输入掩码</h2>
+
+<blockquote><p>1.所谓的输入掩码，是一种控制用户在输入窗件中可键入的内容的主动模式。它有助于防止输入某些类型的不正确的数据。每个QLineEdit都有一个QString属性用来存储掩码字符。输入掩码可以指定在键入QLineEdit的字符串中那个位置处的何种字符是允许的。该字符串由一些特殊的、预定义的掩码字符和一些占据输入字符串相应位置的普通字符构成
+掩码字符：
+    * A:ASCII字母型字符——大写或者小写
+    * N:ASCII字母数字型字符——大写或者小写
+    * X:任意的ASCII字符
+    * D:ASCII非零数字
+    * 9:ASCII数字
+    * H:十六进制数字
+    * B:二进制数字
+    * >:随后的字母字符是大写
+    * &lt;:随后的字母字符是小写
+    * ！:结束大小写转换
+    * :转义字符</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QLineEdit</span><span class="o">*</span> <span class="n">m_StringEntry</span><span class="p">;</span>
+</span><span class='line'><span class="n">m_StringEntry</span><span class="o">-&gt;</span><span class="n">setInputMask</span><span class="p">(</span><span class="n">m_InputMask</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QRegExp</h2>
+
+<blockquote><ol>
+<li>正则表达式是验证输入、从输入中提取数据以及对输入进行搜索和替换的强大工具。Qt提供了QRegExp类，它实现了Perl风格的扩展正则表达式语言的大部分功能</li>
+<li>特殊字符：
+
+<ul>
+<li>&lsquo;.'可以与任意字符相匹配，称之为元字符</li>
+<li>&lsquo;\n'匹配换行符</li>
+<li>&lsquo;\f'匹配换页符</li>
+<li>&lsquo;\t'匹配制表符</li>
+<li>&lsquo;\xhhhh'匹配一个Unicode字符，其对应的码值是范围为0x0000到0xFFFF之间的一个十六进制数hhhh</li>
+</ul>
+</li>
+<li>量词——说明前面的字符(或字符组)在匹配的表达式中可出现次数的修饰符
+
+<ul>
+<li>&lsquo;+&rsquo; 出现1次或者更多次</li>
+<li>&lsquo;?&rsquo; 出现0次或者1次</li>
+<li>&lsquo;*&rsquo; 出现0次或者更多次</li>
+<li>{i,j} 出现至少i次但不超过j次</li>
+</ul>
+</li>
+<li>字符集——在匹配表达式指定位置允许出现的字符集合
+
+<ul>
+<li>&lsquo;\s&rsquo; 匹配任何空白符</li>
+<li>&lsquo;\S&rsquo; 匹配任何非空白符</li>
+<li>&lsquo;\d&rsquo; 匹配任何数字字符：从'0'到'9'</li>
+<li>&lsquo;\D&rsquo; 匹配任何非数字字符</li>
+<li>&lsquo;\w&rsquo; 匹配任何“单词”字符，也就是任意的字母、数字或者下划线</li>
+<li>&lsquo;\W&rsquo; 匹配任意的非单词字符</li>
+</ul>
+</li>
+<li>字符集也可以使用方括号指定:
+
+<ul>
+<li>[AEIOU]匹配这五个字符中的任意一个</li>
+<li>[a-g]短线使此集合可匹配从'a'到'g'的字符</li>
+<li>[^xyz]匹配任何除这三字符以外的字符</li>
+</ul>
+</li>
+<li>分组和捕获字符——(圆括号)是可以用来把字符划分成组的特殊字符。字符组可以是后向引用的。也就是说，如果存在一个匹配，那么分组了的值将可以通过各种方法来捕获和访问。为了简便起见，一般规定在一个正则表达式中最多可以引用9个分组，即使用\1到\9这样的修饰符。此外还有一个QRegExp成员函数cap(int nth),它返回第那个分组(基于QString的形式返回)</li>
+<li>锚点字符——去顶尝试进行匹配操作的边界
+
+<ul>
+<li>脱字符(^),如果它是正则表达式中的第一个字符，则说明匹配过程从字符串的开头处开始</li>
+<li>美元符($),如果它是正则表达式的最后一个字符，则表明匹配过程指导字符串的结尾才结束</li>
+<li>此外，还有单词边界(\b)断言或者非单词边界(\B),有助于我们关注正则表达式本身</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>Qt环境变量的获取与设置</h2>
+
+<blockquote><p>QProcess::environment()函数和setEnvironment()函数</p></blockquote>
+
+<h2>QProcess和进程控制</h2>
+
+<blockquote><ol>
+<li>QProcess是一个能够非常方便而且跨平台的用于启动和控制其他进程的类。它从QPbject派生而来，可充分利用信号和槽来简化和其他Qt类的交互</li>
+<li>一个QProcess可以使用start()函数来启动另外一个进程，新进程将会成为一个子进程并且在父进程终止时而随之终止</li>
+<li>Qt的线程模型允许线程的优先次序和控制。QThread是一个低级类，适合用于显式的构建长期运行的线程</li>
+<li>QtConcurrent是一个命名空间，提供了用于编写并发软件的更高层次的类和算法。该命名空间有一个重要的类，QThreadPool，这是一个管理线程池的类。每个Qt应用程序都有一个QThreadPool::globalInstance()函数，它带有一个推荐的最大线程数，在大多数系统上，处理核的数量就是该值的默认值</li>
+<li>借助QtConcurrent中函数式的map/filter/reduce算法，通过将进程分布在由线程池管理的多个线程上，可编写一个能够自动利用系统多核的程序。另外，在命令模式和利用QtConcurrent::run()工作时可把QRunnable用作基类。在这些情况下，无须显示地创建线程或者直接管理他们，只需简单把工作片段描述为具有正确接口的对象即可</li>
 </ol>
 </blockquote>
 ]]></content>
@@ -7946,1300 +9032,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 </span><span class='line'>  <span class="n">_end</span> <span class="o">=</span> <span class="p">.;</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[KDM-DevEnv]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/08/kdm-devenv/"/>
-    <updated>2015-06-08T22:30:05+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/08/kdm-devenv</id>
-    <content type="html"><![CDATA[<h2>需要知道的知识点</h2>
-
-<ol>
-<li>ext4文件系统是Linux在PC机上最常用的磁盘文件系统，在嵌入式设备上则常用jffs2文件系统和yaffs2文件系统</li>
-<li>在Linux操作系统中。对于SCSI磁盘。用sd*来表示，第一个磁盘x为a，第二个磁盘x为b，以此类推。磁盘上的第1个分区编号为1，第2个分区编号为2，以此类推。</li>
-<li>swap分区用于Linux在运行期间的虚拟内存使用，其作用类似Windows中的交换文件pagefile.sys</li>
-<li>ARM core的CPU在复位时通常都从0地址取它的第一条指令
-
-<h2>开发环境搭建</h2>
-
-<blockquote><ol>
-<li>所使用的虚拟机是VirtualBox4.3.12，安装的虚拟机是UbuntuMate14.04</li>
-<li>使用的开发板是友善出品的Tiny6410</li>
-<li>虚拟机网络设置成桥接模式(笔记本的以太网卡，切勿错选成无线网卡)</li>
-<li>虚拟机ip地址：192.168.1.88，网关192.168.1.1</li>
-</ol>
-</blockquote></li>
-</ol>
-
-
-<h2>系统烧写</h2>
-
-<ol>
-<li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
-<li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>#for SDHC Card,total sectors=15523840
-</span><span class='line'>#dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798
-</span><span class='line'>#dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030
-</span><span class='line'>
-</span><span class='line'>#for SD Card,total sectors=1961984
-</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
-</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
-</span><span class='line'>sync
-</span><span class='line'>#BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16
-</span><span class='line'>#BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>进入Uboot后，测试能否ping通虚拟主机：ping 192.168.1.88。在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内，使用UBoot下的命令：pri</li>
-<li>使用nfs命令获取虚拟主机上的uboot二进制文件供烧写(次UBoot是用来从NandFlash启动的，不能错选从SD卡启动的UBoot),成功以后会提示用户该文件的大小，这里记为filesize(切记要使用十六进制表示的数字)
-
-<ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/u-boot.bin</li>
-</ul>
-</li>
-<li>烧写uboot至NandFlash中
-
-<ul>
-<li>nand write.i 50000000 0 $(filesize)   从0地址开始烧写UBoot</li>
-</ul>
-</li>
-<li>使用nfs命令获取虚拟主机上的kernel文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-
-<ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/Image</li>
-</ul>
-</li>
-<li>烧写kernel到NandFlash中
-
-<ul>
-<li>nand write.i 50000000 80000 $(filesize)</li>
-</ul>
-</li>
-<li>使用nfs命令获取虚拟主机上的根文件系统文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-
-<ul>
-<li>nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/yaff2.img</li>
-</ul>
-</li>
-<li>烧写根文件系统到NandFlash中
-
-<ul>
-<li>nand write.yaffs 50000000 580000 $(filesize)</li>
-</ul>
-</li>
-<li>根据需要修改启动参数并保存,例如
-
-<ul>
-<li>setenv bootargs root=/dev/mtdblock2 console=ttySAC0,115200</li>
-<li>saveenv</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>测试图形界面程序</h2>
-
-<ul>
-<li>图形界面工具使用的触摸屏校准程序为tslib源码附带的校准程序ts_calibrate,所以如果触摸屏没有校准，可以在Linux系统启动后运行/usr/local/bin/ts_calibrate程序对触摸屏进行校准(通过删除/etc/pointercal文件，可以使得图形界面工具自动调用ts_calibrate程序)，校准完毕会在etc目录下生成pointercal标准文件，供触摸屏库程序转换成符合屏幕的坐标，从而达到校准目的。</li>
-</ul>
-
-
-<h2>交叉编译器</h2>
-
-<ul>
-<li>arm-linux-gcc是一个“集合命令”，它包含了4个步骤：预处理，汇编，编译和链接，通过链接阶段便生成ELF格式的可执行文件。4个步骤对应执行的程序为arm-linux-cpp，arm-linux-as，ccl，arm-linux-ld。前三个步骤对应的命令行选项为：-E,-S，-c，如果没有任何参数，则代表经过这4个步骤产生可执行文件。</li>
-<li>ELF文件的not stripped属性告诉我们在编译的时候产生的编译阶段需要的符号没有被删除</li>
-<li>通常被编译出的程序都会使用到系统的动态库，而这些基本的动态库大部分也都是glibc库中的。例如open,read,write,select,ioctl等应用程序中的函数都是libc.so动态库中提供的，而glibc还提供了libm.so(数学库)，libcrypt.so(安全库)，libld.so(加载库)等。其中libld.so作为加载库负责在应用程序运行时，加载程序所使用到的动态库文件。在我们移植系统的过程中，这些最基本的动态库也需要被移植到根文件系统中去，这样才能保证程序被正常启动。</li>
-<li>arm-linux-strip test可以删除可执行文件中不需要的编译符号和段描述信息</li>
-<li>arm-linux-objcopy -O binary -S test test.bin 通常被用来将生成的ELF格式的文件转化为只含有二进制指令和程序数据的文件test.bin.也只有这样的二进制指令文件才能直接被硬件执行。</li>
-<li>arm-linux-dump -D test > test.dis则是反编译，将ELF格式的可执行文件反编译成汇编信息文件test.dis，有助于代码的查看和调试</li>
-<li>arm-linux-readelf -a test | grep &lsquo;Shared'用来获取ELF的头信息，grep 'Shared'是获取头信息中test可执行文件调用到的动态文件</li>
-<li>arm-linux-gcc 针对arm11的设置：
-
-<ol>
-<li>&ndash;with-cpu=arm1176jzf-s</li>
-<li>&ndash;with-tune=arm1176jzf-s</li>
-<li>&ndash;with-float=softfp</li>
-</ol>
-</li>
-</ul>
-
-
-<h2>bootloader</h2>
-
-<ul>
-<li>目标机上的Bootloader通过串口与主机之间进行文件传输，传输协议通常是xmodem/ymodem/zmodem协议中的一种，但是，串口传输速度有限，因此通过以太网连接并借助tftp或者nfs协议来下载文件是个更好的选择</li>
-<li>bootloader的stage1通常包括的步骤：
-
-<ol>
-<li>硬件设备初始化
-
-<ul>
-<li>屏蔽所有中断</li>
-<li>设置CPU的速度和时钟频率</li>
-<li>RAM初始化</li>
-<li>关闭CPU内部指令/数据cache</li>
-</ul>
-</li>
-<li>为加载Bootloader的stage2准备RAM空间</li>
-<li>复制bootloader的stage2到RAM空间</li>
-<li>设置好堆栈指针sp</li>
-<li>跳转到stage2的C入口点（修改PC寄存器为核实的地址来实现）</li>
-</ol>
-</li>
-<li>bootloader的stage2通常包括的步骤：
-
-<ol>
-<li>初始化本阶段要使用到的硬件设备
-
-<ul>
-<li>至少一个串口用来和终端用户进行I/O输出信息</li>
-</ul>
-</li>
-<li>检测系统内存映射</li>
-<li>将kernel镜像和根文件系统镜像从Flash上读到RAM空间中(需要编写Nand Flash裸驱动)</li>
-<li>为内核设置启动参数
-
-<ul>
-<li>linux2.4以后的内核都期望以标记列表的形式来传递启动参数，启动参数标记列表以标记ATAG_CORE尅是，以标记ATAG_NONE结束</li>
-<li>每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成，数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中</li>
-<li>在嵌入式Linux系统中，通常需要由Bootloader设置的常见启动参数有：ATAG_CORE,ATAG_MEN,ATAG_CMDLINE</li>
-</ul>
-</li>
-<li>调用内核，跳转到内核第一条指令处，跳转时要满足下列条件
-
-<ol>
-<li>CPU寄存器的设置
-
-<ul>
-<li>R0=0</li>
-<li>R1=机器类型ID，关于Machine Type Number可以参见linux/arch/arm/tools/mach-types</li>
-<li>R2=启动参数标记列表在RAM中的起始基地址</li>
-</ul>
-</li>
-<li>CPU模式
-
-<ul>
-<li> 必须禁止中断(IRQs和FIQs)</li>
-<li>CPU必须处于SVC模式</li>
-</ul>
-</li>
-<li>Cache和MMU的设置
-
-<ul>
-<li>MMU必须关闭</li>
-<li>指令Cache可以打开亦可以关闭</li>
-<li>数据Cache必须关闭</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>U-boot目录结构
-
-<ol>
-<li>与处理器体系结构或者开发板硬件直接相关</li>
-<li>通用的函数或者驱动程序</li>
-<li>U-Boot的应用程序、工具或者文档</li>
-</ol>
-</li>
-</ul>
-
-
-<h2>Uboot常用命令</h2>
-
-<blockquote><ol>
-<li>使用命令时，可以使用其开头的若干个字母代替它</li>
-<li>当运行一个命令之后，如果它是可重复执行的（代码中使用U_BOOT_CMD定义这个命令时，第三个参数是1），若想再次运行可以直接输入回车</li>
-<li>Uboot接受的数据都是16进制，输入时可以省略前缀0x</li>
-</ol>
-</blockquote>
-
-<ol>
-<li>运行<code>help</code>命令可以看到所有命令的作用，如果要查看某个命令的使用方法，运行<code>help 命令名</code>。可以使用<code>?</code>来代替<code>help</code></li>
-<li>Uboot支持串口下载，网络下载，USB下载，相关命令有：loadb,loads,loadx,loady;tftpboot,nfs;usbslave。使用方法：
-
-<ul>
-<li>loadx [off] [baud];off表示文件下载后存放的内存地址，baud表示使用的波特率，如果off参数省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR</li>
-<li>tftpboot [loadAddress] [bootfilename]; loadAddress表示文件下载后存放的内存地址，bootfilename表示要下载的文件名称。loadAddress省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR。如果bootfilename省略，则使用单板的IP地址构造一个文件名</li>
-<li>nfs [loadAddress] [host ip addr:bootfilename];host ip addr表示服务器的IP地址</li>
-<li>usbslave [wait] [loadAddress]；在PC端使用dnw工具发送文件，U-boot通过USB Device接口接收文件。wait可以取值1或0，表示是否等得数据传输完成，当wait取0时，在后台进行下载，这时在Uboot仍可执行其他操作。下载文件成功后，Uboot会自动创建或者更新环境变量filezise，它表示下载的文件长度，可以在后续命令中使用$(filesize)来引用它</li>
-</ul>
-</li>
-<li>常用的内存操作命令有：查看内存命令md，修改内存命令mm,填充内存命令mw,复制命令cp。这些命令都可以带上后缀".b",&ldquo;.w&rdquo;,&ldquo;.l"表示以字节、字、双字为单位进行操作。
-
-<ul>
-<li>md[.b,.w,.l] address [count],表示以字节、字、双字（默认是双字）为单位，显示从地址address开始的内存数据，显示的数据个数为count</li>
-<li>mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出</li>
-<li>mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。</li>
-<li>cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存</li>
-</ul>
-</li>
-<li>常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
-
-<ul>
-<li>nand info，查看Nand Flash信息</li>
-<li>nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash</li>
-<li>nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
-<li>nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
-<li>nand read.yaffs addr off size，从Nand Flash偏移地址off处读出size个字节的数据（包括OOB区域），存放到开始地址为addr的内存中</li>
-<li>nand write.yaffs addr off size，把开始地址为addr的内存中的size个字节数据(只要有要写入OOB区域的数据)，写到Nand Flash的偏移地址off处</li>
-<li>nand dump off，将Nand Flash偏移地址off的一个山区的数据打印出来，包括OOB数据</li>
-</ul>
-</li>
-<li>环境变量命令(下面的命令只是在内存中进行，最后需要使用<code>saveenv</code>命令将更改后的所有环境变量写入Flash中)
-
-<ul>
-<li><code>printenv</code>命令打印全部环境变量，“printenv name1 name2 &hellip;”打印名字为name1,name2&hellip;&hellip;的环境变量</li>
-<li><code>setenv name value</code>设置名字为name的环境变量的值为value</li>
-<li><code>setenv name</code>删除名字为name的环境变量</li>
-</ul>
-</li>
-<li>启动命令,不带参数的<code>boot</code>,<code>bootm</code>命令都是执行环境变量bootcmd所指定的命令
-
-<ul>
-<li>&ldquo;bootm [addr [arg &hellip;]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg &hellip;]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</li>
-<li>go addr [arg &hellip;]与bootm命令类似，启动存放在地址addr处的二进制文件，[arg &hellip;]表示参数</li>
-<li>nboot [[[loadAddr] dev] offset]命令将Nand Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处，然后，如果环境变量autostart的值为yes，就启动这个映像，如果loadAddr参数省略，存放地址为配置文件中定义的宏CFG_LOAD_ADDR。如果dev参数省略，则它的取值为环境变量bootdevice的值，如果offset参数省略，则默认为0</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>根文件系统</h2>
-
-<ol>
-<li>所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
-
-<ul>
-<li>/bin：必备的用户命令，例如ls,cp等</li>
-<li>/sbin:必备的系统管理员命令，例如ifconfig，reboot</li>
-<li>/dev:设备文件，例如mtdblock0，tty1等</li>
-<li>/etc:系统配置文件，包括启动文件，例如inittab</li>
-<li>/lib:必要的链接库，例如C链接库、内核模块</li>
-<li>/home:普通用户主目录</li>
-<li>/root:root用户主目录</li>
-<li>/usr/bin:非必备的用户程序，例如find、du等</li>
-<li>/usr/sbin:非必备的管理员程序，例如chroot，inetd等</li>
-<li>/usr/lib：库文件</li>
-<li>/var:守护进程和工具程序所存放的可变，例如日志文件</li>
-<li>/proc:用来提供内核和进程信息的虚拟文件系统，有内核自动生成目录下的内容</li>
-<li>/sys:用来提供内核与设备信息的虚拟文件系统，由内核自动生成目录下的内容</li>
-<li>/mnt:文件系统挂载点，用于临时安装文件系统</li>
-<li>/tmp:临时性的文件，重启后将自动清除</li>
-</ul>
-</li>
-<li>编译安装busybox：
-
-<ul>
-<li>下载源码包，解压缩后进入文件夹根目录</li>
-<li>make defconfig</li>
-<li>make menuconfig
-
-<ul>
-<li>Busybox Settings:选择动态链接C库，指定交叉编译器的prefix为arm-linux-，为各命令安装为指向busybox的软连接，指定busybox的安装位置，选择支持Tab completion和Username completion</li>
-<li>Applets：基本保持默认设置</li>
-</ul>
-</li>
-<li>make -j4</li>
-<li>make install</li>
-</ul>
-</li>
-<li>busybox只用到了2个库，通用C库(libc)、数学库(libm),每个库有4个文件，四个文件中，.a文件是静态库文件，另外三个是：实际的共享链接库（libLIBRARY_NAME-GLIBC_VERSION.so），主修订版本的符号链接，指向实际的共享链接库(libLIBRARY_NAME.so.MAJOR_REVISION_VERSION,一旦程序连接了特定的链接库，将会参用该符号链接)，与版本无关的符号链接，指向主修订版本的符号链接(libLIBRARY_NAME.so,是为编译程序时提供一个通用条目)</li>
-<li>当使用<code>gcc hello.c -o hello -lm</code>编译程序的时候，gcc会根据-lm的提示，加头(lib)添尾(.so)得到libm.so，从而沿着与版本无关的符号链接(libm.so->libm.so.6)找到libm.so.6并记录在案(hello的ELF头中)，表示hello需要使用libm.so.6这个库文件所代表的数学库中的库函数。而当hello被执行的时候，动态链接库加载器会从hello的ELF头中找到libm.so.6这个记录，然后沿着主修订版本的符号链接(libm.so.6->libm-2.3.6.so)找到实际的共享链接库libm-2.3.6.so从而将其与hello做动态链接。可见<strong>与版本无关的符号链接是供编译器使用的，主修订版本的符号链接是供动态链接库加载器使用的，而实际的共享链接库则是供应用程序使用的</strong></li>
-<li>init进程的主配置文件inittab用于决定init进程要启动哪些子进程，以及如何启动这些子进程。busybox的inittab文件的语法、语义和传统的SYSV的inittab有所不同
-
-<ul>
-<li>inittab文件中每个条目用来定义需要init启动的子进程，并确定它的启动方式，格式为<id>:<runlevel>:<action>:<process>,例如：ttySAC0：：ask-first:-/bin/sh</li>
-<li><id>表示子进程要使用的控制台，若省略则使用与init进程一样的控制台</li>
-<li><runlevel>表示运行级别，busybox init程序这个字段没有意义</li>
-<li><action>表示init进程如何空着这个子进程
-
-<ul>
-<li>sysinit：以该方式启动的子进程最先被init启动，该子进程只会被启动一次，如该子进程结束，init将不会重新启动它</li>
-<li>wait：系统执行完sysinit条目后才启动该子进程，该子进程只执行一次，init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作</li>
-<li>once:系统执行完wait条目后才启动该子进程，该子进程只执行一次，init进程不必等待该子进程的结束就可以执行启动其他子进程的动作</li>
-<li>respawn：系统执行完once条目后才能启动该子进程，init进程会持续监测该子进程的状态，若发现该子进程退出，会重新启动它</li>
-<li>askfirst：系统启动完respawn条目后才能启动该子进程，与respawn类似，不过init进程先输出“Please press Enter to active this console”，等用户输入回车后才启动子进程</li>
-<li>shutdown：当系统关机时启动该子进程</li>
-<li>restart：Busybox中配置了CONFIG_FEATURE_USE_INITAB，并且init进程接收到SIGUP信号时执行，先重新读取、解析/etc/inittab文件，再执行restart程序</li>
-<li>ctrlaltdel：按下Ctrl+Alt+Del键时启动该子进程，不过在串口控制台中无法输入它</li>
-</ul>
-</li>
-<li><process>表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”</li>
-</ul>
-</li>
-<li>手工构建/dev目录：新建dev文件夹，在里面<code>sudo mknod console c 5 1</code>,它表示穿件console字符设备文件，主设备号是5，次设备号是1</li>
-<li>构建/dev目录的方法是使用udev(user dev),mdev是busybox中对udev的简化实现，其工作原理是：操作系统启动的时候会将识别到的所有设备的信息自动导出到/sys目录，在此基础上，用户态的应用程序mdev -s就可以扫描/sys/class和/sys/block中所有的类设备目录，如果在目录中含有名为“dev”的文件，且文件中包含的是设备号，则mdev就利用这些信息为这个设备在/dev下创建设备节点文件</li>
-<li>Linux系统下实现热插拔的机制：当有热插拔事件产生时，内核就会调用位于/sbin目录下的mdev。这时mdev通过环境变量中的ACTION和DEVPATH(这两个变量是系统自带的)来确定此次热插拔事件的动作以及影响了/dev中的哪个目录。接着会看看这个目录中是否有“dev”的属性文件，如果有就利用这些信息为这个设备在/dev下创建或删除设备节点文件。我们需要告知操作系统，当它发现热插拔事件时应调用mdev，而不是别的程序。</li>
-<li>嵌入式Linux对文件系统的要求：
-
-<ul>
-<li>要求文件系统在频繁的文件操作下能够保持较高的读写性能，要求低碎片化</li>
-<li>Linux下的日志文件系统(XFS,ReiserFS,Ext3等)能保持数据的完整性，但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用。并且这些都是专门为硬盘类的存储设备进行了优化，对于Flash这类的存储介质并不适用</li>
-<li>嵌入式文件系统的载体是以Flash为主的存储介质，Flash的擦除次数是有限的，所以为了延长Flash的使用寿命，应该尽量减少对Flash的读写操作，并尽量使对Flash的写入操作均匀分布在整个Flash上</li>
-</ul>
-</li>
-<li>在内核的配置菜单中可以看到块设备中有哟个ramdisk选项，并可以设置它的大小，默认的大小为4096KB，在配置内核的时候用户也可以指定ramdisk的大小。ramdisk是基于ram的块设备，所以它占据了一块固定内存的大小，并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容。由于ramdisk在很多场合并不太实用，在Linux的2.4版本开始支持了ramfs文件系统，它是一个简单的基于Linux的。可以动态分配大小的内存文件系统，它属于内核虚拟文件系统层(VFS)，与ramdisk相比，并不是基于虚拟在内存中的其他文件系统，例如ext2文件系统。使用方法：
-
-<ul>
-<li>mkdir /mnt/ramfs</li>
-<li>mount -t ramfs none /mnt/ramfs(缺省大小，被限制最大maxsize为内存总和/2)</li>
-<li>mount -t ramfs none /mnt/ramfs -o maxsize=1000(创建最大大小为1M的ramfs文件系统)</li>
-</ul>
-</li>
-<li>tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质，并且它的大小和ramfs一样，可以动态分配。<strong>它主要用于减少对闪存不必要的写操作</strong>这唯一目的。因为tmpfs驻留在RAM中，所以写/读/擦除的操作发生在RAM中而不是在闪存中。因此，当将日志消息写入挂载为tmpfs文件系统的目录时，是将其写入RAM而不是闪存中，在重新引导时不会保留它们。它的原理是：
-
-<ul>
-<li>在Linux内核中有虚拟内存的概念，而虚拟内存是由物理内存RAM和交换分区swap组成，这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理。tmpfs会向虚拟内存子系统申请页来存储文件，但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区</li>
-</ul>
-</li>
-<li>tmpfs文件系统在内核中的打开方式为：
-
-<ul>
-<li>在内核中选择“File systems&ndash;Pseudo filesystems&ndash;Virtual memory filesystem support”一项来支持对tmpfs虚拟文件系统的管理</li>
-</ul>
-</li>
-<li>在启动时，经常可以看到启动脚本中有以下内容：
-
-<ul>
-<li><code>mount none /dev -t tmpfs</code></li>
-<li>这也是由于Linux系统的设备可以热插拔的原因</li>
-</ul>
-</li>
-<li>ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放，这样虚拟内存管理系统就不会将这些page释放或者交换到swap，从而实现文件总在物理内存中。tmpfs也是存放于内存中，但它可以被VM交换到swap，它其实是ramfs的一个变体</li>
-<li>jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中</li>
-<li>yaffs文件系统在mount的时候需要很少的内存（如果是小页&ndash;512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）</li>
-<li>yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料</li>
-<li>yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。</li>
-<li>ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。</li>
-</ol>
-
-
-<h2>交叉编译移植所要修改的环境变量</h2>
-
-<ol>
-<li>CC编译器，系统默认gcc，需要修改为arm-linux-gcc</li>
-<li>AR库工具，用以创建和修改库，需要修改为arm-linux-ar</li>
-<li>LD链接器，系统默认为ld，需要修改为arm-linux-ld</li>
-<li>RANLIB随机库创建器，系统默认为ranlib，需要修改为arm-linux-ranlib</li>
-<li>AS汇编器，系统默认为as，需要修改为arm-linux-as</li>
-<li>NM库查看工具，系统默认为nm，需要修改为arm-linux-nm</li>
-</ol>
-
-
-<h2>新建用户与用户组</h2>
-
-<ul>
-<li>在/etc/passwd中第一行新增：root:x:0:0:Root,,,:/root:/bin/sh</li>
-<li>passwd root,设置root用户密码</li>
-<li>chown root:root /bin/busybox,改变busybox的属主，否则将来u+s后第一个用户进程init的权限将不是root的权限</li>
-<li>chmod u+s /bin/busybox，这使得普通用户能使用passwd修改自己的密码，同时也使login程序能够正常工作</li>
-<li>adduser morris -h /home/morris -s /bin/sh -G morris</li>
-<li>adduser ftp -h /var/ftp -s /bin/sh -G ftp</li>
-<li>adduser ftpuser -h /sdcard/local -s /bin/sh -G ftp</li>
-<li>adduser ftproot -h /sdcard/tmp -s /bin/sh -G ftp</li>
-</ul>
-
-
-<h2>移植telnet服务器</h2>
-
-<ol>
-<li>如上创建好用户</li>
-<li>修改/etc/inittab,使得telnetd开机自动启动：
-
-<ul>
-<li>::once/usr/sbin/telnetd#这里一定要使用once，不能使用respawn，因为telnetd是守护进程，其实现会fork自己后让自己结束</li>
-</ul>
-</li>
-<li>创建并挂载/dev/pts,它将供telnetd服务使用
-
-<ul>
-<li>mkdir /dev/pts</li>
-<li>mount -t devpts devpts /dev/pts</li>
-</ul>
-</li>
-<li>更改/dev/tty和/dev/console的权限，以使普通用户登录系统时也能读写控制终端
-
-<ul>
-<li>chmod 666 /dev/tty</li>
-<li>chmod 600 /dev/console</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>移植ftp服务器</h2>
-
-<ol>
-<li><a href="http://download.chinaunix.net/download/0001000/19.shtml">下载vsftpd2.3.5并解压</a></li>
-<li>修改Makefile，指定交叉编译器<code>CC=arm-linux-gcc</code></li>
-<li>修改vsf_findlibs.sh,将所有/lib和/usr/lib前面加上交叉编译器的库目录地址，比如<code>/embeded/crosstool/arm-wenris-linux-gnueabi/sysroot</code></li>
-<li>make -j4,将生成的vsftp复制到开发板根文件系统相应目录/usr/sbin</li>
-<li>复制vsftpd依赖的动态库文件到开发板根文件系统相应目录</li>
-<li>将模板配置文件vsftpd.conf复制到开发板/etc目录，修改该配置文件，使有效配置如下：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">local_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">write_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">anon_upload_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">anon_mkdir_write_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">dirmessage_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">xferlog_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">connect_from_port_20</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">xferlog_file</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">vsftpd</span><span class="p">.</span><span class="n">log</span>
-</span><span class='line'><span class="n">xferlog_std_format</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">idle_session_timeout</span><span class="o">=</span><span class="mi">600</span>
-</span><span class='line'><span class="n">data_connection_timeout</span><span class="o">=</span><span class="mi">120</span>
-</span><span class='line'><span class="n">nopriv_user</span><span class="o">=</span><span class="n">ftp</span>
-</span><span class='line'><span class="n">ftpd_banner</span><span class="o">=</span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">WenRis</span> <span class="n">FTP</span> <span class="n">service</span>
-</span><span class='line'><span class="n">listen</span><span class="o">=</span><span class="n">YES</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>由于vsftp源代码程序一定要使用一个目录/usr/share/empty,所以必须要预先创建它</li>
-<li>修改/etc/inittab,使得vsftpd在开机时候自动启动：
-
-<ul>
-<li>::respawn:/usr/sbin/vsftpd</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>移植httpd服务器</h2>
-
-<ol>
-<li>增加用户www：<code>adduser -S -D -H www</code></li>
-<li>修改/etc/inittab文件，指名httpd的目录和运行账户：
-
-<ul>
-<li><code>::once:/usr/sbin/httpd -h /www -u www</code></li>
-</ul>
-</li>
-<li>httpd运行时会以普通用户www的身份访问/dev/null设备，因此需要在rcS脚本中修改/dev/null的权限：<code>chmod 666 /dev/null</code></li>
-<li>创建http服务器的主目录和主文件
-
-<ul>
-<li><code>mkdir /www</code></li>
-<li><code>echo "this is my first web site" &gt; /www/index.html</code></li>
-</ul>
-</li>
-</ol>
-
-
-<h2>移植boa网页服务器</h2>
-
-<ol>
-<li><a href="http://www.boa.org/">获取源码，并解压缩</a></li>
-<li>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">由于</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="err">编译器版本过高，对语法的支持有一些改变，所以需要修改</span><span class="n">compat</span><span class="p">.</span><span class="n">h</span><span class="err">中的</span>
-</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff</span>
-</span><span class='line'><span class="err">为：</span>
-</span><span class='line'>
-</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff</span>
-</span><span class='line'><span class="err">不然在编译的时候会提示如下错误：</span>
-</span><span class='line'>    <span class="n">util</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make</span><span class="p">:</span> <span class="p">[</span><span class="n">util</span><span class="p">.</span><span class="n">o</span><span class="p">]</span> <span class="n">Error1</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">将</span><span class="n">boa</span><span class="p">.</span><span class="n">c</span> <span class="err">文件</span><span class="mi">225</span><span class="o">-</span><span class="mi">227</span><span class="err">三行的文件注释掉</span>
-</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="n">setuid</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                        <span class="n">DIE</span><span class="p">(</span><span class="err">”</span><span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!</span><span class="err">”</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'><span class="err">为</span>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm">         if (setuid(0) != -1) {</span>
-</span><span class='line'><span class="cm">                        DIE(”icky Linux kernel bug!”);</span>
-</span><span class='line'><span class="cm">                }</span>
-</span><span class='line'><span class="cm">*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">，否则，但以</span><span class="n">root</span><span class="err">权限启动</span><span class="n">boa</span><span class="err">服务器的时候，会出现以下错误：</span><span class="n">boa</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span><span class="mi">226</span> <span class="o">-</span> <span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!:</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>然后生成Makefile：./configure</li>
-<li>修改生成的Makefile：默认生成的Makefile针对x86平台，我们的目标是针对嵌入式平台，所以需要修改编译器:</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">更改</span><span class="n">Makefile</span><span class="err">的</span><span class="mi">31</span><span class="err">行和</span><span class="mi">32</span><span class="err">行：</span>
-</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
-</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
-</span><span class='line'><span class="err">更改为</span>
-</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>在当前目录下编译Boa源文件： make</li>
-<li>将生成的boa可执行程序复制到根文件系统的/usr/sbin目录下</li>
-<li>将boa.conf文件复制到根文件系统/etc/boa文件夹下面，并且作如下修改：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">修改</span><span class="mi">25</span><span class="err">行的</span><span class="n">port</span><span class="err">端口，用来设置服务器监听的端口：</span>
-</span><span class='line'><span class="cp"># Port: The port Boa runs on.  The default port for http servers is 80.</span>
-</span><span class='line'><span class="cp"># If it is less than 1024, the server must be started as root.</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">Port</span> <span class="mi">80</span>
-</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="err">注释</span><span class="mi">43</span><span class="err">行的监听</span><span class="n">IP</span><span class="err">地址：默认监听该主机上的所有</span><span class="n">IP</span><span class="err">地址</span>
-</span><span class='line'><span class="cp">#Listen 192.68.0.5</span>
-</span><span class='line'><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="err">修改</span><span class="mi">53</span><span class="err">、</span><span class="mi">54</span><span class="err">行的</span><span class="n">user</span><span class="err">和</span><span class="n">Group</span> <span class="err">启动的</span><span class="n">UID</span><span class="err">和</span><span class="n">GID</span><span class="err">，使其以</span><span class="n">root</span><span class="err">身份启动</span>
-</span><span class='line'><span class="cp">#  User: The name or UID the server should run as.</span>
-</span><span class='line'><span class="cp"># Group: The group name or GID the server should run as.</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">User</span> <span class="n">root</span>
-</span><span class='line'><span class="n">Group</span> <span class="n">root</span>
-</span><span class='line'><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="err">修改</span><span class="mi">116</span><span class="err">行的</span><span class="n">DocumentRoot</span><span class="err">地址，即客户端要显示的</span><span class="n">HTML</span><span class="err">页面存放位置</span>
-</span><span class='line'><span class="cp"># DocumentRoot: The root directory of the HTML documents.</span>
-</span><span class='line'><span class="cp"># Comment out to disable server non user files.</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">DocumentRoot</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span>
-</span><span class='line'><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="err">修改输入网页输入主机</span><span class="n">IP</span><span class="err">时要显示的页面：这里设为</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
-</span><span class='line'> <span class="cp"># DirectoryIndex: Name of the file to use as a pre-written HTML</span>
-</span><span class='line'><span class="cp"># directory index.  Please MAKE AND USE THESE FILES.  On the</span>
-</span><span class='line'><span class="cp"># fly creation of directory indexes can be _slow_.</span>
-</span><span class='line'><span class="cp"># Comment out to always use DirectoryMaker</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">DirectoryIndex</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
-</span><span class='line'><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="err">修改</span><span class="n">CGI</span><span class="err">程序存放的位置：以</span><span class="nl">http</span><span class="p">:</span><span class="c1">//IP/cgi-bin/cginame 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序</span>
-</span><span class='line'><span class="cp"># ScriptAlias: Maps a virtual path to a directory for serving scripts</span>
-</span><span class='line'><span class="cp"># Example: ScriptAlias /htbin/ /www/htbin/</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>创建/var/log/boa/ 目录，这样Boa服务器启动时会在该目录下创建日志文件</li>
-<li>将Linux系统上/etc/mime.types 文件复制到根文件系统的/etc 目录下，否则Boa服务器启动不起来</li>
-<li>修改/etc/inittab,使得vsftpd在开机时候自动启动：
-
-<ul>
-<li>::once:/usr/sbin/boa</li>
-</ul>
-</li>
-<li>注意事项：
-
-<ul>
-<li>有时候boa服务器并不能随系统启动，运行 /sbin/boa 命令会提示：gethostbyname:: Success，需要如下修改
-
-<ul>
-<li><code>修改boa.conf 文件将  #ServerName  www.your.org.here  改为 ServerName  www.your.org.here</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>移植zlib库</h2>
-
-<ol>
-<li><a href="http://download.chinaunix.net/download.php?id=24014&amp;ResourceID=12241">下载zlib库,解压缩</a></li>
-<li>进入终端，声明几个重要的环境变量：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
-</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
-</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
-</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
-</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>./configure &ndash;shared &ndash;prefix=$PWD/results</li>
-<li>make -j4</li>
-<li>make install</li>
-<li>成功后把lib里面的库文件复制到根文件系统对应目录，并把库文件和头文件复制到交叉编译器的对应文件夹中，注意复制到时候带上参数 <em>-P</em></li>
-</ol>
-
-
-<h2>移植libxml2库</h2>
-
-<ol>
-<li><a href="http://download.chinaunix.net/download/0007000/6095.shtml">下载libxml2库，解压缩</a></li>
-<li>进入终端，声明几个重要的环境变量：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
-</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
-</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
-</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
-</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>./configure &ndash;prefix=$PWD/results &ndash;host=arm-linux &ndash;target=arm-linux</li>
-<li>make &amp;&amp; make install</li>
-<li>将生成的lib和include移植到交叉编译器，将bin文件，lib文件移植到开发板根文件系统中的bin目录和lib目录中</li>
-</ol>
-
-
-<h2>移植SQLite数据库</h2>
-
-<ol>
-<li><a href="http://sqlite.org">获取源码,并解压缩</a></li>
-<li>配置并进行交叉编译和安装
-
-<ul>
-<li><code>./configure --enable-shared --prefix=/work/rootfs/sqlite/result --host=arm-linux</code></li>
-<li><code>make -j4 &amp;&amp; make install</code></li>
-</ul>
-</li>
-<li>最终在result文件夹下面会得到四个文件夹:bin include lib share</li>
-<li>将bin文件夹下的程序放到根文件系统的usr/bin 目录下</li>
-<li>将lib文件夹下的动态库及其一个软连接复制到根文件系统的lib目录下，并将lib文件下的所有的动态链接库文件复制到交叉编译器的链接lib文件夹下</li>
-<li>将include文件夹下的头文件复制到交叉编译器的头文件路径中</li>
-</ol>
-
-
-<h2>移植PHP5.4.42</h2>
-
-<ol>
-<li><a href="http://php.net/downloads.php">下载php源代码，解压缩</a></li>
-<li>执行如下配置选项,配置之前需要先交叉编译好zlib，libxml2，sqlite3，iconv的库文件，然后在下面的脚本中指名其路径</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">path</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">etc</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cli</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">fileinfo</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">debug</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">rpath</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">ftp</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="kr">inline</span><span class="o">-</span><span class="n">optimization</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pdo</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">bcmath</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">calendar</span>
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sockets</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">wddx</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbstring</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbregex</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sysvsem</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pear</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span><span class="n">system</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">xmlrpc</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">gettext</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">sqlite3</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pdo</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">sqlite</span><span class="o">-</span><span class="mf">3.8.10.2</span><span class="o">/</span><span class="n">result</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">libxml</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">libxml2</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">iconv</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">iconv</span> \
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>configure执行完成以后，查看Makefile文件，确保里面的交叉编译器是arm-linux-gcc,重点检查：CC,CPP;检查EXTRA_LIBS是否有-liconv,-lxml2;检查头文件包含路径是否指向交叉编译的include路径(将所有的/usr/include替换掉交叉编译器对应的/usr/include)</li>
-<li>make &amp;&amp; make install</li>
-<li>将prefix所指路径的文件安装到开发板对应的地方(在这里也是开发板的/opt/php-arm文件下)</li>
-<li>在开发板/opt/php-arm夹下新建文件夹etc，存放php配置文件php.ini(从源代码中复制一份修改名字即可)</li>
-</ol>
-
-
-<h2>嵌入式web服务器（Linux+lighttpd+Sqlite+PHP）移植 之lighttpd</h2>
-
-<ol>
-<li><a href="http://www.lighttpd.net/download/">下载lighttpd源码包，解压缩</a></li>
-<li>执行如下配置：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">lighttpd</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="k">static</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">ipv6</span> \
-</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">bzip2</span> \
-</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">pcre</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>configure执行完成后，检查Makefile文件CC是否指向了arm-linux-gcc，然后make &amp;&amp; make install</li>
-<li>把生成的文件全都拷贝到目标板上对应的地方(prefix指名的路径下)。删除share文件夹，再新建cgi-bin,config,sockets,upload,vhosts,webpages路径</li>
-<li>把lighttpd源代码里面doc/config路径下的conf.d,lighttpd.conf,modules.conf拷贝到上一步骤新建的config文件夹中</li>
-<li>修改lighttpd.conf文件:
-
-<ol>
-<li>将16行至20行修改为如下褐色加粗字体所示：
-
-<ul>
-<li>var.log_root    = &ldquo;/var/log/lighttpd&rdquo;</li>
-<li>var.server_root = &ldquo;/opt/lighttpd-arm&rdquo;</li>
-<li>var.state_dir   = &ldquo;/opt/lighttpd-arm&rdquo;</li>
-<li>var.home_dir    = &ldquo;/opt/lighttpd-arm&rdquo;</li>
-<li>var.conf_dir    = &ldquo;/opt/lighttpd-arm/config&rdquo;</li>
-</ul>
-</li>
-<li>将61行和93行修改为如下褐色加粗字体所示：
-
-<ul>
-<li>var.cache_dir   = &ldquo;/var/cache/lighttpd&rdquo;</li>
-<li>server.use-ipv6 = &ldquo;disable&rdquo;</li>
-</ul>
-</li>
-<li>将104和105行注释掉，如下所示：
-
-<ul>
-<li>#server.username  = &ldquo;lighttpd&rdquo;</li>
-<li>#server.groupname = &ldquo;lighttpd&rdquo;</li>
-</ul>
-</li>
-<li>将115行修改为如下褐色加粗字体所示：
-
-<ul>
-<li>server.document-root = server_root + &ldquo;/webpages&rdquo;</li>
-</ul>
-</li>
-<li>将127行注释掉，如下所示：
-
-<ul>
-<li>#server.pid-file = state_dir + &ldquo;/lighttpd.pid&rdquo;</li>
-</ul>
-</li>
-<li>如果不需要查看错误日志文件，可以将141行注释掉，如下所示：
-
-<ul>
-<li>#server.errorlog             = log_root + &ldquo;/error.log&rdquo;</li>
-</ul>
-</li>
-<li>将152行、158行、191行注释掉，如下所示：
-
-<ul>
-<li>#include &ldquo;conf.d/access_log.conf&rdquo;</li>
-<li>#include &ldquo;conf.d/debug.conf&rdquo;</li>
-<li>#server.network-backend = &ldquo;linux-sendfile&rdquo;</li>
-</ul>
-</li>
-<li>根据系统资源设置207行和225行的数值，本系统的设置分别如下褐色加粗字体所示：
-
-<ul>
-<li>server.max-fds = 256</li>
-<li>server.max-connections = 128</li>
-</ul>
-</li>
-<li>将314至316行注释掉，如下所示：
-
-<ul>
-<li>#$HTTP[&ldquo;url&rdquo;] =~ &ldquo;.pdf$&rdquo; {</li>
-<li>#  server.range-requests = &ldquo;disable&rdquo;</li>
-<li>#}</li>
-</ul>
-</li>
-<li>将373行修改为如下褐色加粗字体所示：
-
-<ul>
-<li>server.upload-dirs = ( &ldquo;/opt/lighttpd-arm/upload&rdquo; )</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>修改modules.conf文件
-
-<ol>
-<li>找到43行，将光标定位到逗号后面，回车，插入如下内容(如果有就不用插入了)：
-
-<ul>
-<li>&ldquo;mod_alias&rdquo;,</li>
-</ul>
-</li>
-<li>使能fastcgi模块，将132行的注释符去掉，如下所示：
-
-<ul>
-<li>include &ldquo;conf.d/fastcgi.conf&rdquo;</li>
-</ul>
-</li>
-<li>使能cgi模块，将137行的注释符去掉，如下所示：
-
-<ul>
-<li>include &ldquo;conf.d/cgi.conf&rdquo;</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>修改conf.d/fastcgi.conf文件，在server.modules += (&ldquo;mod_fastcgi&rdquo;)下面添加如下：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">fastcgi</span><span class="p">.</span><span class="n">server</span> <span class="o">=</span> <span class="p">(</span>
-</span><span class='line'>  <span class="s">&quot;.php&quot;</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="p">(</span>
-</span><span class='line'>      <span class="s">&quot;localhost&quot;</span> <span class="o">=&gt;</span>
-</span><span class='line'>          <span class="p">(</span>
-</span><span class='line'>          <span class="s">&quot;socket&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/tmp/php-fastcgi.socket&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;bin-path&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/opt/php-arm/bin/php-cgi&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;max-procs&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;check-local&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;disable&quot;</span>
-</span><span class='line'>          <span class="p">)</span>
-</span><span class='line'>  <span class="p">)</span>
-</span><span class='line'><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>修改conf.d/cgi.conf文件，在server.modules += ( &ldquo;mod_cgi&rdquo; )下面添加如下,接着去掉注释：<code>alias.url += ( "/cgi-bin" =&gt; server_root + "/cgi-bin" )</code></li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">cgi</span><span class="p">.</span><span class="n">assign</span>         <span class="o">=</span> <span class="p">(</span><span class="s">&quot;.cgi&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<ol>
-<li>在webpages文件夹下面添加网页文件和php文件进行测试</li>
-<li>开机自启lighttpd服务器：<code>::once:/opt/lighttpd-arm/sbin/lighttpd -D -m /opt/lighttpd-arm/lib -f /opt/lighttpd-arm/config/lighttpd.conf</code></li>
-</ol>
-
-
-<h2>MP3播放器madplay移植</h2>
-
-<ol>
-<li><a href="ftp://ftp.mars.org/pub/mpeg/">进入官网下载3个源码包</a></li>
-<li>移植libid3tag库需要依赖zlib库，所以需要先前把zlib的头文件和动态链接库文件保存在交叉编译器的头文件路径和库文件路径下</li>
-<li>进入libid3tag源码文件夹，执行配置命令：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
-<li>make &amp;&amp; make install，把生成的头文件和库文件放入交叉编译器中</li>
-<li>进入libmad源码文件夹，执行配置命令：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
-<li>make &amp;&amp; make install,把生成的头文件和库文件放入交叉编译器中</li>
-<li>进入madplay源码文件夹，执行配置文件：./configure &ndash;prefix=/embeded/WenRisOS/rootfs/madplay/target-arm &ndash;host=arm-linux</li>
-<li>make &amp;&amp; make install</li>
-</ol>
-
-
-<h2>移植嵌入式ssh服务器-dropbear</h2>
-
-<ol>
-<li><a href="http://matt.ucc.asn.au/dropbear/">下载源码包，解压缩</a></li>
-<li>配置：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">make</span>
-</span><span class='line'><span class="n">make</span> <span class="n">scp</span>
-</span><span class='line'><span class="n">make</span> <span class="n">install</span>
-</span><span class='line'><span class="n">cp</span> <span class="n">scp</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span>
-</span><span class='line'><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span><span class="o">/*</span> <span class="n">results</span><span class="o">/</span><span class="n">sbin</span><span class="o">/*</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>将生成的bin，sin放到开发板相应文件夹下</li>
-</ol>
-
-
-<h2>编译tslib</h2>
-
-<ol>
-<li><a href="http://download.csdn.net/detail/liuqiqi677/3177449">源码下载地址</a></li>
-<li>解压缩，进入tslib源码文件夹</li>
-<li><code>./autogen.sh</code>生成configure源代码配置文件</li>
-<li><code>./configure --host=arm-linux --disable-h3600 --disable-arctic2 --disable-mk712 --disable-collie --disable-corgi --disable-ucb1x00 --with-gnu-ld --prefix=/embeded/tslib_install ac_cv_func_malloc_0_nonnull=yes</code> 这里，&ndash;host的含义是你要安装的目标系统，后面的&ndash;disable 是因为我们不编译对指定触摸屏的支持，我们选择支持的是Linux的input子系统，&ndash;with-gnu-ld是确认使用GNU的LD连接器，因为我们使用的就是GNU的编译器，所以选择这一项。&ndash;prefix选项是指定安装的位置。ac_cv_func_malloc_0_nonnull会在./configure执行阶段测试GNU内置的malloc函数的功能是否可用或者说是否兼容</li>
-<li>进入安装目录，这里是/embeded/tslib_install,进入etc目录，打开ts.conf进行修改.其中pthres主要用于处理触摸屏的灵敏度，而variance和dejitter分别用于处理触摸屏的滤波和去噪的算法，linear是触摸屏的坐标变换。
-
-<ul>
-<li>module_raw input</li>
-<li>module pthres pmin=1</li>
-<li>module variance delta=30</li>
-<li>module dejitter delta=100</li>
-<li>module linear</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>Qt移植(Qt支持的嵌入式Linux平台需要有frambuffer支持)</h2>
-
-<ol>
-<li><a href="http://download.qt.io/development_releases/qt/5.4/5.4.0-rc/single/">下载软件包，解压缩</a></li>
-<li>进入源代码根文件目录，执行配置命令如下：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">-</span><span class="n">prefix</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">qt4</span><span class="mf">.8.5</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">-</span><span class="n">opensource</span> \
-</span><span class='line'><span class="o">-</span><span class="n">confirm</span><span class="o">-</span><span class="n">license</span> \
-</span><span class='line'><span class="o">-</span><span class="n">release</span> \
-</span><span class='line'><span class="o">-</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">-</span><span class="n">embedded</span> <span class="n">arm</span> <span class="err">\</span>                         <span class="err">#选择</span><span class="n">Qt</span><span class="err">的嵌入式平台为</span><span class="n">arm</span><span class="err">平台</span>
-</span><span class='line'><span class="o">-</span><span class="n">xplatform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
-</span><span class='line'><span class="o">-</span><span class="n">platform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
-</span><span class='line'><span class="o">-</span><span class="n">depths</span> <span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">32</span> \
-</span><span class='line'><span class="o">-</span><span class="n">optimized</span><span class="o">-</span><span class="n">qmake</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">sql</span><span class="o">-</span><span class="n">sqlite</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">zlib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">webkit</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">transformed</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libjpeg</span> <span class="err">\</span>                            <span class="err">#使</span><span class="n">Qt</span><span class="err">支持</span><span class="n">jpeg</span><span class="err">图片显示</span>
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libpng</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libtiff</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libmng</span>  \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">freetype</span> \
-</span><span class='line'><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
-</span><span class='line'><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">libs</span> \
-</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">tools</span> \
-</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">docs</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">examples</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">demos</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">kbd</span><span class="o">-</span><span class="n">linuxinput</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">qt3support</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span><span class="o">-</span><span class="n">backend</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">gif</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">dbus</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">rpath</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">tslib</span> <span class="err">\</span>                      <span class="err">#使</span><span class="n">Qt</span><span class="err">支持触摸方式，需要额外指定</span><span class="n">tslib</span><span class="err">的路径</span>
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">pc</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">linuxtp</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">linuxfb</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">neon</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">nis</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">cups</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">openssl</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">fast</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">scripttools</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mmx</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="mi">3</span><span class="n">dnow</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse2</span> \
-</span><span class='line'><span class="o">-</span><span class="n">I</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">include</span> \
-</span><span class='line'><span class="o">-</span><span class="n">L</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">D__ARM_ARCH_5TEJ_</span>                      <span class="err">#选择处理器平台</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>make &amp;&amp; make install</li>
-<li>将生成的lib文件和plugins文件部署到根文件系统中，字体保存在lib下的fonts目录下</li>
-</ol>
-
-
-<h2>gdb/gdbserver</h2>
-
-<blockquote><p>gdb和gdbserver可以看作两个不同的命令。gdb放在宿主机上运行，而gdbserver被放在开发板上运行。启动gdbserver运行制定的需要调试的可执行文件，而在宿主机中使用gdb来运行同样的可执行文件，通过串口或者tcp就可以达到远程调试的目的。由于宿主机gdb所运行的程序和gdbserver是一样的，都是arm指令的elf文件，那么作为宿主机gdb工具必须能够明确地知道遵循ABI接口的ARM的ELF文件格式。因此，传统的宿主机自身携带的gdb不能用于调试嵌入式ARM程序，我们需要下载gdb的源代码，增加对ARM的ELF格式的支持才能够调试ARM程序。</p></blockquote>
-
-<ol>
-<li>编译宿主机上的arm-linux-gdb程序（如果在busybox中添加过了gdb的选项，不必再编译arm-linux-gdb了，已经有了）
-
-<ul>
-<li>./configure &ndash;target=arm-linux &ndash;enable-werror=no</li>
-<li>&ndash;target指定宿主机调试的目标机类型，在编译的时候会编译出符合arm-linux的调试的gdb工具</li>
-<li>&ndash;enable-werror的含义是在编译的时候增加-Werror选项，这样会把一些原本的警告信息当做错误。由于gdb的部分代码写的并不规范，所以-Werror会报出一些错误</li>
-</ul>
-</li>
-<li>进入gdb/gdbserver目录下，执行以下命令：
-
-<ul>
-<li>./configure &ndash;host=arm-linux &ndash;target=arm-linux</li>
-<li>make</li>
-<li>arm-linux-strip gdbserver</li>
-<li>&ndash;host指定编译出的工具运行在什么平台</li>
-<li>&ndash;target为指定的编译器配置目标环境</li>
-</ul>
-</li>
-<li>gdb远程调试命令
-
-<ul>
-<li>Target remote ip：port executable；target命令用于连接一个远程的gdbserver，ip和port为远程主机的ip和端口号，executable为gdbserver需要调试的程序，这个文件在gdb所在的宿主机上不能被strip，否在调试需要的symbols就不存在了</li>
-<li>file executable；在gdb调试之前，需要使用file命令获取可执行文件的符号，以获得调试需要的符号列表</li>
-<li>show/set sysroot；因为调试的时候需要用到交叉编译器的库文件和工具，所以必须制定，set用于设置sysroot路径，show用于显示gdb内置变量的值</li>
-<li>show/set solib-search-path;solib-search-path必须设置，因为远程调试的程序在运行时会调用到动态库，需要把所有的动态库都加载到这个变量中，像LD_LIBRARY_PATH一样</li>
-<li>List/l;调试的时候我们可以通过这个命令查看源代码</li>
-<li>break/b linenumber/function;设置断点，在运行时会停止在设置的断点处，断点可以设置为代码的行号，也可以在指定的函数处停止</li>
-<li>continue/c;继续，使用gdb/gdbserver，没有run这个命令，因为程序实际通过stub在gdbserver所对应的开发板上运行</li>
-<li>next/n;执行一条指令，但不会进入函数内部</li>
-<li>print/p;打印变量的值</li>
-<li>step/s;单步跟踪，如果有函数，会进入函数内部，可以通过finish命令退出函数</li>
-<li>quit/q;退出gdb调试环境</li>
-</ul>
-</li>
-<li>步骤演示
-
-<ul>
-<li>开发板执行arm-linux-gdbserver命令，开启调试服务端程序test：arm-linux-gdbserver 192.168.1.230:6410 test;命令的参数类型为<ip>:<port> <app>,ip为开发板的网络地址，端口号由用户指定，代表服务应用程序所使用的网络端口，app为需要调试的应用程序的名字</li>
-<li>宿主机把调试文件载入gdb调试器（可执行文件必须要有调试信息，比如编译时候加上-g，Qt下是qmake CONFIG+=debug）：arm-linux-gdb test</li>
-<li>向应用程序传递参数，比如：set args -qws</li>
-<li>确认参数是否被正学设置：show args</li>
-<li>设置交叉编译器动态库文件路径：set sysroot /embeded/wenris-xtools/arm-wenris-linux-gnueabi/sysroot;如果在交叉编译的时候指定&ndash;with-sysroot，则可以省略。最后通过show sysroot命令查看是否设置成功</li>
-<li>设置程序运行时的动态库：set solib-search-path /work/qt/qt-4.7-arm/lib:/work/qt/tslib_install/lib:/work/qt/tslib_install/lib/ts</li>
-<li>链接到gdbserver：target remote 192.168.1.230:6410</li>
-<li>执行gdb相关的代码调试命令进行远程调试</li>
-</ul>
-</li>
-</ol>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[GNS3_Install]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/06/08/gns3-install/"/>
-    <updated>2015-06-08T11:24:09+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/06/08/gns3-install</id>
-    <content type="html"><![CDATA[<h2>GNS3模拟器安装步骤</h2>
-
-<ol>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3</a>，并且安装</li>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3 IOU VM虚拟机镜像</a></li>
-<li>下载路由器和交换机的IOS镜像文件(百度搜索并下载)
-
-<ul>
-<li>i86bi-linux-l2-ipbasek9-15.1g.bin(交换机)</li>
-<li>i86bi-linux-l3-adventerprisek9-15.4.1T.bin(路由器)</li>
-</ul>
-</li>
-<li>安装virtualbox</li>
-<li>导入步骤2中下载的GNS3虚拟机镜像，设置网卡为hostonly，并启动虚拟机</li>
-<li>GNS3是基于linux系统的，root用户登录，密码为cisco，然后查看网卡ip地址ifconfig</li>
-<li>在浏览器中输入刚才查找到的IP地址，并指名端口号8000下的upload，例如：<a href="http://192.168.172.101:8000/upload">http://192.168.172.101:8000/upload</a></li>
-<li>打开GNS3软件，在edit->Preference->Server中添加虚拟机的IP地址以及端口(ip地址来自步骤6)</li>
-<li>在edit->Preference->IOS on UNIX中，指名iourc.txt的路径</li>
-<li>在edit->Preference->IOU devices中，添加switch和router镜像路径(路径为上传到虚拟机中的具体路径，例如：/home/gns3/GNS3/images/IOU/i86bi-linux-l2-ipbasek9-15.1g.bin)</li>
-<li>启动设备</li>
-</ol>
 
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>

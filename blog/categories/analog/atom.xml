@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: analog | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/analog/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-08-21T10:31:22+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Basic-Analog-Knowledge]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge/"/>
+    <updated>2015-08-20T12:22:41+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge</id>
+    <content type="html"><![CDATA[<h2>磁珠</h2>
+
+<ol>
+<li>全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著</li>
+<li>磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化</li>
+<li>磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用</li>
+<li>主要特性参数：
+
+<ol>
+<li>直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值</li>
+<li>额定电流(mA)</li>
+<li>阻抗[z]@100MHz(ohm):这里指的是交流阻抗</li>
+<li>阻抗频率特性</li>
+<li>电阻频率特性</li>
+<li>感抗频率特性</li>
+</ol>
+</li>
+<li>用途：
+
+<ol>
+<li>抑制信号线、电源线上的高频干扰和尖峰脉冲。它也具有吸收景点放点脉冲干扰的能力</li>
+<li>电感是储能元件，而磁珠时能量转换器件。电感多用于电源滤波回路，侧重于抑制传导性干扰；磁珠多用于信号回路，主要用于EMI(电磁兼容)方面。磁珠用来吸收超高频信号，例如在一些RF电路、PLL、振荡电路、含超高频存储器电路等，都需要在电源输入部分加磁珠</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

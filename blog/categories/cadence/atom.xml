@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cadence | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/cadence/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-08-01T21:04:18+08:00</updated>
+  <updated>2015-08-21T10:31:22+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -22,7 +22,57 @@
 
 <ol>
 <li>Cadence公司著名的软件有Cadence Allegro（布局布线设计工具），Cadence LDV，Cadence IC，Cadence OrCAD等</li>
-<li></li>
+<li>整个软件系统主要功能模块：
+
+<ol>
+<li>Design Entry HDL：提供了一个原理图输入和分析环境</li>
+<li>Design Entry CIS：是Cadence收钩原OrCAD公司的产品，是国际上通用的标准的原理图输入工具，与Allegro实现了无缝连接</li>
+<li>Design Entry HDL Rules Checker：Design Entry HDL的规则检查工具</li>
+<li>Library Explorer：进行数字设计库管理的软件，可以调用Design Entry HDL、PCB Librarian、PCB Designer、Allegro System Architect等工具建立的元件符号和模型</li>
+<li>Package Designer：芯片和封装的设计分析软件</li>
+<li>PCB Editor：高性能PCB设计软件</li>
+<li>PCB Librairan：Allegro库开发</li>
+<li>PCB Router：CCT布线器</li>
+<li>PCB SI：提供一个集成的高速设计与分析环境</li>
+<li>Physical Viewer：Allegro浏览器模块</li>
+<li>Project Manager：Design Entry HDL的项目管理器</li>
+<li>AMS Simulator：工业标准的模拟、数字及模拟/数字混合信号仿真系统</li>
+<li>PCB Editor Utilities：包含Pad Designer、DB Doctor和Bach DRC等工具</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>快捷键</h2>
+
+<ol>
+<li>原理图编辑：
+
+<ol>
+<li>原理图放大：I，或者Ctrl+滚轮向上滚</li>
+<li>原理图缩小：O，或者Ctrl+滚动向下</li>
+<li>原理图向上走：PGUP</li>
+<li>原理图向下走：PGDN</li>
+<li>原理图向左走：Ctrl+PGUP</li>
+<li>原理图向右走：Ctrl+PGDN</li>
+<li>元器件旋转：R</li>
+</ol>
+</li>
+<li>SCH库编辑：
+
+<ol>
+<li>进入下一个分片元件的编辑：Ctrl+N</li>
+<li>返回上一个分片元件的编辑：Ctrl+B</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>补充知识</h2>
+
+<ol>
+<li>0.1inch = 2.54mm</li>
+<li>总线的命名：Basename[0:len-1]表示总线名Basename，位长len</li>
 </ol>
 
 ]]></content>

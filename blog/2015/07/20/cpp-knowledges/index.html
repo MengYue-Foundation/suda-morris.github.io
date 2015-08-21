@@ -145,7 +145,116 @@
 
 <h2>define与inline的区别</h2>
 
-<blockquote><p>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</p></blockquote>
+<blockquote><ol>
+<li>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</li>
+<li>inline函数必须在调用之前<strong>定义</strong></li>
+<li>在一个源代码模块中只能有一次inline定义</li>
+</ol>
+</blockquote>
+
+<h2>带变长实参表的函数</h2>
+
+<blockquote><ol>
+<li>在C和C++中，可以定义其参数表以省略号结尾的函数。省略号使调用者能够制定参数的数量以及类型。</li>
+<li>为了定义使用省略号的函数，需要包含cstdarg库</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">double</span> <span class="nf">mean</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="p">...){</span>
+</span><span class='line'>  <span class="kt">va_list</span> <span class="n">ap</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">count</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>               <span class="cm">/*ap执行第一个未命名实参*/</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">sum</span> <span class="o">+=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="kt">double</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span>                 <span class="cm">/*返回之前清除栈*/</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">sum</span><span class="o">/</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>预处理宏主要应用场合</h2>
+
+<blockquote><ol>
+<li>使用#ifndef/#define/#endif将头文件包裹起来，以避免多次包含某个头文件</li>
+<li>使用#ifdef/#else/#endif对某些代码部分进行条件编译</li>
+<li><strong>FILE</strong>宏和<strong>LINE</strong>宏用于调试并给出框架信息</li>
+</ol>
+</blockquote>
+
+<h2>C++中的多态性</h2>
+
+<blockquote><ol>
+<li>C++源于C语言，它的编译器也试图在编译时绑定函数调用，这主要是基于性能方面的考虑。编译器无法仅凭集成关系和基类指针就确定它正在操作何种对象。如果没有运行时检查，就无法保证运行时调用正确的函数。C++要求使用一个特殊的关键字来允许运行时通过指针和引用进行函数调用的绑定，这个关键字就是virtual，它能够使得程序具有多态性。</li>
+<li>由于this是在执行它的构造函数时被初始化的，在执行它的析构函数的时候被销毁，因此不要指望在这两种条件下能够执行正确的运行时绑定。当在构造函数或者析构函数里面调用任何this方法时，将由编译时绑定决定应该调用哪一个方法，就好像不存在virtual关键字一样。</li>
+<li>一般而言，如果类中包含一个或者多个virtual函数，则也应包含一个虚析构函数。这是因为，当对对台对象集合进行操作时，通常是通过基类指针删除这些对象，这会导致对析构函数的间接调用，如果析构函数不为virtual类型，在编译时绑定将决定应该调用哪一个析构函数，从而可能导致派生对象的不完整析构</li>
+</ol>
+</blockquote>
+
+<h2>纯virtual函数的声明</h2>
+
+<blockquote><ol>
+<li>virtual returnType functionName(parameterList)=0;</li>
+<li>抽象基类中至少要有一个virtual函数</li>
+<li>抽象基类中不能有public的构造函数</li>
+<li>抽象基类的任何具体派生类都必须重写并定义全部的纯virtual基类函数，话句话说，任何没有重写并定义全部纯virtual基类函数的派生类都是抽象类</li>
+</ol>
+</blockquote>
+
+<h2>重载，隐藏与重写</h2>
+
+<blockquote><ol>
+<li>当函数foo在同一个作用域内存在两个或者多个版本(具有不同的签名)时，就称foo函数被<strong>重载</strong>了</li>
+<li>当基类中的一个virtual函数在培生累中也存在，并且他们具有相同的签名和返回类型时，就称派生类中的版本“重写”了基类中的版本</li>
+<li>派生类中的成员函数，会隐藏基类中与之同名的全部函数，如果出现这种情况，则：
+
+<ul>
+<li>只有派生类函数可以被直接调用</li>
+<li>类作用域解析运算符::西部用来显式地调用基类函数</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>有三种特殊的成员函数从来不会被继承，编译器会为没有定义它们的类自动生成这三种函数</h2>
+
+<ol>
+<li>拷贝构造函数：类名（const 类名&amp; 变量名）</li>
+<li>复制赋值运算符</li>
+<li>析构函数</li>
+</ol>
+
+
+<h2>构造函数</h2>
+
+<blockquote><p>如果一个类没有构造函数，那么编译器就会自动产生一个默认的public构造函数，而这个构造函数会调用它的每一个基类的默认构造函数。如果某个类有一些构造函数但是没有默认构造函数，那么它就不会进行默认的初始化工作，这种情况下，任何派生类构造函数都必须在其初始化列表中明确地指名应该调用哪一个基类构造函数</p></blockquote>
+
+<h2>类的前置声明</h2>
+
+<blockquote><ol>
+<li>类的前置声明将它的名称声明成一个有效的类名称，但不给出类的定义。这会使得类名称能够被用作<strong>指针</strong>和<strong>引用</strong>的类型，在遇到类的定义之前，不会将这些指针和引用进行解引操作。</li>
+<li><strong>如果可以使用前置声明，就不要使用#include指令</strong></li>
+</ol>
+</blockquote>
+
+<h2>范型与模板</h2>
+
+<blockquote><p>1.模板为C++编译器提供了一个途径，能够为带有参数化类型和相同行为的类和函数生成多个版本。模板使用关键字template以及用尖括号&lt;>包围的模板参数进行区分。与函数参数不同，模板参数不仅可以传递变量和值，还可以传递类型表达式。例如：template <class T,int max> Buffer{T v[max];}
+2. 每当编译器看到一个特定参数类型的组合首次用于一个模板函数时，就称此模板进行了实例化。
+3. 类模板主要用来生成数据的通用容器，其参数能够指名容器中的内容。所有的Qt容器类以及标准模板库(STL)中的所有容器类都是参数化的。
+4. 所有模板的定义(类和函数)都必须出现在头文件中，这是因为编译器需要用这些定义来根据模板声明生成代码</p></blockquote>
 
 <h2>其他</h2>
 
@@ -155,6 +264,9 @@
 <li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
 <li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
 <li>const数据成员的初始化必须写在初始化列表中</li>
+<li>M_PI来自于&lt;math.h>,它位于cstdlib库中</li>
+<li>foreach()宏需要赋值它所遍历的容器，这就要求使用foreach必须要有拷贝构造函数</li>
+<li>C++类型可以分成两类：值类型和对象类型，值类型的有Anything*，int，char，QString，QDate和QVariant。带有共有默认构造函数、拷贝构造函数和复制赋值运算符的任何类型都是值类型</li>
 </ul>
 
 </div>
@@ -177,7 +289,7 @@
 	<div class="tags">
 
 
-	<a class='category' href='/blog/categories/c-plus-plus/'>c++</a>, <a class='category' href='/blog/categories/qt4/'>qt4</a>
+	<a class='category' href='/blog/categories/c-plus-plus/'>c++</a>
 
 
 </div>

@@ -3,13 +3,15 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Cadence-Allegro - WenRis Blog</title>
+	<title>Basic-Analog-Knowledge - WenRis Blog</title>
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="Cadence简介 Cadence公司著名的软件有Cadence Allegro（布局布线设计工具），Cadence LDV，Cadence IC，Cadence OrCAD等
-整个软件系统主要功能模块： Design Entry HDL：提供了一个原理图输入和分析环境
-Design Entry &hellip;">
+	<meta name="description" content="磁珠 全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著
+磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化
+磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用
+主要特性参数： 直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值
+额定电流 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,62 +87,31 @@ Design Entry &hellip;">
 	
 
 	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Cadence-Allegro</h2>
-	<div class="entry-content"><h2>Cadence简介</h2>
+	<h2 class="title">Basic-Analog-Knowledge</h2>
+	<div class="entry-content"><h2>磁珠</h2>
 
 <ol>
-<li>Cadence公司著名的软件有Cadence Allegro（布局布线设计工具），Cadence LDV，Cadence IC，Cadence OrCAD等</li>
-<li>整个软件系统主要功能模块：
+<li>全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著</li>
+<li>磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化</li>
+<li>磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用</li>
+<li>主要特性参数：
 
 <ol>
-<li>Design Entry HDL：提供了一个原理图输入和分析环境</li>
-<li>Design Entry CIS：是Cadence收钩原OrCAD公司的产品，是国际上通用的标准的原理图输入工具，与Allegro实现了无缝连接</li>
-<li>Design Entry HDL Rules Checker：Design Entry HDL的规则检查工具</li>
-<li>Library Explorer：进行数字设计库管理的软件，可以调用Design Entry HDL、PCB Librarian、PCB Designer、Allegro System Architect等工具建立的元件符号和模型</li>
-<li>Package Designer：芯片和封装的设计分析软件</li>
-<li>PCB Editor：高性能PCB设计软件</li>
-<li>PCB Librairan：Allegro库开发</li>
-<li>PCB Router：CCT布线器</li>
-<li>PCB SI：提供一个集成的高速设计与分析环境</li>
-<li>Physical Viewer：Allegro浏览器模块</li>
-<li>Project Manager：Design Entry HDL的项目管理器</li>
-<li>AMS Simulator：工业标准的模拟、数字及模拟/数字混合信号仿真系统</li>
-<li>PCB Editor Utilities：包含Pad Designer、DB Doctor和Bach DRC等工具</li>
+<li>直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值</li>
+<li>额定电流(mA)</li>
+<li>阻抗[z]@100MHz(ohm):这里指的是交流阻抗</li>
+<li>阻抗频率特性</li>
+<li>电阻频率特性</li>
+<li>感抗频率特性</li>
 </ol>
 </li>
-</ol>
-
-
-<h2>快捷键</h2>
+<li>用途：
 
 <ol>
-<li>原理图编辑：
-
-<ol>
-<li>原理图放大：I，或者Ctrl+滚轮向上滚</li>
-<li>原理图缩小：O，或者Ctrl+滚动向下</li>
-<li>原理图向上走：PGUP</li>
-<li>原理图向下走：PGDN</li>
-<li>原理图向左走：Ctrl+PGUP</li>
-<li>原理图向右走：Ctrl+PGDN</li>
-<li>元器件旋转：R</li>
+<li>抑制信号线、电源线上的高频干扰和尖峰脉冲。它也具有吸收景点放点脉冲干扰的能力</li>
+<li>电感是储能元件，而磁珠时能量转换器件。电感多用于电源滤波回路，侧重于抑制传导性干扰；磁珠多用于信号回路，主要用于EMI(电磁兼容)方面。磁珠用来吸收超高频信号，例如在一些RF电路、PLL、振荡电路、含超高频存储器电路等，都需要在电源输入部分加磁珠</li>
 </ol>
 </li>
-<li>SCH库编辑：
-
-<ol>
-<li>进入下一个分片元件的编辑：Ctrl+N</li>
-<li>返回上一个分片元件的编辑：Ctrl+B</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>补充知识</h2>
-
-<ol>
-<li>0.1inch = 2.54mm</li>
-<li>总线的命名：Basename[0:len-1]表示总线名Basename，位长len</li>
 </ol>
 
 </div>
@@ -159,11 +130,11 @@ Design Entry &hellip;">
   
 
 
-<time datetime="2015-07-27T21:55:59+08:00" pubdate data-updated="true"></time></div>
+<time datetime="2015-08-20T12:22:41+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 
-	<a class='category' href='/blog/categories/cadence/'>cadence</a>
+	<a class='category' href='/blog/categories/analog/'>analog</a>
 
 
 </div>
@@ -204,7 +175,7 @@ Design Entry &hellip;">
 <section id="comment">
     <h2 class="title">Comments</h2>
     <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="/blog/2015/07/27/cadence-allegro" data-title="Cadence-Allegro" data-url="http://suda-morris.github.io/blog/2015/07/27/cadence-allegro/"></div>
+	<div class="ds-thread" data-thread-key="/blog/2015/08/20/basic-analog-knowledge" data-title="Basic-Analog-Knowledge" data-url="http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

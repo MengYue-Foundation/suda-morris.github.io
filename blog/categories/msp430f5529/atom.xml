@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: msp430f5529 | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/msp430f5529/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-08-21T10:31:22+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[W5500-Introduce]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/08/17/w5500-introduce/"/>
+    <updated>2015-08-17T09:50:48+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/08/17/w5500-introduce</id>
+    <content type="html"><![CDATA[<h2>W5500网络模块简介</h2>
+
+<ol>
+<li>公司：Wiznet</li>
+<li>使用硬件逻辑门电路实现TCP/IP协议栈的传输层及网络层（如：TCP，UDP，ICMP，IPv4，ARP，IGMP，PPPoE等协议），并集成了数据链路层，物理层(10BaseT/100BaseTX)，以及32K字节片上RAM作为数据收发缓存，使得上位机主控芯片只需承担TCP/IP应用层控制信息的处理任务，大大节省了上位机对于数据复制、协议处理和中断处理等方面的工作量，提升了系统利用率及可靠性</li>
+<li>操作过程中，用户可以近似将W5500作为MCU的一个外设RAM来使用，非常简易。W5500对外接口通常为通用的80MHz高速SPI</li>
+<li>W5500支持同时的8个socket，方便和不同的IP和设备进行通讯；为了减小系统能耗，W5500提供了网络环形模式(WOL)以及掉电模式供客户选择使用；W5500是非可攻击性的硬件网络引擎，可以防止类似于洪流，诈骗式以及注入式网络攻击，提高了网络安全</li>
+<li>支自动协商(10/100-Based全双工/半双工)</li>
+<li>3.3V工作电压，I/O信号口5V耐压</li>
+<li>W5500 不支持Auto-MDI-X，也就是不支持交叉直连自动切换，对于某些比较老的设备，可能需要特定的交叉线或者直连线。比如模块连模块，需要使用交叉线，模块连路由器或者交换机需要使用直连线。</li>
+</ol>
+
+
+<h2>W5500初始化主要使用的几个函数：</h2>
+
+<ol>
+<li>W5500_conf.c->主要配置W5500的MAC、IP地址，W5500基本的数据读写过程，复位设置函数等</li>
+<li>Socket.c->主要介绍了W5500的SOCKET相关配置函数，比如SOCKET的打开、关闭以及接收数据、发送数据等等</li>
+<li>Utility.c->主要介绍了基本的延时函数，还有数据格式转化函数</li>
+<li>w5500.c->主要介绍W5500的寄存器读写过程</li>
+</ol>
+
+
+<h2>W5500的Socket初始化</h2>
+
+<ol>
+<li>W5500的操作需要设置一下寄存器的参数：
+
+<ol>
+<li>模式寄存器(MR)</li>
+<li>中断屏蔽寄存器(IMR)</li>
+<li>重发时间寄存器(RTR)</li>
+<li>重发计数寄存器(RCR)</li>
+</ol>
+</li>
+<li>设置网络信息，下面的寄存器是关于网络的基本设置，需要根据网络环境来进行设置
+
+<ol>
+<li>网关地址寄存器(GAR)</li>
+<li>本机物理地址寄存器(SHAR)</li>
+<li>子网掩码寄存器(SUBR)</li>
+<li>本机IP地址寄存器(SIPR)</li>
+</ol>
+</li>
+<li>设置端口存储信息，这一步设置端口TX/RX存储信息，每个端口的基地址和屏蔽地址在这里确定并保存。
+
+<ol>
+<li>W5500有一个通用寄存器，8个Socket寄存器区，以及对应每个Socket的收发缓存区。每一个Socket的发送缓存区都在一个16KB的物理接收内存中，初始化分配为2KB。无论给每个Socket分配多达的收发缓存，都必须在16为的偏移地址范围内(0x0000~0xFFFF).16KB的发送内存初始化被分配为每个SOcket 2KB发送缓存区(2KB*8=16KB)。</li>
+<li>初始化分配的2KB Socket发送缓存，可以通过使用Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)重新分配，一旦所有的Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)配置完成，16KB的发送内存就会按照配置分配给每个Socket的发送缓存，并按照从Socket0到7顺序分配。16KB物理内存的地址是可以自增的，但是为了避免数据传输错误，需要避免发送缓存大小寄存器(Sn_TXBUF_SIZE)的和超过16</li>
+<li>16KB的发送内存中分配了对应Socket n的发送缓存区，用于为来自主机传输的数据做缓存。Socket n发送缓存区的16位偏移地址支持64KB的寻址范围(从0x0000到0xFFFF),</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
