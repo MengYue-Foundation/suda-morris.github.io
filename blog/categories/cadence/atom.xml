@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cadence | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/cadence/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-08-21T10:31:22+08:00</updated>
+  <updated>2015-08-25T21:30:22+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -55,7 +55,15 @@
 <li>原理图向下走：PGDN</li>
 <li>原理图向左走：Ctrl+PGUP</li>
 <li>原理图向右走：Ctrl+PGDN</li>
-<li>元器件旋转：R</li>
+<li>元器件旋转，变换方向：R</li>
+<li>元器件复制拖动：Ctrl+拖动</li>
+<li>元器件更新：
+
+<ol>
+<li>replace：元起价信息包括封装全部更新</li>
+<li>update：只会更新元器件基本细心，封装信息不会更新</li>
+</ol>
+</li>
 </ol>
 </li>
 <li>SCH库编辑：
