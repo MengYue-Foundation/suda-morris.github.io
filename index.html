@@ -179,6 +179,7 @@
 <li>W5500 不支持Auto-MDI-X，也就是不支持交叉直连自动切换，对于某些比较老的设备，可能需要特定的交叉线或者直连线。比如模块连模块，需要使用交叉线，模块连路由器或者交换机需要使用直连线。</li>
 <li>W5500不支持自动极性变换功能，因此用户需要使用直连线与交换机或者路由器连接，使用交叉线与终端设备(如服务器，工作站或者其他W5500)相连接。然而用户可以使用任何一种类型的网线与具有自动极性变换的其他设备相连。</li>
 <li>W5500以太网芯片的内核由传输层的TCP、UDP、ICMP、IGMP等协议、网络层的IP、ARP、PPPoE等协议以及链路层的MAC构成，再加上物理层的PHY和外围的寄存器、内存、SPI接口组成了这一整套硬件化的以太网解决方案</li>
+<li>SPI时钟设定值速率为80MHz，但是高速信号在受电磁串扰和长信号线的影响下可能会失真，实测具有稳定波形的始终速率为33.3MHz</li>
 </ol>
 
 
@@ -293,10 +294,7 @@
 
 <h2>应用层</h2>
 
-<blockquote><ol>
-<li>应用层是最接近终端用户的第一层，这就意味着应用层与用户之间是通过应用软件直接相互作用。应用层并非由计算机上云sing的实际应用软件组成，而是由向应用程序提供访问网络资源的API组成。</li>
-</ol>
-</blockquote>
+<blockquote><p>应用层是最接近终端用户的第一层，这就意味着应用层与用户之间是通过应用软件直接相互作用。应用层并非由计算机上云sing的实际应用软件组成，而是由向应用程序提供访问网络资源的API组成。</p></blockquote>
 
 <h2>寄存器</h2>
 
@@ -317,6 +315,121 @@
 <h2>TCP/IP协议族</h2>
 
 <p><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgW5500%E7%BD%91%E7%BB%9C%E6%89%A9%E5%B1%95%E6%9D%BF%E6%95%99%E7%A8%8B.png" alt="TCP/IP协议族" /></p>
+
+<h2>TCP协议</h2>
+
+<ol>
+<li>TCP协议通过三个报文段完成连接的建立，这个过程称为三次握手。TCP连接建立过程：
+
+<ol>
+<li>第一次握手：建立连接时，客户端发送SYN包(seq=j)到服务器，并进入SYN_SEND状态，等待服务器确认</li>
+<li>第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=j+1),同时自己也发送一个SYN包(seq=k),即SYN+ACK包，此时服务器进入SYN_RECV状态</li>
+<li>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1),此包发送完毕，客户端和服务器进入ESTABLISH状态，完成三次握手</li>
+</ol>
+</li>
+<li>终止一个TCP连接需要四次挥手，这是由TCP的半关闭(half-close)造成的
+
+<ol>
+<li>第一次挥手：主动方发出设置了FIN位的报文，表示主动终止从本地到远端的单向链接；此时主动方进入FIN_WAIT1状态，意思是它在等待远端的FIN报文</li>
+<li>第二次挥手：远端收到FIN后，会立即发送ACK；主动方收到ACK后，进入FIN_WAIT2状态，所以FIN_WAIT1状态持续的时间非常短；此时远端进入CLOSE-WAIT状态，一条单向链接终止了，但另一条还没有，处于HALF-CLOSE连接状态</li>
+<li>第三次挥手：当远端进行了必要的数据发送后，它发送FIN，表示它出发的单向连接也要关闭，同时它进入LAST_ACK状态</li>
+<li>第四次挥手：主动方收到FIN后，回应一个ACK；远端就此进入CLOSED状态，连接关闭；主动方进入TIME WAIT状态，确保最后一个ACK没有丢失，防止新连接占用刚刚关闭的主动方的地址端口，使得网络中流浪的老连接的返祖被误认为新连接的分组</li>
+</ol>
+</li>
+<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="TCP三次握手/四次挥手" /></li>
+<li>当W5500初始化完成后，程序进入主循环，此时读取Socket的状态值，并选择进入哪种模式。当Socket处于关闭状态时，在进行通信之前，我们先将该Socket初始化，这个Socket作为服务器端，端口号要固定为侦听的端口。当socket将处于初始化完成状态，即SOCK_INIT状态，此时，作为TCP服务器就要执行listen()函数来侦听端口。由于W5500内嵌了TCP/IP协议，连接过程是不需要单片机干预的。如果连接过程中出错造成超时，该Socket将会被关闭，重新进入SOCK_CLOSE状态。待TCP连接的3次握手完成后，socket的状态将会转变为连接建立状态，即代码中定义的SOCK_ESTABLISHED状态。在进入SOCK_ESTABLISHED状态后，便可进行数据收发。数据通信完毕之后执行disconnect()函数，在收到对方FIN数据包之前，该socket将进入SOCK_CLOSE_WAIT状态。</li>
+<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCPServer%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="TCPServer流程图" /></li>
+<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCPClient%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="TCPClient流程图" /></li>
+</ol>
+
+
+<h2>UDP协议</h2>
+
+<ol>
+<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgUDP%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="UDP通信流程图" /></li>
+<li>当socket处于关闭状态时，在进行通信之前我们先将该UDP模式的socket端口初始化。当socket将处于初始化完成状态即SOCK_UDP状态，此时就可以通过广播方式发送数据了。</li>
+<li><img src="http://e.hiphotos.baidu.com/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=253feb0b9a22720e6fc3eaa81aa26123/b2de9c82d158ccbf4049fb531bd8bc3eb03541e5.jpg" alt="UDP报文" /></li>
+</ol>
+
+
+<h2>DHCP协议</h2>
+
+<ol>
+<li>W5500作为DHCP客户端，路由器作为DHCP服务器端，在DHCP请求的过程中，包括4个主要阶段：发现阶段、提供阶段、选择阶段以及确认阶段</li>
+<li>首次W5500客户端发送DHCPDISCOVER消息(IP地址租用申请)，这个消息通过广播方式发出，所有网络中的DHCP服务器都将接收到这个消息。随后，网络中的DHCP服务器会回应一个DHCPOFFER消息(IP地址租用提供)，由于这个时候客户端还没有网络地址，所以DHCPOFFER也是通过广播的方式发送出去的。然后，向该服务器发送DHCPREQUEST消息。在DHCPREQUEST消息中将包含客户端申请的IP地址。最后，DHCP服务器将会送DHCPACK的相应消息来通知客户端可以使用该IP地址，该确认里面包含了分配的IP地址和该地址的一个稳定期限的租约(默认是8天)，并同时更新DHCP数据库</li>
+<li>DHCP初始化完成以后，通过获取DHCP_SOCKET的状态来获取动态IP地址。第一个状态DHCP_RET_NONE就是获取不成功，第二个状态DHCP_RET_TIMEOUT是获取IP地址超时，都不符合条件。第三个状态DHCP_RET_UPDATE就是获取动态IP地址成功，此时将得到的IP地址通过SPI写入W5500的寄存器。如果是DHCP_RET_CONFLICT冲突状态，就要返回DHCP服务重新获取</li>
+<li><img src="http://i.imgur.com/sqc1tce.jpg" alt="DHCP报文格式" /></li>
+<li>报文格式解析：
+
+<ol>
+<li>OP：若是client送给server的封包，设为1，反之为2</li>
+<li>HTYPE：硬件类别，10MB以太网为1，100MB以太网为2</li>
+<li>HLEN：硬件地址长度，Ethernet为6</li>
+<li>HOPS：若封包需要经过router传送，每站加1，若在同一网段内，为0</li>
+<li>TRANSACTION ID：DHCP REQUEST时产生的数值，以作为DHCPREPLY时的依据</li>
+<li>SECONDS：Client端启动时间(秒)</li>
+<li>FLAGS：从0到15共16bits，最左1bit为1时表示server将以广播方式传送封包给client，其余尚未使用</li>
+<li>ciaddr：yhaoshiclient端想继续使用之前取得的IP地址，则列于这里</li>
+<li>yiaddr：从server送回client的DHCP OFFER与DHCPACK封包中，此栏填写分配给client的IP地址</li>
+<li>siaddr：若client需要透过网络开机，从server送出的DHCP OFFER、DHCPACK、DHCPNACK封包中，此栏填写开机程序代码所在server的地址</li>
+<li>giaddr：若需跨网域进行DHCP发放，此栏为relay agent的地址，否则为0</li>
+<li>chaddr：client的硬件地址</li>
+<li>sname：sever的名称字符串，以0x00结尾</li>
+<li>file：若client需要透过网络开机，此栏将指出开机程序名称，稍后以TFTP传送</li>
+<li>options：允许厂商定义选项，提供更多的设定信息，其长度可变，同时可携带多个选项，每一个选项的第一个字节为信息代码，其后一个自己为该项数据长度，最后为项目内容</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>DNS协议</h2>
+
+<ol>
+<li>客户端初始化完毕之后，如果DNS运行标志位是1或者DNS发送次数超过3次就直接返回。如果不是上面的情况，并且DNS Server的IP不是0.0.0.0时，进入switch函数。当处于DNS域名解析成功状态时，DNS_OK置1，发送请求报文次数置0。当DNS解析域名失败时，标志位置0，请求报文次数加1，然后跳出循环。</li>
+</ol>
+
+
+<h2>SMTP协议</h2>
+
+<ol>
+<li><img src="http://i.imgur.com/9TsOlUJ.png" alt="邮件发送过程示意图" /></li>
+<li>SMTP在TCP协议25号端口监听连续请求。SMTP连接和发送过程：
+
+<ol>
+<li>建立TCP连接</li>
+<li>客户端发送HELO命令以标识发件人自己的身份，然后客户端发送MAIL命令；服务器端正希望以OK作为相应，表明准备接收</li>
+<li>客户端发送RCPT命令，以表示该电子邮件的计划接收人，可以有多个RCPT行；服务器端则表示是否愿意为收件人接收邮件</li>
+<li>协商结束，发送邮件，用命令DATA发送</li>
+<li>以“.”号表示结束并将内容一起发出去，结束此次发送，用QUIT命令退出</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ICMP协议</h2>
+
+<ol>
+<li>ICMP是Internet控制报文协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。我们在网络中经常会使用到ICMP协议，比如我们经常使用的用于检查网络通不通的Ping命令，这个ping的过程实际上就是ICMP协议工作的过程。Ping命令利用ICMP回射请求报文和回射应答报文来测试目标系统是否可达。</li>
+<li>执行ping后，首先向目标服务器发出回送请求报文。计算机送出的回送请求到达目标服务器后，服务器回答这一请求，向送信方发送回送请求。这个ICMP回送回答报文在IP层来看，与被送来的回送请求报文基本上一样。不同的只是，源和目标IP地址字段被交换了，类型字段里填入了表示回送回答的0，这两点，也就是，从送信方式来看，自己送出的ICMP报文从目标服务器哪里像鹦鹉学舌那样原样返回了</li>
+</ol>
+
+
+<h2>NetBIOS</h2>
+
+<p><img src="http://i.imgur.com/OAHwfCG.png" alt="NetBIOS实现过程" /></p>
+
+<ol>
+<li>NetBIOS协议是一种在局域网上的程序可以使用的应用程序编程接口，为v横须提供了请求低级服务的统一的命令集，作用是为了给局域网提供网络以及其他特殊功能，几乎所有的局域网都是在NetBIOS协议的基础上工作的。NetBIOS协议，简单来说就是通过访问设备名称就可以实现对IP地址的访问。</li>
+<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。NetBIOS数据报报文使用UDP 138端口，NetBIOS会话报文使用TCP 139端口。</li>
+</ol>
+
+
+<h2>NTP协议</h2>
+
+<ol>
+<li>NTP是网络时间协议，是用来使设备时间同步化的一种协议，在一些应用长河里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么NTP协议就可以解决这个问题。</li>
+</ol>
+
 
 		
 		
