@@ -88,6 +88,131 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/09/13/wechat-develop/">
+		
+			微信公众号开发</a>
+	</h2>
+	<div class="entry-content">
+		<h2>微信接口请求返回格式介绍</h2>
+
+<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
+
+<h2>常用接口功能</h2>
+
+<ol>
+<li>access_token获取接口
+
+<ul>
+<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
+<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
+</ul>
+</li>
+<li>获取微信服务器IP接口</li>
+<li>长链接转短链接接口</li>
+<li>获取用户列表</li>
+<li>获取用户基本信息(UnionID机制)</li>
+<li>网页授权接口
+
+<ul>
+<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
+<li>两种scope模式：
+
+<ol>
+<li>snsapi_base时只能获取到openid</li>
+<li>snsapi_userinfo时可获取到其他信息</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>素材管理接口</li>
+<li>高级群发接口
+
+<ul>
+<li>两个优点
+
+<ol>
+<li>可根据openid群发</li>
+<li>群发图文内容支持html</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>JSSDK接口</li>
+<li>模板消息接口</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-13T21:31:02+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/wechat/'>wechat</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/09/02/wordpress/">
+		
+			Wordpress</a>
+	</h2>
+	<div class="entry-content">
+		
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-02T10:53:44+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/08/20/basic-analog-knowledge/">
 		
 			Basic-Analog-Knowledge</a>
@@ -420,7 +545,57 @@
 
 <ol>
 <li>NetBIOS协议是一种在局域网上的程序可以使用的应用程序编程接口，为v横须提供了请求低级服务的统一的命令集，作用是为了给局域网提供网络以及其他特殊功能，几乎所有的局域网都是在NetBIOS协议的基础上工作的。NetBIOS协议，简单来说就是通过访问设备名称就可以实现对IP地址的访问。</li>
-<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。NetBIOS数据报报文使用UDP 138端口，NetBIOS会话报文使用TCP 139端口。</li>
+<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。</li>
+<li>ping主机名的第一个数据包就是NBNS(NetBIOS Name Server)协议包，它是TCP/IP上的NetBIOS协议族的一部分，它在基于NetBIOS名称访问的网络上提供主机名和地址映射方法。NBNS是动态DNS的一种。Microsoft的NBNS实现称为WINS。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。如图所示NetBIOS协议架构
+<img src="http://i.imgur.com/MxZkqby.jpg" alt="NetBIOS协议架构" /></li>
+<li>NetBIOS数据报有很多不同格式，主要取决于服务和信息类型，以及用以传送NetBIOS数据报的传输协议。NetBIOS协议架构包含三种基本服务：NAME、SESSION和DATAGRAM，其中NAME所用协议就是NBNS协议</li>
+<li>WINS协议使用的报文即为NetBIOS的名字报文，其总体格式如下图所示
+<img src="http://i.imgur.com/i2pWvfO.png" alt="NetBIOS名字报文格式" />其中2字节通用标志中更详细的字段划分为：操作代码(5bits)操作标志(7bits)结果代码(4bits)
+
+<ol>
+<li>事物ID：请求方为每次名字服务请求所设定的ID值，响应方在相应的响应报文中要填入这个事物ID值</li>
+<li>操作代码：指示报文的类型,最高位为0表示数据包为Reauest请求，最高位为1表示数据包为Response应答，其余4个比特均为0</li>
+<li>操作标志：操作标志位，最低位为1表示广播或者多播，最低位为0表示单播，其他位均为0</li>
+<li>结果代码：在相应报文中指示请求的结果，一般为0</li>
+<li>问题记录个数：请求查询问题的个数，对于Request数据包，该值为1，对于Response数据包，该值为0</li>
+<li>回答记录个数：对于Response数据包有用，Response数据包中响应问题的个数，一般为1</li>
+<li>权威记录个数：在权威记录部分的记录数量，用不到的时候为0</li>
+<li>附加记录个数：在附加记录部分数量，用不到的时候为0</li>
+</ol>
+</li>
+<li>报文的前12字节总称NetBIOS名字报文的首部，通过首部可以判断是否为名字查询的报文。NetBIOS名字报文中最常见的是携带问题记录的报文，问题记录的格式是：问题名称(若干字节) 问题类型(2字节) 问题类别(2字节)。通过携带问题记录的报文，我们可以得到要查询的名字字符，如果和本机名相符，就发送报文响应，相应中带有IP地址，发送广播的主机就会得到该IP地址</li>
+<li>NETBIOS会话报文具有通用的4字节首部和与类型相关的报文内容：类型(1字节) 标志(1字节) 长度(2字节) 内容(若干字节)
+
+<ol>
+<li>类型：指名NetBIOS会话报文的类型，可用的值有：
+
+<ul>
+<li>0x00:会话消息</li>
+<li>0x81:会话请求</li>
+<li>0x82:正面会话响应</li>
+<li>0x83:负面会话响应</li>
+<li>0x84:重定向会话响应</li>
+<li>0x85:会话保活</li>
+</ul>
+</li>
+<li>标志：0~6位保留未用，第7位作为扩展的长度位，使NetBIOS会话报文的内容部分最多可以达到128K字节</li>
+<li>长度：NetBIOS会话报文的内容部分的长度，不包括首部的4字节</li>
+</ol>
+</li>
+<li><img src="http://i.imgur.com/O24egoi.png" alt="NBNS" />计算机1向计算机2的137端口发送一个NODE STATUS REQUEST请求数据包，计算机2收到该数据包后，向计算机1返回一个NODE STATUS RESPONSE响应数据包，该数据包中包含计算机2的MAC地址、机器地址、所属的工作组等信息</li>
+<li>NODE STATUS REQUEST数据包由12字节的HEADER域和38字节的QUESTION ENTRIES域两个部分组成，HEADER域分为8个字段：
+<img src="http://i.imgur.com/VKpTVaA.png" alt="NetBIOS HEADER" /></li>
+<li>QUESTION ENTRIES域组成
+<img src="http://i.imgur.com/93RGC0D.png" alt="QUESTION ENTRIES" />其中：
+
+<ul>
+<li>QUESTION_NAME为要查询的远程计算机的名称，长度为34字节。NBNS规定，计算机NetBIOS的名称不超过16字节，且最后一个字节必须为0x0；</li>
+<li>QUESTION_TYPE对于REQUEST数据包取值为0x0021</li>
+<li>QUESTION_CLASS取值为0x0001</li>
+</ul>
+</li>
+<li>当某台机器的137端口收到NODE STATUS REQUEST请求数据包之后，由该机器的NETBIOS服务随即生成并返回一个NODE STATUS RESPONSE响应数据包。该响应数据包由HEADER域和RESOURCE RECORD域两部分组成。RESOURCE RECORD域组成如图所示：
+<img src="http://i.imgur.com/IPEjagx.png" alt="RESOURCE RECORD" /></li>
 </ol>
 
 
@@ -2150,199 +2325,6 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 	<a class='category' href='/blog/categories/s5pv4418/'>s5pv4418</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/07/06/poe-introduce/">
-		
-			POE简介</a>
-	</h2>
-	<div class="entry-content">
-		<blockquote><p>以太网供电（Power over Ethernet，简称PoE）也称为PoE供电，是一种可以在以太网路中透过双绞线来传输电力与资料到装置上的技术。以太网供电技术的出发点是让IP电话、WLAN接入点、网络摄像头等小型网络设备，可以直接从以太网线（4对双绞线中空闲的2对来传输）获得电力，无需单独铺设电力线，以简化系统布线，降低网络基础设施的建设成本。</p></blockquote>
-
-<h2>使用POE的注意事项</h2>
-
-<blockquote><p>使用POE需要留意以下三点：</p>
-
-<ol>
-<li>如上图所示，不是所有的以太网交换机都支持PoE供电功能，供电模块内置或外置，一般价格比普通交换贵一些。</li>
-<li>要求终端也支持PoE受电功能。</li>
-<li>通过网线供电，功率本身是有一定限制的，留意查看不同设备的使用说明和功率要求。</li>
-</ol>
-</blockquote>
-
-<h2>典型的系统</h2>
-
-<blockquote><p>一个典型的以太网供电系统。在配线柜里保留以太网交换机设备，用一个带电源供电集线器(Midspan HUB)给局域网的双绞线提供电源。在双绞线的末端，该电源用来驱动电话、无线接入点、相机和其他设备。为避免断电，可以选用一个UPS。</p></blockquote>
-
-<h2>原理</h2>
-
-<blockquote><p>标准的五类网线有<strong>四对双绞线</strong>,但是在10M BASE-T和100M BASE-T中只用到其中的<strong>两对</strong>。IEEE80 2.3af允许<strong>两种</strong>用法:</p>
-
-<ol>
-<li>应用空闲脚供电时,4、5脚连接为正极,7、8脚连接为负极。</li>
-<li>应用数据脚供电时,将DC电源加在传输变压器的中点,不影响数据的传输。在这种方式下线对1、2和线对3、6可以为任意极性。</li>
-</ol>
-
-
-<p>IEEE802.3af标准不允许同时应用以上两种情况。电源提供设备PSE只能提供一种用法,但是电源应用设备PD必须能够同时适应两种情况。该标准规定供电电源通常是48V、13W的。PD设备提供48V到低电压的转换是较容易的,但同时应有1500V的绝缘安全电压。</p></blockquote>
-
-<p><img src="http://i.imgur.com/uRd8v4m.png" alt="POE典型组网图" /></p>
-
-<h2>参数</h2>
-
-<blockquote><p>一个完整的POE系统包括供电端设备(PSE, Power Sourcing Equipment)和受电端设备(PD, Powered Device)两部分。PSE设备是为以太网客户端设备供电的设备,同时也是整个POE以太网供电过程的管理者。而PD设备是接受供电的PSE负载,即POE系统的客户端设备,如IP电话、网络安全摄像机、AP及掌上电脑( PDA)或移动电话充电器等许多其他以太网设备（实际上,任何功率不超过13W的设备都可以从RJ45插座获取相应的电力）。</p>
-
-<p>POE标准供电系统的主要供电特性参数为：</p>
-
-<ol>
-<li>电压在44～57V之间,典型值为48V。</li>
-<li>允许最大电流为550mA,最大启动电流为500mA。</li>
-<li>典型工作电流为10～350mA,超载检测电流为350～500mA。</li>
-<li>在空载条件下,最大需要电流为5mA。</li>
-<li>为PD设备提供3.84～12.95W三个等级的电功率请求,最大不超过13W。（注意PD分级0和分级4没有显示出来而且不应采用。）</li>
-<li>2009年10月30日 IEEE出了一个最新的802.3at标准，其中规定了POE可以提供更高的功率，超过了13W，可以达到30W,分三个等级(7W,15.4W,30W)</li>
-<li>一般设备上会标明：15.4W/802.3af,30W/802.3at</li>
-</ol>
-</blockquote>
-
-<h2>工作过程</h2>
-
-<ol>
-<li>检测
-
-<ul>
-<li>一开始,PSE设备在端口输出很小的电压,直到其检测到线缆终端的连接为一个支持IEEE 802.3af标准的受电端设备。检测电源输出线对之间的阻容值来判断PD是否存在</li>
-</ul>
-</li>
-<li>PD端设备分类
-
-<ul>
-<li>当检测到受电端设备PD之后,PSE设备可能会为PD设备进行分类,并且评估此PD设备所需的功率损耗。</li>
-</ul>
-</li>
-<li>开始供电
-
-<ul>
-<li>在一个可配置时间(一般小于15μs)的启动期内,PSE设备开始从低电压向PD设备供电,直至提供48V的直流电源。</li>
-</ul>
-</li>
-<li>供电
-
-<ul>
-<li>为PD设备提供稳定可靠48V的直流电,满足PD设备不越过 30W的功率消耗。</li>
-</ul>
-</li>
-<li>断电
-
-<ul>
-<li>若PD设备从网络上断开时,PSE就会快速地(一般在300～400ms之内)停止为PD设备供电,并重复检测过程以检测线缆的终端是否连接PD设备。</li>
-</ul>
-</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-06T20:16:12+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/poe/'>poe</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/29/about-nginx/">
-		
-			初识Nginx</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Nginx简介</h2>
-
-<blockquote><ol>
-<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
-<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
-<li>优点：高并发，部署简单，内存消耗少，成本低</li>
-<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
-</ol>
-</blockquote>
-
-<h2>其它服务器</h2>
-
-<ol>
-<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
-<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
-<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
-</ol>
-
-
-<h2>Nginx环境的搭建</h2>
-
-<ol>
-<li><a href="http://nginx.org">进入官网下载最新版</a></li>
-<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
-<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
-<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
-<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
-<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-29T10:21:37+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

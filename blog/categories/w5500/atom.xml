@@ -4,7 +4,7 @@
   <title><![CDATA[Category: w5500 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/w5500/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-08-29T22:52:32+08:00</updated>
+  <updated>2015-09-15T20:13:36+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -271,7 +271,57 @@
 
 <ol>
 <li>NetBIOS协议是一种在局域网上的程序可以使用的应用程序编程接口，为v横须提供了请求低级服务的统一的命令集，作用是为了给局域网提供网络以及其他特殊功能，几乎所有的局域网都是在NetBIOS协议的基础上工作的。NetBIOS协议，简单来说就是通过访问设备名称就可以实现对IP地址的访问。</li>
-<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。NetBIOS数据报报文使用UDP 138端口，NetBIOS会话报文使用TCP 139端口。</li>
+<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。</li>
+<li>ping主机名的第一个数据包就是NBNS(NetBIOS Name Server)协议包，它是TCP/IP上的NetBIOS协议族的一部分，它在基于NetBIOS名称访问的网络上提供主机名和地址映射方法。NBNS是动态DNS的一种。Microsoft的NBNS实现称为WINS。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。如图所示NetBIOS协议架构
+<img src="http://i.imgur.com/MxZkqby.jpg" alt="NetBIOS协议架构" /></li>
+<li>NetBIOS数据报有很多不同格式，主要取决于服务和信息类型，以及用以传送NetBIOS数据报的传输协议。NetBIOS协议架构包含三种基本服务：NAME、SESSION和DATAGRAM，其中NAME所用协议就是NBNS协议</li>
+<li>WINS协议使用的报文即为NetBIOS的名字报文，其总体格式如下图所示
+<img src="http://i.imgur.com/i2pWvfO.png" alt="NetBIOS名字报文格式" />其中2字节通用标志中更详细的字段划分为：操作代码(5bits)操作标志(7bits)结果代码(4bits)
+
+<ol>
+<li>事物ID：请求方为每次名字服务请求所设定的ID值，响应方在相应的响应报文中要填入这个事物ID值</li>
+<li>操作代码：指示报文的类型,最高位为0表示数据包为Reauest请求，最高位为1表示数据包为Response应答，其余4个比特均为0</li>
+<li>操作标志：操作标志位，最低位为1表示广播或者多播，最低位为0表示单播，其他位均为0</li>
+<li>结果代码：在相应报文中指示请求的结果，一般为0</li>
+<li>问题记录个数：请求查询问题的个数，对于Request数据包，该值为1，对于Response数据包，该值为0</li>
+<li>回答记录个数：对于Response数据包有用，Response数据包中响应问题的个数，一般为1</li>
+<li>权威记录个数：在权威记录部分的记录数量，用不到的时候为0</li>
+<li>附加记录个数：在附加记录部分数量，用不到的时候为0</li>
+</ol>
+</li>
+<li>报文的前12字节总称NetBIOS名字报文的首部，通过首部可以判断是否为名字查询的报文。NetBIOS名字报文中最常见的是携带问题记录的报文，问题记录的格式是：问题名称(若干字节) 问题类型(2字节) 问题类别(2字节)。通过携带问题记录的报文，我们可以得到要查询的名字字符，如果和本机名相符，就发送报文响应，相应中带有IP地址，发送广播的主机就会得到该IP地址</li>
+<li>NETBIOS会话报文具有通用的4字节首部和与类型相关的报文内容：类型(1字节) 标志(1字节) 长度(2字节) 内容(若干字节)
+
+<ol>
+<li>类型：指名NetBIOS会话报文的类型，可用的值有：
+
+<ul>
+<li>0x00:会话消息</li>
+<li>0x81:会话请求</li>
+<li>0x82:正面会话响应</li>
+<li>0x83:负面会话响应</li>
+<li>0x84:重定向会话响应</li>
+<li>0x85:会话保活</li>
+</ul>
+</li>
+<li>标志：0~6位保留未用，第7位作为扩展的长度位，使NetBIOS会话报文的内容部分最多可以达到128K字节</li>
+<li>长度：NetBIOS会话报文的内容部分的长度，不包括首部的4字节</li>
+</ol>
+</li>
+<li><img src="http://i.imgur.com/O24egoi.png" alt="NBNS" />计算机1向计算机2的137端口发送一个NODE STATUS REQUEST请求数据包，计算机2收到该数据包后，向计算机1返回一个NODE STATUS RESPONSE响应数据包，该数据包中包含计算机2的MAC地址、机器地址、所属的工作组等信息</li>
+<li>NODE STATUS REQUEST数据包由12字节的HEADER域和38字节的QUESTION ENTRIES域两个部分组成，HEADER域分为8个字段：
+<img src="http://i.imgur.com/VKpTVaA.png" alt="NetBIOS HEADER" /></li>
+<li>QUESTION ENTRIES域组成
+<img src="http://i.imgur.com/93RGC0D.png" alt="QUESTION ENTRIES" />其中：
+
+<ul>
+<li>QUESTION_NAME为要查询的远程计算机的名称，长度为34字节。NBNS规定，计算机NetBIOS的名称不超过16字节，且最后一个字节必须为0x0；</li>
+<li>QUESTION_TYPE对于REQUEST数据包取值为0x0021</li>
+<li>QUESTION_CLASS取值为0x0001</li>
+</ul>
+</li>
+<li>当某台机器的137端口收到NODE STATUS REQUEST请求数据包之后，由该机器的NETBIOS服务随即生成并返回一个NODE STATUS RESPONSE响应数据包。该响应数据包由HEADER域和RESOURCE RECORD域两部分组成。RESOURCE RECORD域组成如图所示：
+<img src="http://i.imgur.com/IPEjagx.png" alt="RESOURCE RECORD" /></li>
 </ol>
 
 

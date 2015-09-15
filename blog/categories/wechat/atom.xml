@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: wechat | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/wechat/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-09-15T20:13:36+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[微信公众号开发]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/09/13/wechat-develop/"/>
+    <updated>2015-09-13T21:31:02+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/09/13/wechat-develop</id>
+    <content type="html"><![CDATA[<h2>微信接口请求返回格式介绍</h2>
+
+<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
+
+<h2>常用接口功能</h2>
+
+<ol>
+<li>access_token获取接口
+
+<ul>
+<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
+<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
+</ul>
+</li>
+<li>获取微信服务器IP接口</li>
+<li>长链接转短链接接口</li>
+<li>获取用户列表</li>
+<li>获取用户基本信息(UnionID机制)</li>
+<li>网页授权接口
+
+<ul>
+<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
+<li>两种scope模式：
+
+<ol>
+<li>snsapi_base时只能获取到openid</li>
+<li>snsapi_userinfo时可获取到其他信息</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>素材管理接口</li>
+<li>高级群发接口
+
+<ul>
+<li>两个优点
+
+<ol>
+<li>可根据openid群发</li>
+<li>群发图文内容支持html</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>JSSDK接口</li>
+<li>模板消息接口</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
