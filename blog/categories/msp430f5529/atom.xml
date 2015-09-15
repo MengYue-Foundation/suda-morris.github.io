@@ -4,7 +4,7 @@
   <title><![CDATA[Category: msp430f5529 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/msp430f5529/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-09-15T20:13:36+08:00</updated>
+  <updated>2015-09-15T20:21:14+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -197,9 +197,9 @@
 <h2>UDP协议</h2>
 
 <ol>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgUDP%E9%80%9A%E4%BF%A1%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="UDP通信流程图" /></li>
+<li><img src="http://i.imgur.com/ceIUeSz.png" alt="UDP通信流程图" /></li>
 <li>当socket处于关闭状态时，在进行通信之前我们先将该UDP模式的socket端口初始化。当socket将处于初始化完成状态即SOCK_UDP状态，此时就可以通过广播方式发送数据了。</li>
-<li><img src="http://e.hiphotos.baidu.com/baike/c0%3Dbaike72%2C5%2C5%2C72%2C24/sign=253feb0b9a22720e6fc3eaa81aa26123/b2de9c82d158ccbf4049fb531bd8bc3eb03541e5.jpg" alt="UDP报文" /></li>
+<li><img src="http://i.imgur.com/FxqWkWp.png" alt="UDP报文" /></li>
 </ol>
 
 
