@@ -4,7 +4,7 @@
   <title><![CDATA[Category: w5500 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/w5500/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-09-15T20:21:14+08:00</updated>
+  <updated>2015-09-17T22:55:25+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -237,6 +237,58 @@
 
 <ol>
 <li>客户端初始化完毕之后，如果DNS运行标志位是1或者DNS发送次数超过3次就直接返回。如果不是上面的情况，并且DNS Server的IP不是0.0.0.0时，进入switch函数。当处于DNS域名解析成功状态时，DNS_OK置1，发送请求报文次数置0。当DNS解析域名失败时，标志位置0，请求报文次数加1，然后跳出循环。</li>
+<li>DNS报文格式：<img src="http://i.imgur.com/C48NfJR.jpg" alt="DNS报文格式" />
+
+<ul>
+<li>标识：DNS报文的ID，对于相关联的请求报文和应答报文，这个字段是相同的</li>
+<li>标志：<img src="http://i.imgur.com/ZaPageY.jpg" alt="标志字段" />
+
+<ul>
+<li>QR：查询/响应的标志位，1为响应，0为查询</li>
+<li>opcode：定义查询或响应的类型(若为0则表示是标准的，若为1则是反向的，若为2则是服务器状态请求)</li>
+<li>AA：授权回答的标志位，该位在相应报文中有效，1表示名字服务器是权限服务器</li>
+<li>TC：截断标志位，1表示响应以超过512字节并已经被截断</li>
+<li>RD：只能在响应报文中置1，表示可以得到递归响应</li>
+<li>zero：0，保留字段</li>
+<li>rcode：返回码，表示响应的差错状态，0表示无差错，1表示格式差错，2表示问题在域名服务器上，3表示域参照问题，4表示查询类型不支持，5表示在管理上被禁止</li>
+</ul>
+</li>
+<li>问题数、资源记录数、授权资源记录数和额外资源记录数，这四个字段都是两字节，分别对应下面的查询问题、回答、授权和额外信息部分的数量。一般问题数都为1，DNS查询报文中，资源记录数、授权资源记录数和额外资源记录数都为0.</li>
+<li>查询问题部分的格式：<img src="http://i.imgur.com/qkVuppN.gif" alt="查询问题格式" />
+
+<ul>
+<li>查询名部分长度不定，一般为要查询的域名，有时候也有IP的时候，即反向查询。此部分由一个或者多个标识符序列组成，每个标识符以首字节数的计数值来说明该标识符长度，每个名字以0结束。技术字节数必须在0~63之间</li>
+<li>查询类型：
+
+<ul>
+<li>1：IPv4地址</li>
+<li>2：名字服务器</li>
+<li>5：规范名称</li>
+<li>6：开始授权，标记一个区的开始</li>
+<li>11：熟知服务，定义主机提供的网络服务</li>
+<li>12：指针，把IP地址转化为域名</li>
+<li>13：主机信息，给出主机使用的硬件和操作系统的表述</li>
+<li>15：邮件交换，把邮件改变路由送到邮件服务器</li>
+<li>28：IPv6地址</li>
+<li>252：传送整个区的请求</li>
+<li>255：对所有记录的请求</li>
+</ul>
+</li>
+<li>查询类：通常为1，指Internet数据</li>
+</ul>
+</li>
+<li>回答字段，授权字段和附加信息字段均采用资源记录的相同格式：<img src="http://i.imgur.com/WuZQrVt.gif" alt="资源记录格式" />
+
+<ul>
+<li>域名字段(不定长或者2字节)：记录资源数据对应的名字，它的格式和查询名字段格式相同。当报文中域名重复出现时，就需要使用2字节的偏移指针来替换。</li>
+<li>类型、类：含义与查询问题部分的类型和类相同</li>
+<li>生存时间：该字段表示资源记录的生命周期，一般用于当地址解析程序取出资源记录后决定保存以及使用缓存数据的时间</li>
+<li>资源数据长度：表示资源数据的长度，以字节为单位，如果资源数据为IP则为0004</li>
+<li>资源数据：该字段是可变长字段，表示按查询段要求返回的相关资源记录的数据</li>
+</ul>
+</li>
+</ul>
+</li>
 </ol>
 
 
@@ -321,7 +373,21 @@
 </ul>
 </li>
 <li>当某台机器的137端口收到NODE STATUS REQUEST请求数据包之后，由该机器的NETBIOS服务随即生成并返回一个NODE STATUS RESPONSE响应数据包。该响应数据包由HEADER域和RESOURCE RECORD域两部分组成。RESOURCE RECORD域组成如图所示：
-<img src="http://i.imgur.com/IPEjagx.png" alt="RESOURCE RECORD" /></li>
+<img src="http://i.imgur.com/IPEjagx.png" alt="RESOURCE RECORD" />
+
+<ul>
+<li>RP_NAME：34字节，与Request数据包的QUESTION_NAME格式定义相同</li>
+<li>RP_TYPE：与Request数据包中的QUESTION_TYPE字段相同</li>
+<li>RP_CLASS：与前面Request数据包的QUESTION_CLASS字段取值相同</li>
+<li>TTL：4字节，取值为0x00000000</li>
+<li>RDLENGTH:表示从NUM_NAMES字段开始到整个RESOURCE RECORD结束共有多少个字节</li>
+<li>NUM_NAMES：表示紧随其后的NODE_NAME ARRAY数组的元素个数，数组的每个元素具有NODE_NAME结构，如图所示为NODE_NAME结构：
+<img src="http://i.imgur.com/ArSP1Xp.png" alt="NODE_NAME" /></li>
+<li>NETBIOS FORMAT NAME表示远程主机的机器名或者组名，具体依赖NAME_FLAG字段的取值；</li>
+<li>NAME_FLAGs：当最高位为1时，NETBIOS FORMAT NAME字段中存储的是Group NetBIOS名称，即工作组名，当最高位为0时，NETBIOS FORMAT NAMR字段中存储的是机器名</li>
+<li>STATICS：包含的字段非常多，开始6字节是远程主机的MAC地址</li>
+</ul>
+</li>
 </ol>
 
 
