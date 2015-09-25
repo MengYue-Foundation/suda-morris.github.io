@@ -88,6 +88,115 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/05/23/nuvoton-m451-eadc/">
+		
+			Nuvoton-M451-EADC</a>
+	</h2>
+	<div class="entry-content">
+		<h2>新唐CortexM4内核芯片M451学习之&mdash;-模数转换EADC</h2>
+
+<blockquote><ul>
+<li>包含一个12位带16个外部输入通道或者8对差分模拟输入通道和3个内部通道的SAR-ADC(逐次逼近型模数转换器)</li>
+<li>可以通过软件触发，PWM0/1触发，timer0~3溢出脉冲触发，ADINT0，ADINT1中断EOC(转换结束)脉冲触发和外部管脚(STADC)输入信号来启动转换</li>
+<li>Vref最大5V，12位分辨率，保证10位精度</li>
+<li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
+<li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
+<li>最大ADC时钟频率是20MHz</li>
+<li>高达1Msps采样频率</li>
+<li>内部采样时间可配置</li>
+<li>双缓存用于采样控制逻辑模块0~3</li>
+<li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
+<li>支持PDMA</li>
+<li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
+<li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
+<li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位</li>
+<li>触发延时时间=<code>TRGDLYCNT*ADC_CLK*n</code>(n=1,2,4,16来自TRGDLYDIV设置).</li>
+</ul>
+</blockquote>
+
+<h2>中断源</h2>
+
+<p><img src="http://i.imgur.com/6HZ5VTs.png" alt="Nuvoton-M451-EADC中断源" /></p>
+
+<h2>API</h2>
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-23T22:28:12+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/05/23/nuvoton-m451-pwm/">
+		
+			Nuvoton-m451-pwm</a>
+	</h2>
+	<div class="entry-content">
+		<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-23T18:03:13+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/05/20/nuvoton-m451-timer/">
 		
 			Nuvoton-M451-Timer</a>
