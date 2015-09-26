@@ -175,6 +175,249 @@ HTML5： &lt;!DOCTYPE html> 元素：指的是从开始标签到结束标签的�
 </li>
 </ol>
 </li>
+<li>链接
+
+<ol>
+<li>标签：<a></a></li>
+<li>连接数据：文本链接，图片链接</li>
+<li>属性：
+
+<ol>
+<li>href属性：指向另一个文档的链接</li>
+<li>name属性：创建文档内的链接
+
+<ul>
+<li><code>&lt;a name="tips"&gt;hello&lt;/a&gt;</code></li>
+<li><code>&lt;a href="#tips"&gt;跳转&lt;/a&gt;</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>img标签属性
+
+<ol>
+<li>alt：替换文本属性</li>
+<li>width：宽</li>
+<li>height：高</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>表格
+
+<ol>
+<li>标签
+
+<ul>
+<li><code>&lt;table&gt;：定义表格</code>,属性border定义边框大小，属性cellpadding定义单元格边距，属性cellspacing定义单元格间距，属性bgcolor定义表格背景色，属性background定义表格图片</li>
+<li><code>&lt;caption&gt;：定义表格标题</code></li>
+<li><code>&lt;th&gt;：定义表格表头</code></li>
+<li><code>&lt;tr&gt;：定义表格的行</code></li>
+<li><code>&lt;td&gt;：定义表格的单元</code>,属性colspan的值定义了要合并的单元格数目</li>
+<li><code>&lt;thead&gt;：定义表格的页眉</code></li>
+<li><code>&lt;tbody&gt;：定义表格的主题</code></li>
+<li><code>&lt;tfoot&gt;：定义表格的页脚</code></li>
+<li><code>&lt;col&gt;：定义表格的列属性</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>列表
+
+<ol>
+<li>标签
+
+<ul>
+<li><code>&lt;ol&gt;：有序列表</code>，type属性值A,a,I ,i,start</li>
+<li><code>&lt;ul&gt;：无序列表</code>，type属性值disc,circle,square</li>
+<li><code>&lt;li&gt;：列表项</code></li>
+<li><code>&lt;dl&gt;：自定义列表</code></li>
+<li><code>&lt;dt&gt;：自定义列表项</code></li>
+<li><code>&lt;dd&gt;：自定义列表描述</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>块
+
+<ol>
+<li>HTML块元素
+
+<ul>
+<li>块元素在显示时，通常会以新行开始，比如<code>&lt;h1&gt;,&lt;p&gt;,&lt;ul&gt;</code></li>
+</ul>
+</li>
+<li>HTML内联元素
+
+<ul>
+<li>内联元素通常不会以新行开始，比如<code>&lt;b&gt;,&lt;a&gt;,&lt;img&gt;</code></li>
+</ul>
+</li>
+<li><code>HTML&lt;div&gt;</code>元素
+
+<ul>
+<li><code>&lt;div&gt;</code>元素也被称称为块元素，其主要是组合HTML元素的容器</li>
+</ul>
+</li>
+<li><code>HTML&lt;span&gt;</code>元素
+
+<ul>
+<li><code>&lt;span&gt;</code>元素是内联元素，可作为文本的容器</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>使用<div>元素布局</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span><span class='line'><span class="nt">&lt;html&gt;</span>
+</span><span class='line'><span class="nt">&lt;head</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;title&gt;</span>html布局测试<span class="nt">&lt;/title&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        <span class="nt">body</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#page</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">950px</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#head</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#left</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">greenyellow</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#middle</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#right</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">cornflowerblue</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="nt">div</span><span class="nf">#foot</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
+</span><span class='line'>            <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
+</span><span class='line'><span class="nt">&lt;/head&gt;</span>
+</span><span class='line'><span class="nt">&lt;body&gt;</span>
+</span><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;page&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;head&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        head
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        main_L
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;middle&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        main_M
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;right&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        main_R
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;foot&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>        foot
+</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/div&gt;</span>
+</span><span class='line'><span class="nt">&lt;/body&gt;</span>
+</span><span class='line'><span class="nt">&lt;/html&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>使用<table>元素布局</li>
 </ol>
 
 </div>
