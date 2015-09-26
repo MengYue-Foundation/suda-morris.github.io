@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-09-26T15:45:25+08:00</updated>
+  <updated>2015-09-26T22:30:06+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -200,7 +200,7 @@
 </li>
 </ol>
 </li>
-<li>使用<code>&lt;div&gt;</code>元素布局</li>
+<li>使用div元素布局</li>
 </ol>
 
 
@@ -350,8 +350,135 @@
 
 
 <ol>
-<li>使用<table>元素布局</li>
+<li><p>表单</p>
+
+<ol>
+<li>标签
+
+<ul>
+<li><code>&lt;form&gt;表单</code>，属性值有action，method</li>
+<li><code>&lt;input&gt;输入域</code>，属性type的值有：text，password，checkbox，radio(需要和name属性搭配使用),button(需要和value属性搭配使用),submit(需要和value属性搭配使用)</li>
+<li><code>&lt;textarea&gt;文本域</code>，属性有cols,rows</li>
+<li><code>&lt;label&gt;控制标签</code></li>
+<li><code>&lt;fieldset&gt;定义域</code></li>
+<li><code>&lt;legend&gt;域的标题</code></li>
+<li><code>&lt;select&gt;选择列表</code></li>
+<li><code>&lt;optgroup&gt;选项组</code></li>
+<li><code>&lt;option&gt;下拉列表中的选项</code>,需要被<code>&lt;select&gt;</code>包围</li>
+<li><code>&lt;button&gt;按钮</code></li>
+</ul>
+</li>
 </ol>
+</li>
+<li><p>框架</p>
+
+<ol>
+<li>框架标签<code>&lt;frame?</code></li>
+<li>框架集标签<code>&lt;frameset&gt;</code></li>
+<li>常用标签
+
+<ul>
+<li>noresize:固定框架大小</li>
+<li>cols:列</li>
+<li>rows:行</li>
+</ul>
+</li>
+<li>内联框架<code>&lt;iframe&gt;</code>,属性src指名引用的框架路径，属性frameborder指名是否需要边框</li>
+</ol>
+</li>
+<li><p>实体</p>
+
+<ul>
+<li>HTML中预留字符串必须被替换成字符实体，如&lt;（小于号），>（大于号）</li>
+<li>常用的字符实体
+
+<ul>
+<li>空格：&amp;nbsp</li>
+<li>小于号：&amp;lt</li>
+<li>大于号：&amp;gt</li>
+<li>和号：&amp;amp</li>
+<li>引号：&amp;quot</li>
+<li>撇号：&amp;apos</li>
+<li>分：&amp;cent</li>
+<li>镑：&amp;pound</li>
+<li>元：&amp;yen</li>
+<li>欧元：&amp;euro</li>
+<li>小节：&amp;sect</li>
+<li>版权：&amp;copy</li>
+<li>注册商标：&amp;reg</li>
+<li>商标：&amp;trade</li>
+<li>乘号：&amp;times</li>
+<li>除号：&amp;divide</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>HTML5 Web Storage</h2>
+
+<ol>
+<li>Web Storage功能就是在Web上存储数据的功能，这里的储存是针对客户端本地而言的，具体分为两种：
+
+<ul>
+<li>sessionStorage：将数据保存在session对象中，session是指用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是用户浏览这个网站所花费的时间。session对象可以用来保存在这段时间内所要求保存的任何数据</li>
+<li>localStorage：将数据保存在客户端本地的硬件设备中，即使浏览器被关闭了，该数据任然存在，下一次打开浏览器访问网站时仍然可以继续使用</li>
+</ul>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>sessionStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>localStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+</span><span class='line'>  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 ]]></content>
   </entry>
