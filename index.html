@@ -88,6 +88,343 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/09/28/javascript/">
+		
+			JavaScript知识清单</a>
+	</h2>
+	<div class="entry-content">
+		<h2>==与===的区别</h2>
+
+<ol>
+<li>对于string,number等基础类型，==和===是有区别的
+
+<ol>
+<li>不同类型间比较，==之比较“转化成同一类型后的值”看“值”是否相等，===如果类型不同，其结果就是不等</li>
+<li>同类型比较，直接进行“值”比较，两者结果一样</li>
+</ol>
+</li>
+<li>对于Array,Object等高级类型，==和===是没有区别的
+
+<ul>
+<li>进行“指针地址”比较</li>
+</ul>
+</li>
+<li>基础类型与高级类型，==和===是有区别的
+
+<ol>
+<li>对于==，将高级转化为基础类型，进行“值”比较</li>
+<li>因为类型不同，===结果为false</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>事件</h2>
+
+<ol>
+<li>常用事件
+
+<ul>
+<li>onClick单击事件</li>
+<li>onMouseOver鼠标经过事件</li>
+<li>onMouseOut鼠标移出事件</li>
+<li>onChange文本内容改变事件</li>
+<li>onSelect文本框选中事件</li>
+<li>onFocus光标聚集事件</li>
+<li>onBlur移开光标事件</li>
+<li>onLoad网页加载事件</li>
+<li>onUnload关闭网页事件</li>
+</ul>
+</li>
+<li>事件冒泡
+
+<ul>
+<li>由最具体的元素接收，然后逐级向上传播至最不具体的元素的节点(文档)</li>
+</ul>
+</li>
+<li>事件捕获
+
+<ul>
+<li>最不具体的节点先接收事件，而最具体的节点应该是最后接收事件</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>DOM对象</h2>
+
+<ol>
+<li>当网页被加载时，浏览器会创建页面的文档对象模型(Document Object Model)
+<img src="http://i.imgur.com/EwSndVS.png" alt="DOM对象模型" /></li>
+<li>DOM操作HTML
+
+<ol>
+<li>改变HTML输出流：
+
+<ul>
+<li>注意，绝对不要在文档加载完成后使用document.write(),这会覆盖该文档</li>
+</ul>
+</li>
+<li>寻找元素：
+
+<ul>
+<li>通过id找到HTML元素,document.getElementById();</li>
+<li>通过标签名找到HTML元素,document.getElementByTagName();</li>
+</ul>
+</li>
+<li>改变HTML内容
+
+<ul>
+<li>使用属性：innerHTML</li>
+</ul>
+</li>
+<li>改变HTML属性
+
+<ul>
+<li>使用属性：attribute，例如：<code>document.getElementById("aid").href="http://www.baid.com";</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>DOM操作CSS
+
+<ol>
+<li>基本语法：<code>document.getElementById(id).style.property=new style;</code></li>
+</ol>
+</li>
+<li>DOM操作事件句柄
+
+<ol>
+<li>addEventListener();向指定元素添加事件句柄</li>
+<li>removeEventListener();移出方法添加的事件句柄</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-28T12:20:50+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/09/27/css/">
+		
+			CSS样式知识清单</a>
+	</h2>
+	<div class="entry-content">
+		<h2>基础语法</h2>
+
+<blockquote><p>selector{
+property:value
+}
+其中selector有派生选择器，id选择器，类选择器，属性选择器</p></blockquote>
+
+<h2>头部声明</h2>
+
+<p><code>&lt;link href="MyCSS.css" type="text/css" rel="stylesheet"&gt;</code></p>
+
+<h2>id选择器</h2>
+
+<ol>
+<li>id选择器可以为标有id的HTML元素指定特定的样式</li>
+<li>id选择器以“#”来定义</li>
+</ol>
+
+
+<h1>类选择器</h1>
+
+<ol>
+<li>类选择器以一个点来定义</li>
+</ol>
+
+
+<h2>属性选择器</h2>
+
+<ol>
+<li><code>&lt;style type="text/css"&gt; [title=te]{color:blue}&lt;/style&gt;</code></li>
+<li><code>&lt;p title="te"&gt;属性选择器&lt;/p&gt;</code></li>
+</ol>
+
+
+<h2>CSS背景</h2>
+
+<ul>
+<li>background-attachment:背景图像是否固定或者随着页面的其余部分滚动</li>
+<li>background-color:设置元素的背景颜色</li>
+<li>background-image:把图片设置为背景，url(&ldquo;bg.jpg&rdquo;)</li>
+<li>background-position:设置背景图片的起始位置</li>
+<li>background-repeat:设置背景图片是否及如何重复</li>
+<li>background-size:规定背景图片的尺寸</li>
+<li>background-origin:规定背景图片的定位区域</li>
+<li>background-clip:规定背景的绘制区域</li>
+</ul>
+
+
+<h2>CSS文本</h2>
+
+<ul>
+<li>color：文本颜色</li>
+<li>direction：文本方向</li>
+<li>line-height：行高</li>
+<li>letter-spacing：字符间距</li>
+<li>text-align：对齐元素中的文本</li>
+<li>text-decoration：向文本中添加修饰</li>
+<li>text-indent：缩进元素中文本的首行</li>
+<li>text-transform：元素中的字母</li>
+<li>unicode-bidi：设置文本方向</li>
+<li>white-space：元素中空白的处理方式</li>
+<li>word-spacing：字间距</li>
+<li>text-shadow:文本阴影</li>
+<li>word-wrap:规定文本的换行规则</li>
+</ul>
+
+
+<h2>CSS字体</h2>
+
+<ul>
+<li>font-family:设置字体系列</li>
+<li>font-size:设置字体的尺寸</li>
+<li>font-style:设置字体风格</li>
+<li>font-variant:以小型大写字体或正常字体显示文本</li>
+<li>font-weight:设置字体的粗细</li>
+</ul>
+
+
+<h2>CSS链接</h2>
+
+<ol>
+<li>CSS链接的四种状态：
+
+<ul>
+<li>a:link 普通的、未被访问的链接</li>
+<li>a:visited 用户已经访问的链接</li>
+<li>a:hover 鼠标指针位于链接的上方</li>
+<li>a:active 链接被点击的时刻</li>
+</ul>
+</li>
+<li>常见的链接样式：
+
+<ul>
+<li>text-decoration属于大多用于去掉链接中的下划线</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>CSS列表</h2>
+
+<ul>
+<li>list-style简写列表项</li>
+<li>list-style-image列表项图像</li>
+<li>list-style-position列表标志位置</li>
+<li>list-style-type列表类型</li>
+</ul>
+
+
+<h2>CSS表格</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nf">#tb</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">border-collapse</span><span class="o">:</span><span class="k">collapse</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">width</span><span class="o">:</span><span class="m">500px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nf">#tb</span> <span class="nt">td</span><span class="o">,</span><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="nb">bisque</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">padding</span><span class="o">:</span><span class="m">5px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">text-align</span><span class="o">:</span><span class="k">right</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aqua</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="m">#FFFFFF</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nf">#tb</span> <span class="nt">tr</span><span class="nc">.alt</span> <span class="nt">td</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="nb">black</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aquamarine</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>CSS轮廓</h2>
+
+<ul>
+<li>outline设置轮廓属性</li>
+<li>outline-color设置轮廓的颜色</li>
+<li>outline-style设置轮廓的样式</li>
+<li>outline-width设置轮廓的宽度</li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-27T10:51:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/09/25/html5-introduce/">
 		
 			HTML5知识点清单</a>
@@ -554,6 +891,11 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h2>HTML5 本地数据库</h2>
+
+<ol>
+<li>HTML5中内置了两种本地数据库，一种为SQLite，一种为indexedDB</li>
+</ol>
 
 
 		
@@ -1639,385 +1981,6 @@
 
 <time datetime="2015-07-22T09:51:38+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/07/20/linux-kernel/">
-		
-			Linux_Kernel</a>
-	</h2>
-	<div class="entry-content">
-		<h2>内核make流程</h2>
-
-<ol>
-<li>make %config和make menuconfig的目的是为了生成.config文件，而Kconfig作为生成make menuconfig等图形配置界面工具而存在</li>
-<li>.config 文件中决定了内核中的哪些代码被编译进内核，哪些代码被当做模块编译</li>
-<li>make根据.config中的描述，通过解析Makefile文件来进行编译，最终生成zImage文件</li>
-<li>流程中设计的文件与命令，再加上Linux内核的scripts目录构成了内核的Kbuild机制，内核通过这种方式，最终编译得到内核镜像文件zImage</li>
-</ol>
-
-
-<h2>KBuild机制实现原理</h2>
-
-<ol>
-<li>从编译过程来看，每一个被编译的目录下都会生成一个build-in.o文件，他们都由自己目录下的源代码编译生成，所有目录下的build-in.o文件最终链接生成vmlinux文件，最后由内核压缩程序加工vmlinux生成内核压缩镜像文件zImage</li>
-<li>总原理来看，Kbuild机制只会把obj-y的值编译进内核。每个Makefile文件中都有这个变量，只不过obj-后面一半都跟着一个变量，这个变量的值来自于.config。</li>
-<li>待编译目录下的Makefile，如有Kbuild，则Kbuild优先，唯一使用Kbuild而不是Makefile的就是顶层目录</li>
-</ol>
-
-
-<h2>Kconfig语法</h2>
-
-<ol>
-<li>config
-
-<ul>
-<li>为menu或者choice中的一个选项条目</li>
-<li>config后面常跟一个变量名，比如ARM，那么在.config中将以CONFIG_ARM=y或n的形式出现</li>
-<li>下一行写该变量的取值类型,可以是bool,tristate,string,hex,int</li>
-<li>default为变量缺省值，可以被用户设置值覆盖</li>
-<li>prompt后边是出现在配置菜单中的对应于一个配置选项的文字，没有prompt条目，将使得用户不能在配置界面中显示并配置该配置选项</li>
-<li>depends on var表示该变量必须在var被设置的情况下才能进行设置，否则取值为n，即使default为y</li>
-<li>select var表示它将影响到变量var，使得var至少应该配置为y或者m</li>
-<li>help中的文字将作为配置界面中的帮助信息</li>
-</ul>
-</li>
-<li>menu
-
-<ul>
-<li>在menu和endmenu中间可配置若干config条目</li>
-</ul>
-</li>
-<li>choice
-
-<ul>
-<li>在choice和endchoice之间可定义若干config条目。choice中的config条目只能有2种类型：bool或者tristate，且不能同时有这两种变量。对于bool型变量只能在多个选择中选择1个为y；对于tristate型变量，要么将多个设置为m，要么仅将1个设为y，其余为n。</li>
-</ul>
-</li>
-<li>comment
-
-<ul>
-<li>用于定于帮助信息，将出现在配置界面的第一行，并且还会出现在配置文件.config中作为注释</li>
-</ul>
-</li>
-<li>source
-
-<ul>
-<li>由于内核源代码中大多数目录下都有各自的Kconfig文件，因此需要一种手段将所有的Kconfig文件组织为一个整体。这就是source的功能，它用于引入另一个Kconfig文件，有点类似于C语言中的#include</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>Makefile文件精解</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
-</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
-</span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>zImage文件生成过程</h2>
-
-<ol>
-<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
-<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
-<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
-<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
-<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-20T23:30:54+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kernel/'>kernel</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/07/20/cpp-knowledges/">
-		
-			CPP-Knowledges</a>
-	</h2>
-	<div class="entry-content">
-		<h2>流</h2>
-
-<ol>
-<li>标准C++中，iostream中常见的操作算子(manipulator):flush,endl,oct(后面跟的数据解析成八进制)，hex(后面跟的数解析成十六进制)，dec(后面跟的数解析成十进制)，boolalpha(后面跟的数据解析成布尔类型，并用true和false来显示)，showpos(后面跟的数据显示正负号)，fixed(后面跟的数不要四舍五入),noshowpos(后面跟的数如果是正数就显示+号),showpoint(后面跟的数据显示小数点)，scientific(后面跟的数据以科学计数法的形式表示);在Qt中附加的一些操作算子：forcesign(后面的数据显示正负号),forcepoint(后面的数据显示小数点),noforcesign(后面的数据如果是正数就不显示+号)</li>
-<li>标准C++的iostream中，getline(cin,your_string)语句能够从标准输入流中提取一行字符串</li>
-<li>在Qt中很容易用与iostream对应的同一个名称定义QTextStream，由于控制台输入和输出主要用在调试过程，所以Qt提供了一个全局函数qDebug(),用它可以方便地将消息发送到控制台，且具有灵活的接口</li>
-<li>流被用来读取/写入文件、连接网络和处理字符串，它有一个有用的特性是易于从混合数据类型中得到字符串。</li>
-<li>STL中的字符串流：std::ostringstream,常用来定义一个string_buffer;</li>
-<li>STL中的文件流std::ofstream,用来定义一个文件流管道如ofstream outf后绑定一个文件：outf.open(&ldquo;file path&rdquo;)</li>
-<li>STL中的输入文件流std::ifstream,打开文件instream inf;inf.open(&ldquo;file path&rdquo;),判断是否读到了文件末尾inf.eof(),读取一行数据getline(inf,newstr)</li>
-<li>STL中的stringstream对应于Qt里面的QString，STL中的fstream对应于Qt里面的QFile，STL中的iostream对应于Qt中的QTextStream</li>
-</ol>
-
-
-<h2>运算符new和delete</h2>
-
-<ul>
-<li>new运算符从堆(heap)中分配内存空间，并且返回指向新分配的对象的指针，如果由于某种原因无法完成内存分配，就会抛出一个异常</li>
-<li>delete运算符的作用是释放动态分配的内存并将其返回给堆。delete操作只能用于由new运算符返回的指针或者空指针。</li>
-</ul>
-
-
-<h2>智能指针</h2>
-
-<ul>
-<li>智能指针是一个对象，它用来保存和管理指向堆对象的指针，其行为与常规的指针非常类似，只是它会在合适的时刻自动删除堆对象。这个类在Qt中对应的是QPointer，在标准库中是std::auto_ptr,在Boost中是shared_ptr</li>
-</ul>
-
-
-<h2>引用</h2>
-
-<ul>
-<li>在C++中，引用提供了一种给左值赋予一个别名的机制，对于避免费事或者不必要的复制引用是非常有用的，例如向函数传送一个非常大的对象作为参数。<strong>引用必须在声明时进行初始化且其初始化器也必须是一个左值</strong>,例如：<code>int n;int&amp; rn=n;</code>引用变量rn是实际变量n的别名</li>
-<li>一种好的编程实践是：对于不需要通过函数来进行变化的指针和引用参数，应使用const来保护它们。只读引用参数的能力在于：对按引用传递参数提供了高效性，而对按值传递参数提供了安全性</li>
-</ul>
-
-
-<h2>类的友元</h2>
-
-<ul>
-<li>友元机制允许非成员函数访问一个类的私有数据，关键字friend可以放在类的生命或者函数声明之前，友元声明位于类定义之内</li>
-<li>通常而言，为了达到下面两个目的才会使用友元函数：
-
-<ol>
-<li>为了使用工厂方法，此时需要对某个类强制实施某些创建规则</li>
-<li>为了使用全局运算符函数，比如operator&lt;&lt;()和operator>>()，此时不希望将运算符作为某个类的成员函数，或者没有写入类定义的权利</li>
-</ol>
-</li>
-</ul>
-
-
-<h2>运算符重载</h2>
-
-<ol>
-<li>C++使用关键字operator为运算符赋予新的含义</li>
-<li>例如重载&lt;&lt;运算符：friend ostream&amp; operator&lt;&lt;(ostream&amp; out,const Complex&amp; c);</li>
-</ol>
-
-
-<h2>define与inline的区别</h2>
-
-<blockquote><ol>
-<li>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</li>
-<li>inline函数必须在调用之前<strong>定义</strong></li>
-<li>在一个源代码模块中只能有一次inline定义</li>
-</ol>
-</blockquote>
-
-<h2>带变长实参表的函数</h2>
-
-<blockquote><ol>
-<li>在C和C++中，可以定义其参数表以省略号结尾的函数。省略号使调用者能够制定参数的数量以及类型。</li>
-<li>为了定义使用省略号的函数，需要包含cstdarg库</li>
-</ol>
-</blockquote>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">double</span> <span class="nf">mean</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="p">...){</span>
-</span><span class='line'>  <span class="kt">va_list</span> <span class="n">ap</span><span class="p">;</span>
-</span><span class='line'>  <span class="kt">double</span> <span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>  <span class="kt">int</span> <span class="n">count</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>               <span class="cm">/*ap执行第一个未命名实参*/</span>
-</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
-</span><span class='line'>      <span class="n">sum</span> <span class="o">+=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="kt">double</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="n">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span>                 <span class="cm">/*返回之前清除栈*/</span>
-</span><span class='line'>  <span class="k">return</span> <span class="n">sum</span><span class="o">/</span><span class="n">count</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>预处理宏主要应用场合</h2>
-
-<blockquote><ol>
-<li>使用#ifndef/#define/#endif将头文件包裹起来，以避免多次包含某个头文件</li>
-<li>使用#ifdef/#else/#endif对某些代码部分进行条件编译</li>
-<li><strong>FILE</strong>宏和<strong>LINE</strong>宏用于调试并给出框架信息</li>
-</ol>
-</blockquote>
-
-<h2>C++中的多态性</h2>
-
-<blockquote><ol>
-<li>C++源于C语言，它的编译器也试图在编译时绑定函数调用，这主要是基于性能方面的考虑。编译器无法仅凭集成关系和基类指针就确定它正在操作何种对象。如果没有运行时检查，就无法保证运行时调用正确的函数。C++要求使用一个特殊的关键字来允许运行时通过指针和引用进行函数调用的绑定，这个关键字就是virtual，它能够使得程序具有多态性。</li>
-<li>由于this是在执行它的构造函数时被初始化的，在执行它的析构函数的时候被销毁，因此不要指望在这两种条件下能够执行正确的运行时绑定。当在构造函数或者析构函数里面调用任何this方法时，将由编译时绑定决定应该调用哪一个方法，就好像不存在virtual关键字一样。</li>
-<li>一般而言，如果类中包含一个或者多个virtual函数，则也应包含一个虚析构函数。这是因为，当对对台对象集合进行操作时，通常是通过基类指针删除这些对象，这会导致对析构函数的间接调用，如果析构函数不为virtual类型，在编译时绑定将决定应该调用哪一个析构函数，从而可能导致派生对象的不完整析构</li>
-<li>静态成员函数不能使虚函数；内敛函数不能是虚函数；构造函数不能是虚函数</li>
-</ol>
-</blockquote>
-
-<h2>虚函数实现原理</h2>
-
-<blockquote><ol>
-<li>父类中如果有虚函数存在，编译器就会为该对象创建一个虚函数表，里面存放自己的虚函数的指针。</li>
-<li>子类继承父类，编译器也会为子类创建一个不同的虚函数表，存放子类自己的虚函数指针</li>
-<li>拥有虚函数表的类都会另外创建一个指向该表的指针</li>
-<li>所以当父类指针指向子类对象，调用虚函数的时候就会根据子类对象的虚函数表调用得到子类的虚函数，而不是父类的虚函数</li>
-<li>如果没有在子类中定义与父类同名的虚函数，那么就会在子类的虚函数表中就会写上父类的相应的虚函数的函数入口地址；如果在子类中也定义了同名的虚函数，那么在虚函数表中用子类的虚函数的函数地址覆盖掉父类的相应的虚函数的函数地址</li>
-<li>每个类只有一份虚函数表，所有该类的对象共用同一张虚函数表</li>
-<li>只有函数声明没有函数定义的虚函数也是纯虚函数</li>
-</ol>
-</blockquote>
-
-<h2>纯virtual函数的声明</h2>
-
-<blockquote><ol>
-<li>virtual returnType functionName(parameterList)=0;</li>
-<li>抽象基类中至少要有一个virtual函数</li>
-<li>抽象基类中不能有public的构造函数</li>
-<li>抽象基类的任何具体派生类都必须重写并定义全部的纯virtual基类函数，话句话说，任何没有重写并定义全部纯virtual基类函数的派生类都是抽象类</li>
-</ol>
-</blockquote>
-
-<h2>重载，隐藏与重写</h2>
-
-<blockquote><ol>
-<li>当函数foo在同一个作用域内存在两个或者多个版本(具有不同的签名)时，就称foo函数被<strong>重载</strong>了</li>
-<li>当基类中的一个virtual函数在培生累中也存在，并且他们具有相同的签名和返回类型时，就称派生类中的版本“重写”了基类中的版本</li>
-<li>派生类中的成员函数，会隐藏基类中与之同名的全部函数，如果出现这种情况，则：
-
-<ul>
-<li>只有派生类函数可以被直接调用</li>
-<li>类作用域解析运算符::西部用来显式地调用基类函数</li>
-</ul>
-</li>
-</ol>
-</blockquote>
-
-<h2>有三种特殊的成员函数从来不会被继承，编译器会为没有定义它们的类自动生成这三种函数</h2>
-
-<ol>
-<li>拷贝构造函数：类名（const 类名&amp; 变量名）</li>
-<li>复制赋值运算符</li>
-<li>析构函数</li>
-</ol>
-
-
-<h2>构造函数</h2>
-
-<blockquote><p>如果一个类没有构造函数，那么编译器就会自动产生一个默认的public构造函数，而这个构造函数会调用它的每一个基类的默认构造函数。如果某个类有一些构造函数但是没有默认构造函数，那么它就不会进行默认的初始化工作，这种情况下，任何派生类构造函数都必须在其初始化列表中明确地指名应该调用哪一个基类构造函数</p></blockquote>
-
-<h2>类的前置声明</h2>
-
-<blockquote><ol>
-<li>类的前置声明将它的名称声明成一个有效的类名称，但不给出类的定义。这会使得类名称能够被用作<strong>指针</strong>和<strong>引用</strong>的类型，在遇到类的定义之前，不会将这些指针和引用进行解引操作。</li>
-<li><strong>如果可以使用前置声明，就不要使用#include指令</strong></li>
-</ol>
-</blockquote>
-
-<h2>范型与模板</h2>
-
-<blockquote><p>1.模板为C++编译器提供了一个途径，能够为带有参数化类型和相同行为的类和函数生成多个版本。模板使用关键字template以及用尖括号&lt;>包围的模板参数进行区分。与函数参数不同，模板参数不仅可以传递变量和值，还可以传递类型表达式。例如：template <class T,int max> Buffer{T v[max];}
-2. 每当编译器看到一个特定参数类型的组合首次用于一个模板函数时，就称此模板进行了实例化。
-3. 类模板主要用来生成数据的通用容器，其参数能够指名容器中的内容。所有的Qt容器类以及标准模板库(STL)中的所有容器类都是参数化的。
-4. 所有模板的定义(类和函数)都必须出现在头文件中，这是因为编译器需要用这些定义来根据模板声明生成代码</p></blockquote>
-
-<h2>其他</h2>
-
-<ul>
-<li>C++中使用struct的大多数情形是需要将数据项分组在一起，但是不需要成员函数</li>
-<li>const成员函数中不允许对数据成员进行修改，如果修改，编译器将报错，任何不会修改数据成员的函数都应该声明为const类型。如果在编写const成员函数时，不慎修改了数据成员，或者调用了其它非const成员函数，编译器将指出错误。注意可以在const成员函数里面更改可变成员(mutable member)的值，而常规的数据成员的值不能改变</li>
-<li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
-<li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
-<li>const数据成员的初始化必须写在初始化列表中</li>
-<li>M_PI来自于&lt;math.h>,它位于cstdlib库中</li>
-<li>foreach()宏需要赋值它所遍历的容器，这就要求使用foreach必须要有拷贝构造函数</li>
-<li>C++类型可以分成两类：值类型和对象类型，值类型的有Anything*，int，char，QString，QDate和QVariant。带有共有默认构造函数、拷贝构造函数和复制赋值运算符的任何类型都是值类型</li>
-<li>C++对于没有数据成员的类在实例化的时候会分配1个内存单元(1Byte)，用于标记该对象的存在</li>
-<li>含有纯虚函数的类叫做抽象类,抽象类无法实例化对象</li>
-<li></li>
-</ul>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-20T09:42:10+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/c-plus-plus/'>c++</a>
-
 
 </div>
 	

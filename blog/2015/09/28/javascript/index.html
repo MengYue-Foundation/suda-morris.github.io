@@ -1,0 +1,291 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>JavaScript知识清单 - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="==与===的区别 对于string,number等基础类型，==和===是有区别的 不同类型间比较，==之比较“转化成同一类型后的值”看“值”是否相等，===如果类型不同，其结果就是不等
+同类型比较，直接进行“值”比较，两者结果一样 对于Array,Object等高级类型，==和=== &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">JavaScript知识清单</h2>
+	<div class="entry-content"><h2>==与===的区别</h2>
+
+<ol>
+<li>对于string,number等基础类型，==和===是有区别的
+
+<ol>
+<li>不同类型间比较，==之比较“转化成同一类型后的值”看“值”是否相等，===如果类型不同，其结果就是不等</li>
+<li>同类型比较，直接进行“值”比较，两者结果一样</li>
+</ol>
+</li>
+<li>对于Array,Object等高级类型，==和===是没有区别的
+
+<ul>
+<li>进行“指针地址”比较</li>
+</ul>
+</li>
+<li>基础类型与高级类型，==和===是有区别的
+
+<ol>
+<li>对于==，将高级转化为基础类型，进行“值”比较</li>
+<li>因为类型不同，===结果为false</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>事件</h2>
+
+<ol>
+<li>常用事件
+
+<ul>
+<li>onClick单击事件</li>
+<li>onMouseOver鼠标经过事件</li>
+<li>onMouseOut鼠标移出事件</li>
+<li>onChange文本内容改变事件</li>
+<li>onSelect文本框选中事件</li>
+<li>onFocus光标聚集事件</li>
+<li>onBlur移开光标事件</li>
+<li>onLoad网页加载事件</li>
+<li>onUnload关闭网页事件</li>
+</ul>
+</li>
+<li>事件冒泡
+
+<ul>
+<li>由最具体的元素接收，然后逐级向上传播至最不具体的元素的节点(文档)</li>
+</ul>
+</li>
+<li>事件捕获
+
+<ul>
+<li>最不具体的节点先接收事件，而最具体的节点应该是最后接收事件</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>DOM对象</h2>
+
+<ol>
+<li>当网页被加载时，浏览器会创建页面的文档对象模型(Document Object Model)
+<img src="http://i.imgur.com/EwSndVS.png" alt="DOM对象模型" /></li>
+<li>DOM操作HTML
+
+<ol>
+<li>改变HTML输出流：
+
+<ul>
+<li>注意，绝对不要在文档加载完成后使用document.write(),这会覆盖该文档</li>
+</ul>
+</li>
+<li>寻找元素：
+
+<ul>
+<li>通过id找到HTML元素,document.getElementById();</li>
+<li>通过标签名找到HTML元素,document.getElementByTagName();</li>
+</ul>
+</li>
+<li>改变HTML内容
+
+<ul>
+<li>使用属性：innerHTML</li>
+</ul>
+</li>
+<li>改变HTML属性
+
+<ul>
+<li>使用属性：attribute，例如：<code>document.getElementById("aid").href="http://www.baid.com";</code></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>DOM操作CSS
+
+<ol>
+<li>基本语法：<code>document.getElementById(id).style.property=new style;</code></li>
+</ol>
+</li>
+<li>DOM操作事件句柄
+
+<ol>
+<li>addEventListener();向指定元素添加事件句柄</li>
+<li>removeEventListener();移出方法添加的事件句柄</li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-28T12:20:50+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/09/28/javascript" data-title="JavaScript知识清单" data-url="http://suda-morris.github.io/blog/2015/09/28/javascript/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
