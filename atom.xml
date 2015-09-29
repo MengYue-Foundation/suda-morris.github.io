@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-09-28T20:12:49+08:00</updated>
+  <updated>2015-09-29T09:15:28+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -73,6 +73,55 @@
 <li>最不具体的节点先接收事件，而最具体的节点应该是最后接收事件</li>
 </ul>
 </li>
+<li>事件处理
+
+<ol>
+<li>HTML事件处理
+
+<ul>
+<li>直接添加到HTML结构中</li>
+</ul>
+</li>
+<li>DOM0级事件处理
+
+<ul>
+<li>把一个函数赋值给一个事件处理程序</li>
+<li>同一个元素多个事件会被覆盖，只有最后一个事件起作用</li>
+</ul>
+</li>
+<li>DOM2级事件处理
+
+<ul>
+<li>addEventListener(“事件名”，“事件处理函数”，“布尔值”)；</li>
+<li>true：事件捕获</li>
+<li>false：事件冒泡</li>
+<li>removeEventListen();</li>
+</ul>
+</li>
+<li>IE事件处理程序(IE8及以下)
+
+<ul>
+<li>attachEvent</li>
+<li>detachEvent</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>事件对象
+
+<ol>
+<li>在触发DOM事件的时候都会产生一个对象</li>
+<li>事件对象event
+
+<ol>
+<li>type：获取事件类型</li>
+<li>target：获取事件目标</li>
+<li>stopPropagation()；阻止事件冒泡</li>
+<li>preventDefault()；阻止事件默认行为(比如超链接)</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 
 
@@ -109,6 +158,25 @@
 <li>使用属性：attribute，例如：<code>document.getElementById("aid").href="http://www.baid.com";</code></li>
 </ul>
 </li>
+<li>常用方法：
+
+<ol>
+<li>getElementsByName();获取name</li>
+<li>getElementsByTagName();获取元素</li>
+<li>getAttribute();获取元素属性</li>
+<li>setAttribute();设置元素属性</li>
+<li>childNodes();访问子节点</li>
+<li>parentNode();访问父节点</li>
+<li>createElement();创建元素节点</li>
+<li>createTextNode();创建文本节点</li>
+<li>insertBefore();插入节点</li>
+<li>removeChild();删除节点</li>
+<li>offsetHeight;网页尺寸,例如：<code>var width=document.body.offsetWidth;</code></li>
+<li>crollHeight;网页尺寸</li>
+</ol>
+</li>
+<li>创建节点示例
+ <code>var body=document.body;var input=document.creatElement("input");input.type="button";input.value="按钮"；body.appendChild(input);</code></li>
 </ol>
 </li>
 <li>DOM操作CSS
@@ -124,6 +192,111 @@
 <li>removeEventListener();移出方法添加的事件句柄</li>
 </ol>
 </li>
+</ol>
+
+
+<h2>内置对象</h2>
+
+<ol>
+<li>String对象
+
+<ol>
+<li>字符串可以使用使用单引号或者双引号</li>
+<li>获取字符串长度：length属性</li>
+<li>在字符串中查找字符串的方法：indexOf(),成功返回位置，失败返回-1</li>
+<li>内容匹配的方法：match(),成功返回匹配成功的字符串，失败返回空</li>
+<li>替换内容的方法：replace()</li>
+<li>字符串大小写转换：toUpperCase()/toLowerCase()</li>
+<li>字符串转为数组：split</li>
+</ol>
+</li>
+<li>Date对象
+
+<ol>
+<li>常用方法：
+
+<ol>
+<li>getFullYear():获取年份</li>
+<li>getTime():获取毫秒</li>
+<li>setFullYear():设置具体的日期</li>
+<li>getDay():获取星期</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Array数组对象
+
+<ol>
+<li>数组的创建
+
+<ul>
+<li><code>var myArray=["Hello","iwen","ime"];</code></li>
+</ul>
+</li>
+<li>数组的访问
+
+<ul>
+<li>通过指定数组名以及索引号码(下标从0开始)，可以访问某个特定的元素</li>
+</ul>
+</li>
+<li>常用方法
+
+<ul>
+<li>concat();合并数组</li>
+<li>sort();排序</li>
+<li>push();末尾追加元素</li>
+<li>reverse();数组元素翻转</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Math对象
+
+<ol>
+<li>常用方法
+
+<ul>
+<li>round():四舍五入;例如Math.round(2.5)等于3</li>
+<li>random();返回0~1之间的随机数;例如parseInt(Math.random()*10);</li>
+<li>max();返回最高值</li>
+<li>min();返回最低值</li>
+<li>abs();返回绝对值</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>浏览器对象</h2>
+
+<ol>
+<li>Window对象
+
+<ul>
+<li>window对象时BOM的核心，window对象指当前的浏览器窗口。所有JavaScript全局对象，函数以及变量均自动成为window对象的成员；全局变量是window对象的属性，全局函数是window对象的方法，甚至HTML DOM的document也是window对象的属性之一</li>
+<li>window.innerHeight:浏览器窗口的内部高度</li>
+<li>window.innerWidth:浏览器窗口的内部宽度</li>
+<li>window.open(&ldquo;url"，“windowname”，“style”):打开新的网页</li>
+</ul>
+</li>
+<li>计时器
+
+<ol>
+<li>方法
+
+<ol>
+<li>setInterval();间隔指定的好描述不同的执行指定的代码</li>
+<li>clearInterval();停止setInterval()方法执行的函数代码</li>
+<li>setTimeout();暂停指定的毫秒数后执行指定的代码</li>
+<li>clearTimeout();停止之慈宁宫setTimeout()方法的函数代码</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>History对象</li>
+<li>Location对象</li>
+<li>Screen对象</li>
 </ol>
 
 ]]></content>
@@ -954,15 +1127,6 @@ property:value
 <li>模板消息接口</li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[wordpress]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/09/02/wordpress/"/>
-    <updated>2015-09-02T10:53:44+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/09/02/wordpress</id>
-    <content type="html"><![CDATA[
 ]]></content>
   </entry>
   
@@ -6741,6 +6905,344 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[cpu_init.S]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/06/19/cpu-init-dot-s/"/>
+    <updated>2015-06-19T17:28:03+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/06/19/cpu-init-dot-s</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;                      </span><span class="cm">/*里面包含mini6410.h*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">mem_ctrl_asm_init</span>
+</span><span class='line'><span class="nl">mem_ctrl_asm_init</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_MEM_SYS_CFG</span>          <span class="err">@</span><span class="n">Memory</span> <span class="n">sussystem</span> <span class="n">address</span> <span class="mh">0x7e00f120</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xd</span>                     <span class="err">@</span> <span class="n">Xm0CSn2</span> <span class="o">=</span> <span class="n">NFCON</span> <span class="n">CS0</span><span class="p">,</span> <span class="n">Xm0CSn3</span> <span class="o">=</span> <span class="n">NFCON</span> <span class="n">CS1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_DMC1_BASE</span>            <span class="err">@</span><span class="n">DMC1</span> <span class="n">base</span> <span class="n">address</span> <span class="mh">0x7e001000</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 1. 使dramc进入&quot;config&quot;状态 */</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x04</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span> 
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 2. 设置timing parameter*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_REFRESH_PRD</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_REFRESH_PRD</span><span class="p">]</span>      <span class="cm">/*刷新周期7.8us */</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_CAS_LATENCY</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_CAS_LATENCY</span><span class="p">]</span>      <span class="cm">/*CAS Latency:指的是内存存取数据所需的延迟时间，简单的说，就是内存接到CPU的指令后的反应速度。一般的参数值是2和3*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_DQSS</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_DQSS</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_MRD</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_MRD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RAS</span>                      <span class="cm">/*RAS=45ns*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RAS</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RC</span>                       <span class="cm">/*RC=68ns*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RC</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RCD</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_schedule_RCD</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RCD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RFC</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_schedule_RFC</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RFC</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RP</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_schedule_RP</span>
+</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RP</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_RRD</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_RRD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_WR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_WR</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_WTR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_WTR</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_XP</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_XP</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_XSR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_XSR</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_t_ESR</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_T_ESR</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 3.设置chip configuration*/</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC1_MEM_CFG</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMORY_CFG</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC1_MEM_CFG2</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMORY_CFG2</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC1_CHIP0_CFG</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_CHIP_0_CFG</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_DDR_32_CFG</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_USER_CONFIG</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 4. 初始化sdram */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">DMC0</span> <span class="n">DDR</span> <span class="n">Chip</span> <span class="mi">0</span> <span class="n">configuration</span> <span class="n">direct</span> <span class="n">command</span> <span class="n">reg</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_NOP0</span>                                   <span class="cm">/* NOP*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Precharge</span> <span class="n">All</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_PA0</span>                                    <span class="cm">/*precharge*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Auto</span> <span class="n">Refresh</span>    <span class="mi">2</span> <span class="n">time</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_AR0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>                   <span class="cm">/*auto refresh*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">MRS</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_EMR0</span>                              <span class="cm">/*EMRS*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Mode</span> <span class="n">Reg</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_MR0</span>                               <span class="cm">/*MRS*/</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_SMDK6410_X5A</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC1_CHIP1_CFG</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_CHIP_1_CFG</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">DMC0</span> <span class="n">DDR</span> <span class="n">Chip</span> <span class="mi">0</span> <span class="n">configuration</span> <span class="n">direct</span> <span class="n">command</span> <span class="n">reg</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_NOP1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Precharge</span> <span class="n">All</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_PA1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Auto</span> <span class="n">Refresh</span>    <span class="mi">2</span> <span class="n">time</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_AR1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">MRS</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_EMR1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="err">@</span><span class="n">Mode</span> <span class="n">Reg</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">DMC_mDDR_MR1</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_DIRECT_CMD</span><span class="p">]</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* 5. 使dramc进入&quot;ready&quot;状态  */</span>
+</span><span class='line'>  <span class="err">@</span><span class="n">Enable</span> <span class="n">DMC1</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
+</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_CMD</span><span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="nl">check_dmc1_ready</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">INDEX_DMC_MEMC_STATUS</span><span class="p">]</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x3</span>
+</span><span class='line'>  <span class="n">and</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
+</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x1</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">check_dmc1_ready</span>
+</span><span class='line'>  <span class="n">nop</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*内存控制器初始化完毕，返回*/</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* Below code is for ARM926EJS and ARM1026EJS */</span>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">cleanDCache</span>
+</span><span class='line'><span class="nl">cleanDCache</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c10</span><span class="p">,</span> <span class="mi">3</span>   <span class="cm">/* test/clean D-Cache */</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">cleanDCache</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">cleanFlushDCache</span>
+</span><span class='line'><span class="nl">cleanFlushDCache</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c14</span><span class="p">,</span> <span class="mi">3</span>   <span class="cm">/* test/cleanflush D-Cache */</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">cleanFlushDCache</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">cleanFlushCache</span>
+</span><span class='line'><span class="nl">cleanFlushCache</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">mrc</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c14</span><span class="p">,</span> <span class="mi">3</span>   <span class="cm">/* test/cleanflush D-Cache */</span>
+</span><span class='line'>  <span class="n">bne</span>  <span class="n">cleanFlushCache</span>
+</span><span class='line'>  <span class="n">mcr</span>  <span class="n">p15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="n">c7</span><span class="p">,</span> <span class="n">c5</span><span class="p">,</span> <span class="mi">0</span>    <span class="cm">/* flush I-Cache */</span>
+</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="p">.</span><span class="n">ltorg</span>
 </span></code></pre></td></tr></table></div></figure>
 
 ]]></content>

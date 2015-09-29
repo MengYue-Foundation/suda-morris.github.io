@@ -148,6 +148,55 @@
 <li>最不具体的节点先接收事件，而最具体的节点应该是最后接收事件</li>
 </ul>
 </li>
+<li>事件处理
+
+<ol>
+<li>HTML事件处理
+
+<ul>
+<li>直接添加到HTML结构中</li>
+</ul>
+</li>
+<li>DOM0级事件处理
+
+<ul>
+<li>把一个函数赋值给一个事件处理程序</li>
+<li>同一个元素多个事件会被覆盖，只有最后一个事件起作用</li>
+</ul>
+</li>
+<li>DOM2级事件处理
+
+<ul>
+<li>addEventListener(“事件名”，“事件处理函数”，“布尔值”)；</li>
+<li>true：事件捕获</li>
+<li>false：事件冒泡</li>
+<li>removeEventListen();</li>
+</ul>
+</li>
+<li>IE事件处理程序(IE8及以下)
+
+<ul>
+<li>attachEvent</li>
+<li>detachEvent</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>事件对象
+
+<ol>
+<li>在触发DOM事件的时候都会产生一个对象</li>
+<li>事件对象event
+
+<ol>
+<li>type：获取事件类型</li>
+<li>target：获取事件目标</li>
+<li>stopPropagation()；阻止事件冒泡</li>
+<li>preventDefault()；阻止事件默认行为(比如超链接)</li>
+</ol>
+</li>
+</ol>
+</li>
 </ol>
 
 
@@ -184,6 +233,25 @@
 <li>使用属性：attribute，例如：<code>document.getElementById("aid").href="http://www.baid.com";</code></li>
 </ul>
 </li>
+<li>常用方法：
+
+<ol>
+<li>getElementsByName();获取name</li>
+<li>getElementsByTagName();获取元素</li>
+<li>getAttribute();获取元素属性</li>
+<li>setAttribute();设置元素属性</li>
+<li>childNodes();访问子节点</li>
+<li>parentNode();访问父节点</li>
+<li>createElement();创建元素节点</li>
+<li>createTextNode();创建文本节点</li>
+<li>insertBefore();插入节点</li>
+<li>removeChild();删除节点</li>
+<li>offsetHeight;网页尺寸,例如：<code>var width=document.body.offsetWidth;</code></li>
+<li>crollHeight;网页尺寸</li>
+</ol>
+</li>
+<li>创建节点示例
+ <code>var body=document.body;var input=document.creatElement("input");input.type="button";input.value="按钮"；body.appendChild(input);</code></li>
 </ol>
 </li>
 <li>DOM操作CSS
@@ -199,6 +267,111 @@
 <li>removeEventListener();移出方法添加的事件句柄</li>
 </ol>
 </li>
+</ol>
+
+
+<h2>内置对象</h2>
+
+<ol>
+<li>String对象
+
+<ol>
+<li>字符串可以使用使用单引号或者双引号</li>
+<li>获取字符串长度：length属性</li>
+<li>在字符串中查找字符串的方法：indexOf(),成功返回位置，失败返回-1</li>
+<li>内容匹配的方法：match(),成功返回匹配成功的字符串，失败返回空</li>
+<li>替换内容的方法：replace()</li>
+<li>字符串大小写转换：toUpperCase()/toLowerCase()</li>
+<li>字符串转为数组：split</li>
+</ol>
+</li>
+<li>Date对象
+
+<ol>
+<li>常用方法：
+
+<ol>
+<li>getFullYear():获取年份</li>
+<li>getTime():获取毫秒</li>
+<li>setFullYear():设置具体的日期</li>
+<li>getDay():获取星期</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Array数组对象
+
+<ol>
+<li>数组的创建
+
+<ul>
+<li><code>var myArray=["Hello","iwen","ime"];</code></li>
+</ul>
+</li>
+<li>数组的访问
+
+<ul>
+<li>通过指定数组名以及索引号码(下标从0开始)，可以访问某个特定的元素</li>
+</ul>
+</li>
+<li>常用方法
+
+<ul>
+<li>concat();合并数组</li>
+<li>sort();排序</li>
+<li>push();末尾追加元素</li>
+<li>reverse();数组元素翻转</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>Math对象
+
+<ol>
+<li>常用方法
+
+<ul>
+<li>round():四舍五入;例如Math.round(2.5)等于3</li>
+<li>random();返回0~1之间的随机数;例如parseInt(Math.random()*10);</li>
+<li>max();返回最高值</li>
+<li>min();返回最低值</li>
+<li>abs();返回绝对值</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>浏览器对象</h2>
+
+<ol>
+<li>Window对象
+
+<ul>
+<li>window对象时BOM的核心，window对象指当前的浏览器窗口。所有JavaScript全局对象，函数以及变量均自动成为window对象的成员；全局变量是window对象的属性，全局函数是window对象的方法，甚至HTML DOM的document也是window对象的属性之一</li>
+<li>window.innerHeight:浏览器窗口的内部高度</li>
+<li>window.innerWidth:浏览器窗口的内部宽度</li>
+<li>window.open(&ldquo;url"，“windowname”，“style”):打开新的网页</li>
+</ul>
+</li>
+<li>计时器
+
+<ol>
+<li>方法
+
+<ol>
+<li>setInterval();间隔指定的好描述不同的执行指定的代码</li>
+<li>clearInterval();停止setInterval()方法执行的函数代码</li>
+<li>setTimeout();暂停指定的毫秒数后执行指定的代码</li>
+<li>clearTimeout();停止之慈宁宫setTimeout()方法的函数代码</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>History对象</li>
+<li>Location对象</li>
+<li>Screen对象</li>
 </ol>
 
 
@@ -1176,43 +1349,6 @@ property:value
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2015/09/02/wordpress/">
-		
-			Wordpress</a>
-	</h2>
-	<div class="entry-content">
-		
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-02T10:53:44+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
 		<a href="/blog/2015/08/20/basic-analog-knowledge/">
 		
 			Basic-Analog-Knowledge</a>
@@ -1981,6 +2117,143 @@ property:value
 
 <time datetime="2015-07-22T09:51:38+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/07/20/linux-kernel/">
+		
+			Linux_Kernel</a>
+	</h2>
+	<div class="entry-content">
+		<h2>内核make流程</h2>
+
+<ol>
+<li>make %config和make menuconfig的目的是为了生成.config文件，而Kconfig作为生成make menuconfig等图形配置界面工具而存在</li>
+<li>.config 文件中决定了内核中的哪些代码被编译进内核，哪些代码被当做模块编译</li>
+<li>make根据.config中的描述，通过解析Makefile文件来进行编译，最终生成zImage文件</li>
+<li>流程中设计的文件与命令，再加上Linux内核的scripts目录构成了内核的Kbuild机制，内核通过这种方式，最终编译得到内核镜像文件zImage</li>
+</ol>
+
+
+<h2>KBuild机制实现原理</h2>
+
+<ol>
+<li>从编译过程来看，每一个被编译的目录下都会生成一个build-in.o文件，他们都由自己目录下的源代码编译生成，所有目录下的build-in.o文件最终链接生成vmlinux文件，最后由内核压缩程序加工vmlinux生成内核压缩镜像文件zImage</li>
+<li>总原理来看，Kbuild机制只会把obj-y的值编译进内核。每个Makefile文件中都有这个变量，只不过obj-后面一半都跟着一个变量，这个变量的值来自于.config。</li>
+<li>待编译目录下的Makefile，如有Kbuild，则Kbuild优先，唯一使用Kbuild而不是Makefile的就是顶层目录</li>
+</ol>
+
+
+<h2>Kconfig语法</h2>
+
+<ol>
+<li>config
+
+<ul>
+<li>为menu或者choice中的一个选项条目</li>
+<li>config后面常跟一个变量名，比如ARM，那么在.config中将以CONFIG_ARM=y或n的形式出现</li>
+<li>下一行写该变量的取值类型,可以是bool,tristate,string,hex,int</li>
+<li>default为变量缺省值，可以被用户设置值覆盖</li>
+<li>prompt后边是出现在配置菜单中的对应于一个配置选项的文字，没有prompt条目，将使得用户不能在配置界面中显示并配置该配置选项</li>
+<li>depends on var表示该变量必须在var被设置的情况下才能进行设置，否则取值为n，即使default为y</li>
+<li>select var表示它将影响到变量var，使得var至少应该配置为y或者m</li>
+<li>help中的文字将作为配置界面中的帮助信息</li>
+</ul>
+</li>
+<li>menu
+
+<ul>
+<li>在menu和endmenu中间可配置若干config条目</li>
+</ul>
+</li>
+<li>choice
+
+<ul>
+<li>在choice和endchoice之间可定义若干config条目。choice中的config条目只能有2种类型：bool或者tristate，且不能同时有这两种变量。对于bool型变量只能在多个选择中选择1个为y；对于tristate型变量，要么将多个设置为m，要么仅将1个设为y，其余为n。</li>
+</ul>
+</li>
+<li>comment
+
+<ul>
+<li>用于定于帮助信息，将出现在配置界面的第一行，并且还会出现在配置文件.config中作为注释</li>
+</ul>
+</li>
+<li>source
+
+<ul>
+<li>由于内核源代码中大多数目录下都有各自的Kconfig文件，因此需要一种手段将所有的Kconfig文件组织为一个整体。这就是source的功能，它用于引入另一个Kconfig文件，有点类似于C语言中的#include</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>Makefile文件精解</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
+</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
+</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
+</span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>zImage文件生成过程</h2>
+
+<ol>
+<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
+<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
+<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
+<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
+<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-20T23:30:54+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kernel/'>kernel</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
+
 
 </div>
 	
