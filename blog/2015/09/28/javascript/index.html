@@ -361,9 +361,292 @@
 </li>
 </ol>
 </li>
-<li>History对象</li>
-<li>Location对象</li>
-<li>Screen对象</li>
+<li>History对象
+
+<ol>
+<li>history.back()与在浏览器中点击后退按钮相同</li>
+<li>history.forward()与在浏览器中点击向前按钮相同</li>
+<li>history.go()进入历史中的某个页面</li>
+</ol>
+</li>
+<li>Location对象
+
+<ol>
+<li>location对象用于获得当前页面的地址(URL)，并把浏览器重定向到新的页面</li>
+<li>属性与方法
+
+<ol>
+<li>location.hostname返回web主机的域名</li>
+<li>location.pathname返回当前页面的路径和文件名</li>
+<li>location.port返回web主机的端口</li>
+<li>location.protocol返回所使用的web协议(<a href="http://%E6%88%96https://">http://%E6%88%96https://</a>)</li>
+<li>location.href返回当前页面的URL</li>
+<li>location.assign()加载新的文档</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>Screen对象
+
+<ol>
+<li>属性
+
+<ol>
+<li>screen.availWidth可用的屏幕宽度</li>
+<li>screen.availHeight可用的屏幕高度</li>
+<li>screen.Height屏幕高度</li>
+<li>screen.Width屏幕宽度</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>面向对象</h2>
+
+<figure class='code'><figcaption><span>使用闭包以及function来模拟类</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">People</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;People:Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">+</span> <span class="s2">&quot; years old&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">People</span> <span class="o">=</span> <span class="nx">People</span><span class="p">;</span>
+</span><span class='line'><span class="p">}());</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">Student</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">grade</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_grade</span> <span class="o">=</span> <span class="nx">grade</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">People</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">_age</span><span class="p">);</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">superSay</span> <span class="o">=</span> <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span><span class="p">;</span>
+</span><span class='line'>    <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">superSay</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Student:Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">+</span> <span class="s2">&quot; years old&quot;</span> <span class="o">+</span> <span class="s2">&quot;,Grade: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_grade</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">Student</span> <span class="o">=</span> <span class="nx">Student</span><span class="p">;</span>
+</span><span class='line'><span class="p">}());</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">var</span> <span class="nx">stu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Student</span><span class="p">(</span><span class="s2">&quot;morris&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="s2">&quot;one&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">stu</span><span class="p">.</span><span class="nx">say</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>AJAX</h2>
+
+<ol>
+<li>AJAX(Asynchronous Javascript And XML)</li>
+<li>编程模板
+
+<ol>
+<li>创建XMLHttpRequest对象</li>
+<li>open操作初始化请求信息</li>
+<li>监听事件处理响应结果</li>
+<li>send操作发出请求</li>
+</ol>
+</li>
+<li>创建各浏览器兼容的XMLHttpRequest对象</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='JS'><span class='line'><span class="kd">function</span> <span class="nx">creatXHR</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">ActiveXObject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Msxml2.XMLHTTP&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Microsoft.XMLHTTP&#39;</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">xhr</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>发送请求信息
+
+<ol>
+<li>get方法
+
+<ul>
+<li><code>xhr.open("GET","http://test/keyword/hit?keyword=c",true);</code></li>
+<li><code>xhr.send();</code></li>
+</ul>
+</li>
+<li>post方法
+
+<ul>
+<li><code>xhr.open("POST","http://test/keyword/hit",true);</code></li>
+<li><code>xhr.send("keyword=c")</code>;</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>设置请求头信息
+
+<ol>
+<li><code>xhr.setRequestHeader("Content-Type","application/json");</code></li>
+<li><code>xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");</code></li>
+</ol>
+</li>
+<li>响应的接收与请求</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='JS'><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span><span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">){</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseXML</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getAllResponseHeaders</span><span class="p">());</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getResponseHeader</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">));</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">statusText</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>将Json字符串转换成Json对象：
+
+<ol>
+<li>JSON.parse(xhr.responseText);</li>
+<li>eval(xhr.responseText);</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>设计模式</h2>
+
+<ol>
+<li>设计原则
+
+<ol>
+<li>开闭原则：对扩展开放，对修改关闭</li>
+<li>里氏转换原则：子类继承父类，单独调用完全可以运行</li>
+<li>依赖倒转原则：引用一个对象，如果这个对象有底层类型，直接饮用底层</li>
+<li>接口隔离原则：每一个接口应该是一种角色</li>
+<li>合成/聚合复用原则：新的对象应使用一些已有的对象，使之成为新对象的一部分</li>
+<li>迪米特原则：一个对象应对其他对象有尽可能少的了解</li>
+</ol>
+</li>
+<li>单例模式</li>
+</ol>
+
+
+<h2>jQuery</h2>
+
+<ol>
+<li>jQuery库可以通过一行简单的标记被添加到网页中</li>
+<li>jQuery是一个JavaScript函数库</li>
+<li>jQuery库包含的功能:
+
+<ol>
+<li>HTML元素选取</li>
+<li>HTML元素操作</li>
+<li>CSS操作</li>
+<li>HTML事件函数</li>
+<li>JavaScript特效和动画</li>
+<li>HTML DOM遍历和修改</li>
+<li>AJAX</li>
+<li>Utilities</li>
+</ol>
+</li>
+<li>从CDN中载入jQuery，例如：<a href="http://libs.baidu.com/jquery/1.10.1/jquery.min.js">http://libs.baidu.com/jquery/1.10.1/jquery.min.js</a></li>
+<li>基础语法：
+
+<ol>
+<li>$(selector).action()
+
+<ul>
+<li>美元符号定义jQuery</li>
+<li>选择符selector“查询”和“查找”HTML元素</li>
+<li>jQuery的action()执行对元素的操作</li>
+<li>例如：
+
+<ul>
+<li>$(this).hide()隐藏当前元素</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
 </ol>
 
 </div>
