@@ -88,6 +88,156 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/05/28/cordova-startup/">
+		
+			Cordova-Startup</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Cordova环境部署</h2>
+
+<ul>
+<li><a href="https://nodejs.org">安装nodejs</a>,注意添加到环境变量PATH中</li>
+<li>安装Cordova CLI： npm install -g cordova</li>
+<li><a href="http://java.oracle.com">安装Java JDK</a>,注意添加环境变量CLASSPATH，和PATH</li>
+<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a>，注意把platform-tools和tools添加到PATH环境变量</li>
+<li><a href="http://ant.apache.org/">安装Ant</a>,注意把bin目录添加到PATH环境变量中</li>
+<li>测试：
+
+<ol>
+<li>npm -v</li>
+<li>java -version</li>
+<li>adb version</li>
+<li>ant -v</li>
+<li>cordova -v</li>
+</ol>
+</li>
+<li>cordova常用命令：
+
+<ol>
+<li><code>cordova creat 项目名称 包名 APP显示名称</code></li>
+<li><code>cordova build</code></li>
+<li><code>cordova run --device</code></li>
+</ol>
+</li>
+</ul>
+
+
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-28T10:43:48+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/cordova/'>cordova</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/05/25/microsoft-office-word-skills/">
+		
+			Microsoft-Office-Word-Skills</a>
+	</h2>
+	<div class="entry-content">
+		<h2>从任意页开始设置页码</h2>
+
+<ol>
+<li>将鼠标光标点击到开始编页码的前一页末尾</li>
+<li>点击菜单栏的<code>页面布局</code></li>
+<li>在<code>页面布局</code>栏目下，点击分隔符后面的倒三角</li>
+<li>弹出分隔符的相关功能栏目，点击<code>下一页</code></li>
+<li>双击页眉的位置，激活页眉编辑</li>
+<li>在需要开始编页码的那页页眉处点击<code>链接到前一页页眉</code></li>
+<li>移动光标到本页的页脚，并激活页脚编辑</li>
+<li>在同一页（即需要开始编页码的那页）的页脚处点击<code>链接到前一页页眉</code></li>
+<li>然后在需要开始编页码的页脚处点击<code>页码</code>->设置页码格式，将起始页设置为1</li>
+<li>点击进入<code>插入</code>菜单栏，选择<code>页码</code>,选择喜欢的页码格式</li>
+</ol>
+
+
+<h2>公式居中标号居右</h2>
+
+<ol>
+<li>在视图工具栏中打开标尺</li>
+<li>公式先居中，在标尺上记录下此时公式的位置，根据标号长度大于预估距离页边的距离，并在标尺上做标记(此时应该有两个标记)，设置标记属性(只要在其中一个标记上双击即可)，将公式标号的位置属性设置为【右对齐】</li>
+<li>将公式靠左对齐，紧跟其后写上标号。</li>
+<li>光标紧跟公式前面，按下Tab键，公式即可跳到标尺上的第一个标记处。光标置于公式标号前，再按下Tab键，公式标号跳到靠近标尺末尾处，此时鼠标拖动第二个标记至标尺最右端，公式标号保证靠右对齐！</li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-25T10:45:43+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/office/'>office</a>, <a class='category' href='/blog/categories/practise/'>practise</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/05/24/ubuntu-mate-14-04-2-lts-install/">
 		
 			Ubuntu-Mate-14-04-2-LTS-Install</a>

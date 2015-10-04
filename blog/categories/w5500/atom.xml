@@ -4,7 +4,7 @@
   <title><![CDATA[Category: w5500 | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/w5500/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-10-01T21:50:12+08:00</updated>
+  <updated>2015-10-04T22:52:12+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -502,10 +502,39 @@ Connection:Keep-Alive (CRLF)
 </ol>
 
 
-<h2>NTP协议</h2>
+<h2>SNTP协议</h2>
 
 <ol>
-<li>NTP是网络时间协议，是用来使设备时间同步化的一种协议，在一些应用长河里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么NTP协议就可以解决这个问题。</li>
+<li>SNTP是简单网络时间协议，是用来使设备时间同步化的一种协议，在一些应用场合里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么SNTP协议就可以解决这个问题。</li>
+<li>报文格式：<img src="http://i.imgur.com/y9GprbA.gif" alt="SNTP报文格式" />
+
+<ul>
+<li>LI: 跳跃指示器</li>
+<li>VN：版本号</li>
+<li>Mode：模式
+
+<ul>
+<li>0——预留</li>
+<li>1——对称行为</li>
+<li>3——客户机</li>
+<li>4——服务器</li>
+<li>5——广播</li>
+<li>6——NTP控制信息</li>
+</ul>
+</li>
+<li>Stratum：对本地时钟级别的整体识别</li>
+<li>Poll：有符号整数表示连续信息间的最大间隔</li>
+<li>Precision：有符号整数表示本地时钟精确度</li>
+<li>Root Delay：有符号固定点序号表示主要参考源的总延迟，很短时间内的位15到16间的分段点</li>
+<li>Root Dispersion：无符号固定点序号表示相对主要参考源的正常差错，很短时间内的位15到16间的分段点</li>
+<li>Reference Identifier：识别特殊参考源</li>
+<li>Originate Timestamp：这是向服务器请求分离客户机的时间，采用64位时标格式</li>
+<li>Receive Timestamp：这是向服务器请求到达客户机的时间，采用64位时标格式</li>
+<li>Transmit Timestamp：这是客户机答复分离服务器的时间，采用64位时标格式</li>
+<li>Authenticator：当实现了NTP认证模式主要标识符和信息数字域就包括已定义的信息认证代码信息</li>
+</ul>
+</li>
+<li>原理图：<img src="http://i.imgur.com/kKI2sUY.png" alt="SNTP原理示意图" /></li>
 </ol>
 
 ]]></content>

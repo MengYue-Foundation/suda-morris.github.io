@@ -88,6 +88,99 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/10/04/wizwiki-w7500/">
+		
+			Wizwiki_W7500</a>
+	</h2>
+	<div class="entry-content">
+		
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-04T22:51:33+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/10/02/yeelink/">
+		
+			Yeelink接入</a>
+	</h2>
+	<div class="entry-content">
+		<h2>创建数据点</h2>
+
+<ol>
+<li>URL：   <a href="http://api.yeelink.net/v1.0/device/">http://api.yeelink.net/v1.0/device/</a><device_id>/sensor/<sensor_id>/datapoints</li>
+<li>数据格式：JSON</li>
+<li>Method：POST</li>
+<li>返回：HTTP Headers only</li>
+<li>一个datapoint是由key和value组成的键值对：
+
+<ol>
+<li><strong>数值型传感器</strong>key为timestamp, value为数值;</li>
+<li><strong>gps型传感器</strong>key为timestamp, value为JSON格式, 由经度、纬度、速度等GPS信息组成; 同时可以指定是否修正地图上显示的偏移</li>
+<li><strong>泛型传感器</strong>key为用户自定义字符串, 大小限定为128个字符; value为JSON格式,由用户自定义具体内容, 大小限定为1024个字符</li>
+<li><strong>图像型传感器</strong>key为timestamp, value为图像二进制信息</li>
+<li>timestamp为ISO 8601标准时间格式(默认时区为中国标准时间CST), 例如：2012-03-15T16:13:14.</li>
+<li>对于数值型传感器和gps型传感器, 如果上传的数据和历史数据的timestamp相同, 则会被丢弃. 若未指定timestamp, 服务器会自动加上当前时间.</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-02T12:06:42+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/09/28/javascript/">
 		
 			JavaScript知识清单</a>
@@ -2210,10 +2303,39 @@ property:value
 </ol>
 
 
-<h2>NTP协议</h2>
+<h2>SNTP协议</h2>
 
 <ol>
-<li>NTP是网络时间协议，是用来使设备时间同步化的一种协议，在一些应用长河里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么NTP协议就可以解决这个问题。</li>
+<li>SNTP是简单网络时间协议，是用来使设备时间同步化的一种协议，在一些应用场合里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么SNTP协议就可以解决这个问题。</li>
+<li>报文格式：<img src="http://i.imgur.com/y9GprbA.gif" alt="SNTP报文格式" />
+
+<ul>
+<li>LI: 跳跃指示器</li>
+<li>VN：版本号</li>
+<li>Mode：模式
+
+<ul>
+<li>0——预留</li>
+<li>1——对称行为</li>
+<li>3——客户机</li>
+<li>4——服务器</li>
+<li>5——广播</li>
+<li>6——NTP控制信息</li>
+</ul>
+</li>
+<li>Stratum：对本地时钟级别的整体识别</li>
+<li>Poll：有符号整数表示连续信息间的最大间隔</li>
+<li>Precision：有符号整数表示本地时钟精确度</li>
+<li>Root Delay：有符号固定点序号表示主要参考源的总延迟，很短时间内的位15到16间的分段点</li>
+<li>Root Dispersion：无符号固定点序号表示相对主要参考源的正常差错，很短时间内的位15到16间的分段点</li>
+<li>Reference Identifier：识别特殊参考源</li>
+<li>Originate Timestamp：这是向服务器请求分离客户机的时间，采用64位时标格式</li>
+<li>Receive Timestamp：这是向服务器请求到达客户机的时间，采用64位时标格式</li>
+<li>Transmit Timestamp：这是客户机答复分离服务器的时间，采用64位时标格式</li>
+<li>Authenticator：当实现了NTP认证模式主要标识符和信息数字域就包括已定义的信息认证代码信息</li>
+</ul>
+</li>
+<li>原理图：<img src="http://i.imgur.com/kKI2sUY.png" alt="SNTP原理示意图" /></li>
 </ol>
 
 
@@ -2345,197 +2467,6 @@ property:value
 
 
 	<a class='category' href='/blog/categories/cadence/'>cadence</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/07/22/tl-wr740n/">
-		
-			TL-WR740N刷机救砖指南</a>
-	</h2>
-	<div class="entry-content">
-		<h2>型号</h2>
-
-<blockquote><p>Flash：4MB，DRAM：32MB，CPU：AR7240，Baud：115200</p></blockquote>
-
-<h2>固件下载</h2>
-
-<p><a href="http://www.dd-wrt.com/site/support/router-database">下载地址</a></p>
-
-<h2>TTL刷机命令</h2>
-
-<ol>
-<li>上电连续输入TPL三个字母知道进入uboot界面停住</li>
-<li>tftpdboot 0x80000000 [固件名称]</li>
-<li>erase 0x9f020000 +0x3c0000</li>
-<li>cp.b 0x80000 0x9f020000 0x3c0000</li>
-<li>bootm 0x9f020000</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-22T09:51:38+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/07/20/linux-kernel/">
-		
-			Linux_Kernel</a>
-	</h2>
-	<div class="entry-content">
-		<h2>内核make流程</h2>
-
-<ol>
-<li>make %config和make menuconfig的目的是为了生成.config文件，而Kconfig作为生成make menuconfig等图形配置界面工具而存在</li>
-<li>.config 文件中决定了内核中的哪些代码被编译进内核，哪些代码被当做模块编译</li>
-<li>make根据.config中的描述，通过解析Makefile文件来进行编译，最终生成zImage文件</li>
-<li>流程中设计的文件与命令，再加上Linux内核的scripts目录构成了内核的Kbuild机制，内核通过这种方式，最终编译得到内核镜像文件zImage</li>
-</ol>
-
-
-<h2>KBuild机制实现原理</h2>
-
-<ol>
-<li>从编译过程来看，每一个被编译的目录下都会生成一个build-in.o文件，他们都由自己目录下的源代码编译生成，所有目录下的build-in.o文件最终链接生成vmlinux文件，最后由内核压缩程序加工vmlinux生成内核压缩镜像文件zImage</li>
-<li>总原理来看，Kbuild机制只会把obj-y的值编译进内核。每个Makefile文件中都有这个变量，只不过obj-后面一半都跟着一个变量，这个变量的值来自于.config。</li>
-<li>待编译目录下的Makefile，如有Kbuild，则Kbuild优先，唯一使用Kbuild而不是Makefile的就是顶层目录</li>
-</ol>
-
-
-<h2>Kconfig语法</h2>
-
-<ol>
-<li>config
-
-<ul>
-<li>为menu或者choice中的一个选项条目</li>
-<li>config后面常跟一个变量名，比如ARM，那么在.config中将以CONFIG_ARM=y或n的形式出现</li>
-<li>下一行写该变量的取值类型,可以是bool,tristate,string,hex,int</li>
-<li>default为变量缺省值，可以被用户设置值覆盖</li>
-<li>prompt后边是出现在配置菜单中的对应于一个配置选项的文字，没有prompt条目，将使得用户不能在配置界面中显示并配置该配置选项</li>
-<li>depends on var表示该变量必须在var被设置的情况下才能进行设置，否则取值为n，即使default为y</li>
-<li>select var表示它将影响到变量var，使得var至少应该配置为y或者m</li>
-<li>help中的文字将作为配置界面中的帮助信息</li>
-</ul>
-</li>
-<li>menu
-
-<ul>
-<li>在menu和endmenu中间可配置若干config条目</li>
-</ul>
-</li>
-<li>choice
-
-<ul>
-<li>在choice和endchoice之间可定义若干config条目。choice中的config条目只能有2种类型：bool或者tristate，且不能同时有这两种变量。对于bool型变量只能在多个选择中选择1个为y；对于tristate型变量，要么将多个设置为m，要么仅将1个设为y，其余为n。</li>
-</ul>
-</li>
-<li>comment
-
-<ul>
-<li>用于定于帮助信息，将出现在配置界面的第一行，并且还会出现在配置文件.config中作为注释</li>
-</ul>
-</li>
-<li>source
-
-<ul>
-<li>由于内核源代码中大多数目录下都有各自的Kconfig文件，因此需要一种手段将所有的Kconfig文件组织为一个整体。这就是source的功能，它用于引入另一个Kconfig文件，有点类似于C语言中的#include</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>Makefile文件精解</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#如果CONFIG_ATL1=y，将递归进入本目录的子目录atl1，并根据该子目录下的Makefile文件的内容决定该子目录如何继续拧编译，否则将不进入本目录的子目录atl1进行编译</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_ATL1</span><span class="p">)</span> <span class="o">+=</span> <span class="n">atl1</span><span class="o">/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#如果.config中变量CONFIG_GIANFAR=y，那么将变异本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar)sysfa.c文件并将其功能集成进zImage；如果.config文件中变量CONFIG_GIANFAR=m，那么将编译本目录下的gianfar.c,gianfar_ethtool.c,gianfar_mii.c,gianfar_sysfs.c文件生成模块gianfar.ko；否则将编译gianfar.c,gianfar_ethtool.c</span>
-</span><span class='line'><span class="n">gianfar_mii</span><span class="p">.</span><span class="n">c</span><span class="p">,</span><span class="n">gianfar_sysfa</span><span class="p">.</span><span class="n">c</span>
-</span><span class='line'><span class="n">obj</span><span class="o">-</span><span class="err">$</span><span class="p">(</span><span class="n">CONFIG_GIANFAR</span><span class="p">)</span> <span class="o">+=</span> <span class="n">gianfar_driver</span><span class="p">.</span><span class="n">o</span>
-</span><span class='line'><span class="n">gianfar_driver</span><span class="o">-</span><span class="nl">objs</span> <span class="p">:</span><span class="o">=</span> <span class="n">gianfar</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_ethtool</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_mii</span><span class="p">.</span><span class="n">o</span>\
-</span><span class='line'>                      <span class="n">gianfar_sysfs</span><span class="p">.</span><span class="n">o</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>zImage文件生成过程</h2>
-
-<ol>
-<li>内核代码首先被编译生成vmlinux，放在Linux源码的顶层目录下</li>
-<li>这个vmlinux可执行文件又通过arm-linux-objcopy命令转化为二进制代码文件Image（放在arch/arm/boot目录下），其实这个Image文件才是真是的内核代码文件，因为这个文件会比较大，所以内核会对它做压缩处理</li>
-<li>为了最大化减小Image的体积，内核调用gzip工具吧Image压缩成piggy.gz文件</li>
-<li>为了让内核具有自引导功能，在arch/arm/boot/compressed目录下有head.o,misc.o两个文件构成解压和自引导代码，而让真实的piggy.gz文件也参与编译，最终生成了梁歪一个vmlinux文件，放在arch/arm/boot/compressed目录下，并最终调用arm-linux-objcopy生成二进制文件zImage。</li>
-<li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-20T23:30:54+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kernel/'>kernel</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
 
 
 </div>
