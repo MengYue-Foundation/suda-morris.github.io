@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: arm | WenRis Blog]]></title>
+  <link href="http://suda-morris.github.io/blog/categories/arm/atom.xml" rel="self"/>
+  <link href="http://suda-morris.github.io/"/>
+  <updated>2015-10-10T16:24:02+08:00</updated>
+  <id>http://suda-morris.github.io/</id>
+  <author>
+    <name><![CDATA[suda-morris]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cortex-M0]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/10/06/cortex-m0/"/>
+    <updated>2015-10-06T12:23:50+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/10/06/cortex-m0</id>
+    <content type="html"><![CDATA[<h2>ARM体系变种</h2>
+
+<ol>
+<li>M变种：
+
+<ol>
+<li>长乘法操作：32位整数乘以32位整数，生成64位整数</li>
+<li>长乘加操作：32位整数乘以32位整数，加上32位整数，生成64位整数</li>
+</ol>
+</li>
+<li>T变种：
+
+<ol>
+<li>Thumb指令集是ARM指令集的一个子集重新编码而成的，它使ARM更加高效地进行运作</li>
+</ol>
+</li>
+<li>E变种：
+
+<ol>
+<li>增加了新的16位数据乘法与乘加操作指令</li>
+<li>实现饱和的带符号数的加减法操作指令</li>
+<li>进行双字数据操作的指令，包含LDRD、STDR、MCRR\MRRC</li>
+<li>cache预取指令PLD</li>
+</ol>
+</li>
+<li>J变种：
+
+<ol>
+<li>Jazelle技术：将Java代码运行速度提高了8倍，功耗降低了80%</li>
+</ol>
+</li>
+<li>SIMD变种：
+
+<ol>
+<li>可同时进行两个16位操作数或者4个8位操作数的运算</li>
+<li>用户可以定义饱和运算模式</li>
+<li>32位乘以32位的小数MAC</li>
+<li>音频\视频处理性能提高了4倍</li>
+<li>提供小数算数运算</li>
+<li>两套16位操作数的乘加\乘减运算</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM处理器系列</h2>
+
+<ol>
+<li>ARM7系列
+
+<ol>
+<li>小型、快速、低能耗、集成式的RISC芯片</li>
+<li>冯诺依曼体系结构</li>
+<li>三级流水线制</li>
+<li>优秀的调试机制</li>
+</ol>
+</li>
+<li>ARM9、ARM9E系列
+
+<ol>
+<li>哈佛体系结构：这种体系结构是一种将程序指令存储和数据存储分开的存储器结构，是一种并行体系结构</li>
+<li>支持32位的ARM指令和16位Thumb指令</li>
+<li>支持一般的操作系统</li>
+<li>五级流水处理及分离的Cache结构</li>
+<li>ARM9E内核在ARM9内核的基础上增加了紧密耦合存储器的TCM及DSP部分</li>
+</ol>
+</li>
+<li>ARM10E系列
+
+<ol>
+<li>支持AMBA总线接口（包含AHB，ASB总线）</li>
+<li>六级流水线制</li>
+<li>包含DSP指令集</li>
+<li>可选浮点协处理器</li>
+<li>统一的数据cache和指令cache</li>
+<li>能够支持多种商用操作系统</li>
+</ol>
+</li>
+<li>ARM11系列(ARM V6结构)
+
+<ol>
+<li>针对媒体处理的SIMD</li>
+<li>用以提高安全性能的TrustZone技术</li>
+<li>智能能源管理IEM</li>
+<li>系统多处理技术</li>
+</ol>
+</li>
+<li>SecurCore系列
+
+<ol>
+<li>采用软内核技术</li>
+<li>提供面前智能卡和低成本的存储保护单元</li>
+<li>可集成用户自己的安全特性和其他处理器</li>
+<li>极具安全性</li>
+</ol>
+</li>
+<li>Cortex系列处理器
+
+<ol>
+<li>ARM公司在经典处理器ARM11以后的产品改用Cortex命名，并分成A、R和M三类，旨在为各种不同的市场提供服务</li>
+<li>A系列面向尖端的基于虚拟内存的操作系统和用户应用</li>
+<li>R系列针对实时系统</li>
+<li>M系列针对成本和功耗敏感的MCU和终端应用</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Cortex-M0/M0+</h2>
+
+<ol>
+<li>CortexM0/M0+均是ARMv6M架构,均支持Thumb指令集，支持NVIC和WIC，但不支持Thumb2指令集，其中M0是三级流水线架构，M0+是二级流水线架构</li>
+<li>CortexM3，CortexM4均是ARMv7M架构，均支持Thumb，Thumb2指令集，支持NVIC和WIC；CortexA5，CortexA8，CortexA9均是ARMv7A架构</li>
+<li>存储器模型：<img src="http://i.imgur.com/KKgz65f.png" alt="ARM CortexM存储器模型" />
+
+<ol>
+<li>4GB可寻址线性空间</li>
+<li>标准实现，适用于所有Cortex-M系列</li>
+<li>无须paging和banking</li>
+<li>软件访问可访问性</li>
+</ol>
+</li>
+<li>两种工作模式
+
+<ol>
+<li>Thread模式</li>
+<li>Handler模式</li>
+</ol>
+</li>
+<li>异常模型
+
+<ol>
+<li>异常发生->加载向量列表->异常处理->返回</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM Cortex-M0+寄存器</h2>
+
+<ol>
+<li>32位位宽寄存器：
+
+<ol>
+<li>13个通用寄存器：
+
+<ol>
+<li>R0-R7（Low registers）</li>
+<li>R8-R12(High registers)</li>
+</ol>
+</li>
+<li>3个特殊用处寄存器
+
+<ol>
+<li>SP-R13，初始值：0x00000000</li>
+<li>LR-R14</li>
+<li>PC-R15，初始值0x00000004,Bit[0]为1，表示当前为Thumb代码</li>
+</ol>
+</li>
+<li>特殊寄存器
+
+<ol>
+<li>PSR（Program Status Register）</li>
+<li>PRIMASK（Interrupt mask register），仅有Bit[0],值为1表示关闭所有中断，只有NMI和硬件错误才能被响应，缺省值为0</li>
+<li>CONTROL（control register），只有Bit[0]（定义权限级别，0表示特权级线程模式，1表示普通线程模式，所有的Handler模式都是特权级模式）和Bit[1]（选择当前使用哪个栈指针，0表示选择主栈指针MSP，1表示选择进程栈指针PSP）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>寄存器使用方法
+
+<ol>
+<li>R0-R3：传递函数参数，返回函数结果，因此也称为a1-a4；也可用于程序内部保存临时变量</li>
+<li>R4-R11：保存程序内部的变量值，因此又称为v1-v8，其中r9是个平台相关的寄存器，需要半导体厂商自己定义</li>
+<li>R12-R15：专门用途寄存器，R12-IP</li>
+</ol>
+</li>
+<li>程序状态寄存器PSR
+
+<ol>
+<li>APSR(Application Program Status Register)，包括Negative，Zero，Carry和Overflow的标志位</li>
+<li>IPSR(Interrupt Program Status Register)，包括Exception number(前6位)</li>
+<li>EPSR(Execution Program Status Register)，包括Thumb code is executed的指示位</li>
+<li>程序状态寄存器的访问指令：MSR和MRS</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM Cortex-M0+指令集</h2>
+
+<ol>
+<li>每条Thumb指令有相同处理器模型所对应的32位ARM指令，比如可以将Thumb指令ADD Rd，#immed_8转换为ARM指令ADD Rd，Rd，#immed_8</li>
+<li>Thumb的56条指令分类：
+
+<ol>
+<li>存储器访问指令
+
+<ol>
+<li>ADR:Generate PC-relative address</li>
+<li>LDM:Load Multiple registers</li>
+<li>LDR{type}:Load Register using immediate offset</li>
+<li>LDR{type}:Load Register using register offset</li>
+<li>LDR:Load Register from PC-relative address</li>
+<li>POP:Pop register from stack</li>
+<li>PUSH:Push registers onto stack</li>
+<li>STM:Store Multiple registers</li>
+<li>STR{type}:Store Register using immediate offset</li>
+<li>STR{type}:Store Register using register offset</li>
+</ol>
+</li>
+<li>数据处理指令</li>
+<li>分支和控制指令
+
+<ol>
+<li>B{cc}:Branch {conditionally},如果使用了条件执行，那么跳转范围在-256~254字节内；如果没有使用条件执行，那么跳转范围在±1M内</li>
+<li>BL:Branch with Link,跳转范围±16MB</li>
+<li>BLX:Branch indirect with Link</li>
+<li>BX:Branch indirect</li>
+</ol>
+</li>
+<li>杂项指令
+
+<ol>
+<li>MRS:Move from special register to register</li>
+<li>MSR:Move from register to special register</li>
+<li>CPSID:Change Processor State,Disable Interrupts,C语言操作函数:void __disable_irq(void);</li>
+<li>CPSIE:Change Processor State,Enable Interrupts,C语言操作函数：void __enable_irq(void);</li>
+<li>WFE:Wait For Event,C语言操作函数：void __WFE(void);</li>
+<li>WFI:Wait For Interrupt,C语言操作函数：void __WFI(void);</li>
+<li>NOP:No Operation,C语言操作函数：void __NOP(void);</li>
+<li>SVC:Supervisor Call</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM Cortex-M0+外设</h2>
+
+<ol>
+<li>外设的映射
+
+<ol>
+<li>Private Peripheral Bus（PPB）的映射(0xE0000000-0xE00FFFFF)</li>
+<li>SysTick:24位计数器，扩展的NVIC特性</li>
+<li>NVIC：中断设置与配置</li>
+<li>SCB:提供系统实现和系统控制；包括配置、控制和上报系统异常</li>
+<li>MPU（Memory Protection Unit）</li>
+</ol>
+</li>
+<li>NVIC接口API：
+
+<ol>
+<li>void NVIC_EnableIRQ(IRQn_t IRQn);</li>
+<li>void NVIC_DisableIRQ(IRQn_t IRQn);</li>
+<li>uint32_t NVIC_GetPendingIRQ(IRQn_t IRQn);</li>
+<li>void NVIC_SetPendingIRQ(IRQn_t IRQn);</li>
+<li>void NVIC_ClearPendingIRQ(IRQn_t IRQn);</li>
+<li>void NVIC_SetPriority(IRQn_t IRQn,uint32_t priority);</li>
+<li>uint32_t NVIC_GetPriority(IRQn_t IRQn);</li>
+<li>void NVIC_SystemReset(void);请求一次系统复位</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM Cortex-M0+可执行镜像</h2>
+
+<ol>
+<li>ELF：定义了对象文件的内容和格式</li>
+<li>BIN：直接的内存镜像</li>
+<li>HEX：包含了目标程序镜像的存储地址</li>
+<li>AXF：ARM工具链产生，BIN文件内容+调试信息</li>
+</ol>
+
+
+<h2>WEAK和alias属性</h2>
+
+<ol>
+<li>当两个或者两个以上行数具有相同的名字，并其中之一声明为weak属性时，则不会引发重定义错误。连接器会忽略弱属性的函数，而使用普通的函数来解析所有对这些符号的引用</li>
+<li>如果普通的函数不可用时，连接器会使用weak属性的函数</li>
+<li>alias属性：声明别名，当weak和alias属性连用时，可以声明弱别</li>
+</ol>
+
+
+<h2>错误异常</h2>
+
+<ol>
+<li>优先级仅次于复位和NMI</li>
+<li>引起错误异常的来源：
+
+<ol>
+<li>Memory访问异常</li>
+<li>程序异常</li>
+</ol>
+</li>
+<li>错误异常分析：<img src="http://i.imgur.com/DrQtd2F.png" alt="错误异常分析" />
+
+<ol>
+<li>当异常发生时，处理器首先会保护现场，因此可以得到当前寄存器的值，以及异常发生前被压栈的寄存器的值</li>
+<li>判断PC的返回值是否合法，存储器的访问地址是否正确，栈地址是否正确以及是否出现了溢出</li>
+<li>访问PSR寄存器来获取当前处理器的状态信息</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>锁定</h2>
+
+<ol>
+<li>锁定（Lockup）的发生：
+
+<ol>
+<li>在处理NMI或者HardFault时产生错误异常</li>
+<li>异常处理返回，当PSP出栈时，系统总线错误</li>
+</ol>
+</li>
+<li>锁定的退出：
+
+<ol>
+<li>复位</li>
+<li>Debugger</li>
+</ol>
+</li>
+<li>锁定的预防：
+
+<ol>
+<li>尽量缩短NMI和HardFault异常的处理时间</li>
+<li>在进入HardFault异常处理前，添加汇编代码，检查SP指针</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

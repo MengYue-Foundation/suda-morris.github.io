@@ -7,7 +7,8 @@
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content=" ">
+	<meta name="description" content="WIZwiki-W7500平台介绍 W7500单芯片解决方案：ARM Cortex-M0，48MHz，128KB Flash，16KB RAM，硬件TCP/IP内核，32KB TCP/IP专属RAM，MII接口，8个socket
+程序下载方法： CMSIS-DAP USB下载 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -84,7 +85,164 @@
 
 	<div id="content" class="inner"><article class="post">
 	<h2 class="title">Wizwiki_W7500</h2>
-	<div class="entry-content">
+	<div class="entry-content"><h2>WIZwiki-W7500平台介绍</h2>
+
+<ol>
+<li>W7500单芯片解决方案：ARM Cortex-M0，48MHz，128KB Flash，16KB RAM，硬件TCP/IP内核，32KB TCP/IP专属RAM，MII接口，8个socket</li>
+<li>程序下载方法：
+
+<ol>
+<li>CMSIS-DAP USB下载</li>
+<li>利用串口的ISP固件下载方式(按住boot键不放，按一下sw键进入boot模式)</li>
+</ol>
+</li>
+<li>SWD(Serial Wire Debug)调试</li>
+<li>2路SPI接口，2路I2C接口，3路UART接口，8路ADC(12bit，1Msps)，6路DMA控制器，1个32位的RNG（随机数生成器）</li>
+<li>外部PHY芯片：IP101GA
+
+<ol>
+<li>自动MDI/MDIX，即自动识别交叉线与直连线</li>
+<li>支持MDC与MDIO接口与MAC层通信</li>
+</ol>
+</li>
+<li>CMSIS-DAP实现芯片：LPC11U35FHI33/501
+
+<ol>
+<li>CMSIS-DAP功能：
+
+<ol>
+<li>通过USB烧写固件到W7500</li>
+<li>利用W7500的UART1，通过USB接口与外界进行串口通讯（PC端需要安装驱动，驱动安装成功后会虚拟出串口名如：mbed Seral Port(COMn)）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>开发板框图：<img src="http://i.imgur.com/YbsZrdE.png" alt="板子框图" /></li>
+<li>W7500芯片框图：<img src="http://i.imgur.com/pLcN78g.png" alt="W7500芯片框图" /></li>
+</ol>
+
+
+<h2>MII</h2>
+
+<ol>
+<li>MII即媒体独立接口，也叫介质无关接口，它是IEEE-802.3定义的以太网行业标准，它包括一个数据接口，以及一个MAC和PHY之间的管理接口。</li>
+<li>数据接口包括分别用于发送器和接收器的两条独立信道，每条信道都有自己的数据、时钟和控制信号。MII数据接口总共需要16个信号。</li>
+<li>管理接口是个双信号接口：一个是时钟信号，另一个是数据信号。通过管理接口，上层能监视和控制PHY</li>
+</ol>
+
+
+<h2>中断和事件</h2>
+
+<ol>
+<li>W7500包含26路中断请求IRQ，一个非屏蔽中断NMI，一个事件信号</li>
+<li>W7500可以处理内部事件以唤醒内核（WFE），唤醒事件可以通过如下方式产生：
+
+<ol>
+<li>DMA进程完成之后</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>供电</h2>
+
+<ol>
+<li>W7500内部嵌入一个稳压器来提供内部1.5V的电压，稳压器没有掉电模式或者休眠模式</li>
+<li>ADC参考电压和VDD相同</li>
+<li>W7500在系统或电源复位后会处于工作模式，当CPU停止工作时可以采用两种低功耗模式(W7500没有掉电模式)：休眠模式(Sleep)和深度休眠(Deep Sleep)</li>
+<li>休眠模式仅仅关闭了CPU时钟，总线时钟依旧开启，深度休眠模式中总线时钟和存储器时钟都被关闭</li>
+</ol>
+
+
+<h2>TOE</h2>
+
+<ol>
+<li>TCP/IP卸载引擎(TOE)是一个嵌入式全硬件TCP/IP以太网控制器，它可以提供更简洁的嵌入式网络接入方案。TOE提供WOL(网络唤醒)功能可以大大降低系统功耗</li>
+<li>新增网络配置锁存寄存器NCONFLR用来锁定和解锁对网络配置寄存器(SIR,SUBR,GAR和SHAR)的访问。当LOCK处于ON，受保护的寄存器无法进行配置，这汇总情况下，写入NCONFLR寄存器的值是0x01ACCE55，当LOCK处于OFF，受保护的寄存器可以进行配置，这是该寄存器的值为非0x01ACCE55的其他任意值</li>
+</ol>
+
+
+<h2>启动顺序</h2>
+
+<ol>
+<li>W7500有三种不同的启动模式，可以通过BOOT引脚和TEST引脚选定。TEST=0，BOOT=0，在主Flash存储器中执行用户代码；TEST=0，BOOT=1，W7500支持ISP功能以便于用串口控制flash</li>
+</ol>
+
+
+<h2>存储器</h2>
+
+<ol>
+<li>Flash存储器由长度为32为宽的存储单元构成，可以用于存储代码或者数据</li>
+<li>存储器的构成基于一个主Flash存储器块，包含256字节的512扇区，或者4KB的32个块。块和扇区停工读/写保护</li>
+</ol>
+
+
+<h2>时钟复位发生器CRG</h2>
+
+<ol>
+<li>CRG包括PLL和POR</li>
+<li>三种类型的复位：
+
+<ol>
+<li>外部复位，上电复位，系统复位</li>
+<li>系统复位是当下面的情况发生时产生复位：
+
+<ol>
+<li>看门狗事件</li>
+<li>重映射之后</li>
+<li>软件复位(在Cortex-M0的SYSRESETREQ为)</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>两种时钟源可以用来驱动系统时钟：
+
+<ol>
+<li>外部振荡器时钟(8MHz~24MHz)(OCLK)</li>
+<li>内部8MHz RC振荡器(RCLK)</li>
+</ol>
+</li>
+<li>RNGCLK只有一个源(pll输出)并且没有预分频器</li>
+<li>CRG框图：<img src="http://i.imgur.com/xZTW330.png" alt="CRG框图" /></li>
+<li>监视时钟源：
+
+<ol>
+<li>监视引脚：PA_02</li>
+<li>配置寄存器：MONCLK_SSR</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>随机数发生器RNG</h2>
+
+<ol>
+<li>RNG是一个32位随机数发生器，当上电复位时，RNG会产生一个上电随机数，RNG可以通过软件来运行/停止。RNG的初始值和多项式值可以通过软件来更新</li>
+</ol>
+
+
+<h2>外部中断</h2>
+
+<ol>
+<li>不管任何功能引脚功能设置，功能引脚都可以被用作一个外部中断源</li>
+<li>外部中断控制器的中断极性分为上升沿和下降沿</li>
+</ol>
+
+
+<h2>Pad控制器</h2>
+
+<ol>
+<li>W7500具有数字I/O功能引脚和数字/模拟多路复用I/O功能引脚，功能引脚的可控性特性包括上拉，下拉，驱动强度，输入开启和CMOS/Schmitt触发输入缓存</li>
+</ol>
+
+
+<h2>GPIO</h2>
+
+<ol>
+<li>屏蔽寄存器可将端口位视为整体而其他位不变</li>
+<li>访问屏蔽功能允许一位或者多位在单向传输过程中读或写，这避免了基于软件的读-修改-写操作的非线程安全问题。有了访问屏蔽操作，16-bit I/O被分成两半，低字节和高字节，这个位被定义为两个数组，每一个包含256字节</li>
+</ol>
+
 </div>
 
 
