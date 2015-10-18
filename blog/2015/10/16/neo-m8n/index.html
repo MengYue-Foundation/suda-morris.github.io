@@ -1,0 +1,454 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>NEO-M8N - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="NEO-M8N模块 内嵌USB转串口功能
+三维位置定位
+测速
+授时
+MAXIM公司20.5dB高增益LNA芯片
+应用场合： 语音报站
+航模，飞控，无人机
+同步授时
+汽车导航 接收制式： GPS
+GLONASS
+Galileo
+BeiDou
+QZSS
+SBAS 72路接收通道
+水平定位精度：2米（ &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">NEO-M8N</h2>
+	<div class="entry-content"><h2>NEO-M8N模块</h2>
+
+<ol>
+<li>内嵌USB转串口功能</li>
+<li>三维位置定位</li>
+<li>测速</li>
+<li>授时</li>
+<li>MAXIM公司20.5dB高增益LNA芯片</li>
+<li>应用场合：
+
+<ol>
+<li>语音报站</li>
+<li>航模，飞控，无人机</li>
+<li>同步授时</li>
+<li>汽车导航</li>
+</ol>
+</li>
+<li>接收制式：
+
+<ol>
+<li>GPS</li>
+<li>GLONASS</li>
+<li>Galileo</li>
+<li>BeiDou</li>
+<li>QZSS</li>
+<li>SBAS</li>
+</ol>
+</li>
+<li>72路接收通道</li>
+<li>水平定位精度：2米（空旷地）</li>
+<li>输出频率1Hz~10Hz</li>
+<li>速度精度：0.1m/s</li>
+<li>加速度精度：0.1m/s2</li>
+<li>最大高度18000米，最大速度515m/s</li>
+<li>最大加速度4g</li>
+<li>基于UBX协议进行模块的配置</li>
+<li>IIC接口的SDA与SCL已经内部接了上拉电阻</li>
+</ol>
+
+
+<h2>XH414法拉电容</h2>
+
+<ol>
+<li>参数:3.3V 0.07F</li>
+<li>功能和锂电池一样，在主电源掉电的时候可以为GPS模块的RTC部分供电，以使GPS模块在下次启动时能快速搜索到卫星，一般可维持供电1小时</li>
+</ol>
+
+
+<h2>NMEA-0183协议</h2>
+
+<ol>
+<li>NMEA是美国国家海洋电子协会为海用电子设备指定的标准格式，目前已经成为了GPS导航设备统一的RTCM标准协议</li>
+<li>NMEA-0183是一套定义接收机输出的标准信息，有几种不同的二格式，每种都是独立相关的ASCII，使用逗号隔开数据，数据流长度30-100字符不等，通常以每秒间隔选择输出，最常用的格式为“GGA”，它包含了定位时间，纬度，经度，高度，定位所用的卫星数，DOP值，差分状态和校正时段，其他的有速度，跟踪，日期等。</li>
+<li>NMEA-0183常用语句格式说明：
+
+<ol>
+<li>$GPGGA:全球定位数据，最大帧长72</li>
+<li>$GPGSA：卫星PRN数据，最大帧长65</li>
+<li>$GPGSV：卫星状态信息，最大帧长210</li>
+<li>$GPRMC：推荐最小数据，最大帧长70</li>
+<li>$GPVTG：地面速度信息，最大帧长34</li>
+<li>$GPGLL：大地坐标信息</li>
+<li>$GPZDA：UTC时间和日期</li>
+</ol>
+</li>
+<li>协议帧总说明：该协议采用ASCII码。帧格式形如：$aacc,dd,dd,&hellip;,ddd*hh<CR><LF>
+
+<ol>
+<li>$表示帧命令起始位</li>
+<li>aaccc表示地址域，前两位是标识符，后三位为语句名</li>
+<li>ddd&hellip;ddd表示数据</li>
+<li>*表示校验和前缀</li>
+<li>hh表示校验和，$与*之间所有字符ASCII码的校验和(各字节做异或运算，得到校验和后，再转换16进制格式的ASCII字符)</li>
+<li><CR><LF>表示回车和换行</li>
+</ol>
+</li>
+<li>GPGGA：GPS固定数据输出语句
+
+<ol>
+<li>格式：$GPGGA,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>,<10>,<11>,<12>,<13>,<14>*<15><CR><LF></li>
+<li>例子：$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,8,1.01,499.6,M,48.0,M,,0*5B</li>
+<li><1>UTC时间，格式为hhmmss.sss</li>
+<li><2>纬度，格式ddmm.mmmm</li>
+<li><3>纬度半球，N或者S</li>
+<li><4>经度，格式ddmm.mmmm</li>
+<li><5>经度半球，E或W</li>
+<li><6>定位质量指标，0=定位无效，1=标准定位，2=差分定位，6=估算</li>
+<li><7>使用卫星数量，从00到12</li>
+<li><8>水平精确度，0.5到99.9</li>
+<li><9>天线离海平面的高度，-9999.9到9999.9米</li>
+<li><10>高度单位，M表示单位米</li>
+<li><11>大地椭球面相对海平面的高度</li>
+<li><12>高度单位，M表示单位米</li>
+<li><13>差分GPS数据期限（RTCM SC-104），最后设立RTCM传送的秒数量</li>
+<li><14>差分参考基站标号，从0000到1023</li>
+<li><15>校验和</li>
+</ol>
+</li>
+<li>GPGSA：GPS精度指针及使用卫星
+
+<ol>
+<li>格式：$GPGSA,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>,<10>,<11>,<12>,<13>,<14>,<15>,<16>,<17>*<18><CR><LF></li>
+<li>例子：$GPGSA,A,3,23,29,07,08,09,18,26,28,,,,,1.94,1.18,1.54*0D</li>
+<li><1>模式2：M=手动，A=自动</li>
+<li><2>模式1：定位型式1=未定位，2=二维定位，3=三维定位</li>
+<li><3>第1信道正在使用的卫星PRN码编号(Pseudo Random Noise，伪随机噪声吗)，01至32</li>
+<li><4> 第2信道正在使用的卫星PRN码编号</li>
+<li><5> 第3信道正在使用的卫星PRN码编号</li>
+<li><6> 第4信道正在使用的卫星PRN码编号</li>
+<li><7> 第5信道正在使用的卫星PRN码编号</li>
+<li><8> 第6信道正在使用的卫星PRN码编号</li>
+<li><9> 第7信道正在使用的卫星PRN码编号</li>
+<li><10> 第8信道正在使用的卫星PRN码编号</li>
+<li><11> 第9信道正在使用的卫星PRN码编号</li>
+<li><12> 第10信道正在使用的卫星PRN码编号</li>
+<li><13> 第11信道正在使用的卫星PRN码编号</li>
+<li><14> 第12信道正在使用的卫星PRN码编号</li>
+<li><15> PDOP综合位置精度因子（0.5 - 99.9）</li>
+<li><16> HDOP水平精度因子（0.5 - 99.9）</li>
+<li><17> VDOP垂直精度因子（0.5 - 99.9）</li>
+<li><18> 校验和</li>
+</ol>
+</li>
+<li>GPGSV：可视卫星状态输出语句
+
+<ol>
+<li>格式：：$GPGSV, <1>,<2>,<3>,<4>,<5>,<6>,<7>,&hellip;,<4>,<5>,<6>,<7>*<8><CR><LF></li>
+<li>例子：$GPGSV,3,1,10,23,38,230,44,29,71,156,47,07,29,116,41,08,09,081,36*7F</li>
+<li><1> 总的GSV语句电文数</li>
+<li><2> 当前GSV语句号</li>
+<li><3> 可视卫星总数，00至12</li>
+<li><4> 卫星编号，01至32</li>
+<li><5> 卫星仰角，00至90度</li>
+<li><6> 卫星方位角，000至359度。实际值</li>
+<li><7> 信噪比（C/No），00至99dB；无表示未接收到讯号</li>
+<li><8> 校验和。</li>
+<li>每条语句最多包括四颗卫星的信息，每颗卫星的信息有四个数据项，即：卫星编号，卫星仰角，卫星方位角，信噪比</li>
+</ol>
+</li>
+<li>GPRMC：推荐最小数据量的GPS信息
+
+<ol>
+<li>格式：$GPRMC,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>,<10>,<11>,<12>*<13><CR><LF></li>
+<li>例子：$GPRMC,083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A*57</li>
+<li><1> UTC（Coordinated Universal Time）时间，hhmmss（时分秒）格式</li>
+<li><2> 定位状态，A=有效定位，V=无效定位</li>
+<li><3> Latitude，纬度ddmm.mmmm（度分）格式（前导位数不足则补0）</li>
+<li><4> 纬度半球N（北半球）或S（南半球）</li>
+<li><5> Longitude，经度dddmm.mmmm（度分）格式（前导位数不足则补0</li>
+<li><6> 经度半球E（东经）或W（西经）</li>
+<li><7> 地面速率（000.0~999.9节，Knot，前导位数不足则补0）</li>
+<li><8> 地面航向（000.0~359.9度，以真北为参考基准，前导位数不足则补0）</li>
+<li><9> UTC日期，ddmmyy（日月年）格式</li>
+<li><10> Magnetic Variation，磁偏角（000.0~180.0度，前导位数不足则补0）</li>
+<li><11> Declination，磁偏角方向，E（东）或W（西）</li>
+<li><12> Mode Indicator，模式指示（仅NMEA0183 3.00版本输出，A=自主定位，D=差分，E=估算，N=数据无效）</li>
+<li><13> 校验和。</li>
+</ol>
+</li>
+<li>GPVTG：地面速度信息
+
+<ol>
+<li>格式：$GPVTG,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>*<10><CR><LF></li>
+<li>例子：$GPVTG,77.52,T,,M,0.004,N,0.008,K,A*06</li>
+<li><1> 以真北为参考基准的地面航向</li>
+<li><2> T，表示“真”</li>
+<li><3> 以磁北为参考基准的地面航向</li>
+<li><4> M，表示“磁场”</li>
+<li><5> 地面速率</li>
+<li><6> N，表示“节”</li>
+<li><7> 地面速率</li>
+<li><8> K，表示“千米/小时”</li>
+<li><9> 模式指示（A=自主定位，D=差分，E=估算，N=数据无效）</li>
+<li><10> 校验和</li>
+</ol>
+</li>
+<li>GPGLL：定位地理信息
+
+<ol>
+<li>格式：$GPGLL,<1>,<2>,<3>,<4>,<5>,<6>,<7>*<8><CR><LF></li>
+<li>例子：$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60</li>
+<li><1> 纬度 ddmm.mmmmm（度分）</li>
+<li><2> 纬度半球 N（北半球）或 S（南半球）</li>
+<li><3> 经度 dddmm.mmmmm（度分）</li>
+<li><4> 经度半球 E（东经）或 W（西经）</li>
+<li><5> UTC 时间：hhmmss（时分秒）</li>
+<li><6> 定位状态，A=有效定位，V=无效定位</li>
+<li><7> 模式指示（A=自主定位，D=差分，E=估算，N=数据无效）</li>
+<li><8> 校验和</li>
+</ol>
+</li>
+<li>GPZDA：当前时间信息
+
+<ol>
+<li>格式：$GPZDA,<1>,<2>,<3>,<4>,<5>,<6>*<7><CR><LF></li>
+<li>例子：$GPZDA,082710.00,16,09,2002,00,00*64</li>
+<li><1> UTC 时间：hhmmss（时分秒，格林威治时间）</li>
+<li><2> 日</li>
+<li><3> 月</li>
+<li><4> 年</li>
+<li><5> 本地区域小时（NEO-6M 不支持，为 00）</li>
+<li><6> 本地区域分钟（NEO-6M不支持，为 00）</li>
+<li><7> 校验和</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>NMEA解码库</h2>
+
+<ol>
+<li><a href="http://nmea.sourceforge.net/">下载地址</a></li>
+<li>支持解析GPGGA，GPGSA，GPGSV，GPRMC，GPVTG这五种语句，解析得到的GPS数据信息以结构体存储，附加地理学相关功能，可支持导航等数据工作，除了解析NMEA语句，它还可以根据随机数产生NMEA语句，方便模拟</li>
+<li>结构体：
+
+<ol>
+<li>nmeaINFO：保存GPS解码后得到的信息,结构成员介绍
+
+<ol>
+<li>smask（int类型）接收到的GPS信息包类型</li>
+<li>utc（nmeaTIME结构）包含年、月、日、时、分、秒信息，格林威治时间</li>
+<li>sig（int类型）定位质量，0-无效，1-标准定位，2-差分定位</li>
+<li>fix（int类型）导航模式，1-无效，2-2D,3-3D</li>
+<li>PDOP（double类型）位置精度因子</li>
+<li>HDOP（double类型）水平精度因子</li>
+<li>VDOP（double类型）垂直精度因子</li>
+<li>lat（double类型）纬度</li>
+<li>lon（double类型）经度</li>
+<li>elv（double类型）海拔，单位m</li>
+<li>speed（double类型）速度，单位km/h</li>
+<li>direction（double类型）航向，单位：度2</li>
+<li>satinfo（nameSATINFO结构）包含了可见卫星，正在使用的卫星，卫星信号等信息</li>
+</ol>
+</li>
+<li>nmeaPARSER：解码时使用的缓冲区数据结构。它是一个链表，在解码时，NMEA库会把输入的GPS原始数据压入到nmeaPARSE结构的链表中</li>
+</ol>
+</li>
+<li>函数：
+
+<ol>
+<li>nmea_zero_INFO(&amp;info);初始化解码后的数据</li>
+<li>nmea_parse_init(&amp;parser);初始化解析使用的数据结构</li>
+<li>nmea_parse(&amp;parser,&amp;buff[0],size,&amp;info);</li>
+<li>GMTconvert(&amp;info.utc,&amp;beiJingTime,8,1);</li>
+<li>nmea_parser_destory(&amp;parser);释放GPS数据结构</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>u-center软件</h2>
+
+<ol>
+<li>具有配置模块工作方式的功能，方便开发调试</li>
+<li>对GPS模块进行性能测试</li>
+<li>更新GPS模块固件</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-16T09:06:12+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/10/16/neo-m8n" data-title="NEO-M8N" data-url="http://suda-morris.github.io/blog/2015/10/16/neo-m8n/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
