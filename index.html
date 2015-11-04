@@ -88,6 +88,376 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/10/30/sd-card-driver/">
+		
+			SD卡与文件系统</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Micro SD卡简介</h2>
+
+<p><img src="http://i.imgur.com/baGsEky.jpg" alt="SD卡" /></p>
+
+<ol>
+<li>Micro SD卡的控制指令功能强大，支持SPI、SDIO模式，兼容MMC。在SPI模式下，CS/MOSI/MISO/CLK都需要加10~100K左右的上拉电阻</li>
+<li>SD卡有5个寄存器
+
+<ol>
+<li>CID：128比特，卡标识寄存器,只读</li>
+<li>RCA：16比特，相对卡地址寄存器，即本地系统中卡的地址，动态变化，在主机初始化的时候确定。SPI模式中没有此寄存器</li>
+<li>CSD：128比特，卡描述数据，主要存储了卡的容量、数据格式、DSR寄存器是否可用、数据传输相关参数、数据传输速度、最大的数据访问时间、最大的读写数据块长度等，是可配置寄存器</li>
+<li>SCR：64比特，SD配置寄存器，即SD卡特定信息数据如：SCR版本号、SD卡版本号、是否支持安全性、擦除后卡状态默认值、SD总线宽度等，由生产商在卡生产阶段写入</li>
+<li>OCR：32比特，操作条件寄存器,提供SD Host查询SD卡支持的电压范围，是否是大容量卡OCR[30],卡省电过程是否结束OCR[31]</li>
+</ol>
+</li>
+<li>每发送一个命令，SD卡都会给出一个应答，以告知主机该命令的执行情况，或者返回主机需要获取的数据。SPI模式下，SD卡针对不同的命令，应答可以是R1~R7。命令与响应都是MSB优先。除了SEND_STATUS和READ_OCR指令外，其他指令的响应格式都是R1，格式R1的长度是1Byte，并且最高位总是0，其余每位均是错误提示，在指令接收过程中发生了什么样的错误，对应的错误位就会是‘1’。R1b和R1具有相同的格式，它将伴随一个附加的busy信号，busy信号的长度可以是任意个字节，全0表示卡处在“忙”的状态。格式R2的长度为2字节，它是指令SEND_STATUS的响应，它的高字节和R1相同，低字节同样作为状态提示。格式R3的长度是5字节，它是指令READ_OCR的响应，最高字节和R1相同，其余4字节包含SD卡的OCR寄存器信息</li>
+<li>在SD卡收到复位命令（CMD0）时，CS为低电平则SD卡的SPI模式被启用。不过在发送CMD0之前，要发送>74个时钟这是因为SD卡内部有一个供电电压上升时间，大概为64个CLK，剩下的10个CLK用于SD卡同步，之后才能开始CMD0的操作。在卡初始化的时候，CLK时钟最大不能超过400KHz</li>
+<li>对SD卡的常用基本操作主要由：单块读、连续读、单块写、连续写。SPI模式下，通过向SD卡发送响应的命令并读取相应的响应来实现对SD卡的控制。</li>
+</ol>
+
+
+<h2>SD 命令</h2>
+
+<ol>
+<li>命令:每个命令都有一个起始位和结束位，总长度为48 bits，并且每个命令都有 7 bits 的CRC 校验码，高字节优先传输
+<img src="http://i.imgur.com/sDb6XU5.jpg" alt="SD Command" /></li>
+<li>Command 共分为12类（class0 - class11），在寄存器CSD中有12 bits CCC（Card Command Class）对本卡支持的分类进行描述
+<img src="http://i.imgur.com/2QG9Ein.jpg" alt="SD命令" /></li>
+<li>几个重要的命令
+<img src="http://i.imgur.com/Xh1BWEV.png" alt="常用命令" /></li>
+<li>CMD8命令格式
+<img src="http://i.imgur.com/9oboqjq.jpg" alt="CMD8" /></li>
+</ol>
+
+
+<h2>SD 应答</h2>
+
+<ol>
+<li>R1响应格式
+<img src="http://i.imgur.com/ZYbXuth.png" alt="R1响应格式" /></li>
+</ol>
+
+
+<h2>SD卡初始化</h2>
+
+<p><img src="http://i.imgur.com/ccW4YbS.jpg" alt="SD卡初始化流程" /></p>
+
+<ol>
+<li>配置时钟，慢速一般为400Hz，设置工作模式</li>
+<li>发送CMD0，对卡进行软复位，进入空闲态，该指令没有反馈</li>
+<li>发送CMD8命令用于读取卡的接口信息，如果是SD2.0，则支持CMD8命令；如果是SD1.x，MMC，则不支持CMD8</li>
+<li>发送CMD55+ACMD41，判断当前电压是否在卡的工作范围内，看卡能否识别命令，如果是MMC卡，则CMD55不能被识别，短反馈</li>
+<li>发送CMD2，验证SD卡是否接入，长反馈</li>
+<li>发送CMD3，读取SD卡的RCA地址，短反馈</li>
+<li>以RCA作为参数，发送CMD9读取CSD，长反馈</li>
+<li>发送CMD7，选中要操作的SD卡，短反馈</li>
+<li>配置告诉时钟，准备数据传输，一般为20~25MHz</li>
+<li>设置工作模式：DMA、中断或者查询模式</li>
+</ol>
+
+
+<h2>SD卡读取数据流程</h2>
+
+<ol>
+<li>发送CMD17</li>
+<li>接收卡响应R1</li>
+<li>接收数据起始令牌0xFE</li>
+<li>接收数据</li>
+<li>接收2字节的CRC，如果不使用CRC，这两个字节在读取后可以丢掉</li>
+<li>禁止片选之后，发多8个CLK</li>
+</ol>
+
+
+<h2>SD卡写数据流程</h2>
+
+<ol>
+<li>发送CMD24</li>
+<li>接收卡响应R1</li>
+<li>发送写数据起始令牌0xFE</li>
+<li>发送数据</li>
+<li>发送2字节的伪CRC</li>
+<li>禁止片选之后，发多8个CLK</li>
+</ol>
+
+
+<h2>SD卡读数据块操作</h2>
+
+<ol>
+<li>在读数据块模式下，数据传输的基本单元是数据块，它的大小在CSD中（READ_BL_LEN）定义</li>
+<li>为了保证数据传输的正确，每个数据块后都有一个CRC校验码。</li>
+<li>CMD17（Read_Single_Block）启动一次读数据块操作，在传输结束后返回返回到发送状态。</li>
+<li>CMD18（Read_Multiple_Block）启动一次连续多个数据块的读操作</li>
+<li>主机可以在多数据块读操作的任何时候终止操作，而不管操作的类型。发送停止传输命令即可终止操作</li>
+<li>如果在多数据块读操作中，卡检测到错误（如越界，地址错位或内部错误），它将停止数据传输并仍处于数据状态；此时主机必须发送停止传输命令，终止操作</li>
+</ol>
+
+
+<h2>FATFS简介</h2>
+
+<ol>
+<li>FATFS是一个完全免费开源的FAT文件系统模块，专门为小型的嵌入式系统而设计。支持FAT12、FAT16和FAT32，支持多个存储媒介；有独立的缓冲区，可以对多个文件进行读/写。</li>
+<li>拥有多种配置选项：
+
+<ol>
+<li>支持多卷（物理驱动器或分区，最多10个卷）</li>
+<li>多个ANSI/OEM代码页包括DBCS</li>
+<li>支持长文件名、ANSI/OEM或Unicode</li>
+<li>支持RTOS</li>
+<li>支持多种扇区大小</li>
+<li>只读、最小化的API和I/O缓冲区等</li>
+</ol>
+</li>
+<li>需要我们编写移植代码的是FATFS模块提供的底层接口，包括存储媒介读/写接口(disk I/O)和供给文件创建修改时间的实时时钟
+
+<ol>
+<li>ffconf.h:FATFS模块配置文件</li>
+<li>ff.h:FATFS和应用模块共用的包含文件</li>
+<li>ff.c:FATFS模块</li>
+<li>diskio.h:FATFS和disk I/O模块共用的包含文件</li>
+<li>interger.h:数据类型定义</li>
+<li>option：可选的外部功能(比如支持中文等)</li>
+<li>diskio.c:FATFS和disk I/O模块接口层文件</li>
+</ol>
+</li>
+<li>ffconf.h
+
+<ol>
+<li>_CODE_PAGE,根据具体使用的而语言在ffconf.h中定义具体的宏定义。如果使用简体中文，则选择936；如果使用英文，则选择437；如果使用日文，则选择932。打开option文件夹，打开cc936.c文件，里面有一个很大的数组static const WCHAR uni2oem[]。这个数组用于unicode码和OEM码之间的相互转换。接下来又有两个函数，ff_convert()和ff_wtoupper()具体执行码型转换和将字符串转换为大写。unicode是一种双字节字符编码，无论中文还是英文，或者其他语言统一到2字节。与现有的任何编码都不兼容。WindowsNT的内核即使用该编码，所有数据进入内核前转换成UNICODE，退出内核后再转换成版本相关的编码(通常称为OEM，在简体中文下即为GB)</li>
+<li>_FS_TINY，使用浓缩版的FATFS就设置为1</li>
+<li>_FS_READONLY,这个用来配置是不是只读</li>
+<li>_USE_STRFUNC,这个用来设置是否支持字符串类操作，比如f_putc,f_puts等</li>
+<li>_USE_MKFS,这个用来设置是否使能格式化</li>
+<li>_USE_FASTSEEK，这个用来使能快速定位</li>
+<li>_USE_LABEL,这个用来设置是否支持磁盘盘符（磁盘名字）读取与设置</li>
+<li><em>USE_LFN,该选项用于设置是否支持长文件名，还需要</em>CODE_PAGE支持，取值范围为0~3。0表示不支持长文件名，1~3是支持长文件名，但是存储地方不一样</li>
+<li>_VOLUMES,用于设置FATFS支持的逻辑设备数目</li>
+<li>_MAX_SS,扇区缓冲的最大值，一般设置为512</li>
+</ol>
+</li>
+<li>ff.h中的函数定义
+
+<ol>
+<li>FRESULT f_mount (FATFS<em> fs, const TCHAR</em> path, BYTE opt);加载文件系统
+
+<ul>
+<li>fs表示文件系统对象，path表示本地设备驱动号，opt=1表示立即挂载，0表示延迟挂载</li>
+</ul>
+</li>
+<li>FRESULT f_lseek (FIL* fp, DWORD ofs);移动文件的读写指针
+
+<ul>
+<li>ofs表示文件偏移量的数目</li>
+</ul>
+</li>
+<li>FRESULT f_close (FIL* fp);关闭打开的文件对象</li>
+<li>FRESULT f_opendir (DIR<em> dp, const TCHAR</em> path);打开目录，返回目录对象</li>
+<li>FRESULT f_readdir (DIR<em> dp, FILINFO</em> fno);读取目录获得文件信息</li>
+<li>FRESULT f_stat (const TCHAR<em> path, FILINFO</em> fno);读取文件的状态</li>
+<li>FRESULT f_getfree (const TCHAR<em> path, DWORD</em> nclst, FATFS** fatfs);获取驱动器上的空闲簇数</li>
+<li>FRESULT f_truncate (FIL* fp);截断文件</li>
+<li>FRESULT f_sync (FIL* fp);刷新写文件的缓冲数据</li>
+<li>FRESULT f_unlink (const TCHAR* path);删除目录中的一个文件</li>
+<li>FRESULT f_mkdir (const TCHAR* path);创建一个新目录</li>
+<li>FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);更改文件/目录的属性</li>
+<li>FRESULT f_utime (const TCHAR<em> path, const FILINFO</em> fno);更改文件/目录的时间戳</li>
+<li>FRESULT f_rename (const TCHAR<em> path_old, const TCHAR</em> path_new);重命名/移动文件或目录</li>
+<li>FRESULT f_forward (FIL<em> fp, UINT(</em>func)(const BYTE<em>,UINT), UINT btf, UINT</em> bf);转发数据流</li>
+<li>FRESULT f_mkfs (const TCHAR* path, BYTE sfd, UINT au);在驱动器上创建一个文件系统</li>
+<li>FRESULT f_chdir (const TCHAR* path);改变当前目录</li>
+<li>FRESULT f_chdrive (const TCHAR* path);更改当前驱动器</li>
+<li>int f_putc (TCHAR c, FIL* fp);</li>
+<li>int f_puts (const TCHAR<em> str, FIL</em> cp);</li>
+<li>int f_printf (FIL<em> fp, const TCHAR</em> str, &hellip;);</li>
+<li>TCHAR<em> f_gets (TCHAR</em> buff, int len, FIL* fp);</li>
+</ol>
+</li>
+<li>diskio.c(需要用户提供如下几个函数接口)
+
+<ol>
+<li>DSTATUS disk_initialize (BYTE pdrv);初始化磁盘驱动器</li>
+<li>DSTATUS disk_status (BYTE pdrv);获取磁盘状态</li>
+<li>DRESULT disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);读扇区</li>
+<li>DRESULT disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);写扇区</li>
+<li>DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);设备相关的控制特性</li>
+<li>get_fattime获取当前时间</li>
+</ol>
+</li>
+<li>簇：文件数据分配的基本单位</li>
+<li>FAT文件系统依次应该为:引导扇区、文件分配表两个、根目录区和数据区</li>
+</ol>
+
+
+<h2>汉字字库</h2>
+
+<ol>
+<li>常用的汉字内码系统有GB2312，GB13000，GBK，BIG5（繁体）等几种，其中GB2312支持的汉字仅有几千个，很多时候不够用，而GBK内码不仅完全兼容GB2312，还支持繁体字，总汉字数量达到2万多个。</li>
+<li>每个GBK码由2字节组成，第一个字节为0X81~0xFE，第二个字节分为两部分，一是0x40~0x7E，二是0x80~0xFE。第一个字节代表的意义称为区，GBK里面总共有126个区，每个区内有190个汉字。</li>
+<li></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-30T16:58:07+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/10/26/frdm-kl02z/">
+		
+			FRDM_KL02Z</a>
+	</h2>
+	<div class="entry-content">
+		<h2>FRDM_KL02Z开发板简介</h2>
+
+<ol>
+<li>MKL02Z32VFM4 MCU – 48 MHz、32 KB闪存、4 KB SRAM、32QFN</li>
+<li>电容滑动触摸传感板，MMA8451Q加速度传感器，三色LED</li>
+<li>新型OpenSDA调试接口：
+
+<ol>
+<li>大容量存储设备闪存编程接口(默认)；无需安装任何工具即可评估演示应用</li>
+<li>P&amp;E调试接口具有运行控制调试功能并兼容IDE工具</li>
+<li>CMSIS-DAP接口：面向嵌入式调试接口的ARM新标准</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-26T15:51:29+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/10/26/stm32-l4/">
+		
+			STM32_L4</a>
+	</h2>
+	<div class="entry-content">
+		<h2>STM32L4系列超低功耗微控制器简介</h2>
+
+<ol>
+<li>最高主频80MHz，凭借带有DSP和浮点单元（FPU）的ARM® Cortex®-M4内核扩展了超低功耗产品系列及其性能。</li>
+<li>提供USB（支持OTG2.0全速，LPM和BCD）</li>
+<li>带有LCD驱动（4X44或8X40，带有升压转换器）</li>
+<li>存储器范围可以利用SDIO、Quad SPI和FSMC接口轻松扩展</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-26T14:54:05+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/10/18/short-news-and-knowledges/">
+		
+			碎片阅读</a>
+	</h2>
+	<div class="entry-content">
+		
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-10-18T11:10:22+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/10/16/neo-m8n/">
 		
 			NEO-M8N</a>
@@ -396,11 +766,40 @@
 </ol>
 
 
-<h2>IC设计制造流程</h2>
+<h2>IC制造高度专业化</h2>
 
 <ul>
-<li>设计->前仿真->版图设计->参数提取->后仿真,并且包括各个环节的测试验证</li>
+<li>设计->制造->测试->封装</li>
 </ul>
+
+
+<h2>芯片制造工艺</h2>
+
+<ul>
+<li>芯片制造工艺是指由“硅片”到“集成电路结构晶圆”之间的工艺步骤</li>
+</ul>
+
+
+<h2>二氧化硅在半导体制造中的作用以原因</h2>
+
+<ol>
+<li>作用
+
+<ol>
+<li>层间隔离</li>
+<li>器件隔离</li>
+<li>屏蔽层</li>
+</ol>
+</li>
+<li>原因
+
+<ol>
+<li>电阻率高，大于10MΩ·cm</li>
+<li>击穿场强大，大于10MV/cm</li>
+<li>禁带宽度较宽，越9eV</li>
+</ol>
+</li>
+</ol>
 
 
 <h2>微纳加工技术的使用场合</h2>
@@ -438,19 +837,19 @@
 <h2>集成电路发展历程</h2>
 
 <ol>
-<li>历史上第一个晶体管是1947年在美国贝尔实验室研制出来；1956年获得了诺贝尔奖，发明人是：威廉·肖克利，约翰·巴丁和沃尔特·布拉顿</li>
-<li>1949年第一个结型晶体管诞生</li>
+<li>历史上第一个晶体管(点接触)是1947年在美国贝尔实验室研制出来；1956年获得了诺贝尔奖，发明人是：威廉·肖克利，约翰·巴丁和沃尔特·布拉顿</li>
+<li>1949年第一个面结型晶体管诞生</li>
 <li>1958年第一个集成电路只有一个晶体管加3个电阻和1个电容,基片用的材质是锗；获得了2000年的诺贝尔奖；器件之间的连线就是简单的用焊接实现的</li>
 <li>1959第一个硅基集成电路实现，也只有4个晶体管加2个电阻</li>
-<li>1960年平面工艺技术诞生</li>
-<li>1960年MOSFET诞生，从此MOSFET成为成为构建集成电路的主要期间。相对于BJT，MOS具有更高的集成密度，更低的功耗以及更大的电路设计灵活性</li>
+<li>1960年平面工艺技术诞生,塑造了现代IC制造的基本特征</li>
+<li>1960年MOSFET诞生，从此MOSFET成为成为构建集成电路的主要器件。相对于BJT，MOS具有更高的集成密度，更低的功耗以及更好的电路设计灵活性</li>
 </ol>
 
 
 <h2>平面工艺</h2>
 
 <ol>
-<li>定义：工艺是在Si半导体芯片上通过氧化、光刻、扩散、离子注入等一系列流程，制作出晶体管和集成电路；器件和电路都是在芯片表面一层附近处，整个芯片基本上保持是平坦的</li>
+<li>定义：在Si半导体上通过氧化、光刻、扩散、离子注入等一系列流程，制作出晶体管和集成电路的工艺；器件和电路都是在芯片表面一层附近处，整个芯片基本上保持是平坦的</li>
 <li>特征：批量生产，成本低廉</li>
 </ol>
 
@@ -464,7 +863,6 @@
 <li>More than Moore&rsquo;s Law(MtM):更加注重系统集成而不是增加晶体管数量</li>
 <li>SoC(System on Chip)片上系统;SiP(System in Package)系统级封装</li>
 <li>特征尺寸每两年缩小0.7倍，0.7≈1/根号二</li>
-<li></li>
 </ol>
 
 
@@ -499,10 +897,10 @@
 <li>显影，将已经曝光的光刻胶移除</li>
 <li>刻蚀，将没有光刻胶保护的二氧化硅的部分移出</li>
 <li>将光刻胶移出</li>
-<li>再一次进行氧化，生长出高质量的删介质氧化层，也是二氧化硅</li>
+<li>再一次进行氧化，生长出高质量的栅极介质氧化层，也是二氧化硅</li>
 <li>沉淀一层多晶硅材料</li>
 <li>图形化方式将栅极图形转移到删介质层的二氧化硅上面</li>
-<li>通过注入的方式将掺杂给加入进去</li>
+<li>通过离子注入的方式将掺杂给加入进去</li>
 <li>沉积氮化硅</li>
 <li>包含了接触口的图形化</li>
 </ul>
@@ -525,10 +923,10 @@
 </li>
 <li>人员需要穿戴特制的超净服，经过封磷才能进入超净间</li>
 <li>超纯水：IC制造中用的超纯水电阻率必须超过18MΩ·cm，制备过程包括多级数值过滤以及反渗透离子过滤；超纯水的输运需要通过特殊的聚四氟管道进行</li>
-<li>标准的硅片的清洗流程叫做RCA清洗：
+<li>标准的硅片的清洗流程叫做RCA清洗
 
 <ol>
-<li>浓硫酸+双氧水去除有机物</li>
+<li>浓硫酸+双氧水去除有机物，H2SO4碳化有机物，H2O2使C氧化成CO2</li>
 <li>氢氟酸去除二氧化硅</li>
 <li>氨水+双氧水去除可能的重金属离子沾污</li>
 <li>盐酸去除碱金属离子沾污</li>
@@ -609,6 +1007,595 @@
 </ol>
 </li>
 <li>单晶硅棒通过切片得到硅片，硅片尺寸一般有4寸，6寸，8寸或者12寸，通过化学机械抛光磨平表面，再在化学溶液中腐蚀，获得表面非常光整的单晶硅片（厚度约0.5mm，直径约300mm）</li>
+<li>几种常见的半导体化学性质比较
+
+<ol>
+<li>禁带宽度：GaAs(砷化镓)>Si>Ge,因此Si的PN结反向电流比Ge小</li>
+<li>禁带类型，Si和Ge都是间接带隙，GaAs是直接带隙，因此光电器件采用GaAs</li>
+<li>电子迁移率：Si&lt;Ge&lt;GaAs,因此Si不适于在高频下工作，高频高速以及微波器件多采用GaAs</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>集成电路和其它微结构器件中需要多种多样的薄膜</h2>
+
+<ol>
+<li>介质膜：高质量的超薄氧化层薄膜，绝缘性能好，包括MOS器件的栅氧化薄膜
+
+<ol>
+<li>超薄，1~3nm；很低的界面态；很好的绝缘性，约9eV bandgap，击穿场强需要7~15MV/cm；能够阻止硼（B）穿过</li>
+<li>包括高质量超薄介质层和低热预算介质薄膜</li>
+<li>制备技术：
+
+<ol>
+<li>热氧化和ALD(Atomic Layer Deposition，原子级沉积)技术</li>
+<li>CVD(Chemical Vapor Deposition)技术：在器件形成或者金属互联之后淀积介质膜，要求低的热预算（thermal budget，温度与时间的乘积），使得在淀积薄膜的工艺下，不对已经形成的器件的杂质分布或者已经形成的金属互联网络产生不好的影响</li>
+</ol>
+</li>
+<li>氧化的速率受温度和氧化时间的影响很大。当氧气浓度很丰富时，二氧化硅的生长速度由硅键断裂速度决定，而此过程大部分取决于温度的高低。为了得到致密的氧化层，必须使反应炉内的温度保持恒定</li>
+<li>二氧化硅在整个工艺流程中多次用来作为硅衬底保护层和连个电极之间的隔离层</li>
+<li>氮化硅非常致密并且比其他材料更能抵抗杂质扩散</li>
+</ol>
+</li>
+<li>金属膜
+
+<ol>
+<li>布线层数和总长度：10层布线，最细线宽在45nm左右，而布线总长度可达到5公里量级</li>
+<li>包括用于金属半导体接触的和用于金属互联网络的</li>
+<li>制备技术：
+
+<ol>
+<li>溅射，蒸发，电镀</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>单晶态的半导体薄膜
+
+<ol>
+<li>制备技术：外延</li>
+</ol>
+</li>
+<li>为了满足不同的应用场景的要求，对薄膜的要求也是不同的，制备技术的选择和优化要针对应用的需求：应力，附着性，化学稳定性，化学腐蚀的选择性和可加工性，保角性(conformation)
+
+<ol>
+<li>保角性：在图形的面上，沉积的速度大致相同</li>
+</ol>
+</li>
+<li>二氧化硅的应用
+
+<ol>
+<li>在MOSFET中
+
+<ol>
+<li>栅极氧化</li>
+<li>绝缘层</li>
+<li>钝化层</li>
+</ol>
+</li>
+<li>在IC中
+
+<ol>
+<li>器件隔离</li>
+<li>层间介质</li>
+<li>掩蔽层</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>IC中使用的SiO2是非晶体，即短程无序，长程也无序。晶体二氧化硅的密度2.65g/cm3,非晶体二氧化硅的密度2.2g/cm3</li>
+</ol>
+
+
+<h2>CVD技术</h2>
+
+<ol>
+<li>过程：气态反应物在沉底反应生成固态的薄膜，例如siH4(g)+O2(g)->SiO2(g)+2H2(g)[400℃],3SiH4(g)+4NH3(g)->Si3N4(s)+12H2(g)[750℃],其中SiH4称为硅烷,SiH4(g)->Si(s)+2H2(650℃),WF6(g)+3H2(g)->W(s)+6HF(g)</li>
+<li>工艺步骤：
+
+<ol>
+<li>反应物运输到淀积区域</li>
+<li>反应物从主气流穿过边界层运输到晶片表面</li>
+<li>反应物吸附在晶片表面</li>
+<li>表面作用，包括化学分解或反应，在表面迁移向吸附位置</li>
+<li>副产物的吸解</li>
+<li>副产物穿过边界层回到主气流中</li>
+<li>副产物离开淀积区域排走</li>
+</ol>
+</li>
+<li>CVD技术分类及设备简介
+
+<ol>
+<li>常压化学气相沉积（APCVD），激励源：温度；特点：产能(throughput)大,但是台阶覆盖性不好</li>
+<li>低压化学气相沉积（LPCVD），激励源：温度；特点：气体稀薄，自由程大，硅片可以紧密排列，可以批量加工，并且保角性比较好，但是工艺温度比较高，石英管壁上的沉积物成为后续工艺中的颗粒；
+
+<ol>
+<li>栅极氧化使用的是LPCVD技术，温度在560~650之间</li>
+</ol>
+</li>
+<li>等离子体增强化学气相沉积（PECVD），激励源：等离子体，温度；特点：沉积温度低，但是沉积物的致密性较差，工艺可控性差，台阶覆盖性较差</li>
+</ol>
+</li>
+<li>几种最常见的CVD实例
+
+<ol>
+<li>W plug（钨塞），用于集成电路互联线层间连通金属，需要优化CVD工艺，提高保角性</li>
+</ol>
+</li>
+<li>ClusterTools设备使得硅片在不同的反应腔中传输时不出真空环境，大大减少了环境影响因素，提高了工艺成品率</li>
+<li>对下层非平面形貌的覆盖，包括台阶覆盖和孔的填充问题，通过控制反应气体理化特性和各种工艺条件，达到：
+
+<ol>
+<li>适当的粘附系数</li>
+<li>主要由反应控制决定薄膜生长有利于台阶覆盖</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ALD(Atomic layer deposition)原子层沉积</h2>
+
+<ol>
+<li>原子层沉积是一种可以将物质以单原子膜形式一层一层的镀在基底表面的方法</li>
+<li>通常用来制作MOS器件的栅氧化层(又薄质量又高的氧化层)</li>
+<li>不是靠衬底（Si）氧化，而是靠化学气相沉积，可用于制备非SiO2系列的high-k(高介电常数)介质</li>
+</ol>
+
+
+<h2>热氧化过程</h2>
+
+<ol>
+<li>氧化气氛
+
+<ol>
+<li>干氧：O2;干氧能够提供更好的氧化质量和Si/SiO2界面，良好的界面性使得Si超越别的半导体材料，成为半导体工艺中最受欢迎的一种</li>
+<li>湿氧：O2和H2O；需要注意，水汽在二氧化硅中的扩散速度远远大于氧气在二氧化硅中的扩散速度，可以形成厚的氧化层</li>
+<li>其他添加元素：H（H2），Cl（TCA或者TCE），N（NH3或者N2O）。其中含氯氧化目的在于去除金属离子</li>
+<li>实际生产中会采用dry-wet-dry-anneal的组合形式来进行氧化。anneal即退火，可以促进原子重排，将未反应的Si离子氧化，并减少界面缺陷</li>
+</ol>
+</li>
+<li><img src="http://i.imgur.com/oqKEncN.png" alt="热氧化过程" /></li>
+<li>Deal-Grove模型
+<img src="http://i.imgur.com/KaExFIC.png" alt="Deal-Grove" /></li>
+<li>氧化工艺中应注意的其他问题：
+
+<ol>
+<li>Na、K等碱金属离子在SiO2中是块扩散杂质，将在SiO2中起移动电荷作用，引起MOS器件阈值电压漂移。因此要严格栅氧化前的硅片清洗和氧化环节的污染控制。氧化气氛中通少量HCl气氛也是控制金属离子沾污的一个办法</li>
+<li>Si/SiO2界面的缺陷将成为MOS器件栅下的界面态，也会引起MOS器件阈值电压漂移。需要优化氧化前的硅片表面处理，优化氧化工艺，尽量减少Si/SiO2界面缺陷</li>
+<li>后续的家文过程中可能会引起多晶硅删中的B参杂穿透SiO2层进入沟道（B在SiO2中是快扩散杂质），从而改变沟道内的杂质分布；应对办法：提高SiO2的致密性，如采用氧化时加少量NO，形成更致密的SiON；采用尽可能厚的栅介质；不采用参杂的多晶硅栅</li>
+</ol>
+</li>
+<li>氧化层质量的影响因素：
+
+<ol>
+<li>衬底洁净度</li>
+<li>气体的纯净度</li>
+<li>氧化过程</li>
+</ol>
+</li>
+<li>反应扩散模型，可以有效解释氧化膜厚度大于20nm的时候，超薄氧化层不适用此模型，如栅氧
+<img src="http://i.imgur.com/FAQ8O9b.png" alt="基础公式" />
+<img src="http://i.imgur.com/uMbHfM7.png" alt="反应扩散模型" />
+
+<ol>
+<li>氧化层很薄的时候，氧化速率由反应速率控制；氧化层很厚的时候，氧化速率由扩散速率控制</li>
+<li>k是反应速率常数，D是扩散系数，C0是氧化剂在SiO2中的固溶度，N是单位体积二氧化硅中氧分子数，x0表示t=0时刻氧化膜厚度。其中k，D和C0均与温度有关，C0还与压强有关，可以增大压强提高C0</li>
+</ol>
+</li>
+<li>影响氧化反应速率的因素：
+
+<ol>
+<li>温度</li>
+<li>压强</li>
+<li>重掺杂削弱Si-Si键，提高了反应速率</li>
+<li>含氯氧化，cl能与绝大多数金属反应，生成的氯化物易挥发，提高了反应质量。反应副产品H2O的加入加快了反应速率</li>
+<li>不同的晶向反应速率不同，原因在于晶面之间的距离不同，111面最快，100面最慢</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>干氧湿氧法的特点及原因</h2>
+
+<ol>
+<li>干氧：氧化层质量高，Si/SiO2界面特性更好，但是反应速率较慢</li>
+<li>湿氧：氧化层较稀疏，通常适合生长较厚的氧化层，反应速率较快</li>
+<li>原因：水分子比氧分子小，更容易在SiO2中扩散，水分子在SiO2中的溶解度大于氧分子</li>
+</ol>
+
+
+<h2>RTO（Rapid Thermal Oxidation）</h2>
+
+<ol>
+<li>超薄氧化膜（如栅极氧化膜）在低温或者低压下很难操控 ，不易生长</li>
+<li>RTO技术能够生长1.8nm的氧化膜，氧化硅片的使用高功率的碘钨灯加热硅片以降低Thermal Budget，反应温度在1000℃左右，反应时间是毫秒级，更高的反应温度能够生长高质量的薄膜。RTO工艺只能单片操作，但是每一片消耗的时间很短。RTO技术的缺点在于，温度均匀性很难保证</li>
+</ol>
+
+
+<h2>Si/SiO2表面的杂质分离</h2>
+
+<p><img src="http://i.imgur.com/xYRtMeX.png" alt="分离系数" /></p>
+
+<ol>
+<li>参杂的硅片在氧化和退火过程中，杂质会重分布，因为杂质在Si和SiO2中的平衡浓度不同</li>
+<li>氧化过程中，新生长的SiO2会吸引受体，如硼（B），并且排斥施主，如磷（P）和砷（As）</li>
+<li>杂质在SiO2中没有电学活性</li>
+</ol>
+
+
+<h2>热氧化前的清洗</h2>
+
+<ol>
+<li>SC1标准清洗，去除有机物和金属，使用氨水，80摄氏度</li>
+<li>SC2标准清洗，去除离子，使用盐酸，80摄氏度</li>
+<li>自然氧化层去除，使用HF，室温，几十秒时间就完成</li>
+<li>评估清洗干净的标准是检测清洗后的水的电阻率是否超过18MΩ·cm</li>
+</ol>
+
+
+<h2>Si/SiO2氧化层电荷</h2>
+
+<ol>
+<li>评价界面的好坏
+
+<ol>
+<li>氧化层中的电荷越少越好</li>
+<li>界面缺陷越少越好，即界面上Si的断键（悬挂键）越少越好</li>
+</ol>
+</li>
+<li>可移动离子
+
+<ol>
+<li>阳离子Na会在氧化层中移动</li>
+<li>氧化前的清洗非常重要，可以减少离子污染</li>
+</ol>
+</li>
+<li>固定氧化电荷
+
+<ol>
+<li>在Si片表面的传输去区域由于最后停止O的输送导致Si与O没有形成完全的Si-O键（未完成的氧化反应）</li>
+<li>可以通过后续的退火进行原子重排来减少，但是无法避免，因为与工艺相关</li>
+</ol>
+</li>
+<li>氧化层内部残留电荷
+
+<ol>
+<li>由非桥氧所致，可正可负</li>
+</ol>
+</li>
+<li>表面残留电荷
+
+<ol>
+<li>Si/SiO2表面原子级突变，形成缺陷</li>
+<li>晶格不对齐导致的悬挂键</li>
+<li>可以通入H2与Si形成Si-H键来降低缺陷态，但是不如Si-O稳定，在高压大电流，有应力的情况下，Si-H键容易断裂，影响器件特性</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>LOCOS &amp; STI</h2>
+
+<ol>
+<li>LOCOS（Local Oxidation of Silicon，局部氧化隔离）是硅的选择性氧化，SiN作为扩散掩膜层，绝大多数分子很难扩散穿过SiN。先在有源区覆盖一层SiN，接着在暴露的隔离区通过湿氧氧化生长一层较厚的氧化层，最后去除SiN层，形成有源区，在有源区中制作器件。</li>
+<li>SiN可以防止O2或者H2O扩散至底层与Si发生氧化反应，但是SiN无法防止气体从侧面扩散，导致横向氧化，因此会形成鸟嘴（bird&rsquo;s beak），鸟嘴处应力较大，易形成缺陷</li>
+<li>STI即浅沟槽隔离，先淀积氧化硅，然后在隔离区腐蚀出一定深度的沟槽，再进行侧墙氧化，用CVD的方法在沟槽中淀积SiO2，最后通过CMP法平坦化，形成沟槽隔离区和有源区。与LOCOS相比较，更有效地隔离了器件，表面非常平坦，有利于下一代工艺的加工。但是STI工艺贵且复杂
+<img src="http://i.imgur.com/kTy6eoo.png" alt="LOCOS" /></li>
+</ol>
+
+
+<h2>氧化膜厚度测量</h2>
+
+<ol>
+<li>椭偏仪，可以同时测量厚度与折射率，精度达到1nm，原理是光的偏振，可以测量介质膜</li>
+<li>台阶仪，可以测量多种膜，但是需要 先刻蚀出一个台阶</li>
+</ol>
+
+
+<h2>外延</h2>
+
+<ol>
+<li>一种特殊的CVD过程三种外延过程，淀积产物呈单晶状态
+<img src="http://i.imgur.com/Ce3SGrT.png" alt="外延技术" /></li>
+<li>为了形成单晶，外延与普通CVD有两点主要不同：
+
+<ol>
+<li>衬底界面处理更加苛刻，需要利用衬底的晶格来引导薄膜的单晶生长</li>
+<li>生长温度比普通CVD高很多</li>
+</ol>
+</li>
+<li>典型应用：
+
+<ol>
+<li>功率器件：功率器件中耐压较高的器件需要在高阻的半导体上制备，同时为了使整体串联电阻很小，衬底需要低阻。整个wafer的上面是低参杂，下面高参杂，而且低参杂的厚度很厚，达到几十微米</li>
+<li>改变硅的晶格常数，制备高迁移率应变沟道</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>溅射、蒸发和电镀（制备金属薄膜）</h2>
+
+<ol>
+<li>集成电路对金属化的主要要求：
+
+<ol>
+<li>金属与半导体接触
+
+<ol>
+<li>肖特基接触</li>
+<li>欧姆接触
+
+<ol>
+<li>高参杂后利用遂穿机制形成欧姆接触</li>
+<li>硅化物的使用。在金属与半导体接触时，通常使用硅化物来作为接触层，避免金属和硅化物的共融体。主要采用钛硅化物，钴硅化物，镍硅化物</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>金属作为互连线。Al是目前集成电路工艺中最常用的金属链接材料，电阻率较低，工艺简单，易形成欧姆接触。但是铝容易形成电迁徙（高电流密度引发的电子风造成电迁徙），而且铝的RC延迟比较大。目前金属互联正从铝互联转向铜互联。但是铜的刻蚀比较困难，需要采用大马士革工艺。此外，为了简化工艺，在一些短距离的“局部互连”常使用多晶硅和硅化物。
+
+<ol>
+<li>有良好的导电性</li>
+<li>容易与N型、P型硅形成低阻欧姆接触</li>
+<li>与硅和二氧化硅等有良好的粘附性</li>
+<li>易于淀积和刻蚀，便于键合</li>
+<li>性能稳定可靠</li>
+<li>互连线对台阶的覆盖性要好</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>蒸发：不易制备合金的膜</li>
+<li>溅射（PVD）：可以制备合金膜，粘附性好，但是台阶覆盖性不太好
+<img src="http://i.imgur.com/yaveWue.png" alt="溅射" /></li>
+<li>电镀：台阶覆盖性最好</li>
+<li>典型的经书画应用场合总结
+<img src="http://i.imgur.com/Car7nUY.png" alt="金属化" /></li>
+</ol>
+
+
+<h2>光刻工艺综述</h2>
+
+<ol>
+<li>光刻常用在：有源区的图形化，栅极的图形化，接触孔的图形化，金属图形化</li>
+<li>光刻过程的信息流：设计人员CAD设计->版图转移到掩膜版上MASK->通过光刻工艺在光刻胶表面的空中形成aerial image->转移到光刻胶表面real image->在1um的光刻胶里面形成Latent image->显影后形成Resist image->在器件上形成Device Layer；Each step can lose information, distoring device pattern</li>
+<li>典型的图形化转移步骤：
+
+<ol>
+<li>旋转涂胶</li>
+<li>曝光</li>
+<li>显影</li>
+<li>湿法刻蚀</li>
+<li>去除光刻胶</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>光刻工艺详解</h2>
+
+<ol>
+<li>MOS制备工艺中栅极的光刻步骤
+<img src="http://i.imgur.com/fkNnt3m.png" alt="光刻步骤" /><img src="http://i.imgur.com/2hOh06Q.png" alt="光刻步骤" />
+
+<ol>
+<li>硅片清洗：将表面的颗粒和污染物去除，增强光刻胶和硅表面的附着力
+
+<ol>
+<li>化学清洗</li>
+<li>去离子水漂净</li>
+<li>甩干</li>
+</ol>
+</li>
+<li>预烘及涂底胶
+
+<ol>
+<li>预烘在100℃左右，目的是去除硅片表面的水汽</li>
+<li>涂底胶一般涂一层非常薄的HMDS，能够很好地促进光刻胶和硅片表面的结合</li>
+</ol>
+</li>
+<li>涂光刻胶
+
+<ol>
+<li>光刻胶旋图的厚度影响因素：
+
+<ol>
+<li>光刻胶的种类</li>
+<li>光刻胶的粘度</li>
+<li>真空吸盘的转速</li>
+</ol>
+</li>
+<li>光刻胶喷嘴在喷完光刻胶之后需要suck back（回吸）的动作，目的是避免悬在喷嘴口上的光刻胶掉落在硅片上</li>
+<li>光刻胶旋涂后不仅覆盖硅片的正表面，还会覆盖边缘和背面一部分。边缘和背面的部分光刻胶称作Edge bead，需要去除（Edge bead removal，EBR），方法有化学EBR，曝光EBR</li>
+</ol>
+</li>
+<li>软烤：将光刻胶里面80%的溶剂蒸发掉，提高光刻胶和硅片的粘附性
+
+<ol>
+<li>温度90℃~100℃</li>
+<li>具体温度和软烤时间需要具体设置</li>
+<li>方法：
+
+<ol>
+<li>烘箱退火</li>
+<li>电炉烘烤</li>
+</ol>
+</li>
+<li>过渡烘烤会降低光刻胶的光敏度</li>
+</ol>
+</li>
+<li>对准：
+
+<ol>
+<li>这一步工艺决定了整个微纳加工的最小线宽</li>
+<li>分类：接触式，接近式，投影式</li>
+</ol>
+</li>
+<li>曝光
+
+<ol>
+<li>分为接触式，接近式和投影式</li>
+</ol>
+</li>
+<li>后烤：停止光化学反应，让光刻胶的侧面光滑，提高精度，均匀驻波对光刻胶侧面带来的形貌的影响
+
+<ol>
+<li>温度高于软烤的温度，100℃，烘烤10分钟</li>
+</ol>
+</li>
+<li>显影，硬烘和检测
+
+<ol>
+<li>在碱性溶液中显影，沉浸式或者喷雾，可以利用超声波来搅拌，让反应均匀</li>
+<li>硬烤目的是将光刻胶中所有的溶剂都蒸发，光刻胶完成聚合化和剥离化，提供光刻胶抵抗刻蚀和注入的能力。同时在硬烤过程中，光刻胶内部的流动将内部的针孔给填满了</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>光刻机的原理：光的衍射
+
+<ol>
+<li>光刻机就是讲掩膜版上的图形与前次工序中已刻在硅片上的图形对准后，再将硅片表面的光刻胶进行曝光实现图形复制的设备</li>
+<li>三个主要性能指标：
+
+<ol>
+<li>分辨率
+
+<ul>
+<li>是可以曝光出来的最小特征尺寸</li>
+</ul>
+</li>
+<li>对准和套刻精度
+
+<ul>
+<li>是描述光刻机加工图形重复性能的一个指标，是层间套刻精度的度量，主要取决于掩膜版和硅片的支撑平台图形对准和移动控制精度性能</li>
+</ul>
+</li>
+<li>产率
+
+<ul>
+<li>每个小时可加工的硅片的数目</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>接触式光刻：掩膜版直接与光刻胶接触
+
+<ol>
+<li>优点：结构简单，成本低，光的衍射效应小，曝光出来的图形与掩膜版上的图形分辨率相当，设备简单</li>
+<li>缺点：光刻胶污染掩膜版，产能低</li>
+</ol>
+</li>
+<li>接近式光刻：掩膜版和光刻胶略微分开，越2~20μm
+
+<ol>
+<li>优点：可以避免与光刻胶的直接接触而引起的掩膜版损伤</li>
+<li>缺点：引入了衍射效应，降低了分辨率</li>
+</ol>
+</li>
+<li>投影式曝光：在掩膜版和光刻胶之间使用透镜聚集光实现曝光。一般掩膜版的尺寸会以需要转移图形的4倍制作
+
+<ol>
+<li>优点：提高了分辨率；掩膜版的制作更加容易；掩膜版上的缺陷影响减小</li>
+<li>缺点：成本非常高，维护成本也很高</li>
+<li>分类：
+
+<ol>
+<li>扫描投影曝光（Scanning Project Printing）
+
+<ul>
+<li>掩膜版1：1，全尺寸</li>
+</ul>
+</li>
+<li>步进重复投影曝光
+
+<ul>
+<li>掩膜版缩小比例（4：1），曝光区域22X22mm</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>掩膜版由石英作为基座，表面有一层50~500nm的铬层或者乳胶层，这层是带图形的
+
+<ol>
+<li>掩膜图形的制作方法有：镭射光刻写（不精确），电子束刻写（精确），两种方式都比较慢，需要几个小时</li>
+</ol>
+</li>
+<li>光刻胶：光刻胶对光线敏感，所以需要在黄光下进行操作。光刻胶=基材+感光材料+溶剂
+
+<ol>
+<li>正性光刻胶：曝光区域更容易在显影液中溶解（光照破坏了聚合物链式结构）</li>
+<li>负性光刻胶：曝光区域更不容易在显影液中溶解（光照促使产生了链式结构）</li>
+<li>对光刻胶的要求：
+
+<ol>
+<li>旋涂方便</li>
+<li>曝光性好</li>
+<li>尺寸稳定</li>
+<li>抗刻蚀</li>
+</ol>
+</li>
+<li>光刻胶的清洗
+
+<ol>
+<li>浓硫酸+双氧水去除金属</li>
+<li>使用有机溶剂清洗，但是很难去除硬化的光刻胶</li>
+<li>氧的等离子体，将光刻胶燃烧</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>光线通过掩膜版后进入光刻胶，在硅片表面反射，与入射的光波产生干涉，形成驻波（standing wave），驻波的强光区域在显影时候溶解更多，驻波的弱光区域在显影的时候溶解更少，从而导致形成波浪状的侧面图形。避免形成驻波的方法：
+
+<ol>
+<li>在光刻胶里面加入吸收性更强的成分，削弱反射光</li>
+<li>使用多层光刻胶</li>
+<li>在硅片表面涂上一层防止反射的图层（bottom anti-reflection coating，BARC）</li>
+</ol>
+</li>
+<li>多层对准（Overlay）产生的误差
+
+<ol>
+<li>掩膜版和硅片的热膨胀系数不同导致硅片上的图形与掩膜版上面的图形有误差，称为：Thermal run-in/run-out error</li>
+<li>往同一个方向偏移（translation error）</li>
+<li>旋转偏移（Rotational Error）</li>
+<li>最大允许误差不能超过特征尺寸的1/3</li>
+</ol>
+</li>
+<li>采用OPC（optical proximity correction）的方法对由于光学衍射和干涉带来的图形畸变</li>
+<li>提高光刻分辨率的若干技术
+
+<ol>
+<li>更短波长的光源
+
+<ol>
+<li>汞灯G线波长436nm，H线405nm，I线365nm；KrF准分子激光波长248nm；ArF准分子激光波长193nm。进一步缩小波长，一方面受到没有足够功率和稳定性激光器的限制，另一方面也受到光线大气吸收的限制</li>
+</ol>
+</li>
+<li>浸润式光刻技术
+
+<ol>
+<li>在光刻胶和投影镜头之间填充介电常数n大于1的物质，如水，等效波长就会减小为原来的1/n</li>
+</ol>
+</li>
+<li>移相掩膜技术</li>
+<li>DFM（Design For Manufacture）技术</li>
+<li>EUV（Extreme Ultraviolet Lithography，极紫外光刻）使用波长非常小的紫外光来进行光刻，是一套光反射系统，波长11.2nm</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>图形转移</h2>
+
+<ol>
+<li>包络光刻的步骤+刻蚀+光刻胶清洗</li>
 </ol>
 
 
@@ -1238,21 +2225,141 @@
 </ol>
 
 
-<h2>DMA</h2>
+<h2>uDMAC</h2>
 
 <ol>
 <li>共6个通道，每个通道用于管理来自某个或者多个外设的内存访问请求</li>
-<li>不要给一个第优先级的 通道分配大不要给一个第优先级的 通道分配大不要给一个第优先级的 通道分配大不要给一个第优先级的 通道分配大的R_power值，因为直到重仲裁之前来自控制器高优先级的请求都会被阻止</li>
+<li>不要给一个第优先级的 通道分配大不要给一个低优先级的通道分配大的R_power值，因为直到重仲裁之前来自控制器高优先级的请求都会被阻止</li>
 <li>当N>2<sup>R</sup>，并且不是2<sup>R</sup>的整数倍时，控制器总是会执行2<sup>R</sup>的传输序列，直到N&lt;2<sup>R</sup>时再传输，控制器会在DMA周期的末尾，再执行剩余N次传输</li>
 <li>DMA周期类型：
 
 <ol>
-<li>无效</li>
-<li>基础</li>
-<li>自动请求</li>
-<li>双向</li>
+<li>Invalid</li>
+<li>Basic</li>
+<li>Auto-request</li>
+<li>ping-pong</li>
 </ol>
 </li>
+<li>Ping-pong cycle
+
+<ol>
+<li>DMA控制器轮流切换主、副两个数据通道，直到接收到一个无效的数据结构或者是circle_type被设置成了basic模式，或者是控制器停止了该通道的工作</li>
+<li>当DMA使用其中一个通道进行数据传输时候，处理器可以重新配置另外一个通道的参数</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>SSP</h2>
+
+<ol>
+<li>SSP接口可以同具有以下接口的主句或者从机进行通讯
+
+<ol>
+<li>摩托罗拉SPI接口</li>
+<li>TI的同步串行接口</li>
+<li>国家半导体的Microware接口</li>
+</ol>
+</li>
+<li>SSP接口可作为主机或者从机接口，支持2MHz甚至更高的位速率</li>
+<li>PrimeCell SSP复位之后默认是禁用状态，需要按照以下步骤进行配置：
+
+<ol>
+<li>更改SSP控制器SSPCR0和SSPCR1来配置SSP接口外设的主从工作模式以及工作的协议标准：Motorola SPI，Texas Instruments SSP，National Semiconductor</li>
+<li>通过更改时钟预分频寄存器SSPCRSR来将外部SSPCLK时钟进行分频，从而可以更改位速率</li>
+</ol>
+</li>
+<li>有两种方法可以启动PrimeCell SSP：
+
+<ol>
+<li>激活发送FIFO：Prime Cell SSP禁用时，可以通过写入8个16位值发送FIFO</li>
+<li>通过发送FIFO服务请求到CPU中断</li>
+</ol>
+</li>
+<li>在从机模式的操作中，为了确保正确的操作，SSPCLK必须必预期的SSPCLKIN最快频率快12倍；在主机模式的操作中，为了确保正确的操作，SSPCLK必须为预期的SSPCLKOUT最快频率的2倍。</li>
+<li>SSPCLK的最低频率可以通过下列公式计算，两个条件必须同时被满足：
+
+<ol>
+<li>FSSPCLK(min) >= 2 x FSSPCLKOUT(max), for master mode</li>
+<li>FSSPCLK(min) >= 12 x FSSPCLKIN(max), for slave mode.</li>
+</ol>
+</li>
+<li>SSPCLK的最高频率可以通过下列公式计算，两个条件必须被同时满足：
+
+<ol>
+<li>FSSPCLK(max) &lt;= 254 x 256 x FSSPCLKOUT(min), for master mode</li>
+<li>FSSPCLK(max) &lt;= 254 x 256 x FSSPCLKIN(min), for slave mode.</li>
+</ol>
+</li>
+<li>SSPCR0寄存器被用来：
+
+<ol>
+<li>编写穿行时钟速率</li>
+<li>在三个协议模式中进行选择</li>
+<li>选择合适的数据长度</li>
+</ol>
+</li>
+<li>SSPCR1寄存器被用来：
+
+<ol>
+<li>选择主/从模式</li>
+<li>启用loopback回环测试功能</li>
+<li>启用PrimeCell SSP外设</li>
+</ol>
+</li>
+<li>位速率的产生
+
+<ol>
+<li>串行位速率通过将输入时钟SSPCLK分频获得。首先，使用范围在2~254的偶数分频值CPSDVSR对输入时钟进行分频，CPSDVSR的值在SSPCPSR寄存器中设置。然后再使用1~256的其中一个值（即1+SCR）对时钟进一步分频T，此处SCR在SSI控制SSPCR0寄存器中设置。</li>
+</ol>
+</li>
+<li>帧格式：根据所设置的数据大小，每个数据帧的长度均在4~16位之间，并且从最高有效位MSB开始发送。
+
+<ol>
+<li>德州仪器（TI）同步串行的帧格式
+
+<ol>
+<li>在该模式中，任何时候当SSP空闲时，SSPCLKOUT和SSPFSSOUT被强制为低电平，发送数据线SSPTx为三态。一旦发送FIFO的底部入口包含数据，SSPFSSOUT就会变为高电平并持续一个SSPCLKOUT周期。要发送的值也从发送FIFO传输到发送逻辑的穿行移位寄存器中</li>
+</ol>
+</li>
+<li>Motorola SPI的帧格式
+
+<ol>
+<li>4线接口，其中SSPFSSOUT信号用作从机选择。Motorola SPI格式的主要特性为：SSPCLKOUT信号的不活动状态和相位均通过SSPSCR0控制寄存器中的SPO和SPH来设置。</li>
+<li>SPO，时钟极性位。当SPO时钟极性控制位为低时，它在SSPCLKOUT管脚上产生稳定的低电平值。如果SPO位为高，则在没有进行数据传输的情况下，在SSPCLKPUT管脚上产生一个稳定的高电平值。</li>
+<li>SPH，相位控制位。SPH相位控制位用来选择捕获数据的时钟边沿并允许边沿改变状态。SPH在第一个传输位上的影响最大，因为它可以在第一个数据捕获边沿之前允许或不允许一次时钟转换。当SPH相位控制位为低时，在第一个时钟边沿转换时捕获数据。如果SPH位为高，则在第二个时钟边沿转换时捕获数据</li>
+</ol>
+</li>
+<li>National Semiconductor帧格式
+
+<ol>
+<li>National Semiconductor格式与SPI格式非常相似，不同的是其采用的是使用主-从消息传递技术的半双工模式而非全双工模式。</li>
+<li>此穿行传输都由PrimeCell SSP向片外从器件发送8位控制字开始。在此传输过程中，PrimeCell SSP不会接收到输入的数据，在消息发送完毕后，片外从机对消息进行译码，并在PrimeCell SSP将8位控制消息的最后一位发送完成之后等待一个串行时钟周期，之后从机以请求的数据来响应。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>I2C</h2>
+
+<ol>
+<li>支持标准模式100Kbps和高速模式400Kbps</li>
+<li>SDA是双向的串行数据线，SCL是双向的串行时钟线。总线空闲时，这两根线都为高。每次操作都是9位，包括8个数据位和1个应答位，并且发送数据前必须先传输MSB</li>
+<li>数据有效性：在时钟的高电平周期期间，SDA线上的数据必须保持稳定，SDA线上的数据仅可在时钟SCL为低电平时改变。</li>
+<li>所有总线传输都带有所需的应答时钟周期，该时钟周期由主机产生。在相应周期内，发送器不能执行下一操作</li>
+<li>I2C开始条件和结束条件
+
+<ol>
+<li>当SCL为高电平时，SDA线上由高到低的跳变被定义为开始条件，由低到高的跳变被定义为结束条件</li>
+<li>开始条件和结束条件总是由主机产生</li>
+<li>I2C总线在结束条件之后一段时间重新被释放。如果使用重新开始条件替代结束条件的话，I2C将会保持占用状态</li>
+</ol>
+</li>
+<li>放到SDA线上的每个数据字节应该都是8位，每个字节之后跟随一个应答位。</li>
+<li>7位地址之后的第8位是数据方向位（R/W）,0代表写操作，1代表读操作</li>
+<li>每个字节之后都有一个应答位，应答位可以使接收者在成功接收到本字节之后，告诉发送者此数据已经被成功接收，可以发送下个字节。主机产生所有的时钟脉冲，包括应答位(第9位)的时钟脉冲</li>
 </ol>
 
 
@@ -1932,950 +3039,6 @@
 
 <time datetime="2015-09-28T12:20:50+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/09/27/css/">
-		
-			CSS样式知识清单</a>
-	</h2>
-	<div class="entry-content">
-		<h2>基础语法</h2>
-
-<blockquote><p>selector{
-property:value
-}
-其中selector有派生选择器，id选择器，类选择器，属性选择器</p></blockquote>
-
-<h2>头部声明</h2>
-
-<p><code>&lt;link href="MyCSS.css" type="text/css" rel="stylesheet"&gt;</code></p>
-
-<h2>id选择器</h2>
-
-<ol>
-<li>id选择器可以为标有id的HTML元素指定特定的样式</li>
-<li>id选择器以“#”来定义</li>
-</ol>
-
-
-<h1>类选择器</h1>
-
-<ol>
-<li>类选择器以一个点来定义</li>
-</ol>
-
-
-<h2>属性选择器</h2>
-
-<ol>
-<li><code>&lt;style type="text/css"&gt; [title=te]{color:blue}&lt;/style&gt;</code></li>
-<li><code>&lt;p title="te"&gt;属性选择器&lt;/p&gt;</code></li>
-</ol>
-
-
-<h2>CSS背景</h2>
-
-<ul>
-<li>background-attachment:背景图像是否固定或者随着页面的其余部分滚动</li>
-<li>background-color:设置元素的背景颜色</li>
-<li>background-image:把图片设置为背景，url(&ldquo;bg.jpg&rdquo;)</li>
-<li>background-position:设置背景图片的起始位置</li>
-<li>background-repeat:设置背景图片是否及如何重复</li>
-<li>background-size:规定背景图片的尺寸</li>
-<li>background-origin:规定背景图片的定位区域</li>
-<li>background-clip:规定背景的绘制区域</li>
-</ul>
-
-
-<h2>CSS文本</h2>
-
-<ul>
-<li>color：文本颜色</li>
-<li>direction：文本方向</li>
-<li>line-height：行高</li>
-<li>letter-spacing：字符间距</li>
-<li>text-align：对齐元素中的文本</li>
-<li>text-decoration：向文本中添加修饰</li>
-<li>text-indent：缩进元素中文本的首行</li>
-<li>text-transform：元素中的字母</li>
-<li>unicode-bidi：设置文本方向</li>
-<li>white-space：元素中空白的处理方式</li>
-<li>word-spacing：字间距</li>
-<li>text-shadow:文本阴影</li>
-<li>word-wrap:规定文本的换行规则</li>
-</ul>
-
-
-<h2>CSS字体</h2>
-
-<ul>
-<li>font-family:设置字体系列</li>
-<li>font-size:设置字体的尺寸</li>
-<li>font-style:设置字体风格</li>
-<li>font-variant:以小型大写字体或正常字体显示文本</li>
-<li>font-weight:设置字体的粗细</li>
-</ul>
-
-
-<h2>CSS链接</h2>
-
-<ol>
-<li>CSS链接的四种状态：
-
-<ul>
-<li>a:link 普通的、未被访问的链接</li>
-<li>a:visited 用户已经访问的链接</li>
-<li>a:hover 鼠标指针位于链接的上方</li>
-<li>a:active 链接被点击的时刻</li>
-</ul>
-</li>
-<li>常见的链接样式：
-
-<ul>
-<li>text-decoration属于大多用于去掉链接中的下划线</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>CSS列表</h2>
-
-<ul>
-<li>list-style简写列表项</li>
-<li>list-style-image列表项图像</li>
-<li>list-style-position列表标志位置</li>
-<li>list-style-type列表类型</li>
-</ul>
-
-
-<h2>CSS表格</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nf">#tb</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">border-collapse</span><span class="o">:</span><span class="k">collapse</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span><span class="m">500px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">td</span><span class="o">,</span><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="nb">bisque</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">padding</span><span class="o">:</span><span class="m">5px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">text-align</span><span class="o">:</span><span class="k">right</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aqua</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="m">#FFFFFF</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">tr</span><span class="nc">.alt</span> <span class="nt">td</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="nb">black</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aquamarine</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>CSS轮廓</h2>
-
-<ul>
-<li>outline设置轮廓属性</li>
-<li>outline-color设置轮廓的颜色</li>
-<li>outline-style设置轮廓的样式</li>
-<li>outline-width设置轮廓的宽度</li>
-</ul>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-27T10:51:10+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/09/25/html5-introduce/">
-		
-			HTML5知识点清单</a>
-	</h2>
-	<div class="entry-content">
-		<h2>基础</h2>
-
-<ol>
-<li>声明：&lt;!DOCTYPE>
-
-<ul>
-<li>HTML有多个不同版本，只有完全明白页面中使用的确切的HTML版本，浏览器才能完全正确地显示出HTML页面</li>
-<li>HTML5：
-
-<ul>
-<li>&lt;!DOCTYPE html></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>元素：指的是从开始标签到结束标签的所有代码
-
-<ul>
-<li><code>&lt;p&gt; this is my web page &lt;/p&gt;</code>中的<code>this is my web page</code>就是元素内容</li>
-<li><code>&lt;br/&gt;</code>表示不含任何元素的空标签，即换行</li>
-<li>空元素在开始标签中进行关闭</li>
-<li>大多数的HTML元素可拥有属性</li>
-</ul>
-</li>
-<li>属性
-
-<ul>
-<li>属性以键值对的形式出现</li>
-<li>常用标签属性
-
-<ul>
-<li><code>&lt;h1&gt;:align对齐方式</code></li>
-<li><code>&lt;body&gt;:bgcolor背景颜色</code></li>
-<li><code>&lt;a&gt;:target规定在何处打开连接</code></li>
-</ul>
-</li>
-<li>通用属性
-
-<ul>
-<li><code>class：规定元素的类名</code></li>
-<li><code>id：规定元素唯一ID</code></li>
-<li><code>style：规定元素的样式</code></li>
-<li><code>title：规定元素的额外信息</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>格式化
-
-<ul>
-<li><code>&lt;b&gt;定义粗体文字</code></li>
-<li><code>&lt;big&gt;定义大号文字</code></li>
-<li><code>&lt;em&gt;定义着重文字</code></li>
-<li><code>&lt;i&gt;定义斜体文字</code></li>
-<li><code>&lt;small&gt;定义小号文字</code></li>
-<li><code>&lt;strong&gt;定义加重语气</code></li>
-<li><code>&lt;sub&gt;定义下标文字</code></li>
-<li><code>&lt;sup&gt;定义上标文字</code></li>
-<li><code>&lt;ins&gt;定义插入字</code></li>
-<li><code>&lt;del&gt;定义删除字</code></li>
-</ul>
-</li>
-<li>样式
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;style&gt;:样式定义</code></li>
-<li><code>&lt;link&gt;:资源引用</code></li>
-</ul>
-</li>
-<li>属性
-
-<ul>
-<li><code>rel="stylesheet"：外部样式表</code></li>
-<li><code>type="text/css":引入文档的类型</code></li>
-<li><code>margin-left:边距</code></li>
-</ul>
-</li>
-<li>三种样式表插入方法：
-
-<ol>
-<li>外部样式表：<code>&lt;link rel="stylesheet" type="text/css" href="mystyle.css"&gt;</code></li>
-<li>内部样式表：<code>&lt;style type="text/css"&gt;body{background-color:red} p{margin-left:20px}&lt;/style&gt;</code></li>
-<li>内联样式表：<code>&lt;p style="color:red"&gt;</code></li>
-</ol>
-</li>
-</ol>
-</li>
-<li>链接
-
-<ol>
-<li>标签：<a></a></li>
-<li>连接数据：文本链接，图片链接</li>
-<li>属性：
-
-<ol>
-<li>href属性：指向另一个文档的链接</li>
-<li>name属性：创建文档内的链接
-
-<ul>
-<li><code>&lt;a name="tips"&gt;hello&lt;/a&gt;</code></li>
-<li><code>&lt;a href="#tips"&gt;跳转&lt;/a&gt;</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>img标签属性
-
-<ol>
-<li>alt：替换文本属性</li>
-<li>width：宽</li>
-<li>height：高</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>表格
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;table&gt;：定义表格</code>,属性border定义边框大小，属性cellpadding定义单元格边距，属性cellspacing定义单元格间距，属性bgcolor定义表格背景色，属性background定义表格图片</li>
-<li><code>&lt;caption&gt;：定义表格标题</code></li>
-<li><code>&lt;th&gt;：定义表格表头</code></li>
-<li><code>&lt;tr&gt;：定义表格的行</code></li>
-<li><code>&lt;td&gt;：定义表格的单元</code>,属性colspan的值定义了要合并的单元格数目</li>
-<li><code>&lt;thead&gt;：定义表格的页眉</code></li>
-<li><code>&lt;tbody&gt;：定义表格的主题</code></li>
-<li><code>&lt;tfoot&gt;：定义表格的页脚</code></li>
-<li><code>&lt;col&gt;：定义表格的列属性</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>列表
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;ol&gt;：有序列表</code>，type属性值A,a,I ,i,start</li>
-<li><code>&lt;ul&gt;：无序列表</code>，type属性值disc,circle,square</li>
-<li><code>&lt;li&gt;：列表项</code></li>
-<li><code>&lt;dl&gt;：自定义列表</code></li>
-<li><code>&lt;dt&gt;：自定义列表项</code></li>
-<li><code>&lt;dd&gt;：自定义列表描述</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>块
-
-<ol>
-<li>HTML块元素
-
-<ul>
-<li>块元素在显示时，通常会以新行开始，比如<code>&lt;h1&gt;,&lt;p&gt;,&lt;ul&gt;</code></li>
-</ul>
-</li>
-<li>HTML内联元素
-
-<ul>
-<li>内联元素通常不会以新行开始，比如<code>&lt;b&gt;,&lt;a&gt;,&lt;img&gt;</code></li>
-</ul>
-</li>
-<li><code>HTML&lt;div&gt;</code>元素
-
-<ul>
-<li><code>&lt;div&gt;</code>元素也被称称为块元素，其主要是组合HTML元素的容器</li>
-</ul>
-</li>
-<li><code>HTML&lt;span&gt;</code>元素
-
-<ul>
-<li><code>&lt;span&gt;</code>元素是内联元素，可作为文本的容器</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>使用div元素布局</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'><span class="nt">&lt;head</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;title&gt;</span>html布局测试<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">body</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#page</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">950px</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#head</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#left</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">greenyellow</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#middle</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#right</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">cornflowerblue</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#foot</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
-</span><span class='line'><span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;page&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;head&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        head
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_L
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;middle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_M
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;right&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_R
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;foot&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        foot
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li><p>表单</p>
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;form&gt;表单</code>，属性值有action，method</li>
-<li><code>&lt;input&gt;输入域</code>，属性type的值有：text，password，checkbox，radio(需要和name属性搭配使用),button(需要和value属性搭配使用),submit(需要和value属性搭配使用)</li>
-<li><code>&lt;textarea&gt;文本域</code>，属性有cols,rows</li>
-<li><code>&lt;label&gt;控制标签</code></li>
-<li><code>&lt;fieldset&gt;定义域</code></li>
-<li><code>&lt;legend&gt;域的标题</code></li>
-<li><code>&lt;select&gt;选择列表</code></li>
-<li><code>&lt;optgroup&gt;选项组</code></li>
-<li><code>&lt;option&gt;下拉列表中的选项</code>,需要被<code>&lt;select&gt;</code>包围</li>
-<li><code>&lt;button&gt;按钮</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li><p>框架</p>
-
-<ol>
-<li>框架标签<code>&lt;frame?</code></li>
-<li>框架集标签<code>&lt;frameset&gt;</code></li>
-<li>常用标签
-
-<ul>
-<li>noresize:固定框架大小</li>
-<li>cols:列</li>
-<li>rows:行</li>
-</ul>
-</li>
-<li>内联框架<code>&lt;iframe&gt;</code>,属性src指名引用的框架路径，属性frameborder指名是否需要边框</li>
-</ol>
-</li>
-<li><p>实体</p>
-
-<ul>
-<li>HTML中预留字符串必须被替换成字符实体，如&lt;（小于号），>（大于号）</li>
-<li>常用的字符实体
-
-<ul>
-<li>空格：&amp;nbsp</li>
-<li>小于号：&amp;lt</li>
-<li>大于号：&amp;gt</li>
-<li>和号：&amp;amp</li>
-<li>引号：&amp;quot</li>
-<li>撇号：&amp;apos</li>
-<li>分：&amp;cent</li>
-<li>镑：&amp;pound</li>
-<li>元：&amp;yen</li>
-<li>欧元：&amp;euro</li>
-<li>小节：&amp;sect</li>
-<li>版权：&amp;copy</li>
-<li>注册商标：&amp;reg</li>
-<li>商标：&amp;trade</li>
-<li>乘号：&amp;times</li>
-<li>除号：&amp;divide</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>HTML5 Web Storage</h2>
-
-<ol>
-<li>Web Storage功能就是在Web上存储数据的功能，这里的储存是针对客户端本地而言的，具体分为两种：
-
-<ul>
-<li>sessionStorage：将数据保存在session对象中，session是指用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是用户浏览这个网站所花费的时间。session对象可以用来保存在这段时间内所要求保存的任何数据</li>
-<li>localStorage：将数据保存在客户端本地的硬件设备中，即使浏览器被关闭了，该数据任然存在，下一次打开浏览器访问网站时仍然可以继续使用</li>
-</ul>
-</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>sessionStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>localStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>HTML5 本地数据库</h2>
-
-<ol>
-<li>HTML5中内置了两种本地数据库，一种为SQLite，一种为indexedDB</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-25T22:26:10+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/09/23/project-manager/">
-		
-			系统集成项目管理</a>
-	</h2>
-	<div class="entry-content">
-		<h2>信息系统集成基础知识</h2>
-
-<ol>
-<li>信息系统集成是指将计算机软件、硬件、网络通信等技术和产品集成成为能够满足用户特定需求的信息系统，包括总体策划、设计、开发、实施、服务及保障</li>
-<li>信息系统集成的<strong>本质</strong>是实现优化的综合统筹设计</li>
-<li>信息系统集成要以满足用户需求为<strong>根本出发点</strong></li>
-<li>信息系统集成的核心是<strong>软件</strong></li>
-<li>信息系统集成是一项综合性的系统工程，<strong>技术</strong>是系统集成工作的的核心，<strong>管理和商务</strong>活动是系统集成项目成功实施的保障</li>
-<li>信息系统集成实现的<strong>关键</strong>在于解决各子系统之间的互联和互操作问题</li>
-<li>信息系统集成主要分为<strong>设备系统集成</strong>（即硬件系统集成，或弱电系统集成）和<strong>应用系统集成</strong>（也称行业信息化解决方案集成）两大类。设备系统集成又可分为智能建筑系统集成、计算机网络系统集成和安防系统集成</li>
-</ol>
-
-
-<h2>信息系统集成资质管理</h2>
-
-<ol>
-<li>信息系统集成的资质是指从事计算机信息系统集成的综合能力，包括技术水平、管理水平、服务水平、质量保证能力、技术装备、系统建设质量、人员构成与素质、经营业绩、资产状况等要素</li>
-<li>凡是从事计算机信息系统集成业务的单位，必须经过资质认证并取得《计算机信息系统集成资质证书》</li>
-<li>凡是要建设计算机信息系统的单位，应选择具有相应等级《资质证书》的计算机信息系统集成单位来承建计算机信息系统</li>
-<li><strong>工业和信息化</strong>部负责计算机信息系统集成资质认证管理工作</li>
-<li>计算机信息系统集成资质等级分一、二、三、四级</li>
-<li>资质监督管理是指对获证单位资质保持的<strong>监督检查</strong>和<strong>资质变更</strong>的管理</li>
-<li>《资质证书》有效期<strong>3年</strong>，获证单位应每年进行一次<strong>自查</strong>（自查时间是每年2月1日至4月30日），并将自查结果报资质认证工作办公室备案；资质认证工作办公室对获证单位每四年进行一次换证检查。</li>
-<li>计算机信息系统集成资质认证工作根据<strong>认证和审批分离</strong>的原则，按照先由认证机构认证，再由信息产业主管部门审批的工作程序进行</li>
-<li>获证单位应提前做好换证工作准备，最迟应在《资质证书》有效期满<strong>前3个月</strong>，向相应的资质认证工作办公室提出更换证书申请</li>
-<li>获证单位原则上在获证<strong>一年以后</strong>如果达到更高级别的资质评定条件，可以像相应的认证机构提出比原资质更高级的升级认证申请</li>
-<li>系统集成一、二级资质证书由<strong>工业和信息化部</strong>审批，三、四级由<strong>地方信息产业主管部门</strong>审批，报工业和信息化部备案</li>
-<li>计算机信息系统集成企业资质等级评定条件主要从综合条件、财务状况、信誉、业绩、管理能力、技术实力和人才实力7个方面进行考核</li>
-<li>企业资质等级评定条件：
-
-<ol>
-<li>特一级资质
-
-<ul>
-<li>取得一级资质不少于三年</li>
-<li>注册资本和实收资本均不少于2亿元</li>
-<li>固定资产中电子设备的净值不少于1000万元，无形资产中软件的账面净值不少于1000万元</li>
-<li>近三年系统集成年收入均不少于5亿元</li>
-</ul>
-</li>
-<li>一级资质
-
-<ul>
-<li>取得二级资质不少于两年</li>
-<li>主业是计算机信息系统集成，近三年的系统集成收入总额占营收入总额的比例不低于70%，且近三年系统集成收入总额不少于5亿元</li>
-<li>注册资本和实收资本均不少于5000万元</li>
-<li>近三年至少完成4个合同额不少于1500万元的系统集成项目</li>
-<li>企业的主要负责人从事信息技术领域企业管理的经历不少于5年</li>
-<li>从事软件开发与系统集成相关工作的人员不少于220人，其中大学本科以及以上学历人员所占比例不低于80%；具有计算机信息系统集成项目管理人员资质的人数不少于30名，其中高级项目经理人数不少于10名</li>
-</ul>
-</li>
-<li>二级资质
-
-<ul>
-<li>取得三级资质不少于一年</li>
-<li>主业是计算机信息系统集成，近三年的系统集成收入总额占营收入总额的比例不低于60%，且近三年系统集成收入总额不少于2.5亿元</li>
-<li>注册资本和实收资本均不少于2000万元</li>
-<li>近三年至少完成3个合同额不少于1000万元的系统集成项目</li>
-<li>企业的主要负责人从事信息技术领域企业管理的经历不少于4年</li>
-<li>从事软件开发与系统集成相关工作的人员不少于150人，其中大学本科以及以上学历人员所占比例不低于80%；具有计算机信息系统集成项目管理人员资质的人数不少于18名，其中高级项目经理人数不少于4名</li>
-</ul>
-</li>
-<li>三级资质
-
-<ul>
-<li>取得四级资质不少于一年</li>
-<li>主业是计算机信息系统集成，近三年的系统集成收入总额占营收入总额的比例不低于50%，且近三年系统集成收入总额不少于5000万元</li>
-<li>注册资本和实收资本均不少于200万元</li>
-<li>近三年至少完成1个合同额不少于300万元的系统集成项目</li>
-<li>企业的主要负责人从事信息技术领域企业管理的经历不少于3年</li>
-<li>从事软件开发与系统集成相关工作的人员不少于50人，其中大学本科以及以上学历人员所占比例不低于60%；具有计算机信息系统集成项目管理人员资质的人数不少于6名，其中高级项目经理人数不少于1名</li>
-</ul>
-</li>
-<li>四级资质
-
-<ul>
-<li>注册资本和实收资本均不少于30万元</li>
-<li>企业的主要负责人从事信息技术领域企业管理的经历不少于2年</li>
-<li>从事软件开发与系统集成相关工作的人员不少于15人，其中大学本科以及以上学历人员所占比例不低于60%；具有计算机信息系统集成项目管理人员资质的人数不少于2名</li>
-</ul>
-</li>
-</ol>
-</li>
-<li><strong>中国软件测评中心</strong>和<strong>广州赛宝认证中心服务有限公司</strong>两家评审机构承担<strong>特一级资质</strong>认定的第三方评审工作</li>
-<li>一级资质企业获得特一级资质后其拥有的一级资质任然有效，企业必须按照相关规定参与一级资质的年度监督检查和到期换证等工作</li>
-<li>项目经理资质管理
-
-<ol>
-<li>系统集成项目经理分为项目经理、高级项目经理和资深项目经理3个级别</li>
-<li>项目经理
-
-<ol>
-<li>需要获得软考证书（系统集成项目管理工程师或者信息系统项目管理师）</li>
-<li>至少有两项合同额在200万元以上的系统集成项目</li>
-<li>完成系统集成项目总额500万以上</li>
-</ol>
-</li>
-<li>高级项目经理
-
-<ol>
-<li>获得项目经理资质不少于3年</li>
-<li>至少有一项合同额在1200万元以上的系统集成项目</li>
-<li>完成系统集成项目总额3000万以上</li>
-</ol>
-</li>
-<li>资深项目经理
-
-<ol>
-<li>获得高级项目经理资质不少于5年</li>
-<li>具有硕士以上学位</li>
-<li>至少有两项合同额在3000万元以上的系统集成项目或者至少有四项合同额在1500万元以上的系统集成项目</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><strong>项目经理</strong>可承担合同额在5000万元以下的系统集成项目，<strong>高级项目经理</strong>可承担合同额在5000万以下的系统集成项目，<strong>资深项目经理</strong>可承担各种规模的系统集成项目</li>
-<li>系统集成项目经理资质证书有工业和信息化部统一印制</li>
-<li>每<strong>两年</strong>对系统集成项目经理资质进行一次<strong>年审</strong>，年审结论分为<strong>合格</strong>、<strong>不合格</strong>、<strong>不在岗</strong>3种</li>
-<li>计算机信息系统集成企业资质的三、四级证书应有工业和信息化部印制，由各省市系统集成企业资质主管部门颁发</li>
-<li>企业拥有1个信息技术发明专利可等同于3个软件产品登记</li>
-</ol>
-
-
-<h2>信息化概论</h2>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-23T13:23:26+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/09/13/wechat-develop/">
-		
-			微信公众号开发</a>
-	</h2>
-	<div class="entry-content">
-		<h2>微信接口请求返回格式介绍</h2>
-
-<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
-
-<h2>常用接口功能</h2>
-
-<ol>
-<li>access_token获取接口
-
-<ul>
-<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
-<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
-</ul>
-</li>
-<li>获取微信服务器IP接口</li>
-<li>长链接转短链接接口</li>
-<li>获取用户列表</li>
-<li>获取用户基本信息(UnionID机制)</li>
-<li>网页授权接口
-
-<ul>
-<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
-<li>两种scope模式：
-
-<ol>
-<li>snsapi_base时只能获取到openid</li>
-<li>snsapi_userinfo时可获取到其他信息</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>素材管理接口</li>
-<li>高级群发接口
-
-<ul>
-<li>两个优点
-
-<ol>
-<li>可根据openid群发</li>
-<li>群发图文内容支持html</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>JSSDK接口</li>
-<li>模板消息接口</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-13T21:31:02+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/wechat/'>wechat</a>
-
 
 </div>
 	
