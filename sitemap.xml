@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/10/uml-knowledges/</loc>
+    <lastmod>2015-11-10T15:44:29+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/09/review-c-plus-plus/</loc>
+    <lastmod>2015-11-09T18:08:50+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/05/lcd/</loc>
+    <lastmod>2015-11-05T10:19:01+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/04/ov7670/</loc>
+    <lastmod>2015-11-04T20:19:43+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2015/10/30/sd-card-driver/</loc>
     <lastmod>2015-10-30T16:58:07+08:00</lastmod>
   </url>

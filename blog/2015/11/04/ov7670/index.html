@@ -1,0 +1,233 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CMOS图像传感器OV7670 - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="OV7670简介 通过SCCB总线控制，可以输出整帧、子采样、取窗口等方式及各种分辨率的8位影响数据。VGA图像最高达到30帧/秒。用户可以完全控制图像质量、数据格式和传输方式
+具有自动曝光控制、自动增益控制、自动白平衡，自动消除灯光条纹、自动黑电平校准等自动影像控制功能
+支持VGA、 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">CMOS图像传感器OV7670</h2>
+	<div class="entry-content"><h2>OV7670简介</h2>
+
+<ol>
+<li>通过SCCB总线控制，可以输出整帧、子采样、取窗口等方式及各种分辨率的8位影响数据。VGA图像最高达到30帧/秒。用户可以完全控制图像质量、数据格式和传输方式</li>
+<li>具有自动曝光控制、自动增益控制、自动白平衡，自动消除灯光条纹、自动黑电平校准等自动影像控制功能</li>
+<li>支持VGA、GIF和从CIF到40X30的各种尺寸。</li>
+<li>所有图像处理功能过程包括伽马曲线、白平衡、饱和度、色度等都可以通过SCCB接口编程。</li>
+<li>OV7670 CMOS图像传感器通过减少或消除光学或电子缺陷（如固定图案噪声、拖尾、浮散等），提高图像质量，得到清晰的稳定的彩色图像</li>
+<li>OV7670芯片内部有：感光阵列、模拟信号处理模块（包括自动增益和自动白平衡）、10位的ADC、测试图案发生器（八色彩条图案渐变至黑白色条图案）、数字信号处理器（控制由原始信号差值到RGB信号的过程，并控制边缘锐化、颜色空间转换等图像质量处理）、图像缩放模块（按照预先设置的要求输出数据格式）、时许发生模块（产生阵列控制和帧率、帧率的时序、自动曝光控制、输出外部时序）、数字视频端口、SCCB接口、LED和闪光灯输出控制电路等</li>
+</ol>
+
+
+<h2>OV7670参数</h2>
+
+<ol>
+<li>感光阵列：640*480</li>
+<li>稳定工作温度0~50℃</li>
+<li>输出格式：
+
+<ol>
+<li>YUV/YCbCr4:2:2</li>
+<li>RGB565/555/444</li>
+<li>GRB4:2:2</li>
+<li>Raw RGB Data</li>
+</ol>
+</li>
+<li>光学尺寸：1/6″</li>
+<li>视场角：25°</li>
+<li>最大帧率：VGA30 f/s</li>
+</ol>
+
+
+<h2>视频帧存储器AL422B简介</h2>
+
+<ol>
+<li>AL422B是一个存储容量为3Mb的视频帧存储器，能够配置为384KB（393，216）X8b FIFO，支持VGA、CCIR、NTSC、PAL和HDTV分辨率</li>
+<li>具有独立的读写操作能力，读/写周期时间为20ns，访问时间为15ns，具有高速异步串行存取、输出使能控制、自行刷新数据等功能。</li>
+<li>目前1帧图像信息通常包含640X480或者720X480字节。</li>
+<li>操作过程：
+
+<ol>
+<li>初始化。上电后，分别给nWRST和nRRST各0.1ms的初始化脉冲，使AL422B初始化。</li>
+<li>复位操作。通常，复位信号可在任何时候给出而不考虑nWE，nRE以及nOE的状态，但是它们仍然要参照时钟信号的输入情况，使它们满足建立时间和保持时间的要求。如果在禁止时钟周期内给给出复位信号，必须等到允许周期到来后才会执行复位操作。当nWRST和nRRST均为低电平时，数据的输入和输出均从地址0开始</li>
+<li>写操作。当写使能信号nWE为低电平时，在WCK信号的上升沿，数据通过DI7~DI0写入寄存器，参照WCK的输入周期，写入的数据必须满足建立时间和保持时间的要求。当nWE为高电平时，写操作被禁止，写地址指针停在当前位置上；当nWE再次变为低电平时，写地址指针从当前位置继续开始</li>
+<li>读操作。当读使能nRE和数据输出使能nOE均为低电平时，在RCK信号的上升沿，数据由DO7~DO0输出。当nRE为高电平时，读地址指针停在当前位置上；当nRE再次变为低电平时，读地址指针从当前位置开始。执行读操作时，nOE须为低电平，如nOE为高电平，则数据输出端均为高阻态，且读地址指针任然同步加1.nRE和nOE须参照RCK的输入周期，满足建立时间和保持时间的要求。</li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-04T20:19:43+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/11/04/ov7670" data-title="CMOS图像传感器OV7670" data-url="http://suda-morris.github.io/blog/2015/11/04/ov7670/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

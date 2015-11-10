@@ -1,0 +1,207 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>LCD - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="TFTLCD驱动芯片 ILI9341、ILI9325、RM68042、RM68021、ILI9320、ILI9328、LGDP4531、SSD1289等 ILI9341 自带显存，其显存总大小为172800（240X320X18/8），即18位模式下（26万色）的显存量。在16位模式下， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">LCD</h2>
+	<div class="entry-content"><h2>TFTLCD驱动芯片</h2>
+
+<ul>
+<li>ILI9341、ILI9325、RM68042、RM68021、ILI9320、ILI9328、LGDP4531、SSD1289等</li>
+</ul>
+
+
+<h2>ILI9341</h2>
+
+<ol>
+<li>自带显存，其显存总大小为172800（240X320X18/8），即18位模式下（26万色）的显存量。在16位模式下，ILI9341采用RGB565格式存储颜色数据</li>
+<li>ILI9341所有的指令都是8位的，高8位无效，且参数除了读写GRAM的时候是16位，其他操作参数都是8位的。这个和ILI9320等驱动器不一样</li>
+<li>命令
+
+<ol>
+<li>0xD3，这个是读ID4指令，用于读取LCD控制器的ID，这可以用来判断所用的LCD驱动器是什么型号，这样就可以根据控制器的型号去执行对应驱动IC的初始化代码。0xD3指令后跟了4个参数，最后2个参数读出来是0x93和0x41</li>
+<li>0x36，这个是存储访问控制指令，可以控制ILI9341存储器的读写方向。简单说木九十在连续写GRAM的时候，可以控制GRAM指针增长的方向，从而控制显示方式。0x36指令后面紧跟一个参数，用来设置GRAM自增方式</li>
+<li>0x2A，这是列地址设置指令，在从左到右、从上到下的扫描方式（默认）下面，该指令用于设置横坐标（x坐标）。该指令带有4个参数，实际上是2个坐标值：SC和EC，即列地址的起始值和结束值，SC必须小于等于EC。一般在设置x坐标的时候，我们只需要带2个参数即可，也就是设置SC即可，因为EC没有变化，我们只需要设置一次即可（在初始化ILI9341的时候设置）</li>
+<li>0x2B，是页地址设置指令，在从左到右、从上到下的扫描方式（默认）下面，该指令用于设置纵坐标（y坐标）</li>
+<li>0x2C，该指令是写GRAM指令，在发送该指令之后，我们便可以网LCD的GRAM里面写入颜色数据了。该指令支持连续写。ILI9341在收到0x2C指令之后，数据有效位宽变为16位，我们可以连续写入LCD GRAM值，而GRAM的地址将根据MY/MX/MV设置的扫描方式进行自增。</li>
+<li>0x2E，该指令是读GRAM指令，用于读取ILI9341的显存GRAM。ILI9341在收到该指令后，第一次输出的是dummy数据，也就是无效的数据，第二次开始读取到的才是有效的GRAM数据（从坐标SC、SP开始），输出规律为：每个颜色分量占8位，一次输出2个颜色分量。比如第一次输出的是R1G1，随后的规律为B1R2->G2B2->R3G3->B3R4->G4B4->R5G5&hellip;以此类推。</li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-05T10:19:01+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/11/05/lcd" data-title="LCD" data-url="http://suda-morris.github.io/blog/2015/11/05/lcd/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
