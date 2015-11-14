@@ -7,7 +7,19 @@
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content=" ">
+	<meta name="description" content="StarUML 软件破解 官网地址
+该软件为跨平台的UML建模工具，采用NodeJs编写
+破解：安装目录/www/license/node/LicenseManagerDomain.js文件修改为如下： LicenseManagerDomain.js1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -84,7 +96,188 @@
 
 	<div id="content" class="inner"><article class="post">
 	<h2 class="title">UML-Knowledges</h2>
-	<div class="entry-content">
+	<div class="entry-content"><h2>StarUML 软件破解</h2>
+
+<ol>
+<li><a href="http://staruml.io">官网地址</a></li>
+<li>该软件为跨平台的UML建模工具，采用NodeJs编写</li>
+<li>破解：安装目录/www/license/node/LicenseManagerDomain.js文件修改为如下：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>LicenseManagerDomain.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">NodeRSA</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-rsa&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">product</span><span class="p">,</span> <span class="nx">licenseKey</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">pk</span><span class="p">,</span> <span class="nx">decrypted</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;morris&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">product</span><span class="o">:</span> <span class="s2">&quot;StarUML&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">licenseType</span><span class="o">:</span> <span class="s2">&quot;vip&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">quantity</span><span class="o">:</span> <span class="s2">&quot;suda_morris.github.io&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">licenseKey</span><span class="o">:</span> <span class="s2">&quot;later equals never!&quot;</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">pk</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeRSA</span><span class="p">(</span><span class="nx">PK</span><span class="p">);</span>
+</span><span class='line'>            <span class="nx">decrypted</span> <span class="o">=</span> <span class="nx">pk</span><span class="p">.</span><span class="nx">decrypt</span><span class="p">(</span><span class="nx">licenseKey</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">terms</span> <span class="o">=</span> <span class="nx">decrypted</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">name</span> <span class="o">&amp;&amp;</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">name</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">product</span><span class="o">:</span> <span class="nx">product</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">licenseType</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+</span><span class='line'>                <span class="nx">quantity</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+</span><span class='line'>                <span class="nx">licenseKey</span><span class="o">:</span> <span class="nx">licenseKey</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Initializes the domain with several commands.</span>
+</span><span class='line'><span class="cm">     * @param {DomainManager} domainManager The DomainManager for the server</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">init</span><span class="p">(</span><span class="nx">domainManager</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">domainManager</span><span class="p">.</span><span class="nx">hasDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">major</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">minor</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span>
+</span><span class='line'>            <span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="c1">// domain name</span>
+</span><span class='line'>            <span class="s2">&quot;validate&quot;</span><span class="p">,</span>       <span class="c1">// command name</span>
+</span><span class='line'>            <span class="nx">validate</span><span class="p">,</span>         <span class="c1">// command handler function</span>
+</span><span class='line'>            <span class="kc">false</span><span class="p">,</span>            <span class="c1">// this command is synchronous in Node (&quot;false&quot; means synchronous&quot;)</span>
+</span><span class='line'>            <span class="s2">&quot;Validate License&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">[</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;name of license owner&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;product name&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;licenseKey&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;license key&quot;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">],</span>
+</span><span class='line'>            <span class="p">[</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="c1">// return values</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">]</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">exports</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>打开软件，，help->Enter License,随便输入用户名密码即可破解成功</li>
+</ol>
+
 </div>
 
 

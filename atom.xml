@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-11-10T15:44:44+08:00</updated>
+  <updated>2015-11-14T18:16:15+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -14,19 +14,400 @@
 
   
   <entry>
+    <title type="html"><![CDATA[i.MX280]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/11/12/i-dot-mx280/"/>
+    <updated>2015-11-12T15:40:17+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/11/12/i-dot-mx280</id>
+    <content type="html"><![CDATA[<h2>Linux内核组成部分</h2>
+
+<ol>
+<li>内存管理
+
+<ol>
+<li>进程管理负责控制进程对CPU的访问，如任务的创建、调度和终止等。任务调度是进程管理最核心的工作，由Linux内核调度器来完成。Linux内核调度器根据一定算法来选择最值得运行的进程</li>
+<li>运行态：已经获得了资源，并且进程正在被CPU执行进程既可以运行在内核态，也可运行在用户态
+
+<ol>
+<li>内核态：内核和驱动所运行时的状态，程序处于特权阶级，能够访问系统的任何资源</li>
+<li>用户态：用户程序运行的状态，处于非特权阶级，不能随意访问系统资源，必须通过驱动程序方可访问，用户态程序运行的状态，处于非特权阶级，不能随意访问系统资源，必须通过驱动程序方可访问，用户态程序可通过系统调用进入内核态。</li>
+</ol>
+</li>
+<li>就绪态：当系统资源已经可用，但由于前一个进程还没有执行完而释放CPU，准备进入运行状态</li>
+<li>可中断睡眠状态：当进程处于可中断等待状态时</li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Matlab基础知识]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/11/11/matlab/"/>
+    <updated>2015-11-11T22:45:49+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/11/11/matlab</id>
+    <content type="html"><![CDATA[<h2>几个常用命令</h2>
+
+<ol>
+<li>help：查看某个命令的帮助文档</li>
+<li>version：获得当前Matlab的版本</li>
+<li>pwd：给出当前的工作目录名</li>
+<li>dir：ls或dir列出当前目录下的所有文件名清单</li>
+<li>cd：改变目录</li>
+<li>what：列出当前工作目录下所有的M文件、MAT文件和MEX文件</li>
+<li>who：列出当前工作空间里的变量名</li>
+<li>clock：时钟设置命令</li>
+<li>data：日期设置命令</li>
+<li>path：显示MATLAB的当前搜索路径</li>
+<li>getenv：getenv（‘matlabpath’）显示当前的MATLAB路径</li>
+<li>diary on，diary off：利用diary可以记录MATLAB窗口中进行的所有操作</li>
+<li>！（escape）：符号！是MATLAB的扩展运算符，通过该符号，用户有权使用DOS或UNIX命令</li>
+<li>demo：该命令引导使用者通过菜单选择为数众多的演示程序</li>
+<li>format：数据显示格式。系统默认的数据显示格式是5位</li>
+<li>clear：清除命令。</li>
+</ol>
+
+
+<h2>运算符</h2>
+
+<ul>
+<li>反除运算符：:该运算符得到商的倒数，即a\b等于b/a</li>
+<li>不等于：~=</li>
+<li>逻辑与：&amp;</li>
+<li>逻辑或：|</li>
+<li>逻辑非：~</li>
+</ul>
+
+
+<h2>变量名</h2>
+
+<ol>
+<li>区分大小写</li>
+<li>长度不能超过31位</li>
+<li>变量名以字母开头，可以是字母、数字、下划线组成</li>
+</ol>
+
+
+<h2>分支结构</h2>
+
+<blockquote><p>if-else-end语句中的else子句是可选项
+嵌套：if-elseif-elseif-&hellip;-else-end</p></blockquote>
+
+<h2>循环结构</h2>
+
+<blockquote><p>for-end
+while-end；该语句中的循环判断语句为矩阵时，当且仅当所有的矩阵元素非零时，逻辑表达式的值为真
+break；退出循环体，执行循环后的其他语句</p></blockquote>
+
+<h2>数据输入与输出</h2>
+
+<ol>
+<li>input：通过键盘输入数据</li>
+<li>fprintf：输出格式化信息和数字</li>
+<li>disp：可以在命令窗口输出数字、向量、矩阵或字符串，无需变量名</li>
+<li>sprintf：将输出写入字符串</li>
+</ol>
+
+
+<h2>数组</h2>
+
+<ol>
+<li>MATLAB中，行数组与行向量是同义语，列数组和列向量是同义语</li>
+<li>对于加法和减法，数组运算与线性代数中的向量运算相同。但是符号.*和./分别被称为数组乘法运算符和数组除法运算符，它们不同于矩阵和向量乘除法。</li>
+<li>计算数组长度：length（x）</li>
+<li>删除数组元素：z（3）=[]</li>
+<li>MATLAB里，二维数组变量等同于一个矩阵，每一行的元素以分号结束</li>
+<li>二维数组的整行或整列可以用一个冒号表示。例如：m(1,:)和m(:,3)分别表示m的第一列和第三列</li>
+<li>只有长度相同的向量才能在if语句中进行比较，如果将两个长度不同的向量进行比较，命令窗口会出现出错信息提示。在if语句中比较字符串之前一定要通过增加空格使字符串长度完全相同</li>
+</ol>
+
+
+<h2>MATLAB特有的数字特性</h2>
+
+<blockquote><p>在MATLAB里，所有的变量均为双精度，整数变量和实数变量之间没有区别，实数变量和复数变量同样也没有区别</p></blockquote>
+
+<h2>初等数学函数</h2>
+
+<ul>
+<li>sin(x)</li>
+<li>cos(x)</li>
+<li>tan(x)</li>
+<li>asin(x)</li>
+<li>acos(x)</li>
+<li>atan(x):[-π/2,π/2]</li>
+<li>atan2(y,x):与atan(y/x)结果相同，但是-π/2≥atan2(y,x)≥π</li>
+<li>sinh(x)</li>
+<li>cosh(x)</li>
+<li>tanh(x)</li>
+<li>asinh(x)</li>
+<li>acosh(x)</li>
+<li>atanh(x)</li>
+<li>abs(x):x的绝对值</li>
+<li>angle(x):复数x的相位角</li>
+<li>sqrt(x):x的平方根</li>
+<li>real(x)</li>
+<li>imag(x)</li>
+<li>conj(x):复数x的共轭数</li>
+<li>round(x):向最近整数取整</li>
+<li>fix(x):向0取整</li>
+<li>floor(x):向-∞取整</li>
+<li>ceil(x):向+∞取整</li>
+<li>sign(x):如果x>0,则为+1；如果x&lt;0,则为-1</li>
+<li>mod(x,y)：除后余数：x-y*fix(x/y)</li>
+<li>rem(x,y):除后余数：x-y*fix(x/y).如果y≤0，则与mod不同</li>
+<li>exp(x):以e为底的指数</li>
+<li>log(x):以e为底的对数</li>
+<li>log10(x):以10为底的对数</li>
+<li>factor(x):将x分解质因数</li>
+<li>isprime(x):如果x为素数，值为1，否则为0</li>
+<li>factorial(x):x!</li>
+</ul>
+
+
+<h2>功能函数</h2>
+
+<ol>
+<li>sort(x):将x按照升序重新排列,如果x是矩阵，则重新排列按列进行</li>
+<li>sum(x):如果是x是矩阵，返回值由矩阵各列元素和组成的一个行向量</li>
+<li>max(x),min(x):如果x是矩阵，函数值为一个行向量，每个元素为矩阵相应列的最大或最小值</li>
+<li>rand(n),返回一个nxn的矩阵，元素全是随机数。除非特别规定，否则所生成的是0~1之间均匀分布的随机数</li>
+<li>eval：该命令可以作为字符串被编辑，然后用eval执行。字符串可以通过input读取，或在程序中创建</li>
+</ol>
+
+
+<h2>M文件</h2>
+
+<ol>
+<li>M文件可以分为脚本文件和函数文件两种</li>
+<li>脚本文件操作对象为MATLAB工作空间内的变量，并且在脚本执行结束后，脚本中对变量的一切操作均会被保留。在MATLAB语言中也可以在脚本内部定义变量，并且该变量将会自动地被加入到当前的MATLAB工作空间中，并可以为其他的脚本或函数引用，直到MATLAB被关闭或采用一定的命令将其删除</li>
+<li>MATLAB语言的函数文件包含5个部分：
+
+<ol>
+<li>函数题头：指函数的定义行，是函数语句的第一行，在该行中将定义函数名，输入变量列表以及输出变量列表等</li>
+<li>HI行：指函数帮助文档的第一行</li>
+<li>帮助信息</li>
+<li>函数体</li>
+<li>注释部分：注释语句是以%引导的</li>
+</ol>
+</li>
+<li>echo on,echo off:M文件执行过程中，其命令语句通常不出现在屏幕上，但是当echo on命令将echo开启后，屏幕上会显示所有语句。这时，用户可以看到正在执行的那部分M文件。</li>
+<li>开发函数M文件最基本且很有效的一个办法是将第一行的函数语句用%注释掉，然后作为一个命令M文件进行测试。测试通过后，再将函数语句恢复</li>
+</ol>
+
+
+<h2>保存和载入数据</h2>
+
+<ol>
+<li>save，load：如果直接使用save，则所有当前变量将被保存到默认文件matlab.mat里。load是与save相反的命令，它取回所有被save保存的变量。</li>
+<li>save file_name data-ascii：save能以ASCII码格式保存数据。带有ASCII选项的save和load非常重要，因为他们可以从MATLAB导入和导出数据</li>
+<li>自动创建文件名：在一个M文件中，常常需要自动创建一些文件名。如果整条命令连同文件名写为一个字符串，则可通过eval执行。</li>
+</ol>
+
+
+<h2>硬拷贝</h2>
+
+<ul>
+<li>使用diary命令制作一个屏幕内容的拷贝，如果其后不加任何文件名，屏幕内容将存入名为diary的文件中，此文件可以用文本方式打开。但是在diary文件里无法得到图形</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[UML-Knowledges]]></title>
     <link href="http://suda-morris.github.io/blog/2015/11/10/uml-knowledges/"/>
     <updated>2015-11-10T15:44:29+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/11/10/uml-knowledges</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<h2>StarUML 软件破解</h2>
+
+<ol>
+<li><a href="http://staruml.io">官网地址</a></li>
+<li>该软件为跨平台的UML建模工具，采用NodeJs编写</li>
+<li>破解：安装目录/www/license/node/LicenseManagerDomain.js文件修改为如下：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>LicenseManagerDomain.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">NodeRSA</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-rsa&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">product</span><span class="p">,</span> <span class="nx">licenseKey</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">pk</span><span class="p">,</span> <span class="nx">decrypted</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;morris&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">product</span><span class="o">:</span> <span class="s2">&quot;StarUML&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">licenseType</span><span class="o">:</span> <span class="s2">&quot;vip&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">quantity</span><span class="o">:</span> <span class="s2">&quot;suda_morris.github.io&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="nx">licenseKey</span><span class="o">:</span> <span class="s2">&quot;later equals never!&quot;</span>
+</span><span class='line'>        <span class="p">};</span>
+</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">pk</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeRSA</span><span class="p">(</span><span class="nx">PK</span><span class="p">);</span>
+</span><span class='line'>            <span class="nx">decrypted</span> <span class="o">=</span> <span class="nx">pk</span><span class="p">.</span><span class="nx">decrypt</span><span class="p">(</span><span class="nx">licenseKey</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">terms</span> <span class="o">=</span> <span class="nx">decrypted</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">name</span> <span class="o">&amp;&amp;</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="p">{</span>
+</span><span class='line'>                <span class="nx">name</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">product</span><span class="o">:</span> <span class="nx">product</span><span class="p">,</span>
+</span><span class='line'>                <span class="nx">licenseType</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+</span><span class='line'>                <span class="nx">quantity</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+</span><span class='line'>                <span class="nx">licenseKey</span><span class="o">:</span> <span class="nx">licenseKey</span>
+</span><span class='line'>            <span class="p">};</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * Initializes the domain with several commands.</span>
+</span><span class='line'><span class="cm">     * @param {DomainManager} domainManager The DomainManager for the server</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="kd">function</span> <span class="nx">init</span><span class="p">(</span><span class="nx">domainManager</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">domainManager</span><span class="p">.</span><span class="nx">hasDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">major</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">minor</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span>
+</span><span class='line'>            <span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="c1">// domain name</span>
+</span><span class='line'>            <span class="s2">&quot;validate&quot;</span><span class="p">,</span>       <span class="c1">// command name</span>
+</span><span class='line'>            <span class="nx">validate</span><span class="p">,</span>         <span class="c1">// command handler function</span>
+</span><span class='line'>            <span class="kc">false</span><span class="p">,</span>            <span class="c1">// this command is synchronous in Node (&quot;false&quot; means synchronous&quot;)</span>
+</span><span class='line'>            <span class="s2">&quot;Validate License&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="p">[</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;name of license owner&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;product name&quot;</span>
+</span><span class='line'>                <span class="p">},</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;licenseKey&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;license key&quot;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">],</span>
+</span><span class='line'>            <span class="p">[</span>
+</span><span class='line'>                <span class="p">{</span>
+</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="c1">// return values</span>
+</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">]</span>
+</span><span class='line'>        <span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nx">exports</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">}());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>打开软件，，help->Enter License,随便输入用户名密码即可破解成功</li>
+</ol>
+
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Review C++]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/11/09/review-c-plus-plus/"/>
+    <link href="http://suda-morris.github.io/blog/2015/11/09/c++Primer/"/>
     <updated>2015-11-09T18:08:50+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/11/09/review-c-plus-plus</id>
+    <id>http://suda-morris.github.io/blog/2015/11/09/c++Primer</id>
     <content type="html"><![CDATA[<h2>补码的好处</h2>
 
 <ol>
@@ -1504,7 +1885,8 @@
 <ol>
 <li>在光刻胶里面加入吸收性更强的成分，削弱反射光</li>
 <li>使用多层光刻胶</li>
-<li>在硅片表面涂上一层防止反射的图层（bottom anti-reflection coating，BARC）</li>
+<li>在硅片表面涂上一层防止反射的图层（bottom anti-reflection coating，BARC）。光刻胶不平整，底层反射会使被掩膜保护的光刻胶也得到了曝光，此时必须使用BARC材料。图形化工艺之前必须要平坦化工艺</li>
+<li>PEB（后烤）均匀驻波对光刻胶侧面带来的形貌的影响</li>
 </ol>
 </li>
 <li>多层对准（Overlay）产生的误差
@@ -1532,11 +1914,36 @@
 <li>在光刻胶和投影镜头之间填充介电常数n大于1的物质，如水，等效波长就会减小为原来的1/n</li>
 </ol>
 </li>
-<li>移相掩膜技术</li>
+<li>移相掩膜技术（光强不变，相位翻转，相长干涉变成相消干涉），移相子通常由透明的薄膜如SiO2来担任</li>
 <li>DFM（Design For Manufacture）技术</li>
-<li>EUV（Extreme Ultraviolet Lithography，极紫外光刻）使用波长非常小的紫外光来进行光刻，是一套光反射系统，波长11.2nm</li>
+<li>EUV（Extreme Ultraviolet Lithography，极紫外光刻）使用波长非常小的紫外光来进行光刻，是一套光反射系统，波长11.2nm。目前EUV的瓶颈是光强</li>
+<li>偏轴入射光，可以提高NA，原因是增加了高阶衍射的入射量（高阶衍射光中携带了精细图形的信息）</li>
 </ol>
 </li>
+<li>光刻的非理想因素
+
+<ol>
+<li>光刻胶有厚度，上表面的光刻胶接收的光照比下表面强，显影过后，光刻胶的横截面呈现梯形。解决办法有：使用高对比度的光刻胶</li>
+<li>光刻胶便面不平整，导致部分图形失焦，解决方案：平坦化工艺</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>平坦化工艺对光刻的重要意义</h2>
+
+<ol>
+<li>随着光刻工艺分辨率的提高，DOF（焦深）在下降，对焦过程中很容易失焦，平坦化工艺可以避免</li>
+<li>在不平坦的表面，由于光刻胶厚度不均匀，导致曝光不均匀</li>
+<li>不平坦的表面会导致光的散射，使得曝光过程不受控制</li>
+</ol>
+
+
+<h2>分辨率与焦深</h2>
+
+<ol>
+<li>最小特征尺寸：W=k1λ/NA（瑞利判据）。k1是工艺决定的参数，约0.6~0.8，λ为波长，NA为光学系统的数值孔径NA=n0*sinα，n0为中间介质的折射率，NA代表光学系统收集光的能力。</li>
+<li>焦深（景深）DOF=k2λ/(NA)<sup>2</sup>,k2也是工艺决定的参数。焦深越大，最小特征尺寸也越大，利用平坦化工艺可以解决焦深的问题</li>
 </ol>
 
 
@@ -1550,6 +1957,10 @@
 <li>通常是各向同性的，垂直和侧面刻蚀速率比约为1.2：1。但是KOH对Si的腐蚀与晶向有关，100面的腐蚀速率是111的一百倍</li>
 <li>需要控制腐蚀液的浓度和腐蚀温度</li>
 <li>不适合在更小尺度下进行刻蚀</li>
+<li>只用于wafer的清洗和光刻胶的去除</li>
+<li>温度敏感，工艺不好受控</li>
+<li>均匀性不好，反应物在硅片表面运输受限</li>
+<li>有时候与晶向相关</li>
 </ol>
 </li>
 <li>干法刻蚀：在腐蚀气体的气氛下完成腐蚀。为了增强腐蚀气体的化学活性，通常需要将腐蚀气体激发成等离子体
@@ -1561,16 +1972,18 @@
 
 <ul>
 <li>电容极板的等离子状态下，等离子体与衬底表面会产生一个鞘层，鞘层产生的自电电势会加速这个离子轰击到衬底表面，离子轰击能量达到10~700eV。离子轰击增强腐蚀效果，腐蚀速率提高几到几十倍</li>
+<li>所以Wafer放在阴极，离子轰击的效果更明显</li>
 <li>离子轰击将被刻蚀材料表面的原子键破坏</li>
 <li>将再沉淀于被刻蚀表面的产物或聚合物打掉，使被刻蚀表面能再与刻蚀气体接触</li>
 <li>化学反应生成的聚合物淀积在侧壁，起到保护侧壁的作用，是的整个反应向下进行比较快</li>
 </ul>
 </li>
-<li>干法刻蚀系统：ICP（Inductor Coupled Plasma）
+<li>增强等离子体离化的手段
 
 <ol>
-<li>用电感耦合产生高密度的等离子体</li>
-<li>可单独调节轰击电压和等离子体密度</li>
+<li>用电感耦合产生高密度的等离子体。可单独调节轰击电压和等离子体密度</li>
+<li>电子回旋共振</li>
+<li>磁性增强RIE</li>
 </ol>
 </li>
 <li>各向异性（Anisotropy）A=1-Vh/Vv,Vh表示水平刻蚀速度，Vv表示垂直刻蚀速度</li>
@@ -1605,10 +2018,122 @@
 <li>化学腐蚀（中兴活性反应物参与）</li>
 <li>等离子增强的化学腐蚀</li>
 <li>离子轰击增强刻蚀</li>
-<li>生成物的侧壁沉积
+<li>生成物的侧壁沉积</li>
+</ol>
+</li>
+<li>刻蚀过程中需要over-etch，确保刻蚀的完全性，同时也需要很高的选择比，如果选择比达不到要求，又需要over-etch，这时候需要加一层etch-stop层。
+
+<ol>
+<li>刻蚀Si上面的氮氧化物，需要先在Si上加一层SiO2充当etch stop layer</li>
+<li>如果etch-stop layer很薄，在工艺的最后阶段可以通过降低功率的方式来提高选择比</li>
+</ol>
+</li>
+<li>湿法刻蚀机制：
+
+<ol>
+<li>固体与流体之间存在边界层，厚度在微米量级</li>
+<li>反应物通过扩散穿过边界层到达wafer表面</li>
+<li>热激发化学反应</li>
+<li>反应物通过扩散穿过边界层离开</li>
+</ol>
+</li>
+<li>湿法刻蚀SiO2
+
+<ol>
+<li>SiO2+6HF->2H2SiF6+2H2O</li>
+<li>HF对Si，SiNx和光刻胶的选择比很高</li>
+<li>反应生成的H2O降低了反应液的酸度，反应速率随之下降</li>
+<li>通过加入NH4F可以保持溶液中HF浓度的稳定，因为NH4F+H2O->NH4OH+HF</li>
+</ol>
+</li>
+<li>Si的氮化物湿法刻蚀
+
+<ol>
+<li>使用热磷酸H3PO4，温度150~160℃</li>
+<li>对Si和氧化物有着高的选择比，但是对光刻胶和金属的选择比很低</li>
+<li>所以需要加一层硬掩膜来提高对光刻胶的选择比，解决光刻胶不耐酸的问题。（选择比在下面很低用etch-stop layer，在光刻胶部分很低用Hard Mask）</li>
+</ol>
+</li>
+<li>Si/Poly-Si的湿法刻蚀
+
+<ol>
+<li>各向同性：Si+HNO3+HF->H2SiF6+HNO2+H2+2H2O</li>
+<li>KOH定向刻蚀Si的100面，保留111面不被刻蚀，得到原子级别的光滑面，倒金字塔形状</li>
+</ol>
+</li>
+<li>Al的湿法刻蚀
+
+<ol>
+<li>氧化掉Al，然后用H3PO4刻蚀Al2O3，反应过程中会产生H2带来气泡，需要超声波辅助</li>
+</ol>
+</li>
+<li>干法刻蚀的分类：
+
+<ol>
+<li>溅射：离子轰击靶表面，转移动量，表面几层原子的化学键断裂。溅射的各向异性好，选择性差</li>
+<li>RIE（Reactive ion etch）：同时存在物理作用和化学反应，需要在各向异性和选择性之间权衡</li>
+<li>化学干法刻蚀：各向异性差，更好的选择性
 <img src="http://i.imgur.com/HWG5MZv.png" alt="不同材料的刻蚀" /></li>
 </ol>
 </li>
+</ol>
+
+
+<h2>等离子体</h2>
+
+<ol>
+<li>自然状态下，气体中会有一小部分分子由于热激发而离化，离化后的离子在内部复合地非常快。</li>
+<li>等离子体就是被激发的电离气体，可看作是高度离化的气体，相比分子总数量，它包含了很少的离化分子。这些例子处于热激发态，并快速重组。整体表现为近似电中性的电离气体</li>
+<li>常见的等离子体：太阳，闪电，汞灯H线，I线就是水银的等离子体从激发态转到基态而发出的光</li>
+<li>等离子体内部组成：电子+离子+分子+自由基+激发态（快要离化的分子）
+
+<ol>
+<li>活化基（Radicals）：中性分子失去外围电子形成的非常有活性的化学物质，参与各向同性的化学反应，形成易挥发的物质</li>
+<li>激发态物质：化学活性也很高</li>
+<li>正电离子和自由电子：由被电离的物质形成，在电场作用下加速，能量高，各向异性好，参与刻蚀的物理作用：离子轰击，物理溅射</li>
+</ol>
+</li>
+<li>举例：CF4
+
+<ol>
+<li>激发态：CF4*</li>
+<li>自由基：CF3-，CF2&ndash;，F-</li>
+<li>离子态：CF3+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Plasma Etch与RIE</h2>
+
+<ol>
+<li>Plasma etch：Wafer 放在阳极（或者接地电极）一侧，属于各向同性刻蚀；避免了离子轰击，刻蚀主要依靠化学反应</li>
+<li>RIE：Wafer放在阴极（或者功率电极）一侧，各向异性较好
+
+<ol>
+<li>离子朝着Wafer加速，促进了更多的各向异性刻蚀</li>
+<li>同时存在化学反应和物理作用</li>
+<li>离子轰击增强了化学作用，并且是各向异性的</li>
+<li>实质上，垂直的物理刻蚀是微不足道的，因为离子的动量不大（气压高意味着自由程短，加速距离短）</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>PID（Plasma Induced Damage）</h2>
+
+<ul>
+<li>表面损伤，缺陷和玷污</li>
+<li>天线效应（金属、多晶硅刻蚀）。悬浮导体收集电荷，损伤下面的介质层</li>
+</ul>
+
+
+<h2>离子轰击可能的机制</h2>
+
+<ol>
+<li>离子轰击给Wafer表面造成的损伤对整个化学反应起到了催化作用</li>
+<li>离子轰击直接分裂了反应物分子</li>
+<li>离子轰击去除了那些抑制反应继续进行的不易挥发的物质</li>
 </ol>
 
 
@@ -1616,12 +2141,37 @@
 
 <p><img src="http://i.imgur.com/HkoqZ3w.png" alt="干湿法刻蚀的比较" /></p>
 
+<h2>刻蚀的评价指标</h2>
+
+<ol>
+<li>选择比（有两个，膜与光刻胶，膜与下方一层的介质）</li>
+<li>各向异性</li>
+<li>均匀性</li>
+</ol>
+
+
 <h2>刻蚀中三个最重要的考虑要素</h2>
 
 <ol>
 <li>刻蚀的选择比</li>
 <li>各向异性</li>
 <li>离子轰击损伤</li>
+</ol>
+
+
+<h2>等离子体刻蚀的试剂中加入C、H、O的原因</h2>
+
+<ul>
+<li>C、H、O的有意引入目的在于使反应生成聚合物保护侧壁不被刻蚀，加强了各向异性的刻蚀</li>
+</ul>
+
+
+<h2>刻蚀的重点控制</h2>
+
+<ol>
+<li>干涉法，检测薄膜厚度</li>
+<li>根据光发射谱，检测反应物浓度（最常用）</li>
+<li>质谱法（最准确，最贵）</li>
 </ol>
 
 
@@ -1638,7 +2188,7 @@
 <li>侧壁沉积物的控制
 
 <ol>
-<li>反应生成物在侧壁的沉积过多会使得光刻胶定义的窗口缩小</li>
+<li>反应生成有机物在侧壁的沉积过多会使得光刻胶定义的窗口缩小</li>
 <li>通过反应气氛中接入小量的O2去除适当的侧壁生成物，使之不产生大量的堆积</li>
 </ol>
 </li>
@@ -1658,11 +2208,42 @@
 <li>天线效应
 
 <ol>
-<li>离子轰击是带电荷的，在对金属引线的刻蚀过程中，金属对于器件来说相当于天线，收集了大量的电荷，这些电荷产生的电场有可能会击穿介质层</li>
+<li>离子轰击是带电荷的，在对金属引线或者多晶硅的刻蚀过程中，金属对于器件来说相当于天线，收集了大量的电荷，这些电荷产生的电场有可能会击穿介质层</li>
 <li>解决方法：工艺与设计相结合，设计时候避免较大较长的金属引线的刻蚀</li>
 </ol>
 </li>
 </ol>
+
+
+<h2>刻蚀过程中，由于几何表面不平整带来的影响（有好有坏）</h2>
+
+<ol>
+<li>光刻胶的重淀积，一方面保护了侧壁，另一方面会影响器件的性能</li>
+<li>纵梁（stringer）效应：台阶处的薄膜厚度各不相同，各向异性刻蚀会在台阶侧壁形成一道“纵梁”，需要大量的over-etch才能消除纵梁效应</li>
+</ol>
+
+
+<h2>Blanket Metal Etch-back</h2>
+
+<ul>
+<li>填充连接孔（contact hole）&ndash;钨塞：首先用LPCVD 的方式淀积金属W，然后用RIE的方式刻蚀掉表面多余的W，只留下连接孔里面的金属W</li>
+<li>回刻是不需要掩膜的</li>
+</ul>
+
+
+<h2>Lift-Off 工艺（剥离工艺）</h2>
+
+<ul>
+<li>如果薄膜在等离子体中刻蚀不能生成易挥发的化合物，比如刻蚀铜Cu，可以采用Lift-Off的方法
+
+<ul>
+<li>使用图形化的工艺淀积一层牺牲层（一般是光刻胶），只留下需要的图形没有淀积上光刻胶</li>
+<li>淀积需要的金属铜Cu，此时没有覆盖光刻胶的部分就会淀积上一层Cu</li>
+<li>使用简单的湿法刻蚀，去除掉光刻胶，最后剩下的就是需要的金属铜构成的图形</li>
+</ul>
+</li>
+<li>低产量，低均匀性，不适用于量产</li>
+</ul>
 
 
 <h2>MOSFET多晶硅删的刻蚀</h2>
@@ -3809,590 +4390,6 @@ property:value
 </li>
 <li>JSSDK接口</li>
 <li>模板消息接口</li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Basic-Analog-Knowledge]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge/"/>
-    <updated>2015-08-20T12:22:41+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/08/20/basic-analog-knowledge</id>
-    <content type="html"><![CDATA[<h2>磁珠</h2>
-
-<ol>
-<li>全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著</li>
-<li>磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化</li>
-<li>磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用</li>
-<li>主要特性参数：
-
-<ol>
-<li>直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值</li>
-<li>额定电流(mA)</li>
-<li>阻抗[z]@100MHz(ohm):这里指的是交流阻抗</li>
-<li>阻抗频率特性</li>
-<li>电阻频率特性</li>
-<li>感抗频率特性</li>
-</ol>
-</li>
-<li>用途：
-
-<ol>
-<li>抑制信号线、电源线上的高频干扰和尖峰脉冲。它也具有吸收景点放点脉冲干扰的能力</li>
-<li>电感是储能元件，而磁珠时能量转换器件。电感多用于电源滤波回路，侧重于抑制传导性干扰；磁珠多用于信号回路，主要用于EMI(电磁兼容)方面。磁珠用来吸收超高频信号，例如在一些RF电路、PLL、振荡电路、含超高频存储器电路等，都需要在电源输入部分加磁珠</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>TVS二极管</h2>
-
-<ol>
-<li>TVS二极管和常见的文雅二极管工作原理相似，如果高于标志上的击穿电压，TVS二极管就会导通，与稳压二极管相比，TVS二极管具有更高的电流导通能力。TVS二极管的两极收到反向瞬态高能冲击时，以10e-12秒的量级的速度，将其两极间的高阻抗变为低阻抗，同时吸收高达数千瓦的浪涌功率，使得两极之间的电压钳位于一个安全值，有效地保护电子线路中的精密元器件免受浪涌脉冲的破坏</li>
-<li></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[W5500-Introduce]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/08/17/w5500-introduce/"/>
-    <updated>2015-08-17T09:50:48+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/08/17/w5500-introduce</id>
-    <content type="html"><![CDATA[<h2>W5500网络模块简介</h2>
-
-<ol>
-<li>公司：Wiznet</li>
-<li>使用硬件逻辑门电路实现TCP/IP协议栈的传输层及网络层（如：TCP，UDP，ICMP，IPv4，ARP，IGMP，PPPoE等协议），并集成了数据链路层，物理层(10BaseT/100BaseTX)，以及32K字节片上RAM作为数据收发缓存，使得上位机主控芯片只需承担TCP/IP应用层控制信息的处理任务，大大节省了上位机对于数据复制、协议处理和中断处理等方面的工作量，提升了系统利用率及可靠性</li>
-<li>操作过程中，用户可以近似将W5500作为MCU的一个外设RAM来使用，非常简易。W5500对外接口通常为通用的80MHz高速SPI</li>
-<li>W5500支持同时的8个socket，方便和不同的IP和设备进行通讯；为了减小系统能耗，W5500提供了网络环形模式(WOL)以及掉电模式供客户选择使用；W5500是非可攻击性的硬件网络引擎，可以防止类似于洪流，诈骗式以及注入式网络攻击，提高了网络安全</li>
-<li>支自动协商(10/100-Based全双工/半双工)</li>
-<li>3.3V工作电压，I/O信号口5V耐压</li>
-<li>W5500 不支持Auto-MDI-X，也就是不支持交叉直连自动切换，对于某些比较老的设备，可能需要特定的交叉线或者直连线。比如模块连模块，需要使用交叉线，模块连路由器或者交换机需要使用直连线。</li>
-<li>W5500不支持自动极性变换功能，因此用户需要使用直连线与交换机或者路由器连接，使用交叉线与终端设备(如服务器，工作站或者其他W5500)相连接。然而用户可以使用任何一种类型的网线与具有自动极性变换的其他设备相连。</li>
-<li>W5500以太网芯片的内核由传输层的TCP、UDP、ICMP、IGMP等协议、网络层的IP、ARP、PPPoE等协议以及链路层的MAC构成，再加上物理层的PHY和外围的寄存器、内存、SPI接口组成了这一整套硬件化的以太网解决方案</li>
-<li>SPI时钟设定值速率为80MHz，但是高速信号在受电磁串扰和长信号线的影响下可能会失真，实测具有稳定波形的始终速率为33.3MHz</li>
-</ol>
-
-
-<h2>W5500初始化主要使用的几个文件：</h2>
-
-<ol>
-<li>W5500_conf.c->主要配置W5500的MAC、IP地址，W5500基本的数据读写过程，复位设置函数等</li>
-<li>Socket.c->主要介绍了W5500的SOCKET相关配置函数，比如SOCKET的打开、关闭以及接收数据、发送数据等等</li>
-<li>Utility.c->主要介绍了基本的延时函数，还有数据格式转化函数</li>
-<li>w5500.c->主要介绍W5500的寄存器读写过程</li>
-</ol>
-
-
-<h2>W5500的Socket初始化</h2>
-
-<ol>
-<li>W5500的操作需要设置一下寄存器的参数：
-
-<ol>
-<li>模式寄存器(MR)</li>
-<li>中断屏蔽寄存器(IMR)</li>
-<li>重发时间寄存器(RTR)</li>
-<li>重发计数寄存器(RCR)</li>
-</ol>
-</li>
-<li>设置网络信息，下面的寄存器是关于网络的基本设置，需要根据网络环境来进行设置
-
-<ol>
-<li>网关地址寄存器(GAR)</li>
-<li>本机物理地址寄存器(SHAR)</li>
-<li>子网掩码寄存器(SUBR)</li>
-<li>本机IP地址寄存器(SIPR)</li>
-</ol>
-</li>
-<li>设置端口存储信息，这一步设置端口TX/RX存储信息，每个端口的基地址和屏蔽地址在这里确定并保存。
-
-<ol>
-<li>W5500有一个通用寄存器，8个Socket寄存器区，以及对应每个Socket的收发缓存区。每一个Socket的发送缓存区都在一个16KB的物理接收内存中，初始化分配为2KB。无论给每个Socket分配多达的收发缓存，都必须在16为的偏移地址范围内(0x0000~0xFFFF).16KB的发送内存初始化被分配为每个SOcket 2KB发送缓存区(2KB*8=16KB)。</li>
-<li>初始化分配的2KB Socket发送缓存，可以通过使用Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)重新分配，一旦所有的Socket发送缓存大小寄存器(Sn_TXBUF_SIZE)配置完成，16KB的发送内存就会按照配置分配给每个Socket的发送缓存，并按照从Socket0到7顺序分配。16KB物理内存的地址是可以自增的，但是为了避免数据传输错误，需要避免发送缓存大小寄存器(Sn_TXBUF_SIZE)的和超过16</li>
-<li>16KB的发送内存中分配了对应Socket n的发送缓存区，用于为来自主机传输的数据做缓存。Socket n发送缓存区的16位偏移地址支持64KB的寻址范围(从0x0000到0xFFFF)</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>SPI工作协议</h2>
-
-<ol>
-<li>SPI协议定义了四种工作模式(模式0，1，2，3)。每种模式的区别是根据SCLK的极性及相位不同定义的。SPI的模式0和模式3唯一不同的就是在非活动状态下，SCLK信号的极性，SPI模式0在时钟空闲状态时钟极性为低电平。SPI的模式0和3，数据都是在SCLK的上升沿锁存，在下降沿输出。W5500支持SPI模式0以及模式3，MISO和MOSI信号无论是接收或者发送，均遵从从最高标志位(MSB)到最低标志位(LSB)的传输序列。</li>
-<li>W5500与外设主机的通讯受SPI数据帧控制，W5500的帧分为3段：地址段，控制段，数据段</li>
-<li>地址段为W5500寄存器或者TX/RX内存指定的16位的偏移地址。</li>
-<li>控制段指定了地址段设定的偏移区域的归属，读写访问模式以及SPI工作模式(可变长度模式/固定长度模式)</li>
-<li>数据段可以设定为任意长度(N字节)或者是固定长度：1字节，2字节或4字节；如果SPI工作模式设置为可变数据长度模式(VDM),SPI的SCSn信号需要由外部主机通过SPI帧控制。</li>
-<li>在可变长度模式下，SCSn控制SPI帧的开始和停止：
-
-<ol>
-<li>SCSn信号拉低，即代表W5500的SPI帧开始(地址段)</li>
-<li>SCSn信号拉低，即代表W5500的SPI帧结束(数据段的随机N字节数据结尾)</li>
-</ol>
-</li>
-<li>W5500的SPI数据帧包括了16为地址段的偏移地址，8为控制段和N字节数据段。8为控制段可以通过修改区域选择位(BSB[4:0]),读写访问模式位(RWB)以及SPI工作模式位(OM[1:0])来重新定义。区域选择位选择了归属于偏移地址的区域</li>
-<li>W5500支持数据的连续读写。其流程为数据从(2/4/N字节连续数据的)偏移地址的基址开始传输，偏移地址会自增寻址(加1)传输接下来的数据</li>
-<li>SPI数据帧控制段对应位的说明：
-
-<ol>
-<li>区域选择位BSB[4:0]-> 【00000】= 通用寄存器；【00001】= Socket0寄存器；【00010】=Socket0发送缓存；【00011】=Socket0接收缓存；【00101】=Socket1寄存器；【00110】=Socket1发送缓存；【00111】=Socket1接收缓存；【01001】= Socket2寄存器；【01010】=Socket2发送缓存；【01011】=Socket2接收缓存；【10101】=Socket3寄存器；【01110】=Socket3发送缓存；【01111】=Socket3接收缓存；【10001】= Socket4寄存器；【10010】=Socket4发送缓存；【10011】=Socket4接收缓存；【10101】=Socket5寄存器；【10110】=Socket5发送缓存；【10111】=Socket5接收缓存；【11001】= Socket6寄存器；【11010】=Socket6发送缓存；【11011】=Socket6接收缓存；【11101】=Socket7寄存器；【11110】=Socket7发送缓存；【11111】=Socket7接收缓存；</li>
-<li>读写访问模式位RWB-> 【0】=读；【1】=写</li>
-<li>工作模式位OM[1:0]-> 【00】=可变数据长度模式，N字节数据段(1≤N)；【01】=固定数据长度模式，1字节数据长度(N=1)；【10】=固定数据长度模式，2字节数据长度(N=2)；【11】=固定数据长度模式，4字节数据长度(N=4)；</li>
-</ol>
-</li>
-<li>W5500有一个通用寄存器，8个Socket寄存器，以及对应每个Socket的收发缓存区。每个区域均通过SPI数据帧的区域选择位BSB[4:0]来选取。</li>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImg20150825212635.png" alt="SPI模式0/3" /></li>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImg20150825212850.png" alt="SPI数据帧" /></li>
-</ol>
-
-
-<h2>物理层</h2>
-
-<blockquote><p>由计算机和网络介质之间的实际界面组成，可定义电器信号、符号、线的状态和时钟要求、数据编码和数据传输用的连接器。如最常用的RS-232规范、10BASE-T的曼彻斯特编码以及RJ-45就属于这一层。</p></blockquote>
-
-<h2>数据链路层</h2>
-
-<blockquote><ol>
-<li>数据链路层通过物理网络链路提供可靠的数据传输。不同的数据链路层定义了不同的网络和协议特征，其中包括物理编址、网络拓扑结构、错误校验、帧序列以及流控</li>
-<li>以太网协议规定，一组电信号构成一个数据包，叫做“帧”，每一帧分成三个部分：以太网首部、数据及以太网尾部。</li>
-<li>以太网首部包含数据帧的一些说明，比如发送者、接收者、数据类型等等；数据部分则是数据的具体内容；以太网尾部则是CRC校验码</li>
-<li>以太网首部的长度固定为14字节。数据的长度最短为46字节，最长为1500字节。以太网尾部的长度固定为4字节。因此，整个数据帧最短为64字节，最长为1518字节。如果数据很长，就必须分割成多个帧进行发送</li>
-<li>数据链路层实际上由两个独立的部分组成：介质存取控制(MAC)和逻辑链路控制(LLC)。MAC描述在共享介质环境中如何进行站的调度、发生和接收数据。MAC确保信息跨链路的可靠传输，对数据传输进行同步，识别错误和控制数据流向。一般来讲，MAC只在共享介质环境中才是重要的，只有在共享介质环境中多个节点才能连接到同一传输介质上。</li>
-<li>一块网卡如何知道另一块网卡的MAC地址?ARP协议(网络层)可以解决这个问题。以太网数据帧必须知道接收方的MAC地址然后才能发送。有了数据帧的定义，网卡的MAC地址，广播的发送方式，数据链路层就可以在多台计算机之间传送数据了</li>
-</ol>
-</blockquote>
-
-<h2>网络层</h2>
-
-<blockquote><ol>
-<li>网络层负责在源和终点之间建立连接。它一般包括网络寻址，还可能包括流量控制、错误检查等。相同MAC标准的不同网段之间的数据传输一般只涉及到数据链路层，而不同的MAC标准之间的数据传输都涉及到网络层。IP路由器工作在网络层，因为可以实现多种网络间的互联。</li>
-<li>IP数据包分为“标头”和“数据”两个部分。标头部分主要包括版本、长度、IP地址等细心，数据部分则是IP数据报的具体内容。IP数据报的标头部分长度为20到60字节，整个数据报的总长度最大为65535字节，因此理论上，一个数据报的数据部分最长为65515字节。以太网数据帧的数据部分最长只有1500字节，因此如果IP数据报超过了1500字节，它就要分割成几个以太网数据帧分开发送了。</li>
-</ol>
-</blockquote>
-
-<h2>传输层</h2>
-
-<blockquote><ol>
-<li>传输层向高层提供可靠的端到端的网络数据流服务。传输层的功能一般包括流控、多路传输、虚电路管路以及差错校验和恢复。流控管理设备之间的数据传输，确保传输设备不发送比接受设备处理能力大的数据；多路传输使得多个应用程序的数据可以传输到物理链路上；虚电路由传输层建立、维护和终止；差错校验包括为检测传输错误而建立的各种不同结构；而差错回复包括所采取的行动，以便解决发生的任何错误。</li>
-<li>必须要在数据包中加入端口信息，这就需要新的协议。最简单的实现叫做UDP协议，UDP数据段也是有“标头”和“数据”两部分组成</li>
-<li>标头部分主要定义了发出端口和接收端口，“数据”部分就是具体的内容，然后把整个UDP数据段放入IP数据报的“数据”部分，而IP数据报又是放在以太网数据帧之中的。</li>
-<li>UDP数据段非常简单，标头部分一共只有8个字节，总长度不超过65535字节，正好放进一个IP数据报</li>
-<li>为了提高网络可靠性，诞生了TCP协议，这个协议非常复杂，但可以近似认为，他就是有确认机制的UDP协议，没发出一个数据都要求确认。如果有一个数据缺失，就收不到确认，发送方就知道有必要重发这个数据了</li>
-<li>TCP数据段没有长度限制，理论上可以无限长，但是为了保证网络的效率。通常TCP数据段的长度不会超过IP数据报的长度，以确保单个TCP数据段不必再分割。</li>
-</ol>
-</blockquote>
-
-<h2>应用层</h2>
-
-<blockquote><p>应用层是最接近终端用户的第一层，这就意味着应用层与用户之间是通过应用软件直接相互作用。应用层并非由计算机上云sing的实际应用软件组成，而是由向应用程序提供访问网络资源的API组成。</p></blockquote>
-
-<h2>寄存器</h2>
-
-<h3>W5500通用寄存器</h3>
-
-<p><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImg20150823140450.png" alt="W5500通用寄存器" /></p>
-
-<h3>Socket寄存器</h3>
-
-<p><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImg20150823141841.png" alt="Socket寄存器" /></p>
-
-<ol>
-<li>通用寄存器区配置了W5500的基本信息，如IP以及MAC地址</li>
-<li>W5500支持8个Socket作为通讯信道，每一个Socket通过Socket n寄存器控制。Socket n寄存器可以通过SPI数据帧中的区域选择寄存器BSB[4:0]来选定对应的寄存器n。</li>
-</ol>
-
-
-<h2>TCP/IP协议族</h2>
-
-<p><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgW5500%E7%BD%91%E7%BB%9C%E6%89%A9%E5%B1%95%E6%9D%BF%E6%95%99%E7%A8%8B.png" alt="TCP/IP协议族" /></p>
-
-<h2>TCP协议</h2>
-
-<ol>
-<li>TCP协议通过三个报文段完成连接的建立，这个过程称为三次握手。TCP连接建立过程：
-
-<ol>
-<li>第一次握手：建立连接时，客户端发送SYN包(seq=j)到服务器，并进入SYN_SEND状态，等待服务器确认</li>
-<li>第二次握手：服务器收到SYN包，必须确认客户的SYN(ack=j+1),同时自己也发送一个SYN包(seq=k),即SYN+ACK包，此时服务器进入SYN_RECV状态</li>
-<li>第三次握手：客户端收到服务器的SYN+ACK包，向服务器发送确认包ACK(ack=k+1),此包发送完毕，客户端和服务器进入ESTABLISH状态，完成三次握手</li>
-</ol>
-</li>
-<li>终止一个TCP连接需要四次挥手，这是由TCP的半关闭(half-close)造成的
-
-<ol>
-<li>第一次挥手：主动方发出设置了FIN位的报文，表示主动终止从本地到远端的单向链接；此时主动方进入FIN_WAIT1状态，意思是它在等待远端的FIN报文</li>
-<li>第二次挥手：远端收到FIN后，会立即发送ACK；主动方收到ACK后，进入FIN_WAIT2状态，所以FIN_WAIT1状态持续的时间非常短；此时远端进入CLOSE-WAIT状态，一条单向链接终止了，但另一条还没有，处于HALF-CLOSE连接状态</li>
-<li>第三次挥手：当远端进行了必要的数据发送后，它发送FIN，表示它出发的单向连接也要关闭，同时它进入LAST_ACK状态</li>
-<li>第四次挥手：主动方收到FIN后，回应一个ACK；远端就此进入CLOSED状态，连接关闭；主动方进入TIME WAIT状态，确保最后一个ACK没有丢失，防止新连接占用刚刚关闭的主动方的地址端口，使得网络中流浪的老连接的返祖被误认为新连接的分组</li>
-</ol>
-</li>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.png" alt="TCP三次握手/四次挥手" /></li>
-<li>当W5500初始化完成后，程序进入主循环，此时读取Socket的状态值，并选择进入哪种模式。当Socket处于关闭状态时，在进行通信之前，我们先将该Socket初始化，这个Socket作为服务器端，端口号要固定为侦听的端口。当socket将处于初始化完成状态，即SOCK_INIT状态，此时，作为TCP服务器就要执行listen()函数来侦听端口。由于W5500内嵌了TCP/IP协议，连接过程是不需要单片机干预的。如果连接过程中出错造成超时，该Socket将会被关闭，重新进入SOCK_CLOSE状态。待TCP连接的3次握手完成后，socket的状态将会转变为连接建立状态，即代码中定义的SOCK_ESTABLISHED状态。在进入SOCK_ESTABLISHED状态后，便可进行数据收发。数据通信完毕之后执行disconnect()函数，在收到对方FIN数据包之前，该socket将进入SOCK_CLOSE_WAIT状态。</li>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCPServer%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="TCPServer流程图" /></li>
-<li><img src="http://7xj5i0.com1.z0.glb.clouddn.com/@/BlogImgTCPClient%E6%B5%81%E7%A8%8B%E5%9B%BE.png" alt="TCPClient流程图" /></li>
-</ol>
-
-
-<h2>UDP协议</h2>
-
-<ol>
-<li><img src="http://i.imgur.com/ceIUeSz.png" alt="UDP通信流程图" /></li>
-<li>当socket处于关闭状态时，在进行通信之前我们先将该UDP模式的socket端口初始化。当socket将处于初始化完成状态即SOCK_UDP状态，此时就可以通过广播方式发送数据了。</li>
-<li><img src="http://i.imgur.com/FxqWkWp.png" alt="UDP报文" /></li>
-</ol>
-
-
-<h2>DHCP协议</h2>
-
-<ol>
-<li>W5500作为DHCP客户端，路由器作为DHCP服务器端，在DHCP请求的过程中，包括4个主要阶段：发现阶段、提供阶段、选择阶段以及确认阶段</li>
-<li>首次W5500客户端发送DHCPDISCOVER消息(IP地址租用申请)，这个消息通过广播方式发出，所有网络中的DHCP服务器都将接收到这个消息。随后，网络中的DHCP服务器会回应一个DHCPOFFER消息(IP地址租用提供)，由于这个时候客户端还没有网络地址，所以DHCPOFFER也是通过广播的方式发送出去的。然后，向该服务器发送DHCPREQUEST消息。在DHCPREQUEST消息中将包含客户端申请的IP地址。最后，DHCP服务器将会送DHCPACK的相应消息来通知客户端可以使用该IP地址，该确认里面包含了分配的IP地址和该地址的一个稳定期限的租约(默认是8天)，并同时更新DHCP数据库</li>
-<li>DHCP初始化完成以后，通过获取DHCP_SOCKET的状态来获取动态IP地址。第一个状态DHCP_RET_NONE就是获取不成功，第二个状态DHCP_RET_TIMEOUT是获取IP地址超时，都不符合条件。第三个状态DHCP_RET_UPDATE就是获取动态IP地址成功，此时将得到的IP地址通过SPI写入W5500的寄存器。如果是DHCP_RET_CONFLICT冲突状态，就要返回DHCP服务重新获取</li>
-<li><img src="http://i.imgur.com/sqc1tce.jpg" alt="DHCP报文格式" /></li>
-<li>报文格式解析：
-
-<ol>
-<li>OP：若是client送给server的封包，设为1，反之为2</li>
-<li>HTYPE：硬件类别，10MB以太网为1，100MB以太网为2</li>
-<li>HLEN：硬件地址长度，Ethernet为6</li>
-<li>HOPS：若封包需要经过router传送，每站加1，若在同一网段内，为0</li>
-<li>TRANSACTION ID：DHCP REQUEST时产生的数值，以作为DHCPREPLY时的依据</li>
-<li>SECONDS：Client端启动时间(秒)</li>
-<li>FLAGS：从0到15共16bits，最左1bit为1时表示server将以广播方式传送封包给client，其余尚未使用</li>
-<li>ciaddr：yhaoshiclient端想继续使用之前取得的IP地址，则列于这里</li>
-<li>yiaddr：从server送回client的DHCP OFFER与DHCPACK封包中，此栏填写分配给client的IP地址</li>
-<li>siaddr：若client需要透过网络开机，从server送出的DHCP OFFER、DHCPACK、DHCPNACK封包中，此栏填写开机程序代码所在server的地址</li>
-<li>giaddr：若需跨网域进行DHCP发放，此栏为relay agent的地址，否则为0</li>
-<li>chaddr：client的硬件地址</li>
-<li>sname：sever的名称字符串，以0x00结尾</li>
-<li>file：若client需要透过网络开机，此栏将指出开机程序名称，稍后以TFTP传送</li>
-<li>options：允许厂商定义选项，提供更多的设定信息，其长度可变，同时可携带多个选项，每一个选项的第一个字节为信息代码，其后一个自己为该项数据长度，最后为项目内容</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>DNS协议</h2>
-
-<ol>
-<li>客户端初始化完毕之后，如果DNS运行标志位是1或者DNS发送次数超过3次就直接返回。如果不是上面的情况，并且DNS Server的IP不是0.0.0.0时，进入switch函数。当处于DNS域名解析成功状态时，DNS_OK置1，发送请求报文次数置0。当DNS解析域名失败时，标志位置0，请求报文次数加1，然后跳出循环。</li>
-<li>DNS报文格式：<img src="http://i.imgur.com/C48NfJR.jpg" alt="DNS报文格式" />
-
-<ul>
-<li>标识：DNS报文的ID，对于相关联的请求报文和应答报文，这个字段是相同的</li>
-<li>标志：<img src="http://i.imgur.com/ZaPageY.jpg" alt="标志字段" />
-
-<ul>
-<li>QR：查询/响应的标志位，1为响应，0为查询</li>
-<li>opcode：定义查询或响应的类型(若为0则表示是标准的，若为1则是反向的，若为2则是服务器状态请求)</li>
-<li>AA：授权回答的标志位，该位在相应报文中有效，1表示名字服务器是权限服务器</li>
-<li>TC：截断标志位，1表示响应以超过512字节并已经被截断</li>
-<li>RD：只能在响应报文中置1，表示可以得到递归响应</li>
-<li>zero：0，保留字段</li>
-<li>rcode：返回码，表示响应的差错状态，0表示无差错，1表示格式差错，2表示问题在域名服务器上，3表示域参照问题，4表示查询类型不支持，5表示在管理上被禁止</li>
-</ul>
-</li>
-<li>问题数、资源记录数、授权资源记录数和额外资源记录数，这四个字段都是两字节，分别对应下面的查询问题、回答、授权和额外信息部分的数量。一般问题数都为1，DNS查询报文中，资源记录数、授权资源记录数和额外资源记录数都为0.</li>
-<li>查询问题部分的格式：<img src="http://i.imgur.com/qkVuppN.gif" alt="查询问题格式" />
-
-<ul>
-<li>查询名部分长度不定，一般为要查询的域名，有时候也有IP的时候，即反向查询。此部分由一个或者多个标识符序列组成，每个标识符以首字节数的计数值来说明该标识符长度，每个名字以0结束。技术字节数必须在0~63之间</li>
-<li>查询类型：
-
-<ul>
-<li>1：IPv4地址</li>
-<li>2：名字服务器</li>
-<li>5：规范名称</li>
-<li>6：开始授权，标记一个区的开始</li>
-<li>11：熟知服务，定义主机提供的网络服务</li>
-<li>12：指针，把IP地址转化为域名</li>
-<li>13：主机信息，给出主机使用的硬件和操作系统的表述</li>
-<li>15：邮件交换，把邮件改变路由送到邮件服务器</li>
-<li>28：IPv6地址</li>
-<li>252：传送整个区的请求</li>
-<li>255：对所有记录的请求</li>
-</ul>
-</li>
-<li>查询类：通常为1，指Internet数据</li>
-</ul>
-</li>
-<li>回答字段，授权字段和附加信息字段均采用资源记录的相同格式：<img src="http://i.imgur.com/WuZQrVt.gif" alt="资源记录格式" />
-
-<ul>
-<li>域名字段(不定长或者2字节)：记录资源数据对应的名字，它的格式和查询名字段格式相同。当报文中域名重复出现时，就需要使用2字节的偏移指针来替换。</li>
-<li>类型、类：含义与查询问题部分的类型和类相同</li>
-<li>生存时间：该字段表示资源记录的生命周期，一般用于当地址解析程序取出资源记录后决定保存以及使用缓存数据的时间</li>
-<li>资源数据长度：表示资源数据的长度，以字节为单位，如果资源数据为IP则为0004</li>
-<li>资源数据：该字段是可变长字段，表示按查询段要求返回的相关资源记录的数据</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>SMTP协议</h2>
-
-<ol>
-<li><img src="http://i.imgur.com/9TsOlUJ.png" alt="邮件发送过程示意图" /></li>
-<li>SMTP在TCP协议25号端口监听连续请求。SMTP连接和发送过程：
-
-<ol>
-<li>建立TCP连接</li>
-<li>客户端发送HELO命令以标识发件人自己的身份，然后客户端发送MAIL命令；服务器端正希望以OK作为相应，表明准备接收</li>
-<li>客户端发送RCPT命令，以表示该电子邮件的计划接收人，可以有多个RCPT行；服务器端则表示是否愿意为收件人接收邮件</li>
-<li>协商结束，发送邮件，用命令DATA发送</li>
-<li>以“.”号表示结束并将内容一起发出去，结束此次发送，用QUIT命令退出</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>ICMP协议</h2>
-
-<ol>
-<li>ICMP是Internet控制报文协议，用于在IP主机、路由器之间传递控制消息。控制消息是指网络通不通、主机是否可达、路由是否可用等网络本身的消息。我们在网络中经常会使用到ICMP协议，比如我们经常使用的用于检查网络通不通的Ping命令，这个ping的过程实际上就是ICMP协议工作的过程。Ping命令利用ICMP回射请求报文和回射应答报文来测试目标系统是否可达。</li>
-<li>执行ping后，首先向目标服务器发出回送请求报文。计算机送出的回送请求到达目标服务器后，服务器回答这一请求，向送信方发送回送请求。这个ICMP回送回答报文在IP层来看，与被送来的回送请求报文基本上一样。不同的只是，源和目标IP地址字段被交换了，类型字段里填入了表示回送回答的0，这两点，也就是，从送信方式来看，自己送出的ICMP报文从目标服务器哪里像鹦鹉学舌那样原样返回了</li>
-</ol>
-
-
-<h2>Http协议</h2>
-
-<ol>
-<li>HTTP消息由客户端到服务器的请求和服务器到客户端的响应组成。请求消息和响应消息都是由开始行（对于请求消息，开始行就是请求行，对于响应消息，开始行就是状态行），消息报头（可选），空行（只有CRLF的行），消息正文（可选）组成。</li>
-<li>HTTP消息报头包括普通报头、请求报头、响应报头、实体报头。每一个报头域都是由名字+“：”+空格+值 组成，消息报头域的名字是大小写无关的。</li>
-<li>请求报文格式如下：请求行 － 通用信息头 － 请求头 － 实体头 － 报文主体</li>
-<li>应答报文格式如下：状态行 － 通用信息头 － 响应头 － 实体头 － 报文主体</li>
-<li>请求行以一个方法符号开头，以空格分开，后面跟着请求的URI和协议的版本，格式如下：Method Request-URI HTTP-Version CRLF</li>
-<li>请求方法有多种：
-
-<ol>
-<li>GET 请求获取Request-URI所标识的资源</li>
-<li>POST 在Request-URI所标识的资源后附加新的数据</li>
-</ol>
-</li>
-<li>状态行格式如下：HTTP-Version Status-Code Reason-Phrase CRLF 其中Status-Code标识服务器发回的响应状态代码；Reason-Phrase标识状态代码的文本描述</li>
-<li>状态码有三位数字组成，第一个数字定义了响应的类别，且有5种可能取值：
-
-<ol>
-<li>1xx：指示信息，标识请求已接收，继续处理</li>
-<li>2xx：成功，标识请求已被成功接收、理解、接受</li>
-<li>3xx：重定向，要完成请求必须进行更进一步的操作</li>
-<li>4xx：客户端错误，请求有语法错误或请求无法实现</li>
-<li>5xx：服务器端错误，服务器位能实现合法的请求</li>
-</ol>
-</li>
-<li>常见状态码、状态描述、说明
-
-<ol>
-<li>200 OK 客户端请求成功</li>
-<li>400 Bad Request 客户端请求有语法错误，不能被服务器理解</li>
-<li>401 Unauthorized 请求未经授权，这个状态码必须和WW-Authenticate报文域一起使用</li>
-<li>403 Forbidden 服务器收到请求，但是拒绝提供服务</li>
-<li>404 Not Found 请求资源不存在</li>
-<li>500 Internal Server Error 服务器发生不可预期的错误</li>
-<li>503 Server Unavaliable 服务器当前不能处理客户端的请求，一段时间后可能恢复正常</li>
-</ol>
-</li>
-<li>普通报头中，有少数报头域用于所有的请求和响应消息，但并不用于被传输的实体，只用于传输的消息。
-
-<ol>
-<li>Cache-Control用于指定缓存指令，缓存指令是单向的，而且是独立的。
-
-<ul>
-<li>请求时的缓存指令包括：no-cache(用于指示请求或响应消息不能缓存)、no-store、max-age、max-stale、min-fresh、only-if-cached</li>
-<li>响应时的缓存指令包括：public、private、no-cache、no-store、no-transform、must-revalidate、proxy-revalidate、max-age、s-maxage</li>
-</ul>
-</li>
-<li>Date普通报头域表示消息产生的日期和时间</li>
-<li>Connection普通报头域允许发送指定连接的选项，例如指定连接是连续或者指定“close”选项，通知服务器，在响应完成后，关闭连接。在http1.1中，client和server都是默认对方支持长链接的， 如果client使用http1.1协议，但又不希望使用长链接，则需要在header中指明connection的值为close；如果server方也不想支持长链接，则在response中也需要明确说明connection的值为close。不论request还是response的header中包含了值为close的connection，都表明当前正在使用的tcp链接在当天请求处理完毕后会被断掉。以后client再进行新的请求时就必须创建新的tcp链接了。</li>
-</ol>
-</li>
-<li>请求报头允许客户端向服务器传递请求的附加信息以及客户端自身的信息，常用的请求报头：
-
-<ol>
-<li>Accept：用于指定客户端接收哪些类型的信息，Accept:image/gif表明客户端希望接收GIF图像格式的资源；Accept:text/html表明客户端希望接收html文本</li>
-<li>Accept-Charset：用于指定客户端接受的字符集，如果在请求消息中没有设置这个域，缺省是任何字符集都可以接受</li>
-<li>Accept-Encoding：指定可接受的内容编码</li>
-<li>Accept-Language：指定一种自然语言</li>
-<li>Authorization：用于证明客户端有权查看某个资源，当浏览器访问一个页面时，如果收到服务器的响应代码为401，可以发送一个包含Authorization请求报头域的请求，要求服务器对其进行验证</li>
-<li>Host:发送请求是，该报头域是必须的，主要用于指定被请求资源的Internet主机和端口号，它通常从HTTP URL中提取出来。HTTP/1.1请求必须包含主机头域，否则系统会以400状态码返回</li>
-<li>User-Agent：该请求报头域允许客户端将它的操作系统、浏览器和其他属性告诉服务器，不过，这个报头域不是必须的，如果我们自己编写一个浏览器，不适用User-Agent请求报头域，那么服务器端就无法得知我们的信息了</li>
-</ol>
-</li>
-<li>请求报头举例：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'>GET /form.html HTTP/1.1 (CRLF)
-</span><span class='line'>Accept:image/gif,image/x-xbitmap,image/jpeg,application/x-shockwave-flash,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/msword,*/* (CRLF)
-</span><span class='line'>Accept-Language:zh-cn (CRLF)
-</span><span class='line'>Accept-Encoding:gzip,deflate (CRLF)
-</span><span class='line'>If-Modified-Since:Wed,05 Jan 2007 11:21:25 GMT (CRLF)
-</span><span class='line'>If-None-Match:W/&quot;80b1a4c018f3c41:8317&quot; (CRLF)
-</span><span class='line'>User-Agent:Mozilla/4.0(compatible;MSIE6.0;Windows NT 5.0) (CRLF)
-</span><span class='line'>Host:www.guet.edu.cn (CRLF)
-</span><span class='line'>Connection:Keep-Alive (CRLF)
-</span><span class='line'>(CRLF)
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>响应报头允许服务器传递不能放在状态行中的附件响应信息，以及关于服务器的信息和对Request-URI所标识的资源进行下一步访问的信息；常用的响应报头：
-
-<ol>
-<li>Location用于重定向接收者到一个新的位置，Location响应报头域常用在更换域名的时候</li>
-<li>Server包含了服务器用来处理请求的软件信息，与User-Agent请求报头域是相对应的</li>
-<li>WWW-Authenticate响应报头域西粗被包含在401响应消息中，客户端收到401响应消息时候，并发送Authorization报头域请求服务器对其进行验证时候，服务端响应报头就包含该报头域</li>
-</ol>
-</li>
-<li>实体报头。请求和响应消息都可以传送一个实体，一个实体由实体报头域和实体正文组成，但并不是说实体报头域和实体正文要在一起发送，可以只发送实体报头域。实体报头定义了关于实体正文和请求所标识的资源的元信息。常用的实体报头：
-
-<ol>
-<li>Content-Encoding：被用作媒体类型的修饰符，它的值指示了已经被应用到实体正文的附加内容的编码，因而要获得Content-Type报头域中所引用的媒体类型，必须采用相应的解码机制。Content-Encoding这样用于记录文档的压缩方法，eg：Content-Encoding：gzip</li>
-<li>Content-Language：实体报头域描述了资源所用的自然语言。没有设置该域则认为实体内容将提供给所有的语言阅读者。eg：Content-Language:da</li>
-<li>Content-Length：实体报头域用于指明实体正文的长度，以字节方式存储的十进制数字来表示</li>
-<li>Content-Type：实体报头域用语指明发送给接收者的实体正文的媒体类型</li>
-<li>Last-Modified：实体报头域用于指示资源的最后修改日期和时间</li>
-<li>Expires：实体报头域给出响应过期的日期和时间。eg：为了让浏览器不要缓存页面，我们也可以利用Expires实体报头域，设置为0</li>
-</ol>
-</li>
-<li>HTTP协议通常是承载于TCP洗衣之上的，有时也承载于TLS或SSL协议层之上，这时称之为HTTPS协议。默认HTTP的端口号为80，HTTPS的端口号为443</li>
-<li><img src="http://i.imgur.com/PiBPPM0.png" alt="HTTP请求报文" /></li>
-<li><img src="http://i.imgur.com/EZ63EEL.png" alt="HTTP响应报文" /></li>
-<li>GET与POST方法有以下区别：
-
-<ol>
-<li>Get是向服务器发索取数据的一种请求，而Post是向服务器提交数据的一种请求，要提交的数据位于信息头后面的实体中。</li>
-<li>在客户端，Get方式在通过URL提交数据，数据在URL中可以看到；POST方式，数据放置在HTML HEADER内提交</li>
-<li>GET方式提交的数据最多只能有1024字节，而POST则没有此限制</li>
-</ol>
-</li>
-<li></li>
-</ol>
-
-
-<h2>NetBIOS</h2>
-
-<p><img src="http://i.imgur.com/OAHwfCG.png" alt="NetBIOS实现过程" /></p>
-
-<ol>
-<li>NetBIOS协议是一种在局域网上的程序可以使用的应用程序编程接口，为v横须提供了请求低级服务的统一的命令集，作用是为了给局域网提供网络以及其他特殊功能，几乎所有的局域网都是在NetBIOS协议的基础上工作的。NetBIOS协议，简单来说就是通过访问设备名称就可以实现对IP地址的访问。</li>
-<li>在Windows操作系统中，默认情况下在安装TCP/IP协议后会自动安装NetBIOS协议。</li>
-<li>ping主机名的第一个数据包就是NBNS(NetBIOS Name Server)协议包，它是TCP/IP上的NetBIOS协议族的一部分，它在基于NetBIOS名称访问的网络上提供主机名和地址映射方法。NBNS是动态DNS的一种。Microsoft的NBNS实现称为WINS。NetBIOS的报文类型较多，结构复杂，在不同的网络化境和不同的用途中会使用不同的报文，可用端口进行区分。如图所示NetBIOS协议架构
-<img src="http://i.imgur.com/MxZkqby.jpg" alt="NetBIOS协议架构" /></li>
-<li>NetBIOS数据报有很多不同格式，主要取决于服务和信息类型，以及用以传送NetBIOS数据报的传输协议。NetBIOS协议架构包含三种基本服务：NAME、SESSION和DATAGRAM，其中NAME所用协议就是NBNS协议</li>
-<li>WINS协议使用的报文即为NetBIOS的名字报文，其总体格式如下图所示
-<img src="http://i.imgur.com/i2pWvfO.png" alt="NetBIOS名字报文格式" />其中2字节通用标志中更详细的字段划分为：操作代码(5bits)操作标志(7bits)结果代码(4bits)
-
-<ol>
-<li>事物ID：请求方为每次名字服务请求所设定的ID值，响应方在相应的响应报文中要填入这个事物ID值</li>
-<li>操作代码：指示报文的类型,最高位为0表示数据包为Reauest请求，最高位为1表示数据包为Response应答，其余4个比特均为0</li>
-<li>操作标志：操作标志位，最低位为1表示广播或者多播，最低位为0表示单播，其他位均为0</li>
-<li>结果代码：在相应报文中指示请求的结果，一般为0</li>
-<li>问题记录个数：请求查询问题的个数，对于Request数据包，该值为1，对于Response数据包，该值为0</li>
-<li>回答记录个数：对于Response数据包有用，Response数据包中响应问题的个数，一般为1</li>
-<li>权威记录个数：在权威记录部分的记录数量，用不到的时候为0</li>
-<li>附加记录个数：在附加记录部分数量，用不到的时候为0</li>
-</ol>
-</li>
-<li>报文的前12字节总称NetBIOS名字报文的首部，通过首部可以判断是否为名字查询的报文。NetBIOS名字报文中最常见的是携带问题记录的报文，问题记录的格式是：问题名称(若干字节) 问题类型(2字节) 问题类别(2字节)。通过携带问题记录的报文，我们可以得到要查询的名字字符，如果和本机名相符，就发送报文响应，相应中带有IP地址，发送广播的主机就会得到该IP地址</li>
-<li>NETBIOS会话报文具有通用的4字节首部和与类型相关的报文内容：类型(1字节) 标志(1字节) 长度(2字节) 内容(若干字节)
-
-<ol>
-<li>类型：指名NetBIOS会话报文的类型，可用的值有：
-
-<ul>
-<li>0x00:会话消息</li>
-<li>0x81:会话请求</li>
-<li>0x82:正面会话响应</li>
-<li>0x83:负面会话响应</li>
-<li>0x84:重定向会话响应</li>
-<li>0x85:会话保活</li>
-</ul>
-</li>
-<li>标志：0~6位保留未用，第7位作为扩展的长度位，使NetBIOS会话报文的内容部分最多可以达到128K字节</li>
-<li>长度：NetBIOS会话报文的内容部分的长度，不包括首部的4字节</li>
-</ol>
-</li>
-<li><img src="http://i.imgur.com/O24egoi.png" alt="NBNS" />计算机1向计算机2的137端口发送一个NODE STATUS REQUEST请求数据包，计算机2收到该数据包后，向计算机1返回一个NODE STATUS RESPONSE响应数据包，该数据包中包含计算机2的MAC地址、机器地址、所属的工作组等信息</li>
-<li>NODE STATUS REQUEST数据包由12字节的HEADER域和38字节的QUESTION ENTRIES域两个部分组成，HEADER域分为8个字段：
-<img src="http://i.imgur.com/VKpTVaA.png" alt="NetBIOS HEADER" /></li>
-<li>QUESTION ENTRIES域组成
-<img src="http://i.imgur.com/93RGC0D.png" alt="QUESTION ENTRIES" />其中：
-
-<ul>
-<li>QUESTION_NAME为要查询的远程计算机的名称，长度为34字节。NBNS规定，计算机NetBIOS的名称不超过16字节，且最后一个字节必须为0x0；</li>
-<li>QUESTION_TYPE对于REQUEST数据包取值为0x0021</li>
-<li>QUESTION_CLASS取值为0x0001</li>
-</ul>
-</li>
-<li>当某台机器的137端口收到NODE STATUS REQUEST请求数据包之后，由该机器的NETBIOS服务随即生成并返回一个NODE STATUS RESPONSE响应数据包。该响应数据包由HEADER域和RESOURCE RECORD域两部分组成。RESOURCE RECORD域组成如图所示：
-<img src="http://i.imgur.com/IPEjagx.png" alt="RESOURCE RECORD" />
-
-<ul>
-<li>RP_NAME：34字节，与Request数据包的QUESTION_NAME格式定义相同</li>
-<li>RP_TYPE：与Request数据包中的QUESTION_TYPE字段相同</li>
-<li>RP_CLASS：与前面Request数据包的QUESTION_CLASS字段取值相同</li>
-<li>TTL：4字节，取值为0x00000000</li>
-<li>RDLENGTH:表示从NUM_NAMES字段开始到整个RESOURCE RECORD结束共有多少个字节</li>
-<li>NUM_NAMES：表示紧随其后的NODE_NAME ARRAY数组的元素个数，数组的每个元素具有NODE_NAME结构，如图所示为NODE_NAME结构：
-<img src="http://i.imgur.com/ArSP1Xp.png" alt="NODE_NAME" /></li>
-<li>NETBIOS FORMAT NAME表示远程主机的机器名或者组名，具体依赖NAME_FLAG字段的取值；</li>
-<li>NAME_FLAGs：当最高位为1时，NETBIOS FORMAT NAME字段中存储的是Group NetBIOS名称，即工作组名，当最高位为0时，NETBIOS FORMAT NAMR字段中存储的是机器名</li>
-<li>STATICS：包含的字段非常多，开始6字节是远程主机的MAC地址</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>SNTP协议</h2>
-
-<ol>
-<li>SNTP是简单网络时间协议，是用来使设备时间同步化的一种协议，在一些应用场合里，时间同步时十分重要的，贴别是随着设备运行时间增长，时间误差就越来越大，因为设备中晶振自身会产生误差，那么SNTP协议就可以解决这个问题。</li>
-<li>报文格式：<img src="http://i.imgur.com/y9GprbA.gif" alt="SNTP报文格式" />
-
-<ul>
-<li>LI: 跳跃指示器</li>
-<li>VN：版本号</li>
-<li>Mode：模式
-
-<ul>
-<li>0——预留</li>
-<li>1——对称行为</li>
-<li>3——客户机</li>
-<li>4——服务器</li>
-<li>5——广播</li>
-<li>6——NTP控制信息</li>
-</ul>
-</li>
-<li>Stratum：对本地时钟级别的整体识别</li>
-<li>Poll：有符号整数表示连续信息间的最大间隔</li>
-<li>Precision：有符号整数表示本地时钟精确度</li>
-<li>Root Delay：有符号固定点序号表示主要参考源的总延迟，很短时间内的位15到16间的分段点</li>
-<li>Root Dispersion：无符号固定点序号表示相对主要参考源的正常差错，很短时间内的位15到16间的分段点</li>
-<li>Reference Identifier：识别特殊参考源</li>
-<li>Originate Timestamp：这是向服务器请求分离客户机的时间，采用64位时标格式</li>
-<li>Receive Timestamp：这是向服务器请求到达客户机的时间，采用64位时标格式</li>
-<li>Transmit Timestamp：这是客户机答复分离服务器的时间，采用64位时标格式</li>
-<li>Authenticator：当实现了NTP认证模式主要标识符和信息数字域就包括已定义的信息认证代码信息</li>
-</ul>
-</li>
-<li>原理图：<img src="http://i.imgur.com/kKI2sUY.png" alt="SNTP原理示意图" /></li>
 </ol>
 
 ]]></content>

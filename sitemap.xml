@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/12/i-dot-mx280/</loc>
+    <lastmod>2015-11-12T15:40:17+08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/blog/2015/11/11/matlab/</loc>
+    <lastmod>2015-11-11T22:45:49+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2015/11/10/uml-knowledges/</loc>
     <lastmod>2015-11-10T15:44:29+08:00</lastmod>
   </url>
   <url>
-    <loc>http://suda-morris.github.io/blog/2015/11/09/review-c-plus-plus/</loc>
+    <loc>http://suda-morris.github.io/blog/2015/11/09/c++Primer/</loc>
     <lastmod>2015-11-09T18:08:50+08:00</lastmod>
   </url>
   <url>
@@ -296,5 +304,17 @@
   </url>
   <url>
     <loc>http://suda-morris.github.io/blog/categories/cortexm0-slash-m0-plus/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/posts/2/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/posts/3/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/posts/4/</loc>
+  </url>
+  <url>
+    <loc>http://suda-morris.github.io/posts/5/</loc>
   </url>
 </urlset>
