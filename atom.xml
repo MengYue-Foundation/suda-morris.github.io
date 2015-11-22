@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-11-21T21:03:17+08:00</updated>
+  <updated>2015-11-22T19:24:35+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,1237 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[TinyHttpd]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/11/22/tinyhttpd/"/>
+    <updated>2015-11-22T15:56:10+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/11/22/tinyhttpd</id>
+    <content type="html"><![CDATA[<h2>简介</h2>
+
+<ol>
+<li>tinyhttpd是一个不到500行的超轻量型Http Server</li>
+</ol>
+
+
+<h2>函数介绍</h2>
+
+<ol>
+<li>void accept_request(int);
+
+<ul>
+<li>处理从套接字上监听到的一个HTTP请求，在这里可以很大一部分体现服务器处理请求流程</li>
+</ul>
+</li>
+<li>void bad_request(int);
+
+<ul>
+<li>返回给客户端这是一个错误请求，HTTP状态码400 BAD REQUEST</li>
+</ul>
+</li>
+<li>void cat(int, FILE *);
+
+<ul>
+<li>读取服务器上某个文件写到socket套接字</li>
+</ul>
+</li>
+<li>void cannot_execute(int);
+
+<ul>
+<li>主要处理发生在执行cgi程序时出现的错误</li>
+</ul>
+</li>
+<li>void error_die(const char *);
+
+<ul>
+<li>将错误信息写到perror并退出</li>
+</ul>
+</li>
+<li>void execute_cgi(int, const char <em>, const char </em>, const char *);
+
+<ul>
+<li>运行cgi程序的处理</li>
+</ul>
+</li>
+<li>int get_line(int, char *, int);
+
+<ul>
+<li>读取套接字的一行，把回车换行等情况都统一为换行结束符</li>
+</ul>
+</li>
+<li>void headers(int, const char *);
+
+<ul>
+<li>把HTTP响应的头部写到套接字</li>
+</ul>
+</li>
+<li>void not_found(int);
+
+<ul>
+<li>主要处理找不到请求的文件时的情况</li>
+</ul>
+</li>
+<li>void serve_file(int, const char *);
+
+<ul>
+<li>调用cat把服务器文件返回给浏览器</li>
+</ul>
+</li>
+<li>int startup(u_short *);
+
+<ul>
+<li>初始化httpd服务，包括建立套接字，绑定端口，进行监听等</li>
+</ul>
+</li>
+<li>void unimplemented(int);
+
+<ul>
+<li>返回给浏览器表明收到的HTTP请求所用的method不被支持</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>源码详解</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+<span class='line-number'>224</span>
+<span class='line-number'>225</span>
+<span class='line-number'>226</span>
+<span class='line-number'>227</span>
+<span class='line-number'>228</span>
+<span class='line-number'>229</span>
+<span class='line-number'>230</span>
+<span class='line-number'>231</span>
+<span class='line-number'>232</span>
+<span class='line-number'>233</span>
+<span class='line-number'>234</span>
+<span class='line-number'>235</span>
+<span class='line-number'>236</span>
+<span class='line-number'>237</span>
+<span class='line-number'>238</span>
+<span class='line-number'>239</span>
+<span class='line-number'>240</span>
+<span class='line-number'>241</span>
+<span class='line-number'>242</span>
+<span class='line-number'>243</span>
+<span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
+<span class='line-number'>279</span>
+<span class='line-number'>280</span>
+<span class='line-number'>281</span>
+<span class='line-number'>282</span>
+<span class='line-number'>283</span>
+<span class='line-number'>284</span>
+<span class='line-number'>285</span>
+<span class='line-number'>286</span>
+<span class='line-number'>287</span>
+<span class='line-number'>288</span>
+<span class='line-number'>289</span>
+<span class='line-number'>290</span>
+<span class='line-number'>291</span>
+<span class='line-number'>292</span>
+<span class='line-number'>293</span>
+<span class='line-number'>294</span>
+<span class='line-number'>295</span>
+<span class='line-number'>296</span>
+<span class='line-number'>297</span>
+<span class='line-number'>298</span>
+<span class='line-number'>299</span>
+<span class='line-number'>300</span>
+<span class='line-number'>301</span>
+<span class='line-number'>302</span>
+<span class='line-number'>303</span>
+<span class='line-number'>304</span>
+<span class='line-number'>305</span>
+<span class='line-number'>306</span>
+<span class='line-number'>307</span>
+<span class='line-number'>308</span>
+<span class='line-number'>309</span>
+<span class='line-number'>310</span>
+<span class='line-number'>311</span>
+<span class='line-number'>312</span>
+<span class='line-number'>313</span>
+<span class='line-number'>314</span>
+<span class='line-number'>315</span>
+<span class='line-number'>316</span>
+<span class='line-number'>317</span>
+<span class='line-number'>318</span>
+<span class='line-number'>319</span>
+<span class='line-number'>320</span>
+<span class='line-number'>321</span>
+<span class='line-number'>322</span>
+<span class='line-number'>323</span>
+<span class='line-number'>324</span>
+<span class='line-number'>325</span>
+<span class='line-number'>326</span>
+<span class='line-number'>327</span>
+<span class='line-number'>328</span>
+<span class='line-number'>329</span>
+<span class='line-number'>330</span>
+<span class='line-number'>331</span>
+<span class='line-number'>332</span>
+<span class='line-number'>333</span>
+<span class='line-number'>334</span>
+<span class='line-number'>335</span>
+<span class='line-number'>336</span>
+<span class='line-number'>337</span>
+<span class='line-number'>338</span>
+<span class='line-number'>339</span>
+<span class='line-number'>340</span>
+<span class='line-number'>341</span>
+<span class='line-number'>342</span>
+<span class='line-number'>343</span>
+<span class='line-number'>344</span>
+<span class='line-number'>345</span>
+<span class='line-number'>346</span>
+<span class='line-number'>347</span>
+<span class='line-number'>348</span>
+<span class='line-number'>349</span>
+<span class='line-number'>350</span>
+<span class='line-number'>351</span>
+<span class='line-number'>352</span>
+<span class='line-number'>353</span>
+<span class='line-number'>354</span>
+<span class='line-number'>355</span>
+<span class='line-number'>356</span>
+<span class='line-number'>357</span>
+<span class='line-number'>358</span>
+<span class='line-number'>359</span>
+<span class='line-number'>360</span>
+<span class='line-number'>361</span>
+<span class='line-number'>362</span>
+<span class='line-number'>363</span>
+<span class='line-number'>364</span>
+<span class='line-number'>365</span>
+<span class='line-number'>366</span>
+<span class='line-number'>367</span>
+<span class='line-number'>368</span>
+<span class='line-number'>369</span>
+<span class='line-number'>370</span>
+<span class='line-number'>371</span>
+<span class='line-number'>372</span>
+<span class='line-number'>373</span>
+<span class='line-number'>374</span>
+<span class='line-number'>375</span>
+<span class='line-number'>376</span>
+<span class='line-number'>377</span>
+<span class='line-number'>378</span>
+<span class='line-number'>379</span>
+<span class='line-number'>380</span>
+<span class='line-number'>381</span>
+<span class='line-number'>382</span>
+<span class='line-number'>383</span>
+<span class='line-number'>384</span>
+<span class='line-number'>385</span>
+<span class='line-number'>386</span>
+<span class='line-number'>387</span>
+<span class='line-number'>388</span>
+<span class='line-number'>389</span>
+<span class='line-number'>390</span>
+<span class='line-number'>391</span>
+<span class='line-number'>392</span>
+<span class='line-number'>393</span>
+<span class='line-number'>394</span>
+<span class='line-number'>395</span>
+<span class='line-number'>396</span>
+<span class='line-number'>397</span>
+<span class='line-number'>398</span>
+<span class='line-number'>399</span>
+<span class='line-number'>400</span>
+<span class='line-number'>401</span>
+<span class='line-number'>402</span>
+<span class='line-number'>403</span>
+<span class='line-number'>404</span>
+<span class='line-number'>405</span>
+<span class='line-number'>406</span>
+<span class='line-number'>407</span>
+<span class='line-number'>408</span>
+<span class='line-number'>409</span>
+<span class='line-number'>410</span>
+<span class='line-number'>411</span>
+<span class='line-number'>412</span>
+<span class='line-number'>413</span>
+<span class='line-number'>414</span>
+<span class='line-number'>415</span>
+<span class='line-number'>416</span>
+<span class='line-number'>417</span>
+<span class='line-number'>418</span>
+<span class='line-number'>419</span>
+<span class='line-number'>420</span>
+<span class='line-number'>421</span>
+<span class='line-number'>422</span>
+<span class='line-number'>423</span>
+<span class='line-number'>424</span>
+<span class='line-number'>425</span>
+<span class='line-number'>426</span>
+<span class='line-number'>427</span>
+<span class='line-number'>428</span>
+<span class='line-number'>429</span>
+<span class='line-number'>430</span>
+<span class='line-number'>431</span>
+<span class='line-number'>432</span>
+<span class='line-number'>433</span>
+<span class='line-number'>434</span>
+<span class='line-number'>435</span>
+<span class='line-number'>436</span>
+<span class='line-number'>437</span>
+<span class='line-number'>438</span>
+<span class='line-number'>439</span>
+<span class='line-number'>440</span>
+<span class='line-number'>441</span>
+<span class='line-number'>442</span>
+<span class='line-number'>443</span>
+<span class='line-number'>444</span>
+<span class='line-number'>445</span>
+<span class='line-number'>446</span>
+<span class='line-number'>447</span>
+<span class='line-number'>448</span>
+<span class='line-number'>449</span>
+<span class='line-number'>450</span>
+<span class='line-number'>451</span>
+<span class='line-number'>452</span>
+<span class='line-number'>453</span>
+<span class='line-number'>454</span>
+<span class='line-number'>455</span>
+<span class='line-number'>456</span>
+<span class='line-number'>457</span>
+<span class='line-number'>458</span>
+<span class='line-number'>459</span>
+<span class='line-number'>460</span>
+<span class='line-number'>461</span>
+<span class='line-number'>462</span>
+<span class='line-number'>463</span>
+<span class='line-number'>464</span>
+<span class='line-number'>465</span>
+<span class='line-number'>466</span>
+<span class='line-number'>467</span>
+<span class='line-number'>468</span>
+<span class='line-number'>469</span>
+<span class='line-number'>470</span>
+<span class='line-number'>471</span>
+<span class='line-number'>472</span>
+<span class='line-number'>473</span>
+<span class='line-number'>474</span>
+<span class='line-number'>475</span>
+<span class='line-number'>476</span>
+<span class='line-number'>477</span>
+<span class='line-number'>478</span>
+<span class='line-number'>479</span>
+<span class='line-number'>480</span>
+<span class='line-number'>481</span>
+<span class='line-number'>482</span>
+<span class='line-number'>483</span>
+<span class='line-number'>484</span>
+<span class='line-number'>485</span>
+<span class='line-number'>486</span>
+<span class='line-number'>487</span>
+<span class='line-number'>488</span>
+<span class='line-number'>489</span>
+<span class='line-number'>490</span>
+<span class='line-number'>491</span>
+<span class='line-number'>492</span>
+<span class='line-number'>493</span>
+<span class='line-number'>494</span>
+<span class='line-number'>495</span>
+<span class='line-number'>496</span>
+<span class='line-number'>497</span>
+<span class='line-number'>498</span>
+<span class='line-number'>499</span>
+<span class='line-number'>500</span>
+<span class='line-number'>501</span>
+<span class='line-number'>502</span>
+<span class='line-number'>503</span>
+<span class='line-number'>504</span>
+<span class='line-number'>505</span>
+<span class='line-number'>506</span>
+<span class='line-number'>507</span>
+<span class='line-number'>508</span>
+<span class='line-number'>509</span>
+<span class='line-number'>510</span>
+<span class='line-number'>511</span>
+<span class='line-number'>512</span>
+<span class='line-number'>513</span>
+<span class='line-number'>514</span>
+<span class='line-number'>515</span>
+<span class='line-number'>516</span>
+<span class='line-number'>517</span>
+<span class='line-number'>518</span>
+<span class='line-number'>519</span>
+<span class='line-number'>520</span>
+<span class='line-number'>521</span>
+<span class='line-number'>522</span>
+<span class='line-number'>523</span>
+<span class='line-number'>524</span>
+<span class='line-number'>525</span>
+<span class='line-number'>526</span>
+<span class='line-number'>527</span>
+<span class='line-number'>528</span>
+<span class='line-number'>529</span>
+<span class='line-number'>530</span>
+<span class='line-number'>531</span>
+<span class='line-number'>532</span>
+<span class='line-number'>533</span>
+<span class='line-number'>534</span>
+<span class='line-number'>535</span>
+<span class='line-number'>536</span>
+<span class='line-number'>537</span>
+<span class='line-number'>538</span>
+<span class='line-number'>539</span>
+<span class='line-number'>540</span>
+<span class='line-number'>541</span>
+<span class='line-number'>542</span>
+<span class='line-number'>543</span>
+<span class='line-number'>544</span>
+<span class='line-number'>545</span>
+<span class='line-number'>546</span>
+<span class='line-number'>547</span>
+<span class='line-number'>548</span>
+<span class='line-number'>549</span>
+<span class='line-number'>550</span>
+<span class='line-number'>551</span>
+<span class='line-number'>552</span>
+<span class='line-number'>553</span>
+<span class='line-number'>554</span>
+<span class='line-number'>555</span>
+<span class='line-number'>556</span>
+<span class='line-number'>557</span>
+<span class='line-number'>558</span>
+<span class='line-number'>559</span>
+<span class='line-number'>560</span>
+<span class='line-number'>561</span>
+<span class='line-number'>562</span>
+<span class='line-number'>563</span>
+<span class='line-number'>564</span>
+<span class='line-number'>565</span>
+<span class='line-number'>566</span>
+<span class='line-number'>567</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/* J. David&#39;s webserver */</span>
+</span><span class='line'><span class="cm">/* This is a simple webserver. </span>
+</span><span class='line'><span class="cm"> * Created November 1999 by J. David Blackstone. </span>
+</span><span class='line'><span class="cm"> * CSE 4344 (Network concepts), Prof. Zeigler </span>
+</span><span class='line'><span class="cm"> * University of Texas at Arlington </span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="cm">/* This program compiles for Sparc Solaris 2.6. </span>
+</span><span class='line'><span class="cm"> * To compile for Linux: </span>
+</span><span class='line'><span class="cm"> *  1) Comment out the #include &lt;pthread.h&gt; line. </span>
+</span><span class='line'><span class="cm"> *  2) Comment out the line that defines the variable newthread. </span>
+</span><span class='line'><span class="cm"> *  3) Comment out the two lines that run pthread_create(). </span>
+</span><span class='line'><span class="cm"> *  4) Uncomment the line that runs accept_request(). </span>
+</span><span class='line'><span class="cm"> *  5) Remove -lsocket from the Makefile. </span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;sys/socket.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;sys/types.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;netinet/in.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;arpa/inet.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;unistd.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;ctype.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;strings.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;string.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;sys/stat.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;pthread.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;sys/wait.h&gt;  </span>
+</span><span class='line'><span class="cp">#include &lt;stdlib.h&gt;  </span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define ISspace(x) isspace((int)(x))  </span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define SERVER_STRING &quot;Server: jdbhttpd/0.1.0\r\n&quot;  </span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">accept_request</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">bad_request</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">cat</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">cannot_execute</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">error_die</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">execute_cgi</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">get_line</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">headers</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">not_found</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">serve_file</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">startup</span><span class="p">(</span><span class="n">u_short</span> <span class="o">*</span><span class="p">);</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">unimplemented</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* A request has caused a call to accept() on the server port to </span>
+</span><span class='line'><span class="cm"> * return.  Process the request appropriately. </span>
+</span><span class='line'><span class="cm"> * Parameters: the socket connected to the client */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">accept_request</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">method</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">url</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="mi">512</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="cm">/* becomes true if server decides this is a CGI program */</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="o">*</span><span class="n">query_string</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*得到请求的第一行*/</span>
+</span><span class='line'>    <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="cm">/*把客户端的请求方法存到 method 数组*/</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">method</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*如果既不是 GET 又不是 POST 则无法处理 */</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">unimplemented</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* POST 的时候开启 cgi */</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*读取 url 地址*/</span>
+</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)))</span>
+</span><span class='line'>        <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*存下 url */</span>
+</span><span class='line'>        <span class="n">url</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">url</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*处理 GET 方法*/</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/* 待处理请求为 url */</span>
+</span><span class='line'>        <span class="n">query_string</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="o">*</span><span class="n">query_string</span> <span class="o">!=</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">*</span><span class="n">query_string</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">))</span>
+</span><span class='line'>            <span class="n">query_string</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="cm">/* GET 方法特点，? 后面为参数*/</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">query_string</span> <span class="o">==</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/*开启 cgi */</span>
+</span><span class='line'>            <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>            <span class="o">*</span><span class="n">query_string</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">query_string</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*格式化 url 到 path 数组，html 文件都在 htdocs 中*/</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;htdocs%s&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*默认情况为 index.html */</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="n">strlen</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;/&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">strcat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;index.html&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*根据路径找到对应文件 */</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*把所有 headers 的信息都丢弃*/</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
+</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>        <span class="cm">/*回应客户端找不到*/</span>
+</span><span class='line'>        <span class="n">not_found</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*如果是个目录，则默认使用该目录下 index.html 文件*/</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">((</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IFMT</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_IFDIR</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">strcat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;/index.html&quot;</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXUSR</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXGRP</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXOTH</span><span class="p">)</span>    <span class="p">)</span>
+</span><span class='line'>          <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>      <span class="cm">/*不是 cgi,直接把服务器文件返回，否则执行 cgi */</span>
+</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cgi</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">serve_file</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">execute_cgi</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">query_string</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*断开与客户端的连接（HTTP 特点：无连接）*/</span>
+</span><span class='line'>    <span class="n">close</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Inform the client that a request it has made has a problem. </span>
+</span><span class='line'><span class="cm"> * Parameters: client socket */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">bad_request</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*回应客户端错误的 HTTP 请求 */</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 400 BAD REQUEST</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;P&gt;Your browser sent a bad request, &quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;such as a POST without a Content-Length.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Put the entire contents of a file out on a socket.  This function </span>
+</span><span class='line'><span class="cm"> * is named after the UNIX &quot;cat&quot; command, because it might have been </span>
+</span><span class='line'><span class="cm"> * easier just to do something like pipe, fork, and exec(&quot;cat&quot;). </span>
+</span><span class='line'><span class="cm"> * Parameters: the client socket descriptor </span>
+</span><span class='line'><span class="cm"> *             FILE pointer for the file to cat */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">cat</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">resource</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*读取文件中的所有数据写到 socket */</span>
+</span><span class='line'>    <span class="n">fgets</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">resource</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">feof</span><span class="p">(</span><span class="n">resource</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">fgets</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">resource</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Inform the client that a CGI script could not be executed. </span>
+</span><span class='line'><span class="cm"> * Parameter: the client socket descriptor. */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">cannot_execute</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* 回应客户端 cgi 无法执行*/</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 500 Internal Server Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;P&gt;Error prohibited CGI execution.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Print out an error message with perror() (for system errors; based </span>
+</span><span class='line'><span class="cm"> * on value of errno, which indicates system call errors) and exit the </span>
+</span><span class='line'><span class="cm"> * program indicating an error. */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">error_die</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="cm">/*出错信息处理 */</span>
+</span><span class='line'>    <span class="n">perror</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Execute a CGI script.  Will need to set environment variables as </span>
+</span><span class='line'><span class="cm"> * appropriate. </span>
+</span><span class='line'><span class="cm"> * Parameters: client socket descriptor </span>
+</span><span class='line'><span class="cm"> *             path to the CGI script */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">execute_cgi</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">method</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">query_string</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi_output</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi_input</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>    <span class="kt">pid_t</span> <span class="n">pid</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">content_length</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="cm">/*把所有的 HTTP header 读取并丢弃*/</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
+</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>    <span class="k">else</span>    <span class="cm">/* POST */</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/* 对 POST 的 HTTP 请求中找出 content_length */</span>
+</span><span class='line'>        <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/*利用 \0 进行分隔 */</span>
+</span><span class='line'>            <span class="n">buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="cm">/* HTTP 请求的特点*/</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Length:&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>                <span class="n">content_length</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="mi">16</span><span class="p">]));</span>
+</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="cm">/*没有找到 content_length */</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">content_length</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/*错误请求*/</span>
+</span><span class='line'>            <span class="n">bad_request</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* 正确，HTTP 状态码 200 */</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* 建立管道*/</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*错误处理*/</span>
+</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="cm">/*建立管道*/</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*错误处理*/</span>
+</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*错误处理*/</span>
+</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="cm">/* child: CGI script */</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">char</span> <span class="n">meth_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+</span><span class='line'>        <span class="kt">char</span> <span class="n">query_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+</span><span class='line'>        <span class="kt">char</span> <span class="n">length_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* 把 STDOUT 重定向到 cgi_output 的写入端 */</span>
+</span><span class='line'>        <span class="n">dup2</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* 把 STDIN 重定向到 cgi_input 的读取端 */</span>
+</span><span class='line'>        <span class="n">dup2</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* 关闭 cgi_input 的写入端 和 cgi_output 的读取端 */</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>        <span class="cm">/*设置 request_method 的环境变量*/</span>
+</span><span class='line'>        <span class="n">sprintf</span><span class="p">(</span><span class="n">meth_env</span><span class="p">,</span> <span class="s">&quot;REQUEST_METHOD=%s&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">putenv</span><span class="p">(</span><span class="n">meth_env</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/*设置 query_string 的环境变量*/</span>
+</span><span class='line'>            <span class="n">sprintf</span><span class="p">(</span><span class="n">query_env</span><span class="p">,</span> <span class="s">&quot;QUERY_STRING=%s&quot;</span><span class="p">,</span> <span class="n">query_string</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">putenv</span><span class="p">(</span><span class="n">query_env</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span> <span class="p">{</span>   <span class="cm">/* POST */</span>
+</span><span class='line'>            <span class="cm">/*设置 content_length 的环境变量*/</span>
+</span><span class='line'>            <span class="n">sprintf</span><span class="p">(</span><span class="n">length_env</span><span class="p">,</span> <span class="s">&quot;CONTENT_LENGTH=%d&quot;</span><span class="p">,</span> <span class="n">content_length</span><span class="p">);</span>
+</span><span class='line'>            <span class="n">putenv</span><span class="p">(</span><span class="n">length_env</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="cm">/*用 execl 运行 cgi 程序*/</span>
+</span><span class='line'>        <span class="n">execl</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>    <span class="cm">/* parent */</span>
+</span><span class='line'>        <span class="cm">/* 关闭 cgi_input 的读取端 和 cgi_output 的写入端 */</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="cm">/*接收 POST 过来的数据*/</span>
+</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">content_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">recv</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>                <span class="cm">/*把 POST 数据写入 cgi_input，现在重定向到 STDIN */</span>
+</span><span class='line'>                <span class="n">write</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="cm">/*读取 cgi_output 的管道输出到客户端，该管道输入是 STDOUT */</span>
+</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/*关闭管道*/</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span class='line'>        <span class="cm">/*等待子进程*/</span>
+</span><span class='line'>        <span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Get a line from a socket, whether the line ends in a newline, </span>
+</span><span class='line'><span class="cm"> * carriage return, or a CRLF combination.  Terminates the string read </span>
+</span><span class='line'><span class="cm"> * with a null character.  If no newline indicator is found before the </span>
+</span><span class='line'><span class="cm"> * end of the buffer, the string is terminated with a null.  If any of </span>
+</span><span class='line'><span class="cm"> * the above three line terminators is read, the last character of the </span>
+</span><span class='line'><span class="cm"> * string will be a linefeed and the string will be terminated with a </span>
+</span><span class='line'><span class="cm"> * null character. </span>
+</span><span class='line'><span class="cm"> * Parameters: the socket descriptor </span>
+</span><span class='line'><span class="cm"> *             the buffer to save the data in </span>
+</span><span class='line'><span class="cm"> *             the size of the buffer </span>
+</span><span class='line'><span class="cm"> * Returns: the number of bytes stored (excluding null) */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">get_line</span><span class="p">(</span><span class="kt">int</span> <span class="n">sock</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*把终止条件统一为 \n 换行符，标准化 buf 数组*/</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*一次仅接收一个字节*/</span>
+</span><span class='line'>        <span class="n">n</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/* DEBUG printf(&quot;%02X\n&quot;, c); */</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">{</span>
+</span><span class='line'>            <span class="cm">/*收到 \r 则继续接收下个字节，因为换行符可能是 \r\n */</span>
+</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+</span><span class='line'>            <span class="p">{</span>
+</span><span class='line'>                <span class="cm">/*使用 MSG_PEEK 标志使下一次读取依然可以得到这次读取的内容，可认为接收窗口不滑动*/</span>
+</span><span class='line'>                <span class="n">n</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MSG_PEEK</span><span class="p">);</span>
+</span><span class='line'>                <span class="cm">/* DEBUG printf(&quot;%02X\n&quot;, c); */</span>
+</span><span class='line'>                <span class="cm">/*但如果是换行符则把它吸收掉*/</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">((</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">))</span>
+</span><span class='line'>                    <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>                <span class="k">else</span>
+</span><span class='line'>                    <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>            <span class="cm">/*存到缓冲区*/</span>
+</span><span class='line'>            <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>        <span class="k">else</span>
+</span><span class='line'>            <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*返回 buf 数组大小*/</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Return the informational HTTP headers about a file. */</span>
+</span><span class='line'><span class="cm">/* Parameters: the socket to print the headers on </span>
+</span><span class='line'><span class="cm"> *             the name of the file */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">headers</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">filename</span><span class="p">;</span>  <span class="cm">/* could use filename to determine file type */</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*正常的 HTTP header */</span>
+</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
+</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Give a client a 404 not found status message. */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">not_found</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* 404 页面 */</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 404 NOT FOUND</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;HTML&gt;&lt;TITLE&gt;Not Found&lt;/TITLE&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;BODY&gt;&lt;P&gt;The server could not fulfill</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;your request because the resource specified</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;is unavailable or nonexistent.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/BODY&gt;&lt;/HTML&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Send a regular file to the client.  Use headers, and report </span>
+</span><span class='line'><span class="cm"> * errors to client if they occur. </span>
+</span><span class='line'><span class="cm"> * Parameters: a pointer to a file structure produced from the socket </span>
+</span><span class='line'><span class="cm"> *              file descriptor </span>
+</span><span class='line'><span class="cm"> *             the name of the file to serve */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">serve_file</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">FILE</span> <span class="o">*</span><span class="n">resource</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*读取并丢弃 header */</span>
+</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
+</span><span class='line'>        <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*打开 sever 的文件*/</span>
+</span><span class='line'>    <span class="n">resource</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">resource</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">not_found</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">else</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*写 HTTP header */</span>
+</span><span class='line'>        <span class="n">headers</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">filename</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/*复制文件*/</span>
+</span><span class='line'>        <span class="n">cat</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">resource</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">fclose</span><span class="p">(</span><span class="n">resource</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* This function starts the process of listening for web connections </span>
+</span><span class='line'><span class="cm"> * on a specified port.  If the port is 0, then dynamically allocate a </span>
+</span><span class='line'><span class="cm"> * port and modify the original port variable to reflect the actual </span>
+</span><span class='line'><span class="cm"> * port. </span>
+</span><span class='line'><span class="cm"> * Parameters: pointer to variable containing the port to connect on </span>
+</span><span class='line'><span class="cm"> * Returns: the socket */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">startup</span><span class="p">(</span><span class="n">u_short</span> <span class="o">*</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">httpd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">name</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*建立 socket */</span>
+</span><span class='line'>    <span class="n">httpd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">httpd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
+</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="o">*</span><span class="n">port</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;bind&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*如果当前指定端口是 0，则动态随机分配一个端口*/</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">port</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="cm">/* if dynamically allocating a port */</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">namelen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">getsockname</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">namelen</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;getsockname&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">*</span><span class="n">port</span> <span class="o">=</span> <span class="n">ntohs</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">sin_port</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="cm">/*开始监听*/</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">listen</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;listen&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*返回 socket id */</span>
+</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="n">httpd</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="cm">/* Inform the client that the requested web method has not been </span>
+</span><span class='line'><span class="cm"> * implemented. </span>
+</span><span class='line'><span class="cm"> * Parameter: the client socket */</span>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">unimplemented</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/* HTTP method 不被支持*/</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 501 Method Not Implemented</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;Method Not Implemented</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/TITLE&gt;&lt;/HEAD&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;BODY&gt;&lt;P&gt;HTTP request method not supported.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/BODY&gt;&lt;/HTML&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**********************************************************************/</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">server_sock</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">u_short</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">client_sock</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">client_name</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">client_name_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">client_name</span><span class="p">);</span>
+</span><span class='line'>    <span class="kt">pthread_t</span> <span class="n">newthread</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/*在对应端口建立 httpd 服务*/</span>
+</span><span class='line'>    <span class="n">server_sock</span> <span class="o">=</span> <span class="n">startup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">port</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;httpd running on port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>        <span class="cm">/*套接字收到客户端连接请求*/</span>
+</span><span class='line'>        <span class="n">client_sock</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">server_sock</span><span class="p">,(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">client_name</span><span class="p">,</span><span class="o">&amp;</span><span class="n">client_name_len</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">client_sock</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;accept&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="cm">/*派生新线程用 accept_request 函数处理新请求*/</span>
+</span><span class='line'>        <span class="cm">/* accept_request(client_sock); */</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">newthread</span> <span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">accept_request</span><span class="p">,</span> <span class="n">client_sock</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">perror</span><span class="p">(</span><span class="s">&quot;pthread_create&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">close</span><span class="p">(</span><span class="n">server_sock</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[i.MX280]]></title>
@@ -2380,7 +3611,7 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>掺杂As使用As2O3</li>
 </ol>
 </li>
-<li>H,Li,Na,K,Ar等I，VIII族元素在Si的扩散属于<strong>间隙扩散</strong>，间隙扩散适用于原子半径小的元素。这些原子一旦克服了相邻位置之间的能量势垒便可以移动到相邻的位置上去</li>
+<li>H,Li,Na,K,Ar等I，VIII族元素在Si的扩散属于<strong>间隙扩散</strong>，间隙扩散适用于原子半径小的元素。</li>
 <li>替位扩散是一种空位扩散，依赖两种情况：
 
 <ol>
@@ -2534,7 +3765,7 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <ol>
 <li>IC制造过程中经过每一步高温工艺，都会对最终的杂质分布产生影响&ndash;杂质再分布</li>
 <li>随着IC器件中尺寸的不断缩小，要求杂质的再分布要尽可能小，因此“Thermal Budget”称为工艺集成中要考虑的一个非常重要的概念，尽量减少采用高温工艺，采用RTA等</li>
-<li>Rapid Thermal Process（RTP）和Rapid Thermal Nnnealing（RTA）成为常用工艺手段</li>
+<li>Rapid Thermal Process（RTP）和Rapid Thermal Annealing（RTA）成为常用工艺手段</li>
 <li>RTA用来激活杂质，修复缺陷，并且能够防止杂质扩散，具有较低的热预算，在“浅结”器件的制作中不可缺少</li>
 </ol>
 
@@ -4627,62 +5858,6 @@ property:value
 
 
 <h2>信息化概论</h2>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[微信公众号开发]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/09/13/wechat-develop/"/>
-    <updated>2015-09-13T21:31:02+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/09/13/wechat-develop</id>
-    <content type="html"><![CDATA[<h2>微信接口请求返回格式介绍</h2>
-
-<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
-
-<h2>常用接口功能</h2>
-
-<ol>
-<li>access_token获取接口
-
-<ul>
-<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
-<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
-</ul>
-</li>
-<li>获取微信服务器IP接口</li>
-<li>长链接转短链接接口</li>
-<li>获取用户列表</li>
-<li>获取用户基本信息(UnionID机制)</li>
-<li>网页授权接口
-
-<ul>
-<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
-<li>两种scope模式：
-
-<ol>
-<li>snsapi_base时只能获取到openid</li>
-<li>snsapi_userinfo时可获取到其他信息</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>素材管理接口</li>
-<li>高级群发接口
-
-<ul>
-<li>两个优点
-
-<ol>
-<li>可根据openid群发</li>
-<li>群发图文内容支持html</li>
-</ol>
-</li>
-</ul>
-</li>
-<li>JSSDK接口</li>
-<li>模板消息接口</li>
-</ol>
-
 ]]></content>
   </entry>
   

@@ -88,6 +88,118 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/13/u-boot-dot-lds/">
+		
+			u-boot.lds</a>
+	</h2>
+	<div class="entry-content">
+		<figure class='code'><figcaption><span>u-boot.lds</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">OUTPUT_FORMAT</span><span class="p">(</span><span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">OUTPUT_ARCH</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
+</span><span class='line'><span class="n">ENTRY</span><span class="p">(</span><span class="n">_start</span><span class="p">)</span>
+</span><span class='line'><span class="n">SECTIONS</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="mh">0x00000000</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">text</span>      <span class="p">:</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">start</span><span class="p">.</span><span class="n">o</span>  <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">s3c6410</span><span class="o">/</span><span class="n">cpu_init</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">onenand_cp</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">nand_cp</span><span class="p">.</span><span class="n">o</span>    <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">board</span><span class="o">/</span><span class="n">samsung</span><span class="o">/</span><span class="n">mini6410</span><span class="o">/</span><span class="n">nand_6410</span><span class="p">.</span><span class="n">fo</span>
+</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">movi</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="o">*</span><span class="p">(.</span><span class="n">text</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">lib_arm</span><span class="o">/</span><span class="n">div0</span><span class="p">.</span><span class="n">o</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">rodata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">rodata</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">data</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">data</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">got</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">got</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">__u_boot_cmd_start</span> <span class="o">=</span> <span class="p">.;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">u_boot_cmd</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">u_boot_cmd</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">__u_boot_cmd_end</span> <span class="o">=</span> <span class="p">.;</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">mmudata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">mmudata</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">__bss_start</span> <span class="o">=</span> <span class="p">.;</span>
+</span><span class='line'>  <span class="p">.</span><span class="nl">bss</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">bss</span><span class="p">)</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">_end</span> <span class="o">=</span> <span class="p">.;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-13T23:06:13+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/08/kdm-devenv/">
 		
 			KDM-DevEnv</a>
@@ -2424,143 +2536,14 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/18/think-in-octopress/">
-		
-			Octopress学习手记</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Windows下环境搭建</h2>
-
-<ol>
-<li>安装好Git，配置Git全局参数
-
-<ul>
-<li><code>git config --global user.name "suda-morris"</code></li>
-<li><code>git config --global user.email "362953310@qq.com"</code></li>
-<li><code>git config --global --list</code></li>
-</ul>
-</li>
-<li>生成SSH密钥并与github关联
-
-<ul>
-<li><code>ssh-keygen -t rsa -C "362953310@qq.com"</code></li>
-<li><code>将id_rsa.pub里面的内容拷贝到github中新建的SSH密钥中保存</code></li>
-<li>测试是否关联成功<code>ssh -T git@github.com</code></li>
-</ul>
-</li>
-<li>安装Ruby，安装时选择将Ruby添加到系统环境变量中</li>
-<li>安装Ruby后测试是否成功,终端下使用命令<code>ruby -v</code></li>
-<li>安装DevKit，进入DevKit文件夹下运行<code>ruby dk.rb init</code>和<code>ruby dk.rb install</code></li>
-<li>安装Octopress源码并且设置默认主题
-
-<ul>
-<li><code>git clone git://github.com/imathis/octopress.git Octopress</code></li>
-<li>修改gem的软件源<code>gem sources -a http://ruby.taobao.org</code></li>
-<li>移除原始gem软件源<code>gem sources -r http://rubygems.org</code></li>
-<li>打开Octopress文件夹下的Gemfile文件，将里面<code>source "http://rubygems.org"</code>修改为<code>source "http://ruby.taobao.org"</code></li>
-<li>安装bundler<code>gem install bundler</code></li>
-<li>安装bundler里面的软件包<code>bundle install</code></li>
-</ul>
-</li>
-<li>安装默认主题<code>rake install</code></li>
-</ol>
-
-
-<h2>常用命令</h2>
-
-<ul>
-<li>新建博客                      <code>rake new_post['New Blog']</code></li>
-<li>新建单页面                       <code>rake new_page['New Page']</code></li>
-<li>编译生成网页                    <code>rake generate</code></li>
-<li>本地服务器预览（默认4000端口）   <code>rake preview</code></li>
-<li>发布网页                      <code>rake deploy</code></li>
-</ul>
-
-
-<h2>基本语法</h2>
-
-<ul>
-<li>一级标题      <code>#</code></li>
-<li>二级标题      <code>##</code></li>
-<li>三级标题      <code>###</code></li>
-<li>引用            <code>&gt;</code></li>
-<li>加粗            <code>**内容**</code></li>
-<li>斜体            <code>*内容*</code></li>
-<li>列表            <code>*</code>或者<code>-</code></li>
-<li>图片            <code>！[图片的描述](链接地址)</code></li>
-</ul>
-
-
-<h2>优化</h2>
-
-<ul>
-<li>依次进入source目录，_includes目录，打开里面的<code>head.html</code>文件</li>
-<li>替换<code>head.html</code>文件里面的jquery链接地址为<code>src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"</code></li>
-</ul>
-
-
-<h2>将博客包装成App</h2>
-
-<ol>
-<li><a href="http://suda-morris.github.io/blog/2015/05/28/cordova-startup/">搭建Corvoda开发环境</a></li>
-<li><code>cordova create WenRisBlog com.morris.blog WenRisBlog</code></li>
-<li>进入到新建的项目目录中，<code>cordova platform add android</code>,增加对安卓平台的支持</li>
-<li>用eclipse将文件夹下面的platforms目录下的android项目导入(不要拷贝到工作空间)，一定要先clean一下后编译</li>
-<li>然后进入项目目下，执行<code>cordova build</code>进行编译，该编译会把www文件夹下的资源添加到项目中，因此在www文件夹下面的改动需要执行该命令才能生效</li>
-<li>在eclipse运行该项目或者在项目目录下执行命令<code>corvoda run --device</code></li>
-</ol>
-
-
-<h2>参考文献</h2>
-
-<ol>
-<li><a href="http://www.appinn.com/markdown/">MarkDown中文语法详解</a></li>
-<li><a href="http://wenku.baidu.com/view/1e250851240c844769eaeec6">极客学院Octopress课件</a></li>
-</ol>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-18T13:22:49+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/octopress/'>octopress</a>, <a class='category' href='/blog/categories/study/'>study</a>
-
-
-</div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         
             <a href="/posts/4" class="prev">Prev</a>
         
     
+    
+        <a href="/posts/6" class="next">Next</a>
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav>

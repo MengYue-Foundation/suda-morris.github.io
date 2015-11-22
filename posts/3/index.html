@@ -88,6 +88,94 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/09/13/wechat-develop/">
+		
+			微信公众号开发</a>
+	</h2>
+	<div class="entry-content">
+		<h2>微信接口请求返回格式介绍</h2>
+
+<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
+
+<h2>常用接口功能</h2>
+
+<ol>
+<li>access_token获取接口
+
+<ul>
+<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
+<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
+</ul>
+</li>
+<li>获取微信服务器IP接口</li>
+<li>长链接转短链接接口</li>
+<li>获取用户列表</li>
+<li>获取用户基本信息(UnionID机制)</li>
+<li>网页授权接口
+
+<ul>
+<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
+<li>两种scope模式：
+
+<ol>
+<li>snsapi_base时只能获取到openid</li>
+<li>snsapi_userinfo时可获取到其他信息</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>素材管理接口</li>
+<li>高级群发接口
+
+<ul>
+<li>两个优点
+
+<ol>
+<li>可根据openid群发</li>
+<li>群发图文内容支持html</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>JSSDK接口</li>
+<li>模板消息接口</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-13T21:31:02+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/wechat/'>wechat</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/08/20/basic-analog-knowledge/">
 		
 			Basic-Analog-Knowledge</a>
@@ -743,8 +831,9 @@
 <li>7：没有类似的用户</li>
 </ul>
 </li>
-<li>通信流程
+<li>通信流程：任何一个传输进程都以WRQ或者RRQ开始，收到一个确定应答并建立一个连接。创建连接时候，通信双方随机选择一个TID，因为是随机选择，因此两次选择同一个ID的可能性就很小了。每个包包括两个TID，发送者ID和接收者ID。这些ID用于在UDP通信时选择端口，在第一次请求的时候它会将请求发到TID 69，也就是服务器的69端口上，应答时，服务器使用一个选择好的TID作为源TID，并用上一个包中的TID作为目的ID进行发送。这两个被选择的ID在随后的通信中会被一直使用。连接成功后文件就以固定的512字节块的长度进行发送。每个数据包都包含一个数据块，块号从1开始而且是连续的。因此对于写入请求的确定是一个比较特殊的情况，因此它的包的包号是0.再发送下一个包之前，数据块必须得到确认响应包的确认。如果一个数据包的大小小于512字节，则表明传输结束。如果包在网络中丢失，接收端就会在超市以后重新传输最后一个未被确认的数据包，这就是导致丢失包的发送者重新发送丢失包。通信的双方都是数据的发出者与接收者，一方传输数据接收应答，另一方发出应答接收数据。发送者需要保留一个包在手头用于重新发送，由LOCk确认响应保证所有过去的包都已收到。大部分的错误会导致连接中断，错误由一个错误的数据包引起。这个包不会被确认，也不会被重新发送，因此另一方无法接收到。如果错误包丢失，则使用超时机制。错误主要由下面三种情况引起的：不能满足请求，收到的数据包内容错误，对需要资源的访问丢失。TFTP只有在一种情况下不中断连接，这种情况是源端口号不正确，在这种情况下，指示错误的包会被发送到源机。这个协议限制很多，这都是为了实现起来比较方便而进行的。
 <img src="http://i.imgur.com/A8vhQRY.jpg" alt="TFTP通信流程" /></li>
+<li>TFTP的工作过程很想停止等待协议，发送完一个文件块后就等待对方的确认，确认时应指名所确认的块号。发送完数据后在规定的时间内收不到确认就要重发数据PDU（协议数据单元），发送确认PDU的一方若在规定时间内收不到下一个文件块，也要重发确认PDU。这样保证文件传送不致因某一个数据报的丢失而告失败</li>
 </ol>
 
 
@@ -2590,76 +2679,6 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 	<a class='category' href='/blog/categories/poe/'>poe</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/29/about-nginx/">
-		
-			初识Nginx</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Nginx简介</h2>
-
-<blockquote><ol>
-<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
-<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
-<li>优点：高并发，部署简单，内存消耗少，成本低</li>
-<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
-</ol>
-</blockquote>
-
-<h2>其它服务器</h2>
-
-<ol>
-<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
-<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
-<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
-</ol>
-
-
-<h2>Nginx环境的搭建</h2>
-
-<ol>
-<li><a href="http://nginx.org">进入官网下载最新版</a></li>
-<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
-<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
-<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
-<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
-<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-29T10:21:37+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>
