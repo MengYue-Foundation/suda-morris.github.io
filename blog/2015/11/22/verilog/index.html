@@ -3,18 +3,22 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Review C++ - WenRis Blog</title>
+	<title>Verilog基础知识 - WenRis Blog</title>
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="补码的好处 0的表示唯一
-符号位可以直接参与运算 常用的I/O流类库操纵符 dec：数值数据采用十进制表示
-hex：数值数据采用十六进制表示
-oct： 数值数据采用八进制表示
-ws： 提取空白符
-endl：插入换行符，并刷新流
-ends： 插入空字符
-setsprecision(int)： &hellip;">
+	<meta name="description" content="Verilog的模块 模块是Verilog语言的基本单元，其基本语法如下： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+Module&lt;模块名&gt;（&lt;端口列表&gt;） 端口说明（input，output，inout） 参数定义 数据类型定义：指定模块内用到的数据对象为寄存器型、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,68 +94,52 @@ setsprecision(int)： &hellip;">
 	
 
 	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Review C++</h2>
-	<div class="entry-content"><h2>补码的好处</h2>
+	<h2 class="title">Verilog基础知识</h2>
+	<div class="entry-content"><h2>Verilog的模块</h2>
 
 <ol>
-<li>0的表示唯一</li>
-<li>符号位可以直接参与运算</li>
+<li>模块是Verilog语言的基本单元，其基本语法如下：</li>
 </ol>
 
 
-<h2>常用的I/O流类库操纵符</h2>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="n">Module</span><span class="o">&lt;</span><span class="err">模块名</span><span class="o">&gt;</span><span class="err">（</span><span class="o">&lt;</span><span class="err">端口列表</span><span class="o">&gt;</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">端口说明（</span><span class="k">input</span><span class="err">，</span><span class="k">output</span><span class="err">，</span><span class="k">inout</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">参数定义</span>
+</span><span class='line'>  <span class="err">数据类型定义：指定模块内用到的数据对象为寄存器型、存储器型还是连续型</span>
+</span><span class='line'>  <span class="err">连续赋值语句（</span><span class="k">assign</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">过程块（</span><span class="k">initial</span><span class="err">和</span><span class="k">always</span><span class="err">）</span>
+</span><span class='line'>      <span class="o">-</span><span class="err">行为描述语句</span>
+</span><span class='line'>  <span class="err">底层模块实例</span>
+</span><span class='line'>  <span class="err">任务和函数</span>
+</span><span class='line'>  <span class="err">延时说明块：对模块各个输入和输出端口之间的路径延时进行说明</span>
+</span><span class='line'><span class="k">endmodule</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <ol>
-<li>dec：数值数据采用十进制表示</li>
-<li>hex：数值数据采用十六进制表示</li>
-<li>oct： 数值数据采用八进制表示</li>
-<li>ws：  提取空白符</li>
-<li>endl：插入换行符，并刷新流</li>
-<li>ends： 插入空字符</li>
-<li>setsprecision(int)： 设置浮点数的小数位数（包括小数点）</li>
-<li>setw(int)： 设置域宽</li>
-</ol>
-
-
-<h2>类型别名</h2>
+<li>模块的描述方式
 
 <ol>
-<li>typedef 已有类型名 新类型名</li>
-<li>using 新类型名 = 已有类型名</li>
-</ol>
-
-
-<h2>auto类型与decltype类型</h2>
+<li>模块的描述方式又称建模方式。verilog既是一门行为化又是一门结构化的HDL语言，根据设计的需要，每个模块的内部可以分为四种抽象级别来进行描述。模块在外部环境中的表现都是同等的，而与其内部具体描述的抽象级别无关。因此模块的内部具体描述相对于外部环境来说是隐藏的，该表一个模块内部描述的抽象级别，可以不用对其外部环境做任何的改动。</li>
+<li>模块的4类抽象级别的描述
 
 <ol>
-<li>auto：编译器通过初始值自动推断变量的类型</li>
-<li>decltype：定义一个变量与某一表达式的类型相同，但并不用该表达式初始化变量
-
-<ol>
-<li>decltype（i） j=2,表示j以2作为初始值，类型与i一致</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>引用类型</h2>
-
-<ol>
-<li>引用（&amp;）是标识符的别名
-
-<ol>
-<li>int i；int &amp;ri = i；</li>
+<li>行为级建模</li>
 </ol>
 </li>
-<li>定义一个引用时，必须同时对它初始化，使它指向一个已存在的对象</li>
-<li>一旦一个引用被初始化后，就不能改为指向其它对象</li>
 </ol>
-
-
-<h2>含有可变参数的函数</h2>
-
-<ol>
-<li></li>
+</li>
 </ol>
 
 </div>
@@ -170,7 +158,7 @@ setsprecision(int)： &hellip;">
   
 
 
-<time datetime="2015-11-09T18:08:50+08:00" pubdate data-updated="true"></time></div>
+<time datetime="2015-11-22T19:53:49+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>
@@ -211,7 +199,7 @@ setsprecision(int)： &hellip;">
 <section id="comment">
     <h2 class="title">Comments</h2>
     <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="/blog/2015/11/09/c++Primer" data-title="Review C++" data-url="http://suda-morris.github.io/blog/2015/11/09/c++Primer/"></div>
+	<div class="ds-thread" data-thread-key="/blog/2015/11/22/verilog" data-title="Verilog基础知识" data-url="http://suda-morris.github.io/blog/2015/11/22/verilog/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

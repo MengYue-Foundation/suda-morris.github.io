@@ -88,6 +88,89 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/11/22/verilog/">
+		
+			Verilog基础知识</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Verilog的模块</h2>
+
+<ol>
+<li>模块是Verilog语言的基本单元，其基本语法如下：</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="n">Module</span><span class="o">&lt;</span><span class="err">模块名</span><span class="o">&gt;</span><span class="err">（</span><span class="o">&lt;</span><span class="err">端口列表</span><span class="o">&gt;</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">端口说明（</span><span class="k">input</span><span class="err">，</span><span class="k">output</span><span class="err">，</span><span class="k">inout</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">参数定义</span>
+</span><span class='line'>  <span class="err">数据类型定义：指定模块内用到的数据对象为寄存器型、存储器型还是连续型</span>
+</span><span class='line'>  <span class="err">连续赋值语句（</span><span class="k">assign</span><span class="err">）</span>
+</span><span class='line'>  <span class="err">过程块（</span><span class="k">initial</span><span class="err">和</span><span class="k">always</span><span class="err">）</span>
+</span><span class='line'>      <span class="o">-</span><span class="err">行为描述语句</span>
+</span><span class='line'>  <span class="err">底层模块实例</span>
+</span><span class='line'>  <span class="err">任务和函数</span>
+</span><span class='line'>  <span class="err">延时说明块：对模块各个输入和输出端口之间的路径延时进行说明</span>
+</span><span class='line'><span class="k">endmodule</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>模块的描述方式
+
+<ol>
+<li>模块的描述方式又称建模方式。verilog既是一门行为化又是一门结构化的HDL语言，根据设计的需要，每个模块的内部可以分为四种抽象级别来进行描述。模块在外部环境中的表现都是同等的，而与其内部具体描述的抽象级别无关。因此模块的内部具体描述相对于外部环境来说是隐藏的，该表一个模块内部描述的抽象级别，可以不用对其外部环境做任何的改动。</li>
+<li>模块的4类抽象级别的描述
+
+<ol>
+<li>行为级建模</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-22T19:53:49+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/11/22/tinyhttpd/">
 		
 			TinyHttpd</a>
@@ -1985,6 +2068,13 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 </ol>
 
 
+<h2>含有可变参数的函数</h2>
+
+<ol>
+<li></li>
+</ol>
+
+
 		
 		
 	</div>
@@ -2438,51 +2528,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 
 <time datetime="2015-10-26T15:51:29+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/10/26/stm32-l4/">
-		
-			STM32_L4</a>
-	</h2>
-	<div class="entry-content">
-		<h2>STM32L4系列超低功耗微控制器简介</h2>
-
-<ol>
-<li>最高主频80MHz，凭借带有DSP和浮点单元（FPU）的ARM® Cortex®-M4内核扩展了超低功耗产品系列及其性能。</li>
-<li>提供USB（支持OTG2.0全速，LPM和BCD）</li>
-<li>带有LCD驱动（4X44或8X40，带有升压转换器）</li>
-<li>存储器范围可以利用SDIO、Quad SPI和FSMC接口轻松扩展</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-26T14:54:05+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>
