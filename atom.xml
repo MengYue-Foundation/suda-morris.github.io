@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-05T20:43:24+08:00</updated>
+  <updated>2015-12-08T10:13:32+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,109 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ESP8266使用]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/12/06/esp8266/"/>
+    <updated>2015-12-06T18:06:10+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/12/06/esp8266</id>
+    <content type="html"><![CDATA[<h2>NodeMCU-V1.0</h2>
+
+<ol>
+<li>核心板型号：ESP-12-E,4Mbytes（32Mbits）的flash</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware">开源官网</a></li>
+<li>官网烧录工具使用：
+
+<ol>
+<li>SPI模式选择：DIO</li>
+<li>FLASH SIZE选择：32Mbit</li>
+<li>将最新的固件烧写到0x00000处</li>
+<li>在烧写之前，需要按住FLASH按键不动然后按下RST按键一次</li>
+</ol>
+</li>
+<li>nodemcu专用烧录工具：只需连接USB串口，选择好烧录文件，单击Flash即可完成烧写</li>
+<li>Pin map
+<img src="http://i.imgur.com/PoUJ0sw.png" alt="Node MCU Pin Map" />
+
+<ul>
+<li>其中D0（GPIO16）只能被用作gpio read/write，不支持中断，不支持pwm、i2c、onewire</li>
+</ul>
+</li>
+<li>Lua core based on eLua project</li>
+<li>cjson based on lua-cjson</li>
+<li>File system based on spiffs</li>
+<li>事件驱动的编程模型</li>
+<li>内建的模块：node,json,file,timer,pwm,i2c,spi,onewire,net,mqtt,coap,gpio,wifi,adc,uart,bit,u8g,ucg,ws2801,ws2812,crypto,dht,rtc,sntp,bmp085,tls2561,hx711,system</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware/wiki/nodemcu_api_cn#noderestart">Node MCU API</a></li>
+</ol>
+
+
+<h2>ESP8266介绍</h2>
+
+<ol>
+<li>内核架构：XtensaLX106（32位），由Tensilica公司开发，是个可配置软核CPU，指令集可扩展，扩展的指令集通过硬件实现。通常扩展指令集有几种方式：
+
+<ol>
+<li>fusion，就是将多条指令合并为一条指令，从而缩短程序所需要的cycle数</li>
+<li>SIMD，就是单指令多数据</li>
+</ol>
+</li>
+<li>默认串口波特率9600。当工作在AP模式时，默认的ip地址为192.168.4.1</li>
+<li>CPU主频支持80MHz和160MHz</li>
+<li>支持的无线网络类型：STA/AP/STA+AP</li>
+<li>安全机制：WEP/WPA-PSK/WPA2-PSK</li>
+<li>加密类型：WEP64/WEP128/TKIP/AES</li>
+<li>固件升级：本地串口，OTA云端升级</li>
+<li>网络协议：IPv4，TCP/UDP/FTP/HTTP</li>
+<li>支持的硬件接口：UART，I2C，PWM，GPIO，ADC（ADC的范围在0~1V）</li>
+<li>串口数据传输最大传输速率为460800bps</li>
+<li>系统上电会运行厂商芯片内部的Boot loader，而在bootloader中串口波特率被设置为了74880</li>
+<li>ESP8266的PWM频率100~500Hz</li>
+<li>GPIO输出电压为VDD_IO（比如3.3V），输出电流应该不超过20mA</li>
+<li>ESP8266有两个uart，其中uart0有Tx、Rx，可做数据传输，uart1仅有Tx，可做串口调试信息打印</li>
+<li>ESP8266有两套MAC，因此可以支持softAP+station共存的模式</li>
+<li>ESP8266 softAP可连接4个station</li>
+<li>ESP8266低功耗只针对station模式，对于softAP则没有低功耗模式</li>
+<li>ESP8266的TCP连接最多可以建立5个，UDP连接最多可以建立5个，可同时建立5个TCP连接和5个UDP连接</li>
+</ol>
+
+
+<h2>SDK二次开发</h2>
+
+<ol>
+<li>如果函数添加了ICACHE_FLASH_ATTR,该函数会被放在irom中，CPU仅在调用到他们的时候，将他们读到cache中运行；没有条件ICACHE_FLASH_ATTR宏的函数，将在一开始上电运行时，就加载到iram中运行。由于空间有限，我们无法将所有代码都一次性加载到iram中运行，因此在大部分函数前添加ICACHE_FLASH_ATTR宏。注意，不能在GPIO或UART中断处理函数中调用带有“ICACHE_FLASH_ATTR”宏的函数，否则将引起异常。</li>
+<li>wifi_set_ip_info、wifi_set_macaddr仅在user_init中调用才生效</li>
+<li>system_timer_reinit建议在user_init中调用，否则调用后，需要重新arm所有timer</li>
+<li>wifi_station_set_config如果在user_init中调用，底层会自动连接对应的路由，不需要再调用wifi_station_connect来进行连接，否则需要。</li>
+<li>使能us级定时器
+
+<ol>
+<li>在user_config.h中#define USE_US_TIMER，并在user_init中调用system_timer_reinit(),此时可以同时使用os_timer_arm_us和os_timer_arm</li>
+<li>未定义USE_US_TIMER时，os_timer_arm（）的时间参数范围0~6871947ms，os_timer_arm_us不可用</li>
+<li>定义了USE_US_TIMER时，os_timer_arm（）的时间参数范围0~429496ms，os_timer_arm_us的时间参数范围是0~429496729us</li>
+</ol>
+</li>
+<li>blank.bin，有Espressif提供，烧录到0x7E000地址。不是每次都要烧录，仅当sdk升级版本或需要擦除WIFI配置参数时进行烧录</li>
+<li>eagle.app.v6.flash.bin,用户编译生成，烧录到0x0000地址</li>
+<li>master_device_key.bin，向Espressif服务器申请，烧录到0x3E000地址</li>
+<li>eagle.app.v6.irom0text.bin，用户编译生成，烧录到0x40000地址</li>
+<li>esp_init_data_default.bin有Espressif提供，烧录到0x7c000地址</li>
+<li>system_restore将wifi相关参数复位，即擦出了路由器信息以及恢复了softAP默认名称</li>
+<li>固件云端升级成功后，需要调用system_upgrade_reboot，否则不切换</li>
+<li>system_timer_reinit需要放在程序最开始，usr_init第一句</li>
+</ol>
+
+
+<h2>重要API介绍</h2>
+
+<ol>
+<li>bool wifi_station_scan (struct scan_config *config, scan_done_cb_t cb);功能：获取AP的信息。注意：不能在user_init中调用此接口，该接口必须在系统初始化完成后，并且ESP8266 station接口使能的情况下调用</li>
+<li>bool wifi_station_set_config (struct station_config *config)；功能：设置WiFi station接口的配置参数，并保存到flash。注意：如果wifi_station_set_config在user_init中调用，则ESP8266 station接口在系统初始化完成后，自动连接AP（路由），无需再调用wifi_station_connect；否则，需要调用wifi_station_connect连接AP（路由）。station_config.bssid_set一般设置为0，仅当需要检查AP的MAC地址时（用于有重名AP的情况下）设置为1、本设置如果与原设置不同，会更新保存到flash系统参数区</li>
+<li></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[电源设计]]></title>
@@ -5269,6 +5372,35 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>Cu：Ta，TaN，淀积方法：IMP</li>
 </ol>
 
+
+<h2>浅槽隔离</h2>
+
+<ol>
+<li>LOCOS的问题
+
+<ol>
+<li>鸟嘴问题：氧化时的横向扩展；氧化层的厚度500nm左右，扩展的尺寸也是这个量级，但目前22nmCMOS器件整个有源区的尺寸也仅仅在100nm量级</li>
+<li>不平坦的问题：有250nm左右的隆起</li>
+<li>应力的问题</li>
+</ol>
+</li>
+<li>STI（Shallow Trench Insulation with CMP）
+
+<ol>
+<li>在硅片上淀积一层pad oxide（垫氧层），用来舒缓应力</li>
+<li>淀积氮化硅层，作为硬掩膜</li>
+<li>光刻定义需要隔离的区域</li>
+<li>利用硬掩膜刻蚀底下硅的浅槽</li>
+<li>离子注入，做STI隔离的高参杂层</li>
+<li>热氧化的方法在槽的底部生长一层很薄的氧化层</li>
+<li>用CVD淀积比较厚的介质</li>
+<li>用CMP的方法把多余的介质去除掉（此时氮化硅作为CMP的截止层）</li>
+<li>湿法刻蚀去除氮化硅</li>
+</ol>
+</li>
+<li>CMOS器件为什么还需要隔离：第一层布线的时候可能会引起下面半导体表面反型，从而使得器件和相邻器件之间的井有可能穿通</li>
+</ol>
+
 ]]></content>
   </entry>
   
@@ -6572,171 +6704,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 </ol>
 </li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[CSS样式知识清单]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/09/27/css/"/>
-    <updated>2015-09-27T10:51:10+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/09/27/css</id>
-    <content type="html"><![CDATA[<h2>基础语法</h2>
-
-<blockquote><p>selector{
-property:value
-}
-其中selector有派生选择器，id选择器，类选择器，属性选择器</p></blockquote>
-
-<h2>头部声明</h2>
-
-<p><code>&lt;link href="MyCSS.css" type="text/css" rel="stylesheet"&gt;</code></p>
-
-<h2>id选择器</h2>
-
-<ol>
-<li>id选择器可以为标有id的HTML元素指定特定的样式</li>
-<li>id选择器以“#”来定义</li>
-</ol>
-
-
-<h1>类选择器</h1>
-
-<ol>
-<li>类选择器以一个点来定义</li>
-</ol>
-
-
-<h2>属性选择器</h2>
-
-<ol>
-<li><code>&lt;style type="text/css"&gt; [title=te]{color:blue}&lt;/style&gt;</code></li>
-<li><code>&lt;p title="te"&gt;属性选择器&lt;/p&gt;</code></li>
-</ol>
-
-
-<h2>CSS背景</h2>
-
-<ul>
-<li>background-attachment:背景图像是否固定或者随着页面的其余部分滚动</li>
-<li>background-color:设置元素的背景颜色</li>
-<li>background-image:把图片设置为背景，url(&ldquo;bg.jpg&rdquo;)</li>
-<li>background-position:设置背景图片的起始位置</li>
-<li>background-repeat:设置背景图片是否及如何重复</li>
-<li>background-size:规定背景图片的尺寸</li>
-<li>background-origin:规定背景图片的定位区域</li>
-<li>background-clip:规定背景的绘制区域</li>
-</ul>
-
-
-<h2>CSS文本</h2>
-
-<ul>
-<li>color：文本颜色</li>
-<li>direction：文本方向</li>
-<li>line-height：行高</li>
-<li>letter-spacing：字符间距</li>
-<li>text-align：对齐元素中的文本</li>
-<li>text-decoration：向文本中添加修饰</li>
-<li>text-indent：缩进元素中文本的首行</li>
-<li>text-transform：元素中的字母</li>
-<li>unicode-bidi：设置文本方向</li>
-<li>white-space：元素中空白的处理方式</li>
-<li>word-spacing：字间距</li>
-<li>text-shadow:文本阴影</li>
-<li>word-wrap:规定文本的换行规则</li>
-</ul>
-
-
-<h2>CSS字体</h2>
-
-<ul>
-<li>font-family:设置字体系列</li>
-<li>font-size:设置字体的尺寸</li>
-<li>font-style:设置字体风格</li>
-<li>font-variant:以小型大写字体或正常字体显示文本</li>
-<li>font-weight:设置字体的粗细</li>
-</ul>
-
-
-<h2>CSS链接</h2>
-
-<ol>
-<li>CSS链接的四种状态：
-
-<ul>
-<li>a:link 普通的、未被访问的链接</li>
-<li>a:visited 用户已经访问的链接</li>
-<li>a:hover 鼠标指针位于链接的上方</li>
-<li>a:active 链接被点击的时刻</li>
-</ul>
-</li>
-<li>常见的链接样式：
-
-<ul>
-<li>text-decoration属于大多用于去掉链接中的下划线</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>CSS列表</h2>
-
-<ul>
-<li>list-style简写列表项</li>
-<li>list-style-image列表项图像</li>
-<li>list-style-position列表标志位置</li>
-<li>list-style-type列表类型</li>
-</ul>
-
-
-<h2>CSS表格</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nf">#tb</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">border-collapse</span><span class="o">:</span><span class="k">collapse</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">width</span><span class="o">:</span><span class="m">500px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">td</span><span class="o">,</span><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">border</span><span class="o">:</span><span class="m">1px</span> <span class="k">solid</span> <span class="nb">bisque</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">padding</span><span class="o">:</span><span class="m">5px</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">th</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">text-align</span><span class="o">:</span><span class="k">right</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aqua</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="m">#FFFFFF</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="nf">#tb</span> <span class="nt">tr</span><span class="nc">.alt</span> <span class="nt">td</span><span class="p">{</span>
-</span><span class='line'>  <span class="k">color</span><span class="o">:</span><span class="nb">black</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">background-color</span><span class="o">:</span><span class="nb">aquamarine</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>CSS轮廓</h2>
-
-<ul>
-<li>outline设置轮廓属性</li>
-<li>outline-color设置轮廓的颜色</li>
-<li>outline-style设置轮廓的样式</li>
-<li>outline-width设置轮廓的宽度</li>
-</ul>
 
 ]]></content>
   </entry>

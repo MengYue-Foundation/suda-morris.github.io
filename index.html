@@ -88,6 +88,137 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/12/06/esp8266/">
+		
+			ESP8266使用</a>
+	</h2>
+	<div class="entry-content">
+		<h2>NodeMCU-V1.0</h2>
+
+<ol>
+<li>核心板型号：ESP-12-E,4Mbytes（32Mbits）的flash</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware">开源官网</a></li>
+<li>官网烧录工具使用：
+
+<ol>
+<li>SPI模式选择：DIO</li>
+<li>FLASH SIZE选择：32Mbit</li>
+<li>将最新的固件烧写到0x00000处</li>
+<li>在烧写之前，需要按住FLASH按键不动然后按下RST按键一次</li>
+</ol>
+</li>
+<li>nodemcu专用烧录工具：只需连接USB串口，选择好烧录文件，单击Flash即可完成烧写</li>
+<li>Pin map
+<img src="http://i.imgur.com/PoUJ0sw.png" alt="Node MCU Pin Map" />
+
+<ul>
+<li>其中D0（GPIO16）只能被用作gpio read/write，不支持中断，不支持pwm、i2c、onewire</li>
+</ul>
+</li>
+<li>Lua core based on eLua project</li>
+<li>cjson based on lua-cjson</li>
+<li>File system based on spiffs</li>
+<li>事件驱动的编程模型</li>
+<li>内建的模块：node,json,file,timer,pwm,i2c,spi,onewire,net,mqtt,coap,gpio,wifi,adc,uart,bit,u8g,ucg,ws2801,ws2812,crypto,dht,rtc,sntp,bmp085,tls2561,hx711,system</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware/wiki/nodemcu_api_cn#noderestart">Node MCU API</a></li>
+</ol>
+
+
+<h2>ESP8266介绍</h2>
+
+<ol>
+<li>内核架构：XtensaLX106（32位），由Tensilica公司开发，是个可配置软核CPU，指令集可扩展，扩展的指令集通过硬件实现。通常扩展指令集有几种方式：
+
+<ol>
+<li>fusion，就是将多条指令合并为一条指令，从而缩短程序所需要的cycle数</li>
+<li>SIMD，就是单指令多数据</li>
+</ol>
+</li>
+<li>默认串口波特率9600。当工作在AP模式时，默认的ip地址为192.168.4.1</li>
+<li>CPU主频支持80MHz和160MHz</li>
+<li>支持的无线网络类型：STA/AP/STA+AP</li>
+<li>安全机制：WEP/WPA-PSK/WPA2-PSK</li>
+<li>加密类型：WEP64/WEP128/TKIP/AES</li>
+<li>固件升级：本地串口，OTA云端升级</li>
+<li>网络协议：IPv4，TCP/UDP/FTP/HTTP</li>
+<li>支持的硬件接口：UART，I2C，PWM，GPIO，ADC（ADC的范围在0~1V）</li>
+<li>串口数据传输最大传输速率为460800bps</li>
+<li>系统上电会运行厂商芯片内部的Boot loader，而在bootloader中串口波特率被设置为了74880</li>
+<li>ESP8266的PWM频率100~500Hz</li>
+<li>GPIO输出电压为VDD_IO（比如3.3V），输出电流应该不超过20mA</li>
+<li>ESP8266有两个uart，其中uart0有Tx、Rx，可做数据传输，uart1仅有Tx，可做串口调试信息打印</li>
+<li>ESP8266有两套MAC，因此可以支持softAP+station共存的模式</li>
+<li>ESP8266 softAP可连接4个station</li>
+<li>ESP8266低功耗只针对station模式，对于softAP则没有低功耗模式</li>
+<li>ESP8266的TCP连接最多可以建立5个，UDP连接最多可以建立5个，可同时建立5个TCP连接和5个UDP连接</li>
+</ol>
+
+
+<h2>SDK二次开发</h2>
+
+<ol>
+<li>如果函数添加了ICACHE_FLASH_ATTR,该函数会被放在irom中，CPU仅在调用到他们的时候，将他们读到cache中运行；没有条件ICACHE_FLASH_ATTR宏的函数，将在一开始上电运行时，就加载到iram中运行。由于空间有限，我们无法将所有代码都一次性加载到iram中运行，因此在大部分函数前添加ICACHE_FLASH_ATTR宏。注意，不能在GPIO或UART中断处理函数中调用带有“ICACHE_FLASH_ATTR”宏的函数，否则将引起异常。</li>
+<li>wifi_set_ip_info、wifi_set_macaddr仅在user_init中调用才生效</li>
+<li>system_timer_reinit建议在user_init中调用，否则调用后，需要重新arm所有timer</li>
+<li>wifi_station_set_config如果在user_init中调用，底层会自动连接对应的路由，不需要再调用wifi_station_connect来进行连接，否则需要。</li>
+<li>使能us级定时器
+
+<ol>
+<li>在user_config.h中#define USE_US_TIMER，并在user_init中调用system_timer_reinit(),此时可以同时使用os_timer_arm_us和os_timer_arm</li>
+<li>未定义USE_US_TIMER时，os_timer_arm（）的时间参数范围0~6871947ms，os_timer_arm_us不可用</li>
+<li>定义了USE_US_TIMER时，os_timer_arm（）的时间参数范围0~429496ms，os_timer_arm_us的时间参数范围是0~429496729us</li>
+</ol>
+</li>
+<li>blank.bin，有Espressif提供，烧录到0x7E000地址。不是每次都要烧录，仅当sdk升级版本或需要擦除WIFI配置参数时进行烧录</li>
+<li>eagle.app.v6.flash.bin,用户编译生成，烧录到0x0000地址</li>
+<li>master_device_key.bin，向Espressif服务器申请，烧录到0x3E000地址</li>
+<li>eagle.app.v6.irom0text.bin，用户编译生成，烧录到0x40000地址</li>
+<li>esp_init_data_default.bin有Espressif提供，烧录到0x7c000地址</li>
+<li>system_restore将wifi相关参数复位，即擦出了路由器信息以及恢复了softAP默认名称</li>
+<li>固件云端升级成功后，需要调用system_upgrade_reboot，否则不切换</li>
+<li>system_timer_reinit需要放在程序最开始，usr_init第一句</li>
+</ol>
+
+
+<h2>重要API介绍</h2>
+
+<ol>
+<li>bool wifi_station_scan (struct scan_config *config, scan_done_cb_t cb);功能：获取AP的信息。注意：不能在user_init中调用此接口，该接口必须在系统初始化完成后，并且ESP8266 station接口使能的情况下调用</li>
+<li>bool wifi_station_set_config (struct station_config *config)；功能：设置WiFi station接口的配置参数，并保存到flash。注意：如果wifi_station_set_config在user_init中调用，则ESP8266 station接口在系统初始化完成后，自动连接AP（路由），无需再调用wifi_station_connect；否则，需要调用wifi_station_connect连接AP（路由）。station_config.bssid_set一般设置为0，仅当需要检查AP的MAC地址时（用于有重名AP的情况下）设置为1、本设置如果与原设置不同，会更新保存到flash系统参数区</li>
+<li></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-06T18:06:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/12/03/power-design/">
 		
 			电源设计</a>
@@ -2791,243 +2922,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 
 <time datetime="2015-11-04T20:19:43+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/10/30/sd-card-driver/">
-		
-			SD卡与文件系统</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Micro SD卡简介</h2>
-
-<p><img src="http://i.imgur.com/baGsEky.jpg" alt="SD卡" /></p>
-
-<ol>
-<li>Micro SD卡的控制指令功能强大，支持SPI、SDIO模式，兼容MMC。在SPI模式下，CS/MOSI/MISO/CLK都需要加10~100K左右的上拉电阻</li>
-<li>SD卡有5个寄存器
-
-<ol>
-<li>CID：128比特，卡标识寄存器,只读</li>
-<li>RCA：16比特，相对卡地址寄存器，即本地系统中卡的地址，动态变化，在主机初始化的时候确定。SPI模式中没有此寄存器</li>
-<li>CSD：128比特，卡描述数据，主要存储了卡的容量、数据格式、DSR寄存器是否可用、数据传输相关参数、数据传输速度、最大的数据访问时间、最大的读写数据块长度等，是可配置寄存器</li>
-<li>SCR：64比特，SD配置寄存器，即SD卡特定信息数据如：SCR版本号、SD卡版本号、是否支持安全性、擦除后卡状态默认值、SD总线宽度等，由生产商在卡生产阶段写入</li>
-<li>OCR：32比特，操作条件寄存器,提供SD Host查询SD卡支持的电压范围，是否是大容量卡OCR[30],卡省电过程是否结束OCR[31]</li>
-</ol>
-</li>
-<li>每发送一个命令，SD卡都会给出一个应答，以告知主机该命令的执行情况，或者返回主机需要获取的数据。SPI模式下，SD卡针对不同的命令，应答可以是R1~R7。命令与响应都是MSB优先。除了SEND_STATUS和READ_OCR指令外，其他指令的响应格式都是R1，格式R1的长度是1Byte，并且最高位总是0，其余每位均是错误提示，在指令接收过程中发生了什么样的错误，对应的错误位就会是‘1’。R1b和R1具有相同的格式，它将伴随一个附加的busy信号，busy信号的长度可以是任意个字节，全0表示卡处在“忙”的状态。格式R2的长度为2字节，它是指令SEND_STATUS的响应，它的高字节和R1相同，低字节同样作为状态提示。格式R3的长度是5字节，它是指令READ_OCR的响应，最高字节和R1相同，其余4字节包含SD卡的OCR寄存器信息</li>
-<li>在SD卡收到复位命令（CMD0）时，CS为低电平则SD卡的SPI模式被启用。不过在发送CMD0之前，要发送>74个时钟这是因为SD卡内部有一个供电电压上升时间，大概为64个CLK，剩下的10个CLK用于SD卡同步，之后才能开始CMD0的操作。在卡初始化的时候，CLK时钟最大不能超过400KHz</li>
-<li>对SD卡的常用基本操作主要由：单块读、连续读、单块写、连续写。SPI模式下，通过向SD卡发送响应的命令并读取相应的响应来实现对SD卡的控制。</li>
-</ol>
-
-
-<h2>SD 命令</h2>
-
-<ol>
-<li>命令:每个命令都有一个起始位和结束位，总长度为48 bits，并且每个命令都有 7 bits 的CRC 校验码，高字节优先传输
-<img src="http://i.imgur.com/sDb6XU5.jpg" alt="SD Command" /></li>
-<li>Command 共分为12类（class0 - class11），在寄存器CSD中有12 bits CCC（Card Command Class）对本卡支持的分类进行描述
-<img src="http://i.imgur.com/2QG9Ein.jpg" alt="SD命令" /></li>
-<li>几个重要的命令
-<img src="http://i.imgur.com/Xh1BWEV.png" alt="常用命令" /></li>
-<li>CMD8命令格式
-<img src="http://i.imgur.com/9oboqjq.jpg" alt="CMD8" /></li>
-</ol>
-
-
-<h2>SD 应答</h2>
-
-<ol>
-<li>R1响应格式
-<img src="http://i.imgur.com/ZYbXuth.png" alt="R1响应格式" /></li>
-</ol>
-
-
-<h2>SD卡初始化</h2>
-
-<p><img src="http://i.imgur.com/ccW4YbS.jpg" alt="SD卡初始化流程" /></p>
-
-<ol>
-<li>配置时钟，慢速一般为400Hz，设置工作模式</li>
-<li>发送CMD0，对卡进行软复位，进入空闲态，该指令没有反馈</li>
-<li>发送CMD8命令用于读取卡的接口信息，如果是SD2.0，则支持CMD8命令；如果是SD1.x，MMC，则不支持CMD8</li>
-<li>发送CMD55+ACMD41，判断当前电压是否在卡的工作范围内，看卡能否识别命令，如果是MMC卡，则CMD55不能被识别，短反馈</li>
-<li>发送CMD2，验证SD卡是否接入，长反馈</li>
-<li>发送CMD3，读取SD卡的RCA地址，短反馈</li>
-<li>以RCA作为参数，发送CMD9读取CSD，长反馈</li>
-<li>发送CMD7，选中要操作的SD卡，短反馈</li>
-<li>配置告诉时钟，准备数据传输，一般为20~25MHz</li>
-<li>设置工作模式：DMA、中断或者查询模式</li>
-</ol>
-
-
-<h2>SD卡读取数据流程</h2>
-
-<ol>
-<li>发送CMD17</li>
-<li>接收卡响应R1</li>
-<li>接收数据起始令牌0xFE</li>
-<li>接收数据</li>
-<li>接收2字节的CRC，如果不使用CRC，这两个字节在读取后可以丢掉</li>
-<li>禁止片选之后，发多8个CLK</li>
-</ol>
-
-
-<h2>SD卡写数据流程</h2>
-
-<ol>
-<li>发送CMD24</li>
-<li>接收卡响应R1</li>
-<li>发送写数据起始令牌0xFE</li>
-<li>发送数据</li>
-<li>发送2字节的伪CRC</li>
-<li>禁止片选之后，发多8个CLK</li>
-</ol>
-
-
-<h2>SD卡读数据块操作</h2>
-
-<ol>
-<li>在读数据块模式下，数据传输的基本单元是数据块，它的大小在CSD中（READ_BL_LEN）定义</li>
-<li>为了保证数据传输的正确，每个数据块后都有一个CRC校验码。</li>
-<li>CMD17（Read_Single_Block）启动一次读数据块操作，在传输结束后返回返回到发送状态。</li>
-<li>CMD18（Read_Multiple_Block）启动一次连续多个数据块的读操作</li>
-<li>主机可以在多数据块读操作的任何时候终止操作，而不管操作的类型。发送停止传输命令即可终止操作</li>
-<li>如果在多数据块读操作中，卡检测到错误（如越界，地址错位或内部错误），它将停止数据传输并仍处于数据状态；此时主机必须发送停止传输命令，终止操作</li>
-</ol>
-
-
-<h2>FATFS简介</h2>
-
-<ol>
-<li>FATFS是一个完全免费开源的FAT文件系统模块，专门为小型的嵌入式系统而设计。支持FAT12、FAT16和FAT32，支持多个存储媒介；有独立的缓冲区，可以对多个文件进行读/写。</li>
-<li>拥有多种配置选项：
-
-<ol>
-<li>支持多卷（物理驱动器或分区，最多10个卷）</li>
-<li>多个ANSI/OEM代码页包括DBCS</li>
-<li>支持长文件名、ANSI/OEM或Unicode</li>
-<li>支持RTOS</li>
-<li>支持多种扇区大小</li>
-<li>只读、最小化的API和I/O缓冲区等</li>
-</ol>
-</li>
-<li>需要我们编写移植代码的是FATFS模块提供的底层接口，包括存储媒介读/写接口(disk I/O)和供给文件创建修改时间的实时时钟
-
-<ol>
-<li>ffconf.h:FATFS模块配置文件</li>
-<li>ff.h:FATFS和应用模块共用的包含文件</li>
-<li>ff.c:FATFS模块</li>
-<li>diskio.h:FATFS和disk I/O模块共用的包含文件</li>
-<li>interger.h:数据类型定义</li>
-<li>option：可选的外部功能(比如支持中文等)</li>
-<li>diskio.c:FATFS和disk I/O模块接口层文件</li>
-</ol>
-</li>
-<li>ffconf.h
-
-<ol>
-<li>_CODE_PAGE,根据具体使用的而语言在ffconf.h中定义具体的宏定义。如果使用简体中文，则选择936；如果使用英文，则选择437；如果使用日文，则选择932。打开option文件夹，打开cc936.c文件，里面有一个很大的数组static const WCHAR uni2oem[]。这个数组用于unicode码和OEM码之间的相互转换。接下来又有两个函数，ff_convert()和ff_wtoupper()具体执行码型转换和将字符串转换为大写。unicode是一种双字节字符编码，无论中文还是英文，或者其他语言统一到2字节。与现有的任何编码都不兼容。WindowsNT的内核即使用该编码，所有数据进入内核前转换成UNICODE，退出内核后再转换成版本相关的编码(通常称为OEM，在简体中文下即为GB)</li>
-<li>_FS_TINY，使用浓缩版的FATFS就设置为1</li>
-<li>_FS_READONLY,这个用来配置是不是只读</li>
-<li>_USE_STRFUNC,这个用来设置是否支持字符串类操作，比如f_putc,f_puts等</li>
-<li>_USE_MKFS,这个用来设置是否使能格式化</li>
-<li>_USE_FASTSEEK，这个用来使能快速定位</li>
-<li>_USE_LABEL,这个用来设置是否支持磁盘盘符（磁盘名字）读取与设置</li>
-<li><em>USE_LFN,该选项用于设置是否支持长文件名，还需要</em>CODE_PAGE支持，取值范围为0~3。0表示不支持长文件名，1~3是支持长文件名，但是存储地方不一样</li>
-<li>_VOLUMES,用于设置FATFS支持的逻辑设备数目</li>
-<li>_MAX_SS,扇区缓冲的最大值，一般设置为512</li>
-</ol>
-</li>
-<li>ff.h中的函数定义
-
-<ol>
-<li>FRESULT f_mount (FATFS<em> fs, const TCHAR</em> path, BYTE opt);加载文件系统
-
-<ul>
-<li>fs表示文件系统对象，path表示本地设备驱动号，opt=1表示立即挂载，0表示延迟挂载</li>
-</ul>
-</li>
-<li>FRESULT f_lseek (FIL* fp, DWORD ofs);移动文件的读写指针
-
-<ul>
-<li>ofs表示文件偏移量的数目</li>
-</ul>
-</li>
-<li>FRESULT f_close (FIL* fp);关闭打开的文件对象</li>
-<li>FRESULT f_opendir (DIR<em> dp, const TCHAR</em> path);打开目录，返回目录对象</li>
-<li>FRESULT f_readdir (DIR<em> dp, FILINFO</em> fno);读取目录获得文件信息</li>
-<li>FRESULT f_stat (const TCHAR<em> path, FILINFO</em> fno);读取文件的状态</li>
-<li>FRESULT f_getfree (const TCHAR<em> path, DWORD</em> nclst, FATFS** fatfs);获取驱动器上的空闲簇数</li>
-<li>FRESULT f_truncate (FIL* fp);截断文件</li>
-<li>FRESULT f_sync (FIL* fp);刷新写文件的缓冲数据</li>
-<li>FRESULT f_unlink (const TCHAR* path);删除目录中的一个文件</li>
-<li>FRESULT f_mkdir (const TCHAR* path);创建一个新目录</li>
-<li>FRESULT f_chmod (const TCHAR* path, BYTE attr, BYTE mask);更改文件/目录的属性</li>
-<li>FRESULT f_utime (const TCHAR<em> path, const FILINFO</em> fno);更改文件/目录的时间戳</li>
-<li>FRESULT f_rename (const TCHAR<em> path_old, const TCHAR</em> path_new);重命名/移动文件或目录</li>
-<li>FRESULT f_forward (FIL<em> fp, UINT(</em>func)(const BYTE<em>,UINT), UINT btf, UINT</em> bf);转发数据流</li>
-<li>FRESULT f_mkfs (const TCHAR* path, BYTE sfd, UINT au);在驱动器上创建一个文件系统</li>
-<li>FRESULT f_chdir (const TCHAR* path);改变当前目录</li>
-<li>FRESULT f_chdrive (const TCHAR* path);更改当前驱动器</li>
-<li>int f_putc (TCHAR c, FIL* fp);</li>
-<li>int f_puts (const TCHAR<em> str, FIL</em> cp);</li>
-<li>int f_printf (FIL<em> fp, const TCHAR</em> str, &hellip;);</li>
-<li>TCHAR<em> f_gets (TCHAR</em> buff, int len, FIL* fp);</li>
-</ol>
-</li>
-<li>diskio.c(需要用户提供如下几个函数接口)
-
-<ol>
-<li>DSTATUS disk_initialize (BYTE pdrv);初始化磁盘驱动器</li>
-<li>DSTATUS disk_status (BYTE pdrv);获取磁盘状态</li>
-<li>DRESULT disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);读扇区</li>
-<li>DRESULT disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);写扇区</li>
-<li>DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);设备相关的控制特性</li>
-<li>get_fattime获取当前时间</li>
-</ol>
-</li>
-<li>簇：文件数据分配的基本单位</li>
-<li>FAT文件系统依次应该为:引导扇区、文件分配表两个、根目录区和数据区</li>
-</ol>
-
-
-<h2>汉字字库</h2>
-
-<ol>
-<li>常用的汉字内码系统有GB2312，GB13000，GBK，BIG5（繁体）等几种，其中GB2312支持的汉字仅有几千个，很多时候不够用，而GBK内码不仅完全兼容GB2312，还支持繁体字，总汉字数量达到2万多个。</li>
-<li>每个GBK码由2字节组成，第一个字节为0X81~0xFE，第二个字节分为两部分，一是0x40~0x7E，二是0x80~0xFE。第一个字节代表的意义称为区，GBK里面总共有126个区，每个区内有190个汉字。</li>
-<li></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-10-30T16:58:07+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

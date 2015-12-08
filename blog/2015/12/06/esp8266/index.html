@@ -1,0 +1,282 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ESP8266使用 - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="NodeMCU-V1.0 核心板型号：ESP-12-E,4Mbytes（32Mbits）的flash
+开源官网
+官网烧录工具使用： SPI模式选择：DIO
+FLASH SIZE选择：32Mbit
+将最新的固件烧写到0x00000处
+在烧写之前，需要按住FLASH按键不动然后按下RST按键一次 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">ESP8266使用</h2>
+	<div class="entry-content"><h2>NodeMCU-V1.0</h2>
+
+<ol>
+<li>核心板型号：ESP-12-E,4Mbytes（32Mbits）的flash</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware">开源官网</a></li>
+<li>官网烧录工具使用：
+
+<ol>
+<li>SPI模式选择：DIO</li>
+<li>FLASH SIZE选择：32Mbit</li>
+<li>将最新的固件烧写到0x00000处</li>
+<li>在烧写之前，需要按住FLASH按键不动然后按下RST按键一次</li>
+</ol>
+</li>
+<li>nodemcu专用烧录工具：只需连接USB串口，选择好烧录文件，单击Flash即可完成烧写</li>
+<li>Pin map
+<img src="http://i.imgur.com/PoUJ0sw.png" alt="Node MCU Pin Map" />
+
+<ul>
+<li>其中D0（GPIO16）只能被用作gpio read/write，不支持中断，不支持pwm、i2c、onewire</li>
+</ul>
+</li>
+<li>Lua core based on eLua project</li>
+<li>cjson based on lua-cjson</li>
+<li>File system based on spiffs</li>
+<li>事件驱动的编程模型</li>
+<li>内建的模块：node,json,file,timer,pwm,i2c,spi,onewire,net,mqtt,coap,gpio,wifi,adc,uart,bit,u8g,ucg,ws2801,ws2812,crypto,dht,rtc,sntp,bmp085,tls2561,hx711,system</li>
+<li><a href="https://github.com/nodemcu/nodemcu-firmware/wiki/nodemcu_api_cn#noderestart">Node MCU API</a></li>
+</ol>
+
+
+<h2>ESP8266介绍</h2>
+
+<ol>
+<li>内核架构：XtensaLX106（32位），由Tensilica公司开发，是个可配置软核CPU，指令集可扩展，扩展的指令集通过硬件实现。通常扩展指令集有几种方式：
+
+<ol>
+<li>fusion，就是将多条指令合并为一条指令，从而缩短程序所需要的cycle数</li>
+<li>SIMD，就是单指令多数据</li>
+</ol>
+</li>
+<li>默认串口波特率9600。当工作在AP模式时，默认的ip地址为192.168.4.1</li>
+<li>CPU主频支持80MHz和160MHz</li>
+<li>支持的无线网络类型：STA/AP/STA+AP</li>
+<li>安全机制：WEP/WPA-PSK/WPA2-PSK</li>
+<li>加密类型：WEP64/WEP128/TKIP/AES</li>
+<li>固件升级：本地串口，OTA云端升级</li>
+<li>网络协议：IPv4，TCP/UDP/FTP/HTTP</li>
+<li>支持的硬件接口：UART，I2C，PWM，GPIO，ADC（ADC的范围在0~1V）</li>
+<li>串口数据传输最大传输速率为460800bps</li>
+<li>系统上电会运行厂商芯片内部的Boot loader，而在bootloader中串口波特率被设置为了74880</li>
+<li>ESP8266的PWM频率100~500Hz</li>
+<li>GPIO输出电压为VDD_IO（比如3.3V），输出电流应该不超过20mA</li>
+<li>ESP8266有两个uart，其中uart0有Tx、Rx，可做数据传输，uart1仅有Tx，可做串口调试信息打印</li>
+<li>ESP8266有两套MAC，因此可以支持softAP+station共存的模式</li>
+<li>ESP8266 softAP可连接4个station</li>
+<li>ESP8266低功耗只针对station模式，对于softAP则没有低功耗模式</li>
+<li>ESP8266的TCP连接最多可以建立5个，UDP连接最多可以建立5个，可同时建立5个TCP连接和5个UDP连接</li>
+</ol>
+
+
+<h2>SDK二次开发</h2>
+
+<ol>
+<li>如果函数添加了ICACHE_FLASH_ATTR,该函数会被放在irom中，CPU仅在调用到他们的时候，将他们读到cache中运行；没有条件ICACHE_FLASH_ATTR宏的函数，将在一开始上电运行时，就加载到iram中运行。由于空间有限，我们无法将所有代码都一次性加载到iram中运行，因此在大部分函数前添加ICACHE_FLASH_ATTR宏。注意，不能在GPIO或UART中断处理函数中调用带有“ICACHE_FLASH_ATTR”宏的函数，否则将引起异常。</li>
+<li>wifi_set_ip_info、wifi_set_macaddr仅在user_init中调用才生效</li>
+<li>system_timer_reinit建议在user_init中调用，否则调用后，需要重新arm所有timer</li>
+<li>wifi_station_set_config如果在user_init中调用，底层会自动连接对应的路由，不需要再调用wifi_station_connect来进行连接，否则需要。</li>
+<li>使能us级定时器
+
+<ol>
+<li>在user_config.h中#define USE_US_TIMER，并在user_init中调用system_timer_reinit(),此时可以同时使用os_timer_arm_us和os_timer_arm</li>
+<li>未定义USE_US_TIMER时，os_timer_arm（）的时间参数范围0~6871947ms，os_timer_arm_us不可用</li>
+<li>定义了USE_US_TIMER时，os_timer_arm（）的时间参数范围0~429496ms，os_timer_arm_us的时间参数范围是0~429496729us</li>
+</ol>
+</li>
+<li>blank.bin，有Espressif提供，烧录到0x7E000地址。不是每次都要烧录，仅当sdk升级版本或需要擦除WIFI配置参数时进行烧录</li>
+<li>eagle.app.v6.flash.bin,用户编译生成，烧录到0x0000地址</li>
+<li>master_device_key.bin，向Espressif服务器申请，烧录到0x3E000地址</li>
+<li>eagle.app.v6.irom0text.bin，用户编译生成，烧录到0x40000地址</li>
+<li>esp_init_data_default.bin有Espressif提供，烧录到0x7c000地址</li>
+<li>system_restore将wifi相关参数复位，即擦出了路由器信息以及恢复了softAP默认名称</li>
+<li>固件云端升级成功后，需要调用system_upgrade_reboot，否则不切换</li>
+<li>system_timer_reinit需要放在程序最开始，usr_init第一句</li>
+</ol>
+
+
+<h2>重要API介绍</h2>
+
+<ol>
+<li>bool wifi_station_scan (struct scan_config *config, scan_done_cb_t cb);功能：获取AP的信息。注意：不能在user_init中调用此接口，该接口必须在系统初始化完成后，并且ESP8266 station接口使能的情况下调用</li>
+<li>bool wifi_station_set_config (struct station_config *config)；功能：设置WiFi station接口的配置参数，并保存到flash。注意：如果wifi_station_set_config在user_init中调用，则ESP8266 station接口在系统初始化完成后，自动连接AP（路由），无需再调用wifi_station_connect；否则，需要调用wifi_station_connect连接AP（路由）。station_config.bssid_set一般设置为0，仅当需要检查AP的MAC地址时（用于有重名AP的情况下）设置为1、本设置如果与原设置不同，会更新保存到flash系统参数区</li>
+<li></li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-06T18:06:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2015/12/06/esp8266" data-title="ESP8266使用" data-url="http://suda-morris.github.io/blog/2015/12/06/esp8266/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2015
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
