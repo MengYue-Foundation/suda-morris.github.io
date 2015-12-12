@@ -122,31 +122,103 @@ FLASH SIZE选择：32Mbit
 
 <h2>ESP8266介绍</h2>
 
-<ol>
-<li>内核架构：XtensaLX106（32位），由Tensilica公司开发，是个可配置软核CPU，指令集可扩展，扩展的指令集通过硬件实现。通常扩展指令集有几种方式：
+<p><img src="http://i.imgur.com/OC5vpzm.png" alt="ESP8266结构图" />
+1. 内核架构：XtensaLX106（32位），由Tensilica公司开发，是个可配置软核CPU，指令集可扩展，扩展的指令集通过硬件实现。通常扩展指令集有几种方式：
+    1. fusion，就是将多条指令合并为一条指令，从而缩短程序所需要的cycle数
+    2. SIMD，就是单指令多数据
+2. 默认串口波特率9600。当工作在AP模式时，默认的ip地址为192.168.4.1
+3. CPU主频支持80MHz和160MHz，支持RTOS。内部三条总线：iBus访问内部，外部存储器；dBus访问数据RAM；AHB访问内部寄存器
+4. 支持的无线网络类型：STA/AP/STA+AP
+5. 安全机制：WEP/WPA-PSK/WPA2-PSK
+6. 加密类型：WEP64/WEP128/TKIP/AES
+7. 固件升级：本地串口，OTA云端升级
+8. 网络协议：IPv4，TCP/UDP/FTP/HTTP
+9. 支持的硬件接口：UART，I2C，PWM，GPIO，ADC（10位，ADC的范围在0~1V）
+10. 串口数据传输最大传输速率为460800bps
+11. 系统上电会运行厂商芯片内部的Boot loader，而在bootloader中串口波特率被设置为了<strong>74880</strong>
+12. ESP8266的PWM频率100~500Hz
+13. GPIO输出电压为VDD_IO（比如3.3V），输出电流应该不超过20mA
+14. ESP8266有两个uart，其中uart0有Tx、Rx，可做数据传输，uart1仅有Tx，可做串口调试信息打印
+15. ESP8266有两套MAC，因此可以支持softAP+station共存的模式
+16. ESP8266 softAP可连接4个station
+17. ESP8266低功耗只针对station模式，对于softAP则没有低功耗模式
+18. ESP8266的TCP连接最多可以建立5个，UDP连接最多可以建立5个，可同时建立5个TCP连接和5个UDP连接
+19. ESP8266片上没有ROM，用户程序存放在外部SPI Flash中。最大支持16MByte的容量。支持的SPI模式：Standard SPI，Dual SPI，DIO SPI，QIO SPI以及Quad SPI。注意，在下载固件时需要在下载工具选择对应模式，否则下载后程序将无法得到正确的运行
+20. ESP8266芯片定义了1个SDIO Slave接口，SDIO由硬件实现，支持4位25MHz SDIOv1.1和4位50MHz SDIO v2.0</p>
+
+<h2>最小系统</h2>
+
+<p><img src="http://i.imgur.com/6Hsgedk.png" alt="ESP8266最下系统" />
+1. Pin11和Pin17两个数字电源管脚，数字电源无需在电路中增加滤波电容。数字电源工作电压范围1.8v~3.3V
+2. 在模拟电源部分，要注意当ESP8266工作在TX时候，瞬间电流会加大，往往会引起电源的轨道塌陷，所以在设计时在模拟电源电路上增加一个0603或者0805封装的10uF电容，此电容可与0402封装的0.1uF电容搭配
+3. 在PIN21 SD_CLK管脚上串联一个0402封装的电阻连接到Flash CLK管脚上。此电阻的作用主要为：降低驱动电流，减小串扰和外部干扰，调节时序等。串联电阻大小为200ohm
+4. RES12K（Pin31）需外接12K对地电阻，该电阻作为芯片bias控制电流的电阻，对精度要求比较高，建议采用12K±1%精度的电阻
+5. ESP8266模组
+    1. Layout：
+        1. 第一层Top层主要用于走信号线和摆件
+        2. 第二层为GND层，不走信号线，保证一个完整的GND平面
+        3. 第三层为POWER层，尽量走电源线
+        4. 第四层为Bottom层，建议Bottom层不摆件，只走信号线
+    2. 3.3V电源线线宽必须＞15mil，走线尽量走第三层（POWER层），到达芯片管脚处时打过孔到达TOP层连接芯片管脚。在过孔处理上，VIA的直径需要大于电源走线的宽度，而且drill应始终，略大于VIA的半径即可
+    3. 晶振位置尽量靠近芯片的XTAL Pins，走线不要太长，同时晶振走线必须用地包起来良好屏蔽；晶振的输入输出走线不能打孔走线，即不能跨层。金正的输入输出走线不能交叉，跨层较差也不行。晶振的输入输出的bypass电容要靠近芯片左右侧摆放，尽量不要放在走线上；晶振下方4层都不能走高频数字信号，最佳情况是晶振下方不走任何信号线，晶振TOP面的铺铜区域越大越好。晶振为敏感器件，晶振周围不能有磁感应器件，比如大电感。
+    4. RF走线必须控制特性阻抗为50Ω，保证第二层完整地平面，周围地孔屏蔽，走线长度尽量短。RF走线尽量保持在10mil以上；RF走线需预留一个π型匹配网络，且π性匹配电路靠近芯片RF Pin脚摆放。芯片到天线的RF走线不能有过孔，即不能跨层走线。RF走线不能走直角或者45°角，如果有需要则使用圆弧走线。RF走线附近不能有高频信号线。RF上的天线必须远离所有传输高频信号的器件，比如<strong>晶振</strong>，DDR，一些高频时钟</p>
+
+<h2>编译</h2>
+
+<p><img src="http://i.imgur.com/ORglsN7.png" alt="编译参数" />
+1. esp_iot_sdk_v0.9.5及之后版本的软件简化了编译脚本，编译指令：./gen_misc.sh，根据提示按要求输入编译参数
+    1. boot_v1.1与boot_v1.2+：boot_v1.2相对编译时将程序排列的更紧凑，省flash空间；boot_v1.3主要支持增强启动模式可用于产测
+    2. 不支持云端升级：flash.bin+iromtext.bin，支持云端升级：boot.bin+user1.bin
+    3. 注意编译不同大小的bin时，其烧录地址不同
+2. bin目录存放需要下载到Flash的bin文件
+    1. at文件夹：Espressif提供的支持AT指令的bin文件
+    2. upgrade文件夹，编译生成的支持云端升级的bin文件（user1.bin或user2.bin）
+    3. bin文件下根目录，编译生成的不支持云端升级的bin文件，和其他Espressif提供的bin文件
+3. 编译生成user1.bin后，先运行make clean清除上次编译生成的临时文件后，再编译生成user2.bin
+4. 每个bin编译成功后，会提示该bin的烧录位置,典型烧写位置：
+<img src="http://i.imgur.com/pO5yrDq.png" alt="烧写" />
+5. 编译esp_iot_sdk_v0.9.4及之前版本软件
+    1. 指令：./gen_misc.sh
+    2. 支持云端升级（FOTA）的编译步骤如下：
+        1. 运行./gen_misc_plus.sh 1，在esp_iot_sdk/bin/upgrade路径下生成user1.bin
+        2. 运行make clean，清除之前的编译信息
+        3. 运行./gen_misc_plus.sh 2，在esp_iot_sdk/bin/upgrade路径下生成user2.bin
+6. 针对编译时STEP1和STEP5的选择不同，对应的flash size和flash map不同。
+    1. 系统参数区（system param）始终为flash的最后16KB
+    2. 用户参数区（User param）指Espressif提供的示例软件（IOT_Demo或AT）中设定的用户参数区。如果用户自行实现应用程序，则可以将用户参数存放在flash任意空闲区域
+    3. 用户数据区（UserData），可能空闲，当程序区域未占满flash空间时，剩余空间可供用户存储数据
+7. none boot-不支持云端升级。编译时Step1选择2，编译生成eagle.flash.bin（简称flash.bin）和eagle.irom0text.bin（简称irom0text.bin），不支持云端升级，则STEP5时选择不同flash size对应的布局如下：
+    1. 512KB flash
+<img src="http://i.imgur.com/I6YK0Jx.png" alt="none-boot-512KB" />
+<img src="http://i.imgur.com/n9onmx8.png" alt="none-boot-512KB-ld文件" />
+    2. 1024KB flash
+<img src="http://i.imgur.com/1tluP12.png" alt="none-boot-1024KB" />
+        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于1024KB flash，此len最大可修改为0xBC000，irom0text.bin 最大支持到752KB
+    3. 2048KB flash
+<img src="http://i.imgur.com/x7x40sM.png" alt="none-boot-2048KB" />
+        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）
+    4. 4096KB flash
+<img src="http://i.imgur.com/yRtUCDG.png" alt="none-boot-4096KB" />
+        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）
+8. with boot-支持云端升级。编译时STEP1选择1，便一两次，分别生成user1.bin和user2.bin，支持云端升级功能。STEP5时选择不同的flash size对应的布局：
+<img src="http://i.imgur.com/rlr2rLh.png" alt="with-boot-512KB" />
+<img src="http://i.imgur.com/ciZmOP4.png" alt="with-boot-1024KB" />
+<img src="http://i.imgur.com/7y3TiXf.png" alt="with-boot-2048KB" />
+<img src="http://i.imgur.com/dyOkeMh.png" alt="with-boot-4096KB" /></p>
+
+<h2>烧录</h2>
 
 <ol>
-<li>fusion，就是将多条指令合并为一条指令，从而缩短程序所需要的cycle数</li>
-<li>SIMD，就是单指令多数据</li>
-</ol>
-</li>
-<li>默认串口波特率9600。当工作在AP模式时，默认的ip地址为192.168.4.1</li>
-<li>CPU主频支持80MHz和160MHz</li>
-<li>支持的无线网络类型：STA/AP/STA+AP</li>
-<li>安全机制：WEP/WPA-PSK/WPA2-PSK</li>
-<li>加密类型：WEP64/WEP128/TKIP/AES</li>
-<li>固件升级：本地串口，OTA云端升级</li>
-<li>网络协议：IPv4，TCP/UDP/FTP/HTTP</li>
-<li>支持的硬件接口：UART，I2C，PWM，GPIO，ADC（ADC的范围在0~1V）</li>
-<li>串口数据传输最大传输速率为460800bps</li>
-<li>系统上电会运行厂商芯片内部的Boot loader，而在bootloader中串口波特率被设置为了74880</li>
-<li>ESP8266的PWM频率100~500Hz</li>
-<li>GPIO输出电压为VDD_IO（比如3.3V），输出电流应该不超过20mA</li>
-<li>ESP8266有两个uart，其中uart0有Tx、Rx，可做数据传输，uart1仅有Tx，可做串口调试信息打印</li>
-<li>ESP8266有两套MAC，因此可以支持softAP+station共存的模式</li>
-<li>ESP8266 softAP可连接4个station</li>
-<li>ESP8266低功耗只针对station模式，对于softAP则没有低功耗模式</li>
-<li>ESP8266的TCP连接最多可以建立5个，UDP连接最多可以建立5个，可同时建立5个TCP连接和5个UDP连接</li>
+<li>系统参数区固定为flash的最后四个扇区，每个扇区4KBytes，即flash最后16KB</li>
+<li>master_device_key.bin是ESP8266设备享受Espressif云端服务的身份证明，如果不使用Espressif Cloud可以不少路，否则仅烧录一次。烧录地址在IOT_Demo中设置为用户参数区的第三个扇区</li>
+<li>blank.bin初始化系统参数，烧录地址为flash的倒数第二个扇区</li>
+<li>esp_init_data_default.bin初始化射频相关参数，烧录地址为flash的倒数第四个扇区</li>
+<li>不支持云端升级
+<img src="http://i.imgur.com/Bf5iLCd.png" alt="不支持云端程序的烧录地址" /></li>
+<li>支持云端升级（FOTA）。支持云端升级的软件无需烧录user2.bin，可以通过网络升级下载user2.bin到Flash并重启运行。
+<img src="http://i.imgur.com/AKXb5Vn.png" alt="支持云端程序的烧录地址" /></li>
+<li>从esp_iot_sdk_v1.4.0版本起，开发者可以通过设置esp_init_data_default.bin（0~128byte）的114byte控制上电时的RF初始化的行为。
+<img src="http://i.imgur.com/8qvF0y6.png" alt="改变RF初始化行为" /></li>
 </ol>
 
 
@@ -181,7 +253,176 @@ FLASH SIZE选择：32Mbit
 <ol>
 <li>bool wifi_station_scan (struct scan_config *config, scan_done_cb_t cb);功能：获取AP的信息。注意：不能在user_init中调用此接口，该接口必须在系统初始化完成后，并且ESP8266 station接口使能的情况下调用</li>
 <li>bool wifi_station_set_config (struct station_config *config)；功能：设置WiFi station接口的配置参数，并保存到flash。注意：如果wifi_station_set_config在user_init中调用，则ESP8266 station接口在系统初始化完成后，自动连接AP（路由），无需再调用wifi_station_connect；否则，需要调用wifi_station_connect连接AP（路由）。station_config.bssid_set一般设置为0，仅当需要检查AP的MAC地址时（用于有重名AP的情况下）设置为1、本设置如果与原设置不同，会更新保存到flash系统参数区</li>
-<li></li>
+</ol>
+
+
+<h2>降低功耗的方法</h2>
+
+<ol>
+<li>Modem-Sleep：CPU一直工作，在保持wifi连接，如果没有数据传输则关闭WiFi Modem电路来省电</li>
+<li>Light-Sleep：CPU暂停工作，保持Wifi连接</li>
+<li>Deep-Sleep：WiFi不需要一直保持连接时采用该模式</li>
+</ol>
+
+
+<h2>ADC应用场景</h2>
+
+<ol>
+<li>测量VDD3P3管脚3和4的电源电压
+
+<ol>
+<li>TOUT必须悬空</li>
+<li>RF_init参数：esp_init_data_default.bin（0~127byte）中的低107byte为“vdd33_const”，必须设为0xFF，即255</li>
+<li>RF Calibration工作过程：自测VDD3P3管脚3和管脚4上的电源电压，根据测量结果优化RF电路工作状态</li>
+<li>用户软件：可使用system_get_vdd33，不可使用system_adc_read</li>
+</ol>
+</li>
+<li>测量TOUT管脚6的输入电压
+
+<ol>
+<li>TOUT管脚接外部电路，输入电压范围限定为0-1.0V</li>
+<li>RF_init参数：esp_init_data_default.bin（0~127byte）中的第107byte为“vdd33_const”，必须设为真实的VDD3P3管脚3和管脚4上的电源电压，ESP8266的工作电压范围1.8V-3.6V，“vdd33_const”单位0.1V，因此“vdd33_const”有效取值18~36.若电源电压不稳定，会动态变化，“vdd33_const”应输入为电源电压变化的最小值0x10.</li>
+<li>RF Calibration工作过程：根据RF_init第107byte“vdd33_const”的值来优化RF电路工作状态，容许误差约为±0.2V</li>
+<li>用户软件：不可使用system_get_vdd33；可使用system_adc_read</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>电源管理</h2>
+
+<ol>
+<li>关闭（OFF）：CHIP_PD管脚处于低功耗状态。RTC失效，所有寄存器被清空</li>
+<li>深度睡眠（DEEP_SLEEP）：RTC开着，芯片的其他部分都是关着的。RTC内部recovery memory可保存基本的WiFi连接信息</li>
+<li>睡眠（SLEEP）：只有RTC在运行。晶体振荡器停止工作。任何部位唤醒（MAC、主机、RTC计时器、外部中断）将唤醒整个芯片</li>
+<li>环形（WAKEUP）：在这种状态下，系统从睡眠状态下转为启动（PWR）状态。晶体振荡器和PLL均转化为使能状态</li>
+<li>开启状态（CPU ON）：告诉时钟可以运行，并发送至各个被时钟控制寄存器使能的模块。各个模块，包括CPU在内，执行较低电平的时钟门控。系统运作时，可以通过WAITI指令关闭CPU内部时钟</li>
+<li>工作状态（RF WORK）：在开启状态的基础上打开WiFi功能</li>
+</ol>
+
+
+<h2>2.4GHz接收器</h2>
+
+<p>2.4GHz接收器把RF信号降频，编程正交基带信号，用2个高分辨率的高速ADC将后者转为数字信号。为了适应不同的信号频道，无线电接收器集成了RF滤波器、自动增益控制AGC、DC偏移补偿电路和基带滤波器</p>
+
+<h2>2.4GHz发射器</h2>
+
+<p>2.4GHz发射器将正交基带信号升频到2.4GHz，使用大功率CMOS功率放大器驱动天线。数字校准的使用进一步改善了功率放大器的线性，从而在802.11b传输中达到+17dBm的平均功率，在802.11n中达到了13dBm的平均功率。为了抵消无线电接收器的瑕疵，还另增了校准措施：
+    1. 载波泄露
+    2. I/Q相位匹配
+    3. 基带非线性</p>
+
+<h2>SDK_IOT_Demo使用方法</h2>
+
+<ol>
+<li>ESP8266物联网平台的所有网络功能均在库中实现，对用户不透明。用户应用的初始化功能可以在user_main.c中实现。</li>
+<li>void user_init(void)是上层程序的入口函数，给用户提供一个初始化接口，用户可在该函数内增加硬件初始化、网络参数配置、定时器初始化等功能。</li>
+<li>SDK中提供了对json包的处理API，用户也可以采用自定义数据包格式，自行对数据进行处理</li>
+<li>user_config.h,该头文件中可以选择具体的应用示例，仅支持每次打开一个宏定义，使能一个设备，具体支持：
+
+<ol>
+<li>PLUG_DEVICE（只能插座）</li>
+<li>LIGHT_DEVICE（灯）</li>
+<li>SENSOR_DEVICE（传感器）
+
+<ol>
+<li>HUMITURE_SUB_DEVICE（温湿度传感器）</li>
+<li>FLAMMABLE_GAS_SUB_DEVICE（可燃气体检测）</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>需要注意，以下头文件中的宏定义只是用户参数区，用户需要根据编译时的flash map自行调整
+
+<ol>
+<li>user_esp_platform.h中的#define ESP_PARAM_START_SEC 0x3D //or 0x7D, or 0xFD</li>
+<li>user_light.h中的#define PRIV_PARAM_START_SEC   0x3C //or ox7C, or 0xFC</li>
+<li>user_plug.h中的#define PRIV_PARAM_START_SEC 0x3C // or 0x7C, or 0xFC</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>SDK编程指南</h2>
+
+<ol>
+<li>SDK_v1.1.0及之后版本，请在user_main.c增加void user_rf_pre_init(void)，可参考IOT_Demo的user_main.c。用户可在user_rf_pre_init中配置RF初始化，相关RF设置接口为system_phy_set_rfoption，或者在deep-sleep前调用system_deep_sleep_set_option。如果设置为RF不打开，则ESP8266 station及soft-AP均无法使用</li>
+<li>非OS SDK中，由于是单线程，任何task都不能长期占用CPU
+
+<ol>
+<li>如果一个task占用CPU不退出，将导致看门狗的喂狗函数无法执行，系统重启</li>
+<li>如果关闭中断，请勿占用CPU超过10微妙；如果不关闭中断，建议不超过500毫秒</li>
+</ol>
+</li>
+<li>建议使用定时器实现周期性的查询功能，如需在定时器的执行函数中调用os_delay_us或者while、for等函数进行延时或者循环操作，占用时间请勿超过15毫秒</li>
+<li>非OS SDK在终端处理函数中，请勿使用任何ICACHE_FLASH_ATTR定义的函数</li>
+<li>内存必须4字节对齐进行读写，请勿直接进行指针转换。例如语句：float temp=<em>（（float</em>）data）；可能引起异常，建议使用os_memcpy</li>
+<li>如需在中断处理函数中打印，请使用os_printf_plus，且不能加入太多打印信息，尤其是频繁的中断，中断占用时间过长可能引起底层异常</li>
+</ol>
+
+
+<h2>应用程序接口（APIs）</h2>
+
+<ol>
+<li><p>软件定时器（/esp_iot_sdk/include/osapi.h）</p>
+
+<ol>
+<li>该定时器由软件实现，定时器的函数在任务中被执行，因为任务可能被中断，或者被其他高优先级的任务延迟，因此以下os_timer系列的接口并不能保证定时器精确执行</li>
+<li>如果需要精确的定时，请使用硬件中断定时器，硬件定时器的执行函数在中断里被执行</li>
+<li>对于同一个timer，os_timer_arm或os_timer_arm_us不能重复调用，必须先os_timer_disarm</li>
+<li>os_timer_setfn必须在timer未使能的情况下调用，在os_timer_arm或os_timer_arm_us之前或者os_timer_disarm之后
+<img src="http://i.imgur.com/ut3L04J.png" alt="os_timer_arm" />
+<img src="http://i.imgur.com/g4r2Hqy.png" alt="os_timer_disarm" />
+<img src="http://i.imgur.com/NJSnALl.png" alt="os_timer_setfn" />
+<img src="http://i.imgur.com/rjtHFxg.png" alt="system_timer_reinit" />
+<img src="http://i.imgur.com/YGqHnPH.png" alt="os_timer_arm_us" /></li>
+</ol>
+</li>
+<li><p>硬件中断定时器（esp_iot_sdk/example/driver_lib/hw_timer.c）</p>
+
+<ol>
+<li>如果使用NMI中断源，且为自动填装的定时器，调用hw_timer_arm时参数val必须大于100</li>
+<li>如果使用NMI中断源，那么该定时器将为最高优先级，可打断其他ISR</li>
+<li>如果使用FRC1中断源，那么该定时器无法打断其他ISR</li>
+<li>hw_timer.c的接口不能跟PWM驱动函数同时使用，因为两者共用了同一个硬件定时器
+<img src="http://i.imgur.com/4IYnD4u.png" alt="hw_timer_init" />
+<img src="http://i.imgur.com/HJSwcP1.png" alt="hw_timer_arm" />
+<img src="http://i.imgur.com/AdwUQnK.png" alt="hw_timer_set_func" /></li>
+</ol>
+</li>
+<li><p>系统接口
+<img src="http://i.imgur.com/wwOKGue.png" alt="system_get_sdk_version" />
+<img src="http://i.imgur.com/FhDEzk9.png" alt="system_restore" />
+<img src="http://i.imgur.com/KebuEg2.png" alt="system_restart" />
+<img src="http://i.imgur.com/gd7wPOu.png" alt="system_init_done_cb" />
+<img src="http://i.imgur.com/1kbe7QR.png" alt="system_get_chip_id" />
+<img src="http://i.imgur.com/VYY0bm0.png" alt="system_get_vdd33" />
+<img src="http://i.imgur.com/qcos9q2.png" alt="system_adc_read" />
+<img src="http://i.imgur.com/BvIJ9j3.png" alt="system_deep_sleep" />
+<img src="http://i.imgur.com/7GyREOv.png" alt="system_deep_sleep_set_option" />
+<img src="http://i.imgur.com/iN58kRk.png" alt="system_phy_set_rfoption" />
+<img src="http://i.imgur.com/q9kfPIR.png" alt="system_phy_set_powerup_option" />
+<img src="http://i.imgur.com/xpDL6g5.png" alt="system_phy_set_max_tpw" />
+<img src="http://i.imgur.com/WmKLDfl.png" alt="system_phy_set_tpw_via_vdd33" />
+<img src="http://i.imgur.com/sBL3Dxe.png" alt="system_set_os_print" />
+<img src="http://i.imgur.com/b65IXuv.png" alt="system_print_meminfo" />
+<img src="http://i.imgur.com/PR7wSZc.png" alt="system_get_free_heap_size" />
+<img src="http://i.imgur.com/VdxyQlN.png" alt="system_os_task" />
+<img src="http://i.imgur.com/zdplehL.png" alt="system_os_post" />
+<img src="http://i.imgur.com/NyzEjjf.png" alt="system_get_time" />
+<img src="http://i.imgur.com/mKDWnWa.png" alt="system_get_rtc_time" />
+<img src="http://i.imgur.com/LygTWoX.png" alt="system_rtc_clock_cali_proc" />
+<img src="http://i.imgur.com/A72POUy.png" alt="system_rtc_mem_read" />
+<img src="http://i.imgur.com/TFeTFTD.png" alt="system_uart_swap" />
+<img src="http://i.imgur.com/qvrBExO.png" alt="system_uart_de_swap" />
+<img src="http://i.imgur.com/Kgy6Klz.png" alt="system_get_boot_version" />
+<img src="http://i.imgur.com/fTlFRgx.png" alt="system_get_userbin_addr" />
+<img src="http://i.imgur.com/TsZutcF.png" alt="system_get_boot_mode" />
+<img src="http://i.imgur.com/Hz979AN.png" alt="system_restart_enhance" />
+<img src="http://i.imgur.com/XSo84Zh.png" alt="system_update_cpu_freq" />
+<img src="http://i.imgur.com/vvaN0rO.png" alt="system_get_cpu_freq" />
+<img src="http://i.imgur.com/VvcFGtr.png" alt="system_get_flash_size_map" />
+<img src="http://i.imgur.com/qS1DJbK.png" alt="system_get_rst_info" /></p></li>
 </ol>
 
 </div>
