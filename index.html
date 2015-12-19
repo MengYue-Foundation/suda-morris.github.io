@@ -527,7 +527,151 @@
 <img src="http://i.imgur.com/XSo84Zh.png" alt="system_update_cpu_freq" />
 <img src="http://i.imgur.com/vvaN0rO.png" alt="system_get_cpu_freq" />
 <img src="http://i.imgur.com/VvcFGtr.png" alt="system_get_flash_size_map" />
-<img src="http://i.imgur.com/qS1DJbK.png" alt="system_get_rst_info" /></p></li>
+<img src="http://i.imgur.com/qS1DJbK.png" alt="system_get_rst_info" />
+<img src="http://i.imgur.com/L4Val81.png" alt="system_soft_wdt_stop" />
+<img src="http://i.imgur.com/a84yBT6.png" alt="system_soft_wdt_restart" />
+<img src="http://i.imgur.com/ae9oSIE.png" alt="system_soft_wdt_feed" />
+<img src="http://i.imgur.com/a1phXi6.png" alt="system_show_malloc" />
+<img src="http://i.imgur.com/ih4sEt8.png" alt="os_memcpy" />
+<img src="http://i.imgur.com/Z3lIfXz.png" alt="os_strlen" />
+<img src="http://i.imgur.com/TAVUB3x.png" alt="os_printf" />
+<img src="http://i.imgur.com/PJJjvLk.png" alt="os_bzero" />
+<img src="http://i.imgur.com/7B4XZ86.png" alt="os_delay_us" />
+<img src="http://i.imgur.com/D3sMS0i.png" alt="os_install_putc1" /></p></li>
+<li><p>SPI Flash接口
+<img src="http://i.imgur.com/XmmnjBi.png" alt="spi_flash_get_id" />
+<img src="http://i.imgur.com/2ovYNiF.png" alt="spi_flash_erase_sector" />
+<img src="http://i.imgur.com/iIj5npZ.png" alt="spi_flash_write" />
+<img src="http://i.imgur.com/boQJjil.png" alt="spi_flash_read" />
+<img src="http://i.imgur.com/IcZDndm.png" alt="system_param_save_with_protect" />
+<img src="http://i.imgur.com/O97tZqz.png" alt="system_param_load" />
+<img src="http://i.imgur.com/SmENox2.png" alt="spi_flash_set_read_func" /></p></li>
+<li><p>Wi-Fi接口</p>
+
+<ol>
+<li>wifi_station系列接口以及ESP8266 station相关的设置、查询接口，请在ESP8266 station使能的情况下调用</li>
+<li>wifi_softap系列接口以及ESP8266 soft-AP相关的设置、查询接口，请在ESP8266 soft-AP使能的情况下调用</li>
+<li>后文的“flash系统参数区”位于flash的最后16KB
+<img src="http://i.imgur.com/RlFFDxJ.png" alt="wifi_get_opmode" />
+<img src="http://i.imgur.com/XaW34cD.png" alt="wifi_get_opmode_default" />
+<img src="http://i.imgur.com/QGHqO0N.png" alt="wifi_set_opmode" />
+<img src="http://i.imgur.com/Q4lSIWk.png" alt="wifi_set_opmode_current" />
+<img src="http://i.imgur.com/wqkMEDJ.png" alt="wifi_station_get_config" />
+<img src="http://i.imgur.com/k9VPDzA.png" alt="wifi_station_get_config_default" />
+<img src="http://i.imgur.com/61GE3Ib.png" alt="wifi_station_set_config" />
+<img src="http://i.imgur.com/qdYW054.png" alt="wifi_station_set_config_current" />
+<img src="http://i.imgur.com/03hCjeQ.png" alt="wifi_station_set_cert_key" />
+<img src="http://i.imgur.com/QPXjpWE.png" alt="wifi_station_clear_cert_key" />
+<img src="http://i.imgur.com/Yh1PrWq.png" alt="wifi_station_connect" />
+<img src="http://i.imgur.com/DZl8NZr.png" alt="wifi_station_disconnect" />
+<img src="http://i.imgur.com/kApSlV0.png" alt="wifi_station_get_connect_status" />
+<img src="http://i.imgur.com/Ts9TcYG.png" alt="wifi_station_scan" />
+<img src="http://i.imgur.com/tmSeQd4.png" alt="scan_done_cb_t" />
+<img src="http://i.imgur.com/3qUP8bn.png" alt="wifi_station_ap_number_set" />
+<img src="http://i.imgur.com/KIVrSGI.png" alt="wifi_station_get_ap_info" />
+<img src="http://i.imgur.com/TwvND65.png" alt="wifi_station_ap_change" />
+<img src="http://i.imgur.com/5lvsPLw.png" alt="wifi_station_get_current_ap_id" />
+<img src="http://i.imgur.com/4Kfn8ab.png" alt="wifi_station_get_auto_connect" />
+<img src="http://i.imgur.com/oi0cgPi.png" alt="wifi_station_set_auto_connect" />
+<img src="http://i.imgur.com/EWEmI4Z.png" alt="wifi_station_dhcpc_start" />
+<img src="http://i.imgur.com/m82n4Zm.png" alt="wifi_station_dhcpc_stop" />
+<img src="http://i.imgur.com/zaJSEFV.png" alt="wifi_station_dhcpc_status" />
+<img src="http://i.imgur.com/SOkwKH3.png" alt="wifi_station_dhcpc_set_maxtry" />
+<img src="http://i.imgur.com/E4qQCrP.png" alt="wifi_station_set_reconnect_policy" />
+<img src="http://i.imgur.com/9rt7lqT.png" alt="wifi_station_get_rssi" />
+<img src="http://i.imgur.com/ghg2o8V.png" alt="wifi_station_set_hostname" />
+<img src="http://i.imgur.com/FAlGs8p.png" alt="wifi_station_get_hostname" />
+<img src="http://i.imgur.com/5Pdrcxh.png" alt="wifi_softap_get_config" />
+<img src="http://i.imgur.com/CZQUF2Q.png" alt="wifi_softap_get_config_default" />
+<img src="http://i.imgur.com/UDNTbY5.png" alt="wifi_softap_set_config" />
+<img src="http://i.imgur.com/ZDcmXW0.png" alt="wifi_softap_set_config_current" />
+<img src="http://i.imgur.com/P9tlgeM.png" alt="wifi_softap_get_station_num" />
+<img src="http://i.imgur.com/yHVy86S.png" alt="wifi_softap_get_station_info" />
+<img src="http://i.imgur.com/x5ngKIb.png" alt="wifi_softap_free_station_info" />
+<img src="http://i.imgur.com/78K07qB.png" alt="wifi_softap_dhcps_start" />
+<img src="http://i.imgur.com/1qfrMUV.png" alt="wifi_softap_dhcps_stop" />
+<img src="http://i.imgur.com/HxrV1vR.png" alt="wifi_softap_set_dhcps_lease" />
+<img src="http://i.imgur.com/0E9KVU1.png" alt="wifi_softap_get_dhcps_lease" />
+<img src="http://i.imgur.com/SRSOODU.png" alt="wifi_softap_set_dhcps_lease_time" />
+<img src="http://i.imgur.com/Hx99GO2.png" alt="wifi_soft_dhcps_status" />
+<img src="http://i.imgur.com/l97H0jZ.png" alt="wifi_softap_set_dhcps_offer_option" />
+<img src="http://i.imgur.com/XcDbqxT.png" alt="wifi_set_phy_mode" />
+<img src="http://i.imgur.com/GUa5O5O.png" alt="wifi_get_phy_mode" />
+<img src="http://i.imgur.com/xyPVuhn.png" alt="wifi_get_ip_info" />
+<img src="http://i.imgur.com/Zr9vWoq.png" alt="wifi_set_ip_info" />
+<img src="http://i.imgur.com/Z9LwYlW.png" alt="wifi_set_macaddr" />
+<img src="http://i.imgur.com/kTZanO6.png" alt="wifi_get_macaddr" />
+<img src="http://i.imgur.com/uDAgvRn.png" alt="wifi_set_sleep_type" />
+<img src="http://i.imgur.com/rYM4D3u.png" alt="wifi_get_sleep_type" />
+<img src="http://i.imgur.com/lSCPGbX.png" alt="wifi_status_led_install" />
+<img src="http://i.imgur.com/ggsdLte.png" alt="wifi_status_led_uninstall" />
+<img src="http://i.imgur.com/ZjWAM9E.png" alt="wifi_set_broadcase_if" />
+<img src="http://i.imgur.com/j7IEi5C.png" alt="wifi_get_broadcast_if" />
+<img src="http://i.imgur.com/SDZx9vy.png" alt="wifi_set_event_handler_cb" />
+<img src="http://i.imgur.com/WOrpmmZ.png" alt="wifi_wps_enable" />
+<img src="http://i.imgur.com/nIabYMP.png" alt="wifi_wps_disable" />
+<img src="http://i.imgur.com/mbemUfV.png" alt="wifi_wps_start" />
+<img src="http://i.imgur.com/UjUURzV.png" alt="wifi_set_wps_cb" />
+<img src="http://i.imgur.com/Fc9Vy7R.png" alt="wifi_register_send_pkt_freedom_cb" />
+<img src="http://i.imgur.com/82xDFc1.png" alt="wifi_send_pkt_freedom" />
+<img src="http://i.imgur.com/2KAsPlg.png" alt="wifi_rfid_locp_recv_open" />
+<img src="http://i.imgur.com/gIVEqHb.png" alt="wifi_rfid_locp_recv_close" />
+<img src="http://i.imgur.com/atfre24.png" alt="wifi_register_rfid_locp_recv_cb" />
+<img src="http://i.imgur.com/ySvAcKR.png" alt="wifi_unregister_rfid_locp_recv_cb" /></li>
+</ol>
+</li>
+<li><p>Rate Control 接口
+<img src="http://i.imgur.com/hsHHgyu.png" alt="wifi_set_user_fixed_rate" />
+<img src="http://i.imgur.com/mbJAoHb.png" alt="wifi_get_user_fixed_rate" />
+<img src="http://i.imgur.com/qb8MnZh.png" alt="wifi_set_user_sup_rate" />
+<img src="http://i.imgur.com/X0Upq9z.png" alt="wifi_set_user_rate_limit" />
+<img src="http://i.imgur.com/asqAVuW.png" alt="wifi_set_user_limit_rate_mask" />
+<img src="http://i.imgur.com/iqOBgeg.png" alt="wifi_get_user_limit_rate_mask" /></p></li>
+<li><p>强制休眠接口
+使用强制休眠功能，必须先设置WiFi工作模式位NULL_MODE，从强制休眠中唤醒ESP8266，或者休眠时间到，进入唤醒回调（wifi_fpm_set_wakeup_cb注册）后，先关闭强制休眠功能，才能再设置WiFi工作模式为station、soft-AP或sta+AP的正常工作模式。
+<img src="http://i.imgur.com/LMJT80U.png" alt="wifi_fpm_open" />
+<img src="http://i.imgur.com/H0ajlD1.png" alt="wifi_fpm_close" />
+<img src="http://i.imgur.com/aFSgMZu.png" alt="wifi_fpm_do_wakeup" />
+<img src="http://i.imgur.com/nSg5lrr.png" alt="wifi_fpm_set_wakeup_cb" />
+<img src="http://i.imgur.com/XVbopKI.png" alt="wifi_fpm_do_sleep" />
+<img src="http://i.imgur.com/RJFmtGe.png" alt="wifi_fpm_set_sleep_type" />
+<img src="http://i.imgur.com/hbiNG8u.png" alt="wifi_fpm_get_sleep_type" />
+示例
+<img src="http://i.imgur.com/mQaZk2x.png" alt="示例代码" /></p></li>
+<li><p>ESP-NOW
+ESP-NOW软件接口使用时注意：</p>
+
+<ol>
+<li>ESP-NOW目前不支持广播包和组播包</li>
+<li>ESP-NOW现阶段主要为智能灯项目，建议slave角色对应ESP8266 soft-AP模式或者soft-AP+station共存模式；controller角色对应station模式</li>
+<li>当ESP8266处于soft-AP+station共存模式时，若作为slave角色，将从soft-AP接口通信；若作为controller角色，将从station接口通信</li>
+<li>ESP-NOW不实现休眠环形功能，因此如果通信对方的ESP8266 station正处于休眠状态，ESP-NOW发包将会失败</li>
+<li>ESP8266 station模式下，最多可设置10个加密的ESP-NOW peer，加上不加密的设备，综述不超过20个</li>
+<li>ESP8266 soft-AP模式或者soft-AP+station模式下，最多设置6个加密的ESP-NOW peer，加上不加密的设备，总数不超过20个
+<img src="http://i.imgur.com/ZqxmdUT.png" alt="esp_now_init" />
+<img src="http://i.imgur.com/jnoadVK.png" alt="esp_now_deinit" />
+<img src="http://i.imgur.com/hVQrHz9.png" alt="esp_now_register_recv_cb" />
+<img src="http://i.imgur.com/KCRctG7.png" alt="esp_now_unregister_recv_cb" />
+<img src="http://i.imgur.com/kqTxtwA.png" alt="esp_now_register_send_cb" />
+<img src="http://i.imgur.com/6eVV4AH.png" alt="esp_now_unregister_send_cb" />
+<img src="http://i.imgur.com/45s7eeI.png" alt="esp_now_send" />
+<img src="http://i.imgur.com/500z8ub.png" alt="esp_now_add_peer" />
+<img src="http://i.imgur.com/2S8zfbW.png" alt="esp_now_del_peer" />
+<img src="http://i.imgur.com/JlYx4aq.png" alt="esp_now_set_self_role" />
+<img src="http://i.imgur.com/Guzjbw0.png" alt="esp_now_get_self_role" />
+<img src="http://i.imgur.com/osSgTqs.png" alt="esp_now_set_peer_role" />
+<img src="http://i.imgur.com/0GiHi1M.png" alt="esp_now_get_peer_role" />
+<img src="http://i.imgur.com/hIq3URt.png" alt="esp_now_set_peer_key" />
+<img src="http://i.imgur.com/q945HqV.png" alt="esp_now_get_peer_key" />
+<img src="http://i.imgur.com/ZL6L5o7.png" alt="esp_now_set_peer_channel" />
+<img src="http://i.imgur.com/eOa2xH8.png" alt="esp_now_get_peer_channel" />
+<img src="http://i.imgur.com/H3U5eoY.png" alt="esp_now_is_peer_exist" />
+<img src="http://i.imgur.com/3bUBgdm.png" alt="esp_now_fetch_peer" />
+<img src="http://i.imgur.com/0vxZrA2.png" alt="esp_now_get_cnt_info" />
+<img src="http://i.imgur.com/diYBk7z.png" alt="esp_now_set_tok" /></li>
+</ol>
+</li>
+<li><p>云端升级（FOTA）</p></li>
 </ol>
 
 
@@ -2727,7 +2871,18 @@
 <li>！（escape）：符号！是MATLAB的扩展运算符，通过该符号，用户有权使用DOS或UNIX命令</li>
 <li>demo：该命令引导使用者通过菜单选择为数众多的演示程序</li>
 <li>format：数据显示格式。系统默认的数据显示格式是5位</li>
-<li>clear：清除命令。</li>
+<li>clear：清除工作空间中所有的变量</li>
+<li>clear all：从工作空间中清除所有变量和函数</li>
+<li>clf：清除图形窗口内容</li>
+<li>delete&lt;文件名>：从磁盘中删除指定文件</li>
+<li>load name：载入‘name’文件中的所有变量到工作空间</li>
+<li>load name x y：载入‘name’文件中的变量x，y到工作空间</li>
+<li>save name：保存工作空间变量到文件name.mat中</li>
+<li>save name x y：保存工作空间变量x y到文件name.mat中</li>
+<li>pack：整理工作空间内存</li>
+<li>size：显示当前工作空间中变量的尺寸</li>
+<li>length：显示当前工作空间中变量的长度</li>
+<li>disp：显示当前工作空间中的变量</li>
 </ol>
 
 
@@ -2873,6 +3028,118 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>使用diary命令制作一个屏幕内容的拷贝，如果其后不加任何文件名，屏幕内容将存入名为diary的文件中，此文件可以用文本方式打开。但是在diary文件里无法得到图形</li>
 </ul>
 
+
+<h2>Matlab中的默认常量</h2>
+
+<ol>
+<li>pi：圆周率</li>
+<li>inf：无穷大</li>
+<li>nan：不定值，即0/0</li>
+<li>realmax：最大正实数</li>
+<li>realmin：最小正实数</li>
+<li>eps：浮点数的相对误差</li>
+<li>i：虚数单位</li>
+<li>nargin：函数实际输入参数个数</li>
+<li>nargout：函数实际输出参数个数</li>
+<li>ans：默认变量名</li>
+</ol>
+
+
+<h2>常用矩阵函数运算</h2>
+
+<ol>
+<li>rot90（）：矩阵逆时针旋转90°</li>
+<li>flipud（）：矩阵上下翻转</li>
+<li>fliplr（）：矩阵左右翻转</li>
+<li>flipdim（）：矩阵的某维元素翻转</li>
+<li>shiftdim（）：矩阵的元素移位</li>
+<li>eig（）：计算矩阵的特征值和特征向量</li>
+<li>rank（）：计算矩阵的秩</li>
+<li>trace（）：计算矩阵的迹</li>
+<li>norm（）：计算矩阵的范数</li>
+<li>poly（）：计算矩阵的特征方程的根</li>
+<li>svd（）：矩阵的奇异值分解</li>
+<li>qr（）：矩阵的QR分解</li>
+<li>chol（）：矩阵的Cholesky分解</li>
+<li>schur（）：矩阵的Schur分解</li>
+<li>lu（）：矩阵的LU分解</li>
+</ol>
+
+
+<h2>符号运算</h2>
+
+<ol>
+<li>syms 符号变量名1 符号变量名2 &hellip; 符号变量名n
+
+<ol>
+<li>用这种格式定义符号变量时不要在变量名上加字符串分界符，变量间用空格而不用逗号分隔</li>
+</ol>
+</li>
+<li>含有符号对象的表达式称为符号表达式，建立符号表达式有以下3中方法：
+
+<ol>
+<li>利用单引号来生成符号表达式</li>
+<li>用sym函数建立符号表达式</li>
+<li>使用已经定义的符号变量组成符号表达式
+<img src="http://i.imgur.com/sjfydxI.png" alt="符号表达式创建实例" /></li>
+</ol>
+</li>
+<li>Matlab中，数值矩阵不能直接参与符号运算，必须先转化为符号矩阵
+
+<ol>
+<li>将数值矩阵转化为符号矩阵：sym（数值矩阵）</li>
+<li>将符号矩阵转化为数值矩阵：numeric（A）</li>
+</ol>
+</li>
+<li>关于符号矩阵的函数
+
+<ol>
+<li>transpose（S）：返回S矩阵的转置矩阵</li>
+<li>determ（S）：返回S矩阵的行列式值</li>
+<li>许多数值矩阵的函数，如diag，triu，tril，inv，det，rank，eig等也可直接应用于符号矩阵</li>
+</ol>
+</li>
+<li>符号表达式的四则运算
+
+<ol>
+<li>factor（S）：对S分解因式，S是符号表达式或符号矩阵</li>
+<li>expand（S）：对S进行展开，S是符号表达式或符号矩阵</li>
+<li>collect（S，v）：对S按变量v合并同类项，S是符号表达式或符号矩阵</li>
+<li>simplify（S）：应用函数规则对S进行简化</li>
+<li>simple（S）：调用MATLAB的其他函数对表达式进行综合化简，并显示化简过程</li>
+</ol>
+</li>
+<li>常用的符号运算
+
+<ol>
+<li>limit，求极限的符号函数，常用的格式：limit（F，x，a，‘right’）或limit（F，x，a，‘left’）。当自变量x从右侧或左侧逼近a时，函数F的极值</li>
+<li>diff，求微分用的符号函数，常用格式：diff（f，x，n），表示f关于x求n阶导数</li>
+<li>int，求积分用的符号函数，常用格式：int（f，r，x0，x1），f为所要积分的表达式，r为积分变量，若为定积分，则x0与x1为积分上下限</li>
+<li>symsum，级数求和的符号函数，常用的格式：S=symsum（fk，k，k0，kn），其中fk为级数的通项，k为级数自变量，k0和kn为级数求和的起始项和终止项，且可设为inf</li>
+<li>dsolve，求解常微分方程的符号函数，常用格式：dsolve（'eqnl',&lsquo;condition&rsquo;,&lsquo;var'）;该函数求解微分方程eqnl在初始条件condition下的特解。参数var描述方程中的自变量符号，省略时按默认原则处理，若没有给出初值条件condition，则求方程的通解
+<img src="http://i.imgur.com/o1KV20Q.png" alt="极限和极值的符号运算实例" />
+<img src="http://i.imgur.com/Hp0qYod.png" alt="微积分的符号运算实例" />
+<img src="http://i.imgur.com/sHRwiap.png" alt="常微分方程符号运算实例" /></li>
+</ol>
+</li>
+</ol>
+
+
+<h2>图形绘制</h2>
+
+<ol>
+<li>ploy,绘制二维图形，常用格式：plot(x1,y,option1,x2,y2,option2,&hellip;)</li>
+<li>plot3,绘制三维图形，常用格式：plot3(x1,y1,z1,option1,x2,y2,z2,option2,&hellip;)</li>
+<li>mesh,绘制三维曲面，常用格式：mesh(X,Y,Z,C),参数X,Y,Z都为矩阵值，C表示网格曲面的颜色分布。mesh(x,y,Z,C),参数x，y为长度分别是n和m的向量值，而参数Z是维数为mxn的矩阵</li>
+<li>surf，绘制三维阴影曲面，常用格式：surf(X,Y,Z,C),surf(x,y,Z,C)
+<img src="http://i.imgur.com/pZGpcxE.png" alt="三维网格曲面图绘制应用实例" />
+<img src="http://i.imgur.com/0hS4l6O.png" alt="绘图命令使用实例" /></li>
+</ol>
+
+
+<h2>MATLAB程序</h2>
+
+<p><img src="http://i.imgur.com/xWXusd3.png" alt="MATLAB程序基本组成结构" /></p>
 
 		
 		

@@ -108,7 +108,18 @@ who：列出当前工作空间里的变量名 &hellip;">
 <li>！（escape）：符号！是MATLAB的扩展运算符，通过该符号，用户有权使用DOS或UNIX命令</li>
 <li>demo：该命令引导使用者通过菜单选择为数众多的演示程序</li>
 <li>format：数据显示格式。系统默认的数据显示格式是5位</li>
-<li>clear：清除命令。</li>
+<li>clear：清除工作空间中所有的变量</li>
+<li>clear all：从工作空间中清除所有变量和函数</li>
+<li>clf：清除图形窗口内容</li>
+<li>delete&lt;文件名>：从磁盘中删除指定文件</li>
+<li>load name：载入‘name’文件中的所有变量到工作空间</li>
+<li>load name x y：载入‘name’文件中的变量x，y到工作空间</li>
+<li>save name：保存工作空间变量到文件name.mat中</li>
+<li>save name x y：保存工作空间变量x y到文件name.mat中</li>
+<li>pack：整理工作空间内存</li>
+<li>size：显示当前工作空间中变量的尺寸</li>
+<li>length：显示当前工作空间中变量的长度</li>
+<li>disp：显示当前工作空间中的变量</li>
 </ol>
 
 
@@ -254,6 +265,118 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>使用diary命令制作一个屏幕内容的拷贝，如果其后不加任何文件名，屏幕内容将存入名为diary的文件中，此文件可以用文本方式打开。但是在diary文件里无法得到图形</li>
 </ul>
 
+
+<h2>Matlab中的默认常量</h2>
+
+<ol>
+<li>pi：圆周率</li>
+<li>inf：无穷大</li>
+<li>nan：不定值，即0/0</li>
+<li>realmax：最大正实数</li>
+<li>realmin：最小正实数</li>
+<li>eps：浮点数的相对误差</li>
+<li>i：虚数单位</li>
+<li>nargin：函数实际输入参数个数</li>
+<li>nargout：函数实际输出参数个数</li>
+<li>ans：默认变量名</li>
+</ol>
+
+
+<h2>常用矩阵函数运算</h2>
+
+<ol>
+<li>rot90（）：矩阵逆时针旋转90°</li>
+<li>flipud（）：矩阵上下翻转</li>
+<li>fliplr（）：矩阵左右翻转</li>
+<li>flipdim（）：矩阵的某维元素翻转</li>
+<li>shiftdim（）：矩阵的元素移位</li>
+<li>eig（）：计算矩阵的特征值和特征向量</li>
+<li>rank（）：计算矩阵的秩</li>
+<li>trace（）：计算矩阵的迹</li>
+<li>norm（）：计算矩阵的范数</li>
+<li>poly（）：计算矩阵的特征方程的根</li>
+<li>svd（）：矩阵的奇异值分解</li>
+<li>qr（）：矩阵的QR分解</li>
+<li>chol（）：矩阵的Cholesky分解</li>
+<li>schur（）：矩阵的Schur分解</li>
+<li>lu（）：矩阵的LU分解</li>
+</ol>
+
+
+<h2>符号运算</h2>
+
+<ol>
+<li>syms 符号变量名1 符号变量名2 &hellip; 符号变量名n
+
+<ol>
+<li>用这种格式定义符号变量时不要在变量名上加字符串分界符，变量间用空格而不用逗号分隔</li>
+</ol>
+</li>
+<li>含有符号对象的表达式称为符号表达式，建立符号表达式有以下3中方法：
+
+<ol>
+<li>利用单引号来生成符号表达式</li>
+<li>用sym函数建立符号表达式</li>
+<li>使用已经定义的符号变量组成符号表达式
+<img src="http://i.imgur.com/sjfydxI.png" alt="符号表达式创建实例" /></li>
+</ol>
+</li>
+<li>Matlab中，数值矩阵不能直接参与符号运算，必须先转化为符号矩阵
+
+<ol>
+<li>将数值矩阵转化为符号矩阵：sym（数值矩阵）</li>
+<li>将符号矩阵转化为数值矩阵：numeric（A）</li>
+</ol>
+</li>
+<li>关于符号矩阵的函数
+
+<ol>
+<li>transpose（S）：返回S矩阵的转置矩阵</li>
+<li>determ（S）：返回S矩阵的行列式值</li>
+<li>许多数值矩阵的函数，如diag，triu，tril，inv，det，rank，eig等也可直接应用于符号矩阵</li>
+</ol>
+</li>
+<li>符号表达式的四则运算
+
+<ol>
+<li>factor（S）：对S分解因式，S是符号表达式或符号矩阵</li>
+<li>expand（S）：对S进行展开，S是符号表达式或符号矩阵</li>
+<li>collect（S，v）：对S按变量v合并同类项，S是符号表达式或符号矩阵</li>
+<li>simplify（S）：应用函数规则对S进行简化</li>
+<li>simple（S）：调用MATLAB的其他函数对表达式进行综合化简，并显示化简过程</li>
+</ol>
+</li>
+<li>常用的符号运算
+
+<ol>
+<li>limit，求极限的符号函数，常用的格式：limit（F，x，a，‘right’）或limit（F，x，a，‘left’）。当自变量x从右侧或左侧逼近a时，函数F的极值</li>
+<li>diff，求微分用的符号函数，常用格式：diff（f，x，n），表示f关于x求n阶导数</li>
+<li>int，求积分用的符号函数，常用格式：int（f，r，x0，x1），f为所要积分的表达式，r为积分变量，若为定积分，则x0与x1为积分上下限</li>
+<li>symsum，级数求和的符号函数，常用的格式：S=symsum（fk，k，k0，kn），其中fk为级数的通项，k为级数自变量，k0和kn为级数求和的起始项和终止项，且可设为inf</li>
+<li>dsolve，求解常微分方程的符号函数，常用格式：dsolve（'eqnl',&lsquo;condition&rsquo;,&lsquo;var'）;该函数求解微分方程eqnl在初始条件condition下的特解。参数var描述方程中的自变量符号，省略时按默认原则处理，若没有给出初值条件condition，则求方程的通解
+<img src="http://i.imgur.com/o1KV20Q.png" alt="极限和极值的符号运算实例" />
+<img src="http://i.imgur.com/Hp0qYod.png" alt="微积分的符号运算实例" />
+<img src="http://i.imgur.com/sHRwiap.png" alt="常微分方程符号运算实例" /></li>
+</ol>
+</li>
+</ol>
+
+
+<h2>图形绘制</h2>
+
+<ol>
+<li>ploy,绘制二维图形，常用格式：plot(x1,y,option1,x2,y2,option2,&hellip;)</li>
+<li>plot3,绘制三维图形，常用格式：plot3(x1,y1,z1,option1,x2,y2,z2,option2,&hellip;)</li>
+<li>mesh,绘制三维曲面，常用格式：mesh(X,Y,Z,C),参数X,Y,Z都为矩阵值，C表示网格曲面的颜色分布。mesh(x,y,Z,C),参数x，y为长度分别是n和m的向量值，而参数Z是维数为mxn的矩阵</li>
+<li>surf，绘制三维阴影曲面，常用格式：surf(X,Y,Z,C),surf(x,y,Z,C)
+<img src="http://i.imgur.com/pZGpcxE.png" alt="三维网格曲面图绘制应用实例" />
+<img src="http://i.imgur.com/0hS4l6O.png" alt="绘图命令使用实例" /></li>
+</ol>
+
+
+<h2>MATLAB程序</h2>
+
+<p><img src="http://i.imgur.com/xWXusd3.png" alt="MATLAB程序基本组成结构" /></p>
 </div>
 
 

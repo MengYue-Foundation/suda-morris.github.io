@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-13T23:21:50+08:00</updated>
+  <updated>2015-12-19T11:56:29+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -396,7 +396,151 @@
 <img src="http://i.imgur.com/XSo84Zh.png" alt="system_update_cpu_freq" />
 <img src="http://i.imgur.com/vvaN0rO.png" alt="system_get_cpu_freq" />
 <img src="http://i.imgur.com/VvcFGtr.png" alt="system_get_flash_size_map" />
-<img src="http://i.imgur.com/qS1DJbK.png" alt="system_get_rst_info" /></p></li>
+<img src="http://i.imgur.com/qS1DJbK.png" alt="system_get_rst_info" />
+<img src="http://i.imgur.com/L4Val81.png" alt="system_soft_wdt_stop" />
+<img src="http://i.imgur.com/a84yBT6.png" alt="system_soft_wdt_restart" />
+<img src="http://i.imgur.com/ae9oSIE.png" alt="system_soft_wdt_feed" />
+<img src="http://i.imgur.com/a1phXi6.png" alt="system_show_malloc" />
+<img src="http://i.imgur.com/ih4sEt8.png" alt="os_memcpy" />
+<img src="http://i.imgur.com/Z3lIfXz.png" alt="os_strlen" />
+<img src="http://i.imgur.com/TAVUB3x.png" alt="os_printf" />
+<img src="http://i.imgur.com/PJJjvLk.png" alt="os_bzero" />
+<img src="http://i.imgur.com/7B4XZ86.png" alt="os_delay_us" />
+<img src="http://i.imgur.com/D3sMS0i.png" alt="os_install_putc1" /></p></li>
+<li><p>SPI Flash接口
+<img src="http://i.imgur.com/XmmnjBi.png" alt="spi_flash_get_id" />
+<img src="http://i.imgur.com/2ovYNiF.png" alt="spi_flash_erase_sector" />
+<img src="http://i.imgur.com/iIj5npZ.png" alt="spi_flash_write" />
+<img src="http://i.imgur.com/boQJjil.png" alt="spi_flash_read" />
+<img src="http://i.imgur.com/IcZDndm.png" alt="system_param_save_with_protect" />
+<img src="http://i.imgur.com/O97tZqz.png" alt="system_param_load" />
+<img src="http://i.imgur.com/SmENox2.png" alt="spi_flash_set_read_func" /></p></li>
+<li><p>Wi-Fi接口</p>
+
+<ol>
+<li>wifi_station系列接口以及ESP8266 station相关的设置、查询接口，请在ESP8266 station使能的情况下调用</li>
+<li>wifi_softap系列接口以及ESP8266 soft-AP相关的设置、查询接口，请在ESP8266 soft-AP使能的情况下调用</li>
+<li>后文的“flash系统参数区”位于flash的最后16KB
+<img src="http://i.imgur.com/RlFFDxJ.png" alt="wifi_get_opmode" />
+<img src="http://i.imgur.com/XaW34cD.png" alt="wifi_get_opmode_default" />
+<img src="http://i.imgur.com/QGHqO0N.png" alt="wifi_set_opmode" />
+<img src="http://i.imgur.com/Q4lSIWk.png" alt="wifi_set_opmode_current" />
+<img src="http://i.imgur.com/wqkMEDJ.png" alt="wifi_station_get_config" />
+<img src="http://i.imgur.com/k9VPDzA.png" alt="wifi_station_get_config_default" />
+<img src="http://i.imgur.com/61GE3Ib.png" alt="wifi_station_set_config" />
+<img src="http://i.imgur.com/qdYW054.png" alt="wifi_station_set_config_current" />
+<img src="http://i.imgur.com/03hCjeQ.png" alt="wifi_station_set_cert_key" />
+<img src="http://i.imgur.com/QPXjpWE.png" alt="wifi_station_clear_cert_key" />
+<img src="http://i.imgur.com/Yh1PrWq.png" alt="wifi_station_connect" />
+<img src="http://i.imgur.com/DZl8NZr.png" alt="wifi_station_disconnect" />
+<img src="http://i.imgur.com/kApSlV0.png" alt="wifi_station_get_connect_status" />
+<img src="http://i.imgur.com/Ts9TcYG.png" alt="wifi_station_scan" />
+<img src="http://i.imgur.com/tmSeQd4.png" alt="scan_done_cb_t" />
+<img src="http://i.imgur.com/3qUP8bn.png" alt="wifi_station_ap_number_set" />
+<img src="http://i.imgur.com/KIVrSGI.png" alt="wifi_station_get_ap_info" />
+<img src="http://i.imgur.com/TwvND65.png" alt="wifi_station_ap_change" />
+<img src="http://i.imgur.com/5lvsPLw.png" alt="wifi_station_get_current_ap_id" />
+<img src="http://i.imgur.com/4Kfn8ab.png" alt="wifi_station_get_auto_connect" />
+<img src="http://i.imgur.com/oi0cgPi.png" alt="wifi_station_set_auto_connect" />
+<img src="http://i.imgur.com/EWEmI4Z.png" alt="wifi_station_dhcpc_start" />
+<img src="http://i.imgur.com/m82n4Zm.png" alt="wifi_station_dhcpc_stop" />
+<img src="http://i.imgur.com/zaJSEFV.png" alt="wifi_station_dhcpc_status" />
+<img src="http://i.imgur.com/SOkwKH3.png" alt="wifi_station_dhcpc_set_maxtry" />
+<img src="http://i.imgur.com/E4qQCrP.png" alt="wifi_station_set_reconnect_policy" />
+<img src="http://i.imgur.com/9rt7lqT.png" alt="wifi_station_get_rssi" />
+<img src="http://i.imgur.com/ghg2o8V.png" alt="wifi_station_set_hostname" />
+<img src="http://i.imgur.com/FAlGs8p.png" alt="wifi_station_get_hostname" />
+<img src="http://i.imgur.com/5Pdrcxh.png" alt="wifi_softap_get_config" />
+<img src="http://i.imgur.com/CZQUF2Q.png" alt="wifi_softap_get_config_default" />
+<img src="http://i.imgur.com/UDNTbY5.png" alt="wifi_softap_set_config" />
+<img src="http://i.imgur.com/ZDcmXW0.png" alt="wifi_softap_set_config_current" />
+<img src="http://i.imgur.com/P9tlgeM.png" alt="wifi_softap_get_station_num" />
+<img src="http://i.imgur.com/yHVy86S.png" alt="wifi_softap_get_station_info" />
+<img src="http://i.imgur.com/x5ngKIb.png" alt="wifi_softap_free_station_info" />
+<img src="http://i.imgur.com/78K07qB.png" alt="wifi_softap_dhcps_start" />
+<img src="http://i.imgur.com/1qfrMUV.png" alt="wifi_softap_dhcps_stop" />
+<img src="http://i.imgur.com/HxrV1vR.png" alt="wifi_softap_set_dhcps_lease" />
+<img src="http://i.imgur.com/0E9KVU1.png" alt="wifi_softap_get_dhcps_lease" />
+<img src="http://i.imgur.com/SRSOODU.png" alt="wifi_softap_set_dhcps_lease_time" />
+<img src="http://i.imgur.com/Hx99GO2.png" alt="wifi_soft_dhcps_status" />
+<img src="http://i.imgur.com/l97H0jZ.png" alt="wifi_softap_set_dhcps_offer_option" />
+<img src="http://i.imgur.com/XcDbqxT.png" alt="wifi_set_phy_mode" />
+<img src="http://i.imgur.com/GUa5O5O.png" alt="wifi_get_phy_mode" />
+<img src="http://i.imgur.com/xyPVuhn.png" alt="wifi_get_ip_info" />
+<img src="http://i.imgur.com/Zr9vWoq.png" alt="wifi_set_ip_info" />
+<img src="http://i.imgur.com/Z9LwYlW.png" alt="wifi_set_macaddr" />
+<img src="http://i.imgur.com/kTZanO6.png" alt="wifi_get_macaddr" />
+<img src="http://i.imgur.com/uDAgvRn.png" alt="wifi_set_sleep_type" />
+<img src="http://i.imgur.com/rYM4D3u.png" alt="wifi_get_sleep_type" />
+<img src="http://i.imgur.com/lSCPGbX.png" alt="wifi_status_led_install" />
+<img src="http://i.imgur.com/ggsdLte.png" alt="wifi_status_led_uninstall" />
+<img src="http://i.imgur.com/ZjWAM9E.png" alt="wifi_set_broadcase_if" />
+<img src="http://i.imgur.com/j7IEi5C.png" alt="wifi_get_broadcast_if" />
+<img src="http://i.imgur.com/SDZx9vy.png" alt="wifi_set_event_handler_cb" />
+<img src="http://i.imgur.com/WOrpmmZ.png" alt="wifi_wps_enable" />
+<img src="http://i.imgur.com/nIabYMP.png" alt="wifi_wps_disable" />
+<img src="http://i.imgur.com/mbemUfV.png" alt="wifi_wps_start" />
+<img src="http://i.imgur.com/UjUURzV.png" alt="wifi_set_wps_cb" />
+<img src="http://i.imgur.com/Fc9Vy7R.png" alt="wifi_register_send_pkt_freedom_cb" />
+<img src="http://i.imgur.com/82xDFc1.png" alt="wifi_send_pkt_freedom" />
+<img src="http://i.imgur.com/2KAsPlg.png" alt="wifi_rfid_locp_recv_open" />
+<img src="http://i.imgur.com/gIVEqHb.png" alt="wifi_rfid_locp_recv_close" />
+<img src="http://i.imgur.com/atfre24.png" alt="wifi_register_rfid_locp_recv_cb" />
+<img src="http://i.imgur.com/ySvAcKR.png" alt="wifi_unregister_rfid_locp_recv_cb" /></li>
+</ol>
+</li>
+<li><p>Rate Control 接口
+<img src="http://i.imgur.com/hsHHgyu.png" alt="wifi_set_user_fixed_rate" />
+<img src="http://i.imgur.com/mbJAoHb.png" alt="wifi_get_user_fixed_rate" />
+<img src="http://i.imgur.com/qb8MnZh.png" alt="wifi_set_user_sup_rate" />
+<img src="http://i.imgur.com/X0Upq9z.png" alt="wifi_set_user_rate_limit" />
+<img src="http://i.imgur.com/asqAVuW.png" alt="wifi_set_user_limit_rate_mask" />
+<img src="http://i.imgur.com/iqOBgeg.png" alt="wifi_get_user_limit_rate_mask" /></p></li>
+<li><p>强制休眠接口
+使用强制休眠功能，必须先设置WiFi工作模式位NULL_MODE，从强制休眠中唤醒ESP8266，或者休眠时间到，进入唤醒回调（wifi_fpm_set_wakeup_cb注册）后，先关闭强制休眠功能，才能再设置WiFi工作模式为station、soft-AP或sta+AP的正常工作模式。
+<img src="http://i.imgur.com/LMJT80U.png" alt="wifi_fpm_open" />
+<img src="http://i.imgur.com/H0ajlD1.png" alt="wifi_fpm_close" />
+<img src="http://i.imgur.com/aFSgMZu.png" alt="wifi_fpm_do_wakeup" />
+<img src="http://i.imgur.com/nSg5lrr.png" alt="wifi_fpm_set_wakeup_cb" />
+<img src="http://i.imgur.com/XVbopKI.png" alt="wifi_fpm_do_sleep" />
+<img src="http://i.imgur.com/RJFmtGe.png" alt="wifi_fpm_set_sleep_type" />
+<img src="http://i.imgur.com/hbiNG8u.png" alt="wifi_fpm_get_sleep_type" />
+示例
+<img src="http://i.imgur.com/mQaZk2x.png" alt="示例代码" /></p></li>
+<li><p>ESP-NOW
+ESP-NOW软件接口使用时注意：</p>
+
+<ol>
+<li>ESP-NOW目前不支持广播包和组播包</li>
+<li>ESP-NOW现阶段主要为智能灯项目，建议slave角色对应ESP8266 soft-AP模式或者soft-AP+station共存模式；controller角色对应station模式</li>
+<li>当ESP8266处于soft-AP+station共存模式时，若作为slave角色，将从soft-AP接口通信；若作为controller角色，将从station接口通信</li>
+<li>ESP-NOW不实现休眠环形功能，因此如果通信对方的ESP8266 station正处于休眠状态，ESP-NOW发包将会失败</li>
+<li>ESP8266 station模式下，最多可设置10个加密的ESP-NOW peer，加上不加密的设备，综述不超过20个</li>
+<li>ESP8266 soft-AP模式或者soft-AP+station模式下，最多设置6个加密的ESP-NOW peer，加上不加密的设备，总数不超过20个
+<img src="http://i.imgur.com/ZqxmdUT.png" alt="esp_now_init" />
+<img src="http://i.imgur.com/jnoadVK.png" alt="esp_now_deinit" />
+<img src="http://i.imgur.com/hVQrHz9.png" alt="esp_now_register_recv_cb" />
+<img src="http://i.imgur.com/KCRctG7.png" alt="esp_now_unregister_recv_cb" />
+<img src="http://i.imgur.com/kqTxtwA.png" alt="esp_now_register_send_cb" />
+<img src="http://i.imgur.com/6eVV4AH.png" alt="esp_now_unregister_send_cb" />
+<img src="http://i.imgur.com/45s7eeI.png" alt="esp_now_send" />
+<img src="http://i.imgur.com/500z8ub.png" alt="esp_now_add_peer" />
+<img src="http://i.imgur.com/2S8zfbW.png" alt="esp_now_del_peer" />
+<img src="http://i.imgur.com/JlYx4aq.png" alt="esp_now_set_self_role" />
+<img src="http://i.imgur.com/Guzjbw0.png" alt="esp_now_get_self_role" />
+<img src="http://i.imgur.com/osSgTqs.png" alt="esp_now_set_peer_role" />
+<img src="http://i.imgur.com/0GiHi1M.png" alt="esp_now_get_peer_role" />
+<img src="http://i.imgur.com/hIq3URt.png" alt="esp_now_set_peer_key" />
+<img src="http://i.imgur.com/q945HqV.png" alt="esp_now_get_peer_key" />
+<img src="http://i.imgur.com/ZL6L5o7.png" alt="esp_now_set_peer_channel" />
+<img src="http://i.imgur.com/eOa2xH8.png" alt="esp_now_get_peer_channel" />
+<img src="http://i.imgur.com/H3U5eoY.png" alt="esp_now_is_peer_exist" />
+<img src="http://i.imgur.com/3bUBgdm.png" alt="esp_now_fetch_peer" />
+<img src="http://i.imgur.com/0vxZrA2.png" alt="esp_now_get_cnt_info" />
+<img src="http://i.imgur.com/diYBk7z.png" alt="esp_now_set_tok" /></li>
+</ol>
+</li>
+<li><p>云端升级（FOTA）</p></li>
 </ol>
 
 ]]></content>
@@ -2456,7 +2600,18 @@
 <li>！（escape）：符号！是MATLAB的扩展运算符，通过该符号，用户有权使用DOS或UNIX命令</li>
 <li>demo：该命令引导使用者通过菜单选择为数众多的演示程序</li>
 <li>format：数据显示格式。系统默认的数据显示格式是5位</li>
-<li>clear：清除命令。</li>
+<li>clear：清除工作空间中所有的变量</li>
+<li>clear all：从工作空间中清除所有变量和函数</li>
+<li>clf：清除图形窗口内容</li>
+<li>delete&lt;文件名>：从磁盘中删除指定文件</li>
+<li>load name：载入‘name’文件中的所有变量到工作空间</li>
+<li>load name x y：载入‘name’文件中的变量x，y到工作空间</li>
+<li>save name：保存工作空间变量到文件name.mat中</li>
+<li>save name x y：保存工作空间变量x y到文件name.mat中</li>
+<li>pack：整理工作空间内存</li>
+<li>size：显示当前工作空间中变量的尺寸</li>
+<li>length：显示当前工作空间中变量的长度</li>
+<li>disp：显示当前工作空间中的变量</li>
 </ol>
 
 
@@ -2602,6 +2757,118 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>使用diary命令制作一个屏幕内容的拷贝，如果其后不加任何文件名，屏幕内容将存入名为diary的文件中，此文件可以用文本方式打开。但是在diary文件里无法得到图形</li>
 </ul>
 
+
+<h2>Matlab中的默认常量</h2>
+
+<ol>
+<li>pi：圆周率</li>
+<li>inf：无穷大</li>
+<li>nan：不定值，即0/0</li>
+<li>realmax：最大正实数</li>
+<li>realmin：最小正实数</li>
+<li>eps：浮点数的相对误差</li>
+<li>i：虚数单位</li>
+<li>nargin：函数实际输入参数个数</li>
+<li>nargout：函数实际输出参数个数</li>
+<li>ans：默认变量名</li>
+</ol>
+
+
+<h2>常用矩阵函数运算</h2>
+
+<ol>
+<li>rot90（）：矩阵逆时针旋转90°</li>
+<li>flipud（）：矩阵上下翻转</li>
+<li>fliplr（）：矩阵左右翻转</li>
+<li>flipdim（）：矩阵的某维元素翻转</li>
+<li>shiftdim（）：矩阵的元素移位</li>
+<li>eig（）：计算矩阵的特征值和特征向量</li>
+<li>rank（）：计算矩阵的秩</li>
+<li>trace（）：计算矩阵的迹</li>
+<li>norm（）：计算矩阵的范数</li>
+<li>poly（）：计算矩阵的特征方程的根</li>
+<li>svd（）：矩阵的奇异值分解</li>
+<li>qr（）：矩阵的QR分解</li>
+<li>chol（）：矩阵的Cholesky分解</li>
+<li>schur（）：矩阵的Schur分解</li>
+<li>lu（）：矩阵的LU分解</li>
+</ol>
+
+
+<h2>符号运算</h2>
+
+<ol>
+<li>syms 符号变量名1 符号变量名2 &hellip; 符号变量名n
+
+<ol>
+<li>用这种格式定义符号变量时不要在变量名上加字符串分界符，变量间用空格而不用逗号分隔</li>
+</ol>
+</li>
+<li>含有符号对象的表达式称为符号表达式，建立符号表达式有以下3中方法：
+
+<ol>
+<li>利用单引号来生成符号表达式</li>
+<li>用sym函数建立符号表达式</li>
+<li>使用已经定义的符号变量组成符号表达式
+<img src="http://i.imgur.com/sjfydxI.png" alt="符号表达式创建实例" /></li>
+</ol>
+</li>
+<li>Matlab中，数值矩阵不能直接参与符号运算，必须先转化为符号矩阵
+
+<ol>
+<li>将数值矩阵转化为符号矩阵：sym（数值矩阵）</li>
+<li>将符号矩阵转化为数值矩阵：numeric（A）</li>
+</ol>
+</li>
+<li>关于符号矩阵的函数
+
+<ol>
+<li>transpose（S）：返回S矩阵的转置矩阵</li>
+<li>determ（S）：返回S矩阵的行列式值</li>
+<li>许多数值矩阵的函数，如diag，triu，tril，inv，det，rank，eig等也可直接应用于符号矩阵</li>
+</ol>
+</li>
+<li>符号表达式的四则运算
+
+<ol>
+<li>factor（S）：对S分解因式，S是符号表达式或符号矩阵</li>
+<li>expand（S）：对S进行展开，S是符号表达式或符号矩阵</li>
+<li>collect（S，v）：对S按变量v合并同类项，S是符号表达式或符号矩阵</li>
+<li>simplify（S）：应用函数规则对S进行简化</li>
+<li>simple（S）：调用MATLAB的其他函数对表达式进行综合化简，并显示化简过程</li>
+</ol>
+</li>
+<li>常用的符号运算
+
+<ol>
+<li>limit，求极限的符号函数，常用的格式：limit（F，x，a，‘right’）或limit（F，x，a，‘left’）。当自变量x从右侧或左侧逼近a时，函数F的极值</li>
+<li>diff，求微分用的符号函数，常用格式：diff（f，x，n），表示f关于x求n阶导数</li>
+<li>int，求积分用的符号函数，常用格式：int（f，r，x0，x1），f为所要积分的表达式，r为积分变量，若为定积分，则x0与x1为积分上下限</li>
+<li>symsum，级数求和的符号函数，常用的格式：S=symsum（fk，k，k0，kn），其中fk为级数的通项，k为级数自变量，k0和kn为级数求和的起始项和终止项，且可设为inf</li>
+<li>dsolve，求解常微分方程的符号函数，常用格式：dsolve（'eqnl',&lsquo;condition&rsquo;,&lsquo;var'）;该函数求解微分方程eqnl在初始条件condition下的特解。参数var描述方程中的自变量符号，省略时按默认原则处理，若没有给出初值条件condition，则求方程的通解
+<img src="http://i.imgur.com/o1KV20Q.png" alt="极限和极值的符号运算实例" />
+<img src="http://i.imgur.com/Hp0qYod.png" alt="微积分的符号运算实例" />
+<img src="http://i.imgur.com/sHRwiap.png" alt="常微分方程符号运算实例" /></li>
+</ol>
+</li>
+</ol>
+
+
+<h2>图形绘制</h2>
+
+<ol>
+<li>ploy,绘制二维图形，常用格式：plot(x1,y,option1,x2,y2,option2,&hellip;)</li>
+<li>plot3,绘制三维图形，常用格式：plot3(x1,y1,z1,option1,x2,y2,z2,option2,&hellip;)</li>
+<li>mesh,绘制三维曲面，常用格式：mesh(X,Y,Z,C),参数X,Y,Z都为矩阵值，C表示网格曲面的颜色分布。mesh(x,y,Z,C),参数x，y为长度分别是n和m的向量值，而参数Z是维数为mxn的矩阵</li>
+<li>surf，绘制三维阴影曲面，常用格式：surf(X,Y,Z,C),surf(x,y,Z,C)
+<img src="http://i.imgur.com/pZGpcxE.png" alt="三维网格曲面图绘制应用实例" />
+<img src="http://i.imgur.com/0hS4l6O.png" alt="绘图命令使用实例" /></li>
+</ol>
+
+
+<h2>MATLAB程序</h2>
+
+<p><img src="http://i.imgur.com/xWXusd3.png" alt="MATLAB程序基本组成结构" /></p>
 ]]></content>
   </entry>
   
@@ -6025,6 +6292,252 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <ol>
 <li>NMOS器件沟道用化合物材料，如InAs</li>
 <li>PMOS器件沟道用Ge材料</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>基本的CMOS工艺</h2>
+
+<ol>
+<li>N阱离子注入</li>
+<li>同时进行推进和氧化</li>
+<li>去除氮化硅保护膜</li>
+<li>制作AA区和LOCOS隔离</li>
+<li>针对阈值电压调节的离子注入</li>
+<li>栅极氧化以多晶硅栅制备</li>
+<li>源漏分别做离子注入</li>
+<li>ILD淀积保护膜，打通孔</li>
+<li>布第一层金属，钝化膜</li>
+</ol>
+
+
+<h2>闩锁效应</h2>
+
+<ol>
+<li>闩锁效应是由NMOS的有源区、P衬底、N阱、PMOS的有源区构成的n-p-n-p结构产生的，当其中一个三极管正偏时，就会构成正反馈形成闩锁。</li>
+<li>MOS工艺含有寄生的双极型晶体管。在CMOS工艺下，阱与衬底结合会导致寄生的n-p-n-p结构。这些结构会导致VDD和VSS线的短路，从而通常会破坏芯片，或者引起系统错误。</li>
+<li>避免闩锁的方法就是要减小衬底和N阱的寄生电阻，使寄生的三极管不会处于正偏状态</li>
+<li>防御措施：
+
+<ol>
+<li>在输入端和输出端加钳位电路，使输入和输出不超过不超过规定电压</li>
+<li>芯片的电源输入端加去耦电路，防止VDD端出现瞬间的高压</li>
+<li>在VDD和外电源之间加限流电阻，即使有大的电流也不让它进去</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>双阱工艺（Twin-Well）</h2>
+
+<ol>
+<li>传统的单阱工艺，器件部分需要8~10个Mask</li>
+<li>现代的双阱工艺，器件部分需要9~10个Mask
+
+<ol>
+<li>N阱掩膜</li>
+<li>P阱掩膜</li>
+<li>有源区掩膜</li>
+<li>p场注入掩膜</li>
+<li>耗尽型n管掩膜</li>
+<li>多晶硅栅掩膜</li>
+<li>n+源漏注入掩膜</li>
+<li>p+源漏注入掩膜</li>
+<li>接触孔掩膜</li>
+</ol>
+</li>
+<li>双阱cmos工艺采用p型硅晶圆片作为衬底，在衬底上做出N阱，用于制作PMOS晶体管，在衬底上做出p阱，用于制作nMOS晶体管。</li>
+<li>相比单阱工艺，双阱工艺的优势：NMOS和PMOS能够单独做优化。但是双阱工艺占用面积更大，工艺更复杂</li>
+</ol>
+
+
+<h2>传统NPN BJT工艺流程（6~7个Mask）</h2>
+
+<ol>
+<li>埋层注入（n+），需要掩膜</li>
+<li>n-Si外延层生长</li>
+<li>氧化与guard ring隔离，需要掩膜</li>
+<li>基区离子注入，需要掩膜</li>
+<li>发射极和集电极离子注入，需要掩膜</li>
+<li>形成基区，发射区，集电区的接触孔，金属的图形转移，需要掩膜</li>
+<li>制作钝化层，需要掩膜</li>
+<li>金属化，需要掩膜</li>
+</ol>
+
+
+<h2>自对准BJT工艺</h2>
+
+<p><img src="http://i.imgur.com/ua0pGfz.png" alt="高性能BJT结构" />
+<img src="http://i.imgur.com/rG85e9z.png" alt="自对准BJT工艺" />
+1. 特点：
+    1. 利用多晶硅做发射极，提高了器件性能
+    2. 埋层集电极
+    3. 自对准多晶硅基极
+    4. STI/LOCOS隔离
+    5. 需要10~11层的Mask
+    6. 器件密度不如CMOS，成本比CMOS高
+2. 主要用途：
+    1. 射频器件，工作频率可以做到10~30GHz
+    2. 大驱动能力的模拟器件
+3. 工艺
+    1. P-硅衬底上制作埋层集电极
+    2. n-Si外延层生长
+    3. LOCOS隔离
+    4. 生长一层薄的氧化层，有源区图形化
+    5. 淀积P+多晶硅，然后在上面淀积一层LTO
+    6. 刻蚀，暴露有源区
+    7. 制作侧墙spacer（先LTO在回刻）
+    8. 淀积n+多晶硅，图形化后作为发射极
+    9. 热退火，将重掺杂的n多晶硅和p多晶硅中的杂质扩散到衬底中形成发射区与基区</p>
+
+<h2>BiCMOS工艺（BJT+CMOS）</h2>
+
+<ol>
+<li>最复杂的工艺技术，不是市场主流，制约该工艺的瓶颈是BJT</li>
+<li>需要约15层的Mask来制作器件</li>
+<li>集成了CMOS低功耗的特点与BJT高速的特点</li>
+<li>随着CMOS器件尺寸逐步减小，BiCMOS工艺的优势越来越弱</li>
+</ol>
+
+
+<h2>Device Scaling要求</h2>
+
+<ol>
+<li>沟道表面有一定的势垒，减小漏电流</li>
+<li>更好的栅控能力（比如使用Multi-gate工艺）</li>
+<li>方案：
+
+<ol>
+<li>增加Cox（降低tox或者使用high-k介质材料）</li>
+<li>浅结（降低源漏对沟道的影响，增加栅对沟道的影响）</li>
+<li>增加沟道参杂</li>
+</ol>
+</li>
+<li>问题
+
+<ol>
+<li>沟道的载流子散射增加了，降低了迁移率</li>
+<li>可靠性降低了，器件变小，电场增加了，更容易击穿，可以通过降低电压来维持稳定性</li>
+<li>浅结带来的源漏的寄生电阻的增加</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>短沟道器件结构</h2>
+
+<p><img src="http://i.imgur.com/7aAjDdU.png" alt="短沟道器件结构" />
+1. 为了抑制段沟道效应，采用了很多手段来优化栅极，源漏以及沟道的组成
+    1. 栅极材料的选择
+    2. 沟道掺杂表面浓度低，底下浓度高
+    3. halo-implant来避免沟道底部的本体穿通（阻挡S/D对沟道的影响，通过大角度的围绕着沟道的离子注入）
+    4. 浅的源漏延伸
+        1. 浅结
+        2. 掺杂浓度低
+        3. 降低了S/D串联电阻
+        4. LDD降低了耗尽区的电场强度，减少了热载流子影响，优化了源漏电场分布</p>
+
+<h2>倒退阱（Retro-grade Well）</h2>
+
+<ol>
+<li>一般的，沟道表面参杂浓度会更高，但是在倒退阱中，表面掺杂浓度低于沟道参杂浓度</li>
+<li>这样会提高载流子迁移率，增加对闩锁效应和本体穿通的体抗力</li>
+<li>制备手段
+
+<ol>
+<li>高能量的深离子注入</li>
+<li>epi-wafer上的外延生长</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>栅介质材料</h2>
+
+<ol>
+<li>high-k介质材料通常使用的淀积工艺：ALD和MOCVD</li>
+<li>通常high-k材料与Si的界面接触特性不好</li>
+<li>High-k与金属的兼容性不好</li>
+<li>High-k的热稳定性不好</li>
+<li>要求high-k介质薄膜很薄</li>
+</ol>
+
+
+<h2>N+多晶硅栅与N+/P+多晶硅栅</h2>
+
+<ol>
+<li>N+多晶硅栅
+
+<ol>
+<li>使用广泛，因为工艺简单</li>
+<li>在淀积多晶硅栅的同时原位重掺杂P元素</li>
+<li>PMOSFETs需要阈值电压调节注入</li>
+<li>问题（主要原因在于n+与n和n+与p的功函数差很大）：
+
+<ol>
+<li>大的漏电流</li>
+<li>严重的本体穿通问题</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>P+/N+多晶硅栅
+
+<ol>
+<li>NMOS用N+多晶硅，PMOS用P+多晶硅</li>
+<li>降低了漏电流和本体穿通的几率</li>
+<li>对短沟道器件很有必要</li>
+<li>源漏离子注入的同时可以进行多晶硅参杂，可以实现对称的沟道表面</li>
+<li>问题
+
+<ol>
+<li>硼渗透问题，解决方法：多晶硅分层，SiO2中掺N</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>金属栅与High-k</h2>
+
+<ol>
+<li>多晶硅与high-k介质兼容性不好的原因：
+
+<ol>
+<li>多晶硅栅的电势降落导致EOT增大</li>
+<li>多晶硅与high-k界面的不稳定性</li>
+</ol>
+</li>
+<li>双金属栅工艺
+
+<ol>
+<li>为了NMOS与PMOS的阈值电压对称，需要使用不同功函数的金属</li>
+<li>MOS晶体管自对准工艺需要改进，变成：Gate-last 工艺</li>
+</ol>
+</li>
+<li>金属栅工艺流程
+<img src="http://i.imgur.com/1cYBrSt.png" alt="金属栅制备流程1" />
+<img src="http://i.imgur.com/h0K4joj.png" alt="金属栅制备流程2" />
+
+<ol>
+<li>标准的STI隔离，双阱和沟道的掺杂</li>
+<li>ALD一层high-k介质膜</li>
+<li>LPCVD多晶硅牺牲层，并在两侧形成侧墙</li>
+<li>源漏掺杂，并未PMOS的源漏外延生长SiGe层（给Si沟道引入压应力，空穴迁移率增加）
+
+<ol>
+<li>用应力的方式增强沟道迁移率，提高驱动电流，降低漏电流</li>
+<li>SiGe外延属于异质外延，造成晶格错位</li>
+<li>另外一种引入应力的方式是在NMOS外面包一层Si3N4，给沟道带来张应力，电子迁移率增加</li>
+</ol>
+</li>
+<li>CVD淀积氧化层，接着CMP平坦化</li>
+<li>将多晶硅牺牲层刻蚀掉</li>
+<li>选择性淀积PMOS的第一层金属（与P-si有小的功函数差）</li>
+<li>淀积NMOS的第一层金属（与N-si有小的功函数差）</li>
+<li>填充Al，然后平坦化</li>
 </ol>
 </li>
 </ol>
