@@ -704,14 +704,185 @@ ESP-NOW软件接口使用时注意：</p>
 
 <ol>
 <li>通用接口
-<img src="http://i.imgur.com/b7JpuSF.png" alt="espconn_delete" /></li>
-<li>TCP APIs</li>
-<li>UDP APIs</li>
-<li>mDNS APIs</li>
+<img src="http://i.imgur.com/b7JpuSF.png" alt="espconn_delete" />
+<img src="http://i.imgur.com/oYeFFV5.png" alt="espconn_gethostbyname" />
+<img src="http://i.imgur.com/byn3M8b.png" alt="espconn_port" />
+<img src="http://i.imgur.com/RWTvtPX.png" alt="espconn_regist_sentcb" />
+<img src="http://i.imgur.com/kyjCZLo.png" alt="espconn_regist_recvcb" />
+<img src="http://i.imgur.com/9TiclzH.png" alt="espconn_sent_callback" />
+<img src="http://i.imgur.com/EGx24RQ.png" alt="espconn_recv_callback" />
+<img src="http://i.imgur.com/ZMdDW5D.png" alt="espconn_send" /></li>
+<li>TCP APIs
+<img src="http://i.imgur.com/tvFIHXv.png" alt="espconn_accept" />
+<img src="http://i.imgur.com/MQDJ2dm.png" alt="espconn_regist_time" />
+<img src="http://i.imgur.com/JHhTCX8.png" alt="espconn_get_connection_info" />
+<img src="http://i.imgur.com/qnPMqHW.png" alt="espconn_connect" />
+<img src="http://i.imgur.com/AXFBUEl.png" alt="espconn_regist_connectcb" />
+<img src="http://i.imgur.com/PapbezX.png" alt="espconn_connect_callback" />
+<img src="http://i.imgur.com/qDyblQ6.png" alt="espconn_set_opt" />
+<img src="http://i.imgur.com/SGEKnoP.png" alt="espconn_clear_opt" />
+<img src="http://i.imgur.com/p0qCJtW.png" alt="espconn_set_keepalive" />
+<img src="http://i.imgur.com/zBb9208.png" alt="espconn_get_keepalive" />
+<img src="http://i.imgur.com/vG8gNaV.png" alt="espconn_reconnect_callback" />
+<img src="http://i.imgur.com/bsyzRMX.png" alt="espconn_regist_reconcb" />
+<img src="http://i.imgur.com/D0ksaOd.png" alt="espconn_disconnect" />
+<img src="http://i.imgur.com/5HlP8kD.png" alt="espconn_regist_disconcb" />
+<img src="http://i.imgur.com/87L2XO8.png" alt="espconn_abort" />
+<img src="http://i.imgur.com/g9FFQ2T.png" alt="espconn_regist_write_finish" />
+<img src="http://i.imgur.com/4iDHlaW.png" alt="espconn_tcp_get_max_con" />
+<img src="http://i.imgur.com/7zcoIEJ.png" alt="espconn_tcp_set_max_con" />
+<img src="http://i.imgur.com/tj1A4IN.png" alt="espconn_tcp_get_max_con_allow" />
+<img src="http://i.imgur.com/YnFUF40.png" alt="espconn_tcp_set_max_con_allow" />
+<img src="http://i.imgur.com/Di7fpNE.png" alt="espconn_recv_hold" />
+<img src="http://i.imgur.com/p9Wh4ar.png" alt="espconn_recv_unhold" />
+<img src="http://i.imgur.com/x77iFAZ.png" alt="espconn_secure_accept" />
+<img src="http://i.imgur.com/yf0nu6u.png" alt="espconn_secure_delete" />
+<img src="http://i.imgur.com/aJTmXp1.png" alt="espconn_secure_set_size" />
+<img src="http://i.imgur.com/LYSOddi.png" alt="espconn_secure_get_size" />
+<img src="http://i.imgur.com/vWyey95.png" alt="espconn_secure_connect" />
+<img src="http://i.imgur.com/MjT9kZI.png" alt="espconn_secure_send" />
+<img src="http://i.imgur.com/Q8Pc8mB.png" alt="espconn_secure_disconnect" />
+<img src="http://i.imgur.com/KbuaGLw.png" alt="espconn_secure_ca_disable" />
+<img src="http://i.imgur.com/EjurJ9N.png" alt="espconn_secure_ca_enable" />
+<img src="http://i.imgur.com/mLQrUcq.png" alt="espconn_secure_cert_req_enable" />
+<img src="http://i.imgur.com/ssMcZnw.png" alt="espconn_secure_cert_req_disable" />
+<img src="http://i.imgur.com/NOkGIJa.png" alt="espconn_secure_set_default_certificate" />
+<img src="http://i.imgur.com/vSJnk8r.png" alt="espconn_secure_set_default_private_key" /></li>
+<li>UDP APIs
+<img src="http://i.imgur.com/b4U0hIS.png" alt="espconn_crerat" />
+<img src="http://i.imgur.com/qJXFCtQ.png" alt="espconn_sendto" />
+<img src="http://i.imgur.com/hnz1IKo.png" alt="espconn_igmp_join" />
+<img src="http://i.imgur.com/IaZYyTV.png" alt="espconn_igmp_leave" />
+<img src="http://i.imgur.com/3LSmGln.png" alt="espconn_dns_setserver" /></li>
+<li>mDNS APIs
+<img src="http://i.imgur.com/6ZtF0Cx.png" alt="espconn_mdns_init" />
+<img src="http://i.imgur.com/4diP7CK.png" alt="espconn_mdns_close" />
+<img src="http://i.imgur.com/JHgRWYC.png" alt="espconn_mdns_server_register" />
+<img src="http://i.imgur.com/uWcpQwi.png" alt="espconn_mdns_server_unregister" />
+<img src="http://i.imgur.com/WGx1eCJ.png" alt="espconn_mdns_get_servername" />
+<img src="http://i.imgur.com/fQ1FfCr.png" alt="espconn_mdns_set_servername" />
+<img src="http://i.imgur.com/5fmYZOd.png" alt="espconn_mdns_set_hostname" />
+<img src="http://i.imgur.com/JztcNEV.png" alt="espconn_mdns_get_hostname" />
+<img src="http://i.imgur.com/JWvn7uS.png" alt="espconn_mdns_disable" />
+<img src="http://i.imgur.com/iyADme0.png" alt="espconn_mdns_enable" />
+<img src="http://i.imgur.com/MlaoB7u.png" alt="nDNS示例" /></li>
 </ol>
 </li>
+<li><p>MESH接口
+<img src="http://i.imgur.com/IBvybY2.png" alt="espconn_mesh_enable" />
+<img src="http://i.imgur.com/OAC3v1k.png" alt="espconn_mesh_disable" />
+<img src="http://i.imgur.com/4VE4LfU.png" alt="espconn_mesh_get_status" />
+<img src="http://i.imgur.com/nL1ApJU.png" alt="espconn_mesh_connect" />
+<img src="http://i.imgur.com/HW2jL3C.png" alt="espconn_mesh_disconnect" />
+<img src="http://i.imgur.com/bDVScnj.png" alt="espconn_mesh_sent" />
+<img src="http://i.imgur.com/SWhdlPv.png" alt="espconn_mesh_set_max_hop" />
+<img src="http://i.imgur.com/7XQeKKP.png" alt="espconn_mesh_get_max_hop" />
+<img src="http://i.imgur.com/iPK4CLN.png" alt="espconn_mesh_get_node_info" />
+<img src="http://i.imgur.com/9lqq5x0.png" alt="espconn_mesh_local_addr" />
+<img src="http://i.imgur.com/hxtkS50.png" alt="espconn_mesh_server_init" />
+<img src="http://i.imgur.com/kk27vxO.png" alt="espconn_mesh_get_router" />
+<img src="http://i.imgur.com/8MO0BNo.png" alt="espconn_mesh_set_router" />
+<img src="http://i.imgur.com/OYFa67D.png" alt="espconn_mesh_encrypt_init" />
+<img src="http://i.imgur.com/UUmQjpb.png" alt="espconn_mesh_set_ssid_prefix" />
+<img src="http://i.imgur.com/wsGGmGK.png" alt="espconn_mesh_group_id_init" />
+<img src="http://i.imgur.com/ciwvwV1.png" alt="espconn_mesh_set_dev_type" />
+<img src="http://i.imgur.com/crA8NVu.png" alt="espconn_mesh_get_dev_type" />
+<img src="http://i.imgur.com/MddfA9d.png" alt="espconn_mesh_print_ver" />
+<img src="http://i.imgur.com/oTx1V3H.png" alt="espconn_mesh_scan" /></p></li>
+<li><p>AT接口
+<img src="http://i.imgur.com/uBBcloa.png" alt="at_response_ok" />
+<img src="http://i.imgur.com/Hl7Wxrw.png" alt="at_response_error" />
+<img src="http://i.imgur.com/wMckYre.png" alt="at_cmd_array_regist" />
+<img src="http://i.imgur.com/4bqK9gn.png" alt="at_get_next_int_dec" />
+<img src="http://i.imgur.com/c0oafeU.png" alt="at_data_str_copy" />
+<img src="http://i.imgur.com/UdkkoRg.png" alt="at_init" />
+<img src="http://i.imgur.com/bRMNu26.png" alt="at_port_print" />
+<img src="http://i.imgur.com/Qh4Egbh.png" alt="at_set_custom_info" />
+<img src="http://i.imgur.com/ojVLj93.png" alt="at_enter_special_state" />
+<img src="http://i.imgur.com/7893WIC.png" alt="at_leave_special_state" />
+<img src="http://i.imgur.com/Ntv3tdk.png" alt="at_get_version" />
+<img src="http://i.imgur.com/9DJBqHV.png" alt="at_register_uart_rx_intr" />
+<img src="http://i.imgur.com/BX32Nhi.png" alt="at_response" />
+<img src="http://i.imgur.com/JTr50kC.png" alt="at_register_response_func" /></p></li>
+<li><p>JSON接口
+<img src="http://i.imgur.com/ON88llK.png" alt="jsonparse_setup" />
+<img src="http://i.imgur.com/QiEDpFB.png" alt="jsonparse_next" />
+<img src="http://i.imgur.com/SCa6Qd3.png" alt="jsonparse_copy_value" />
+<img src="http://i.imgur.com/brv0X37.png" alt="jsonparse_get_value_as_int" />
+<img src="http://i.imgur.com/d5RR8Wt.png" alt="jsonparse_get_value_as_long" />
+<img src="http://i.imgur.com/WVOl4Ue.png" alt="jsonparse_get_value_len" />
+<img src="http://i.imgur.com/HOFZdUg.png" alt="jsonparse_get_value_as_type" />
+<img src="http://i.imgur.com/37m1XVv.png" alt="jsonparse_strcmp_value" />
+<img src="http://i.imgur.com/ACKNxRZ.png" alt="jsontree_set_up" />
+<img src="http://i.imgur.com/MxdDQEF.png" alt="jsontree_reset" />
+<img src="http://i.imgur.com/YKXsm2O.png" alt="jsontree_path_name" />
+<img src="http://i.imgur.com/tpRuPOI.png" alt="jsontree_write_int" />
+<img src="http://i.imgur.com/0dfzHBw.png" alt="jsontree_write_int_array" />
+<img src="http://i.imgur.com/JMdzDbN.png" alt="jsontree_write_string" />
+<img src="http://i.imgur.com/kTFiCg8.png" alt="jsontree_print_next" />
+<img src="http://i.imgur.com/YPZRVqT.png" alt="jsontree_find_next" /></p></li>
+<li><p>GPIO接口
+<img src="http://i.imgur.com/l4cAWaW.png" alt="PIN相关宏定义" />
+<img src="http://i.imgur.com/0dYog5W.png" alt="gpio_output_set" />
+<img src="http://i.imgur.com/LMjDjU1.png" alt="GPIO输入输出相关宏" />
+<img src="http://i.imgur.com/xh7jhE8.png" alt="GPIO中断" />
+<img src="http://i.imgur.com/HBeRCSR.png" alt="gpio_pin_intr_state_set" />
+<img src="http://i.imgur.com/myjm32J.png" alt="GPIO中断处理函数" /></p></li>
+<li><p>UART接口
+默认情况下，UART0作为系统的打印信息输出接口，当配置为双UART时，UART0作为数据收发接口，UART1作为打印信息输出接口
+<img src="http://i.imgur.com/SG8nMkv.png" alt="uart_init" />
+<img src="http://i.imgur.com/7xpciAa.png" alt="uart0_tx_buffer" />
+<img src="http://i.imgur.com/yPCsPRq.png" alt="uart0_rx_intr_handler" /></p></li>
+<li><p>I2C Master接口
+ESP8266不能作为I2C从设备，但可以作为I2C主设备，对其他I2C从设备进行控制和读写。每个GPIO管脚内部都可以配置为开漏模式，从而可以灵活地将GPIO口用作I2C data或者clock功能。同时芯片内部提供上拉电阻，以节省外部的上拉电阻
+<img src="http://i.imgur.com/cFCO4NY.png" alt="i2c_master_gpio_init" />
+<img src="http://i.imgur.com/9dEjKkE.png" alt="i2c_master_init" />
+<img src="http://i.imgur.com/lj8qJuy.png" alt="i2c_master_start" />
+<img src="http://i.imgur.com/dKOHZpG.png" alt="i2c_master_stop" />
+<img src="http://i.imgur.com/UTNUycs.png" alt="i2c_master_send_ack" />
+<img src="http://i.imgur.com/3UGpatY.png" alt="i2c_master_send_nack" />
+<img src="http://i.imgur.com/UU2TSbP.png" alt="i2c_master_checkAck" />
+<img src="http://i.imgur.com/gjxuJFt.png" alt="i2c_master_readByte" />
+<img src="http://i.imgur.com/xOwdzPq.png" alt="i2c_master_writeByte" /></p></li>
+<li><p>PWM接口
+PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同一个硬件定时器
+<img src="http://i.imgur.com/Xtahx9b.png" alt="pwm_init" />
+<img src="http://i.imgur.com/XIbDsa7.png" alt="pwm_start" />
+<img src="http://i.imgur.com/iKhLfuh.png" alt="pwm_set_duty" />
+<img src="http://i.imgur.com/sJ3mGcB.png" alt="pwm_get_duty" />
+<img src="http://i.imgur.com/Ixgd7Kz.png" alt="pwm_set_period" />
+<img src="http://i.imgur.com/7PB2YeI.png" alt="pwm_get_period" />
+<img src="http://i.imgur.com/jxVThkr.png" alt="pwm_get_version" /></p></li>
 </ol>
 
+
+<h2>参数结构和宏定义</h2>
+
+<ol>
+<li>定时器
+<img src="http://i.imgur.com/SWbnx7J.png" alt="ETSTimer" /></li>
+<li>WiFi参数
+<img src="http://i.imgur.com/dA8A124.png" alt="station参数" />
+<img src="http://i.imgur.com/QNMFXtn.png" alt="soft-AP参数" />
+<img src="http://i.imgur.com/E7jjlFd.png" alt="scan参数" />
+<img src="http://i.imgur.com/Uw9zTI9.png" alt="WiFi event结构体" />
+<img src="http://i.imgur.com/ZP29Rew.png" alt="smart config结构体" /></li>
+<li>json相关结构体
+<img src="http://i.imgur.com/wnY8lSb.png" alt="json结构体" />
+<img src="http://i.imgur.com/amJ4Pbv.png" alt="json宏定义" /></li>
+<li>espconn参数
+<img src="http://i.imgur.com/YCKqSWm.png" alt="回调函数" />
+<img src="http://i.imgur.com/glbsJWw.png" alt="espconn" /></li>
+<li>中断相关宏定义
+<img src="http://i.imgur.com/i8UAMcA.png" alt="中断宏定义" /></li>
+</ol>
+
+
+<h2>ESPCONN编程</h2>
+
+<h2>RTC使用实例</h2>
+
+<h2>Sniffer结构体说明</h2>
 
 		
 		
