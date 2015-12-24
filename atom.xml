@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-22T19:48:27+08:00</updated>
+  <updated>2015-12-24T10:37:36+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -749,9 +749,161 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 
 <h2>ESPCONN编程</h2>
 
+<ol>
+<li>TCP client模式，步骤：
+
+<ol>
+<li>依据工作协议初始化espconn参数</li>
+<li>注册连接成功的回调函数和连接失败重连的回调函数</li>
+<li>调用espconn_connect建立与TCP Secver的连接</li>
+<li>TCP连接建立成功后，在连接成功的回调函数(espconn_connect_callback)中，注册接收数据的回调函数，发送数据成功的回调函数和断开连接的回调函数</li>
+<li>在接收数据的回调函数，或者发送数据成功的回调函数中，执行断开连接操作时，建议适当延时一定时间，确保底层函数执行结束</li>
+</ol>
+</li>
+<li>TCP Server模式，步骤
+
+<ol>
+<li>依据工作协议初始化espconn参数</li>
+<li>注册连接成功的回调函数和连接失败重连的回调函数</li>
+<li>调用espconn_accept侦听TCP连接</li>
+<li>TCP连接建立成功后，在连接成功的回调函数中，注册接收数据的回调函数，发送数据成功的回调函数和断开连接的回调函数</li>
+</ol>
+</li>
+<li>espconn callback
+<img src="http://i.imgur.com/X0xci3I.png" alt="espconn callback" />
+
+<ul>
+<li>注意：回调函数中传入的指针arg，对应网络连接的结构体espconn指针。该指针为SDK内部维护的指针，不同回调传入的指针地址可能不一样，请勿依此判断网络连接。可根据espconn结构体中的remote_ip，remote_port判断多连接中的不同网络传输</li>
+<li>如果espconn_connect（或者espconn_secure_connect）失败，返回非零值，连接未建立，不会进入任何espconn callback</li>
+<li>请勿在espconn热河回调中调用espconn_disconnect（或者espconn_secure_disconnect）断开连接。如果有需要，可以在espconn回调中使用触发任务的方式（system_os_task和system_os_post）调用espconn_disconnect（或者espconn_secure_disconnect）断开连接</li>
+</ul>
+</li>
+</ol>
+
+
 <h2>RTC使用实例</h2>
 
+<p>以下测试示例，可以验证RTC时间和系统时间，在system_restart时的变化，以及读写RTC memory
+<img src="http://i.imgur.com/SqM8KtO.png" alt="RTC示例" /></p>
+
 <h2>Sniffer结构体说明</h2>
+
+<ol>
+<li>ESP8266可以进入混杂模式，接收空气中的IEEE802.11包，可支持如下HT20的包：
+
+<ol>
+<li>802.11b</li>
+<li>802.11g</li>
+<li>802.11n（MCS0到MCS7）</li>
+<li>AMPDU</li>
+</ol>
+</li>
+<li>尽管有些类型的IEEE802.11包是ESP8266不能完全接收的，但ESP8266可以获得它们的包长。因此，sniffer模式下，ESP8266或者可以接收完整的包，或者可以获得包的长度</li>
+<li>ESP8266可完全接收的包，包含：
+
+<ol>
+<li>一定长度的MAC头信息（包含了收发双发的MAC地址和加密方式）</li>
+<li>整个包的长度</li>
+</ol>
+</li>
+<li>ESP8266不可完全接收的包，它包含：
+
+<ol>
+<li>整个包的长度</li>
+</ol>
+</li>
+<li>结构体RxControl和sniffer_buf分别用于via哦是这两种类型的包。其中结构体sniffer_buf包含结构体RxControl。
+<img src="http://i.imgur.com/WiqsD0p.png" alt="sniffer结构体" />
+回调函数wifi_promiscuous_rx含两个参数（buf和len）。len表示buf的长度，分为三种情况：len=128，len为10的整数倍，len=12；
+
+<ol>
+<li>LEN==128的情况
+
+<ul>
+<li>buf的数据是结构体sniffer_buf2，该结构体对应的数据包是管理包，含有112字节的数据</li>
+<li>sniffer_buf2.cnt为1</li>
+<li>sniffer_buf2.len为管理包的长度</li>
+</ul>
+</li>
+<li>LEN为10的整数倍的情况
+
+<ul>
+<li>buf的数据是结构体sniffer_buf，该结构体是比较可信的，它对应的数据包是通过CRC校验正确的</li>
+<li>sniffer_buf.cnt表示了该buf包含的包的个数，len的值由sniffer_buf.cnt决定</li>
+<li>sniffer_buf.cnt==0表示此buf无效；否则len=5=+cnt*10</li>
+<li>sniffer_buf.buf表示IEEE802.11包的前36字节。从成员sniffer_buf.lenseq[0]开始，每一个lenseq结构体表示一个包长信息</li>
+<li>当sniffer_buf.cnt>1，由于该包是一个AMPDU，认为每个MPDU的包头基本是相同的，因此没有给出所有的MPDU包头，只给出了每个包的长度（从MAC包头开始到FCS）</li>
+<li>该结构体中较为游泳的信息有：包长、包的发送者和接收者、包头长度</li>
+</ul>
+</li>
+<li>LEN==12的情况
+
+<ul>
+<li>buf的数据是一个结构体RxControl，该结构体是不太可信的，它无法表示包所属的发送和接收者，也无法判断该报的包头长度</li>
+<li>对于AMPDU包，也无法判断子包的个数和每个子包的长度</li>
+<li>该结构体中较为有用的信息有：包长，rssi和FEC_CODING</li>
+<li>RSSI和FEC_CODING可以用于评估是否是同一个设备所发</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ESP8266信道的定义</h2>
+
+<ol>
+<li>虽然ESP8266支持soft-AP和station共存模式，但是ESP8266实际只有一个硬件通道。因此在soft-AP+station模式时，ESP8266 soft-AP会动态调整信道值与ESP8266 station一致
+<img src="http://i.imgur.com/0l6M5tU.png" alt="ESP8266 soft-AP+station模式注意事项" /></li>
+</ol>
+
+
+<h2>AT 官方指令</h2>
+
+<ol>
+<li>如果开发板Flash为4Mbit，则无法使用固件升级功能（对应指令AT+CIUPDATE），只能采用non-boot的烧录方式。固件升级功能要求Flash容量为8Mbit或以上，采用boot mode的烧录方式</li>
+<li>AT底层已经占用system_os_task优先级0和1，因此用户如基于AT开发，仅支持建立一个优先级为2的任务</li>
+<li>波特率为115200</li>
+<li>AT指令必须大写，以回车换行符结尾“\r\n”</li>
+<li>AT Demo仅在ESP8266作为TCP client单连接或者UDP传输时，支持透传</li>
+<li>目前AT Demo ESP8266仅支持一个TCP服务器，且必须使能多连接，即可连接多个TCP client
+<img src="http://i.imgur.com/ZHMdvIV.png" alt="基础AT指令" />
+<img src="http://i.imgur.com/KWLgQRV.png" alt="WiFi功能AT指令" />
+<img src="http://i.imgur.com/qftT477.png" alt="TCP/IP相关AT指令" />
+<img src="http://i.imgur.com/iY82gSq.png" alt="保存设置到Flash的AT指令" /></li>
+</ol>
+
+
+<h2>GPIO</h2>
+
+<p><img src="http://i.imgur.com/DtNrGiF.png" alt="ESP8266-GPIO" /></p>
+
+<ol>
+<li>ESP8266共有16个通用IO，管脚的位置和管脚的名称分别为：</li>
+<li>在四线（QUAD）模式flash下，有6个IO用于flash通讯；在两线（DUAL）模式flash下，有四个IO用于与flash通讯</li>
+<li>与其他IO口不同，GPIO16不属于通用GPIO模块，它属于RTC模块，可以用来在深度睡眠时候唤醒整个芯片，可以配置为输入或者输出模式，但是无法触发IO中断
+
+<ol>
+<li>将GPIO16配置为输出模式：gpio16_output_conf(void)</li>
+<li>从GPIO16输出高/低电平，需要先配置为输出模式：gpio16_output_set(uint8 value)</li>
+<li>将GPIO16配置为输入模式:gpio16_input_conf(void)</li>
+<li>读取GPIO16的输入电平状态，需要先配置为输入模式:gpio16_input_get(void)</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Free-RTOS</h2>
+
+<ol>
+<li>编程注意事项：
+
+<ol>
+<li>建议使用定时器实现长时间的查询功能，可将定时器设置为循环调用</li>
+</ol>
+</li>
+</ol>
+
 ]]></content>
   </entry>
   
