@@ -88,6 +88,45 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/12/24/makefile/">
+		
+			Makefile</a>
+	</h2>
+	<div class="entry-content">
+		<h2>wildcard(扩展通配符)用法</h2>
+
+<h2>patsubst(替换通配符)用法</h2>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-24T23:31:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/12/10/eclipse-plus-cygwin/">
 		
 			Eclipse+cygwin</a>
@@ -1030,10 +1069,99 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 <li>编程注意事项：
 
 <ol>
-<li>建议使用定时器实现长时间的查询功能，可将定时器设置为循环调用</li>
+<li>建议使用定时器实现长时间的查询功能，可将定时器设置为循环调用,注意：
+
+<ol>
+<li>定时器（freeRTOS timer或os_timer）执行函数内部请勿使用while（1）或其他能阻塞线程的方式延时，例如，不能在定时器回调中进行socket send操作，因为send函数会阻塞线程</li>
+<li>定时器回调执行请勿超过15毫秒</li>
+<li>os_timer_t建立的变量不能为局部变量，必须为全局变量、静态变量或os_malloc分配的指针</li>
+</ol>
+</li>
+<li>从esp_iot_rtos_sdk_v1.2.0起，无需添加宏ICACHE_FLASH_ATTR，函数默认存放在CACHE区，中断函数也可以存放在CACHE区；如需将部分频繁调用的函数定义在RAM中，请在函数前面添加宏IRAM_ATTR</li>
+<li>网络编程使用通用的socket编程，网络通信时，socket请勿绑定在同一个端口</li>
+<li>RTOS SDK的系统任务最高优先级为14，创建任务的接口xTaskCreate为freeRTOS自带接口，使用下TaskCreate创建任务时，任务堆栈甚至范围为【176，512】
+
+<ol>
+<li>在任务内部如需使用长度超过60的大数组，建议使用os_malloc和os_free的方式操作，否则，大数组将占用任务的堆空间</li>
+<li>SDK底层已占用部分优先级：watchdog task优先级14，pp task优先级13，高精度timer(ms)线程优先级12，TCP/IP task优先级10，freeRTOS timer优先级2，idle task优先级为0，pm task优先级1</li>
+<li>可供用户线程使用的优先级为1~9</li>
+<li>请勿修改FreeRTOSConfig.h，此处修改头文件并不能生效，设置由SDK库文件决定</li>
 </ol>
 </li>
 </ol>
+</li>
+<li>esp_iot_rtos_sdk默认使用UART0打印调试信息，默认波特率为74880</li>
+<li>esp_iot_rtos_sdk支持多线程，可以建立多个任务。创建任务的接口xTaskCreate为freeRTOS自带接口，使用xTaskCreate创建任务时，任务堆栈设置范围为[176,512]</li>
+<li>RTC使用
+<img src="http://i.imgur.com/qBVkRA7.png" alt="复位对RTC的影响" /></li>
+</ol>
+
+
+<h2>非OS SDK与RTOS SDK创建任务的方式对比</h2>
+
+<figure class='code'><figcaption><span>非OS SDK创建任务</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define Q_NUM （10）</span>
+</span><span class='line'><span class="n">ETSEvent</span> <span class="n">test_q</span><span class="p">[</span><span class="n">Q_NUM</span><span class="p">];</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">test_task</span><span class="p">(</span><span class="n">ETSEvent</span> <span class="o">*</span><span class="n">e</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">switch</span><span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">sig</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">{</span>
+</span><span class='line'>  <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>      <span class="n">func1</span><span class="p">(</span><span class="n">e</span><span class="o">-&gt;</span><span class="n">par</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+</span><span class='line'>      <span class="n">func2</span><span class="p">();</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">case</span> <span class="mi">3</span><span class="o">:</span>
+</span><span class='line'>      <span class="n">func3</span><span class="p">();</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>      <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">func_send_Sig</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">ETSSignal</span> <span class="n">sig</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">system_os_post</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">task_ini</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">system_os_task</span><span class="p">(</span><span class="n">test_task</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">test_q</span><span class="err">，</span><span class="n">Q_NUM</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// test_q is the corresponding array of test_task.</span>
+</span><span class='line'>  <span class="c1">// (2) is the priority of test_task.</span>
+</span><span class='line'>  <span class="c1">// Q_NUM is the queue length of test_task.</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 		
@@ -3739,105 +3867,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 
 <time datetime="2015-11-10T15:44:29+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/09/c++Primer/">
-		
-			Review C++</a>
-	</h2>
-	<div class="entry-content">
-		<h2>补码的好处</h2>
-
-<ol>
-<li>0的表示唯一</li>
-<li>符号位可以直接参与运算</li>
-</ol>
-
-
-<h2>常用的I/O流类库操纵符</h2>
-
-<ol>
-<li>dec：数值数据采用十进制表示</li>
-<li>hex：数值数据采用十六进制表示</li>
-<li>oct： 数值数据采用八进制表示</li>
-<li>ws：  提取空白符</li>
-<li>endl：插入换行符，并刷新流</li>
-<li>ends： 插入空字符</li>
-<li>setsprecision(int)： 设置浮点数的小数位数（包括小数点）</li>
-<li>setw(int)： 设置域宽</li>
-</ol>
-
-
-<h2>类型别名</h2>
-
-<ol>
-<li>typedef 已有类型名 新类型名</li>
-<li>using 新类型名 = 已有类型名</li>
-</ol>
-
-
-<h2>auto类型与decltype类型</h2>
-
-<ol>
-<li>auto：编译器通过初始值自动推断变量的类型</li>
-<li>decltype：定义一个变量与某一表达式的类型相同，但并不用该表达式初始化变量
-
-<ol>
-<li>decltype（i） j=2,表示j以2作为初始值，类型与i一致</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>引用类型</h2>
-
-<ol>
-<li>引用（&amp;）是标识符的别名
-
-<ol>
-<li>int i；int &amp;ri = i；</li>
-</ol>
-</li>
-<li>定义一个引用时，必须同时对它初始化，使它指向一个已存在的对象</li>
-<li>一旦一个引用被初始化后，就不能改为指向其它对象</li>
-</ol>
-
-
-<h2>含有可变参数的函数</h2>
-
-<ol>
-<li></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-09T18:08:50+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

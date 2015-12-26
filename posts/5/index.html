@@ -88,6 +88,222 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/20/nand-cp-dot-c/">
+		
+			nand_cp.c</a>
+	</h2>
+	<div class="entry-content">
+		<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;common.h&gt;</span>
+</span><span class='line'><span class="cp">#ifdef CONFIG_S3C64XX</span>
+</span><span class='line'><span class="cp">#include &lt;asm/io.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;linux/mtd/nand.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;regs.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_page</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">addr</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">page_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>    
+</span><span class='line'>      <span class="n">page_size</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READ0</span><span class="p">;</span>       <span class="cm">/*读命令*/</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* Write Address */</span>
+</span><span class='line'>        <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>                  <span class="cm">/*页内起始地址*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>            <span class="cm">/*页地址*/</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">NFADDR_REG</span> <span class="o">=</span> <span class="p">(</span><span class="n">addr</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READSTART</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NF_TRANSRnB</span><span class="p">();</span>                  <span class="cm">/*循环判断是否已经准备好*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">page_size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>                <span class="o">*</span><span class="n">buf</span><span class="o">++</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">NAND_DISABLE_CE</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*</span>
+</span><span class='line'><span class="cm"> * Read data from NAND.</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="k">static</span> <span class="kt">int</span> <span class="nf">nandll_read_blocks</span> <span class="p">(</span><span class="n">ulong</span> <span class="n">dst_addr</span><span class="p">,</span> <span class="n">ulong</span> <span class="n">size</span><span class="p">,</span> <span class="kt">int</span> <span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>        <span class="n">uchar</span> <span class="o">*</span><span class="n">buf</span> <span class="o">=</span> <span class="p">(</span><span class="n">uchar</span> <span class="o">*</span><span class="p">)</span><span class="n">dst_addr</span><span class="p">;</span>                     <span class="cm">/*这里buf就是指定的0x57e0 0000物理地址*/</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">uint</span> <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">large_block</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">page_shift</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="cm">/* Read pages */</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mh">0x50000</span><span class="o">&gt;&gt;</span><span class="n">page_shift</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">,</span> <span class="n">buf</span><span class="o">+=</span><span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="n">page_shift</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">nandll_read_page</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>        <span class="cm">/*一次读取一个页*/</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">copy_uboot_to_ram</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">large_block</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">vu_char</span> <span class="n">id</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>    <span class="n">NAND_ENABLE_CE</span><span class="p">();</span>               <span class="cm">/*使能芯片*/</span>
+</span><span class='line'>    <span class="n">NFCMD_REG</span> <span class="o">=</span> <span class="n">NAND_CMD_READID</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">NFADDR_REG</span> <span class="o">=</span>  <span class="mh">0x00</span><span class="p">;</span>              
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* wait for a while */</span>
+</span><span class='line'>        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">200</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">id</span> <span class="o">=</span> <span class="n">NFDATA8_REG</span><span class="p">;</span>               <span class="cm">/*取第二次的返回值*/</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">&gt;</span> <span class="mh">0x80</span><span class="p">)</span>                    <span class="c1">//判断读取的id是否大于0x80</span>
+</span><span class='line'>      <span class="n">large_block</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="cm">/* read NAND Block.</span>
+</span><span class='line'><span class="cm">  * 128KB -&gt;240KB because of U-Boot size increase. by scsuh</span>
+</span><span class='line'><span class="cm">  * So, read 0x3c000 bytes not 0x20000(128KB).</span>
+</span><span class='line'><span class="cm">  */</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">nandll_read_blocks</span><span class="p">(</span><span class="n">CFG_PHY_UBOOT_BASE</span><span class="p">,</span> <span class="mh">0x50000</span><span class="p">,</span> <span class="n">large_block</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-20T15:17:22+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/19/cpu-init-dot-s/">
 		
 			cpu_init.S</a>
@@ -5497,89 +5713,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 	<a class='category' href='/blog/categories/python/'>python</a>, <a class='category' href='/blog/categories/study/'>study</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/28/cordova-startup/">
-		
-			Cordova-Startup</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Cordova环境部署</h2>
-
-<ul>
-<li><a href="https://nodejs.org">安装nodejs</a>,注意添加到环境变量PATH中</li>
-<li>安装Cordova CLI： npm install -g cordova</li>
-<li><a href="http://java.oracle.com">安装Java JDK</a>,注意添加环境变量CLASSPATH，和PATH</li>
-<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a>，注意把platform-tools和tools添加到PATH环境变量</li>
-<li><a href="http://ant.apache.org/">安装Ant</a>,注意把bin目录添加到PATH环境变量中</li>
-<li>测试：
-
-<ol>
-<li>npm -v</li>
-<li>java -version</li>
-<li>adb version</li>
-<li>ant -v</li>
-<li>cordova -v</li>
-</ol>
-</li>
-<li>cordova常用命令：
-
-<ol>
-<li><code>cordova creat 项目名称 包名 APP显示名称</code></li>
-<li><code>cordova build</code></li>
-<li><code>cordova run --device</code></li>
-</ol>
-</li>
-</ul>
-
-
-<h2>Cordova启动流程</h2>
-
-<ol>
-<li>原生代码启动</li>
-<li>splashscreen</li>
-<li>Load HTML</li>
-<li>顺序执行JavaScript，执行$(document).ready()</li>
-<li>Cordova.js执行(异步执行)</li>
-<li>deviceready</li>
-<li>Cordova插件可用</li>
-</ol>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-28T10:43:48+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/cordova/'>cordova</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

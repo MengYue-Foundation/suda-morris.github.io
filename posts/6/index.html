@@ -88,6 +88,89 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/05/28/cordova-startup/">
+		
+			Cordova-Startup</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Cordova环境部署</h2>
+
+<ul>
+<li><a href="https://nodejs.org">安装nodejs</a>,注意添加到环境变量PATH中</li>
+<li>安装Cordova CLI： npm install -g cordova</li>
+<li><a href="http://java.oracle.com">安装Java JDK</a>,注意添加环境变量CLASSPATH，和PATH</li>
+<li><a href="http://developer.android.com/sdk/index.html">安装Android SDK</a>，注意把platform-tools和tools添加到PATH环境变量</li>
+<li><a href="http://ant.apache.org/">安装Ant</a>,注意把bin目录添加到PATH环境变量中</li>
+<li>测试：
+
+<ol>
+<li>npm -v</li>
+<li>java -version</li>
+<li>adb version</li>
+<li>ant -v</li>
+<li>cordova -v</li>
+</ol>
+</li>
+<li>cordova常用命令：
+
+<ol>
+<li><code>cordova creat 项目名称 包名 APP显示名称</code></li>
+<li><code>cordova build</code></li>
+<li><code>cordova run --device</code></li>
+</ol>
+</li>
+</ul>
+
+
+<h2>Cordova启动流程</h2>
+
+<ol>
+<li>原生代码启动</li>
+<li>splashscreen</li>
+<li>Load HTML</li>
+<li>顺序执行JavaScript，执行$(document).ready()</li>
+<li>Cordova.js执行(异步执行)</li>
+<li>deviceready</li>
+<li>Cordova插件可用</li>
+</ol>
+
+
+<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-28T10:43:48+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/cordova/'>cordova</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/05/25/microsoft-office-word-skills/">
 		
 			Microsoft-Office-Word-Skills</a>
