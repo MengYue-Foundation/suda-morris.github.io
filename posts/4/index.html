@@ -1933,6 +1933,67 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h2>小细节</h2>
+
+<ol>
+<li>C++并不支持void*隐式转换为其他类型的指针，但是C语言允许</li>
+<li>变量命名，所有字符都使用小写，含义多的可以用<strong>_</strong>进行辅助</li>
+<li>全局变量能少用就少用，必须要用的情况下，可以考虑添加前缀<strong>g_</strong></li>
+<li>不要将<strong>_</strong>作为宏的开头或者结尾</li>
+<li>要使用<strong>#if</strong>而不是<strong>#ifdef</strong>，可以使用<strong>define（）</strong>来替代<strong>#ifdef</strong>的功能</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#if !define(USERS_DEFINE)</span>
+</span><span class='line'>      <span class="cp">#define USERS_DEFINE ...</span>
+</span><span class='line'> <span class="cp">#endif</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>volatile关键字</h2>
+
+<p>一旦使用了，就是告诉编译器，即使这个变量没有被使用或修改其他内存单元，它的值也可能发生变化。通俗地讲，告诉编译器，不要把你的那一套优化策略用在我的身上</p>
+
+<h2>两种不太常见的格式：%[]和%*</h2>
+
+<ol>
+<li>%[]用于限制读取类型，常见于字符串的过滤。</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">//假设输入：22 hello,string to me!</span>
+</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[a-z]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello</span>
+</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[^i]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello,str</span>
+</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[^,]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>%*是忽略第一个输入，也可以理解为文件宽度(域宽)</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">//假设输入：22 33</span>
+</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%*d %d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">);</span><span class="c1">//读到33</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'> <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;dir&quot;</span><span class="p">;</span>
+</span><span class='line'> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%*s%s&quot;</span><span class="p">,</span><span class="mi">4</span> <span class="p">,</span><span class="s">&quot;&quot;</span> <span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//输出:    dir,前面有四个空白占位   </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 		
 		
 	</div>

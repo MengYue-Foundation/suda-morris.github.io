@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-26T22:59:40+08:00</updated>
+  <updated>2015-12-30T18:22:20+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -177,19 +177,31 @@
 <img src="http://i.imgur.com/I6YK0Jx.png" alt="none-boot-512KB" />
 <img src="http://i.imgur.com/n9onmx8.png" alt="none-boot-512KB-ld文件" />
     2. 1024KB flash
-<img src="http://i.imgur.com/1tluP12.png" alt="none-boot-1024KB" />
-        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于1024KB flash，此len最大可修改为0xBC000，irom0text.bin 最大支持到752KB
-    3. 2048KB flash
-<img src="http://i.imgur.com/x7x40sM.png" alt="none-boot-2048KB" />
-        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）
-    4. 4096KB flash
-<img src="http://i.imgur.com/yRtUCDG.png" alt="none-boot-4096KB" />
-        * \esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）
-8. with boot-支持云端升级。编译时STEP1选择1，便一两次，分别生成user1.bin和user2.bin，支持云端升级功能。STEP5时选择不同的flash size对应的布局：
+<img src="http://i.imgur.com/1tluP12.png" alt="none-boot-1024KB" /></p>
+
+<ul>
+<li><p>\esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于1024KB flash，此len最大可修改为0xBC000，irom0text.bin 最大支持到752KB</p>
+
+<ol>
+<li>2048KB flash
+<img src="http://i.imgur.com/x7x40sM.png" alt="none-boot-2048KB" /></li>
+</ol>
+</li>
+<li><p>\esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）</p>
+
+<ol>
+<li>4096KB flash
+<img src="http://i.imgur.com/yRtUCDG.png" alt="none-boot-4096KB" /></li>
+</ol>
+</li>
+<li><p>\esp_iot_sdk\ld 路径的“eagle.app.v6.ld”文件，其中irom0_0_seg的len即设置irom0text.bin的上限值。对于2048KB flash，此len最大可修改为0xC0000，irom0text.bin 最大支持到768KB（因为ESP8266目前程序区最大支持1024KB，1024-256=768）</p></li>
+<li>with boot-支持云端升级。编译时STEP1选择1，便一两次，分别生成user1.bin和user2.bin，支持云端升级功能。STEP5时选择不同的flash size对应的布局：
 <img src="http://i.imgur.com/rlr2rLh.png" alt="with-boot-512KB" />
 <img src="http://i.imgur.com/ciZmOP4.png" alt="with-boot-1024KB" />
 <img src="http://i.imgur.com/7y3TiXf.png" alt="with-boot-2048KB" />
-<img src="http://i.imgur.com/dyOkeMh.png" alt="with-boot-4096KB" /></p>
+<img src="http://i.imgur.com/dyOkeMh.png" alt="with-boot-4096KB" /></li>
+</ul>
+
 
 <h2>烧录</h2>
 
@@ -1004,6 +1016,213 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+
+
+<figure class='code'><figcaption><span>RTOS SDK创建任务</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define Q_NUM （10）</span>
+</span><span class='line'><span class="n">xQueueHandle</span> <span class="n">test_q</span><span class="p">;</span>
+</span><span class='line'><span class="n">xTaskHandle</span> <span class="n">test_task_hdl</span><span class="p">;</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">test_task</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">pvParameters</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="o">*</span><span class="n">sig</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(;;){</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">pdTRUE</span> <span class="o">==</span> <span class="n">xQueueReceive</span><span class="p">(</span><span class="n">test_q</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sig</span><span class="p">,</span> <span class="p">(</span><span class="n">portTickType</span><span class="p">)</span><span class="n">portMAX_DELAY</span><span class="p">)</span> <span class="p">){</span>
+</span><span class='line'>          <span class="n">vTaskSuspendAll</span><span class="p">();</span>
+</span><span class='line'>          <span class="k">switch</span><span class="p">(</span><span class="o">*</span><span class="n">sig</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">{</span>
+</span><span class='line'>          <span class="k">case</span> <span class="mi">1</span><span class="o">:</span>
+</span><span class='line'>              <span class="n">func1</span><span class="p">();</span>
+</span><span class='line'>              <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">case</span> <span class="mi">2</span><span class="o">:</span>
+</span><span class='line'>              <span class="n">func2</span><span class="p">();</span>
+</span><span class='line'>              <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>              <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>          <span class="n">free</span><span class="p">(</span><span class="n">sig</span><span class="p">);</span>
+</span><span class='line'>          <span class="n">xTaskResumeAll</span><span class="p">();</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">func_send_Sig</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="o">*</span><span class="n">evt</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">sizeif</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+</span><span class='line'>  <span class="o">*</span><span class="n">evt</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">xQueueSend</span><span class="p">(</span><span class="n">test_q</span><span class="p">,</span><span class="o">&amp;</span><span class="n">evt</span><span class="p">,</span><span class="mi">10</span><span class="o">/</span><span class="n">portTick_RATE_MS</span><span class="p">)</span><span class="o">!=</span><span class="n">pdTRUE</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">os_printf</span><span class="p">(</span><span class="s">&quot;test_q is full</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// It is the address of parameter that stored in test_q, so int *evt and int</span>
+</span><span class='line'>  <span class="o">*</span><span class="n">sig</span> <span class="n">can</span> <span class="n">be</span> <span class="n">other</span> <span class="n">types</span><span class="p">.</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">task_ini</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">test_q</span> <span class="o">=</span> <span class="n">xQueueCreate</span><span class="p">(</span><span class="n">Q_NUM</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">));</span>
+</span><span class='line'>  <span class="n">xTaskCreate</span><span class="p">(</span><span class="n">test_task</span><span class="p">,(</span><span class="kt">signed</span> <span class="n">portCHAR</span> <span class="o">*</span><span class="p">)</span><span class="s">&quot;test_task&quot;</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+</span><span class='line'>              <span class="o">&amp;</span><span class="n">test_task_hdl</span> <span class="p">);</span>
+</span><span class='line'>  <span class="c1">// 512 means the heap size of this task, 512 * 4 byte.</span>
+</span><span class='line'>  <span class="c1">// NULL is a pointer of parameter to test_task.</span>
+</span><span class='line'>  <span class="c1">// (1) is the priority of test_task.</span>
+</span><span class='line'>  <span class="c1">// test_task_hdl is the pointer of the task of test_task.</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>强制系统休眠</h2>
+
+<ol>
+<li>强制休眠接口调用后，并不会立即休眠，而是等到系统idle task执行时才进入休眠</li>
+<li>Modem-sleep</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define FPM_SLEEP_MAX_TIME 0xFFFFFFF</span>
+</span><span class='line'><span class="n">wifi_station_disconnect</span><span class="p">();</span>
+</span><span class='line'><span class="n">wifi_set_opmode</span><span class="p">(</span><span class="n">NULL_MODE</span><span class="p">);</span> <span class="c1">// set WiFi mode to null mode</span>
+</span><span class='line'><span class="n">wifi_fpm_set_sleep_type</span><span class="p">(</span><span class="n">MODEM_SLEEP_T</span><span class="p">);</span> <span class="c1">// set modem sleep</span>
+</span><span class='line'><span class="n">wifi_fpm_open</span><span class="p">();</span> <span class="c1">// enable force sleep</span>
+</span><span class='line'><span class="n">wifi_fpm_do_sleep</span><span class="p">(</span><span class="n">FPM_SLEEP_MAX_TIME</span><span class="p">);</span>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'><span class="n">wifi_fpm_do_wakeup</span><span class="p">();</span> <span class="c1">// wake up to use WiFi again</span>
+</span><span class='line'><span class="n">wifi_fpm_close</span><span class="p">();</span> <span class="c1">// disable force sleep</span>
+</span><span class='line'><span class="n">wifi_set_opmode</span><span class="p">(</span><span class="n">STATION_MODE</span><span class="p">);</span> <span class="c1">//set station mode</span>
+</span><span class='line'><span class="n">wifi_station_connect</span><span class="p">();</span> <span class="c1">//connect to AP</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>Light-sleep</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="nf">fpm_wakup_cb_func1</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="n">wifi_fpm_close</span><span class="p">();</span> <span class="c1">// disable force sleep function</span>
+</span><span class='line'><span class="n">wifi_set_opmode</span><span class="p">(</span><span class="n">STATION_MODE</span><span class="p">);</span> <span class="c1">// set station mode</span>
+</span><span class='line'><span class="n">wifi_station_connect</span><span class="p">();</span> <span class="c1">// connect to AP</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">user_func</span><span class="p">(...)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'><span class="n">wifi_station_disconnect</span><span class="p">();</span>
+</span><span class='line'><span class="n">wifi_set_opmode</span><span class="p">(</span><span class="n">NULL_MODE</span><span class="p">);</span> <span class="c1">// set WiFi mode to null mode.</span>
+</span><span class='line'><span class="n">wifi_fpm_set_sleep_type</span><span class="p">(</span><span class="n">LIGHT_SLEEP_T</span><span class="p">);</span> <span class="c1">// light sleep</span>
+</span><span class='line'><span class="n">wifi_fpm_open</span><span class="p">();</span> <span class="c1">// enable force sleep</span>
+</span><span class='line'><span class="n">wifi_fpm_set_wakeup_cb</span><span class="p">(</span><span class="n">fpm_wakup_cb_func1</span><span class="p">)</span><span class="err">；</span> <span class="c1">// Set wakeup callback</span>
+</span><span class='line'><span class="n">wifi_fpm_do_sleep</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="mi">1000</span><span class="p">);</span>
+</span><span class='line'><span class="p">...</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>spiffs文件系统应用</h2>
+
+<h2>Windows下网络防火墙对TCP Server的屏蔽</h2>
+
+<ol>
+<li>Win+R，输入wf.msc,进入高级安全Windows防火墙</li>
+<li>在<strong>入站规则</strong>右击新建规则</li>
+<li>在<strong>规则类型</strong>对话框中选择“程序”</li>
+<li>指名程序的路径</li>
+<li>允许连接</li>
+</ol>
+
+
+<h2>PWM接口</h2>
+
+<ol>
+<li>ESP8266系统的PWM由<strong>FRC1</strong>在软件上实现，可实现同频率、不同占空比的多路PWM，可用来控制彩灯、蜂鸣器和电机等设备</li>
+<li>FRC1是一个23bit的硬件定时器</li>
+<li>使用NMI中断，更加精确</li>
+<li>可扩展最多8路PWM信号</li>
+<li>大于14bit的分辨率，最小分辨率45ns</li>
+<li>PWM的时钟源由高速系统时钟提供，其频率高达80MHz。PWM通过预分频器将时钟源16分频，其输入时钟频率为5MHz。PWM通过FRC1来产生粗调定时，结合高速系统时钟的微调，可将分辨率提高到45ns</li>
+<li>PWM时钟周期：100Hz~1KHz</li>
+</ol>
+
+
+<h2>UART接口</h2>
+
+<ol>
+<li>UART0默认情况下会在上电booting期间输出一些打印，此期间打印内容的波特率与所用的外部晶振频率有关。使用40M晶振时，该段打印波特率为115200。使用26M晶振时，该段打印波特率为74880</li>
+<li>UART0和UART1各有一个长度为128Byte的硬件FIFO，读写FIFO都在同一个地址操作</li>
+<li>如何屏蔽上电打印：使用uart的内部引脚交换功能，在初始化的时候，将U0TXD、U0RXD分别与U0RTS、U0CTS交换</li>
+</ol>
+
+
+<h2>Sleep接口</h2>
+
+<p><img src="http://i.imgur.com/5VMutHe.png" alt="三种sleep模式的区别" /></p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: c | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/c/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-26T22:59:40+08:00</updated>
+  <updated>2015-12-30T18:22:20+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -21,36 +21,117 @@
     <content type="html"><![CDATA[<h2><code>#ifdef和#if defined的差别</code></h2>
 
 <p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:
-```C 只能在两者中选择是否有定义</p>
+<figure class='code'><figcaption><span>只能在两者中选择是否有定义</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">ifdef</span>  <span class="n">XXX</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;.</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">else</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;.</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">endif</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="err">对于后者，常用法是：</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">if</span> <span class="n">defined</span> <span class="n">xxx1</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;.</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">elif</span> <span class="n">defined</span> <span class="n">xxx2</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;.</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">elif</span> <span class="n">defined</span> <span class="n">xxx3</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;.</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">endif</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="cp">##小细节</span>
+</span><span class='line'><span class="mf">1.</span> <span class="n">C</span><span class="o">++</span><span class="err">并不支持</span><span class="kt">void</span><span class="o">*</span><span class="err">隐式转换为其他类型的指针，但是</span><span class="n">C</span><span class="err">语言允许</span>
+</span><span class='line'><span class="mf">2.</span> <span class="err">变量命名，所有字符都使用小写，含义多的可以用</span><span class="o">**</span><span class="n">_</span><span class="o">**</span><span class="err">进行辅助</span>
+</span><span class='line'><span class="mf">3.</span> <span class="err">全局变量能少用就少用，必须要用的情况下，可以考虑添加前缀</span><span class="o">**</span><span class="n">g_</span><span class="o">**</span>
+</span><span class='line'><span class="mf">4.</span> <span class="err">不要将</span><span class="o">**</span><span class="n">_</span><span class="o">**</span><span class="err">作为宏的开头或者结尾</span>
+</span><span class='line'><span class="mf">5.</span> <span class="err">要使用</span><span class="o">**</span><span class="err">#</span><span class="k">if</span><span class="o">**</span><span class="err">而不是</span><span class="o">**</span><span class="err">#</span><span class="n">ifdef</span><span class="o">**</span><span class="err">，可以使用</span><span class="o">**</span><span class="n">define</span><span class="err">（）</span><span class="o">**</span><span class="err">来替代</span><span class="o">**</span><span class="err">#</span><span class="n">ifdef</span><span class="o">**</span><span class="err">的功能</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">if</span> <span class="o">!</span><span class="n">define</span><span class="p">(</span><span class="n">USERS_DEFINE</span><span class="p">)</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="err">#</span><span class="n">define</span> <span class="n">USERS_DEFINE</span> <span class="p">...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="err">#</span><span class="n">endif</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
-<h1>ifdef  XXX</h1>
+<h2>volatile关键字</h2>
 
-<p>   &hellip;.</p>
+<p>一旦使用了，就是告诉编译器，即使这个变量没有被使用或修改其他内存单元，它的值也可能发生变化。通俗地讲，告诉编译器，不要把你的那一套优化策略用在我的身上</p>
 
-<h1>else</h1>
+<h2>两种不太常见的格式：%[]和%*</h2>
 
-<p>   &hellip;.</p>
+<ol>
+<li>%[]用于限制读取类型，常见于字符串的过滤。
+<code>C
+//假设输入：22 hello,string to me!
+scanf("%d %[a-z]", &amp;tmp, str);//22 hello
+scanf("%d %[^i]", &amp;tmp, str);//22 hello,str
+scanf("%d %[^,]", &amp;tmp, str);//22 hello
+</code></li>
+<li>%*是忽略第一个输入，也可以理解为文件宽度(域宽)
+<code>C
+//假设输入：22 33
+scanf("%*d %d", &amp;tmp);//读到33
+</code>
+<code>C
+char str[10] = "dir";
+printf("%*s%s",4 ,"" , str);//输出:    dir,前面有四个空白占位   
+</code></li>
+</ol>
 
-<h1>endif</h1>
-
-<pre><code>对于后者，常用法是：
-</code></pre>
-
-<h1>if defined xxx1</h1>
-
-<p>   &hellip;.</p>
-
-<h1>elif defined xxx2</h1>
-
-<p>   &hellip;.</p>
-
-<h1>elif defined xxx3</h1>
-
-<p>   &hellip;.</p>
-
-<h1>endif</h1>
-
-<p>```</p>
 ]]></content>
   </entry>
   
