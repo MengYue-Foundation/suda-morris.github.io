@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2016/01/05/free-rtos/</loc>
+    <lastmod>2016-01-05T20:58:43+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2015/12/24/makefile/</loc>
     <lastmod>2015-12-24T23:31:10+08:00</lastmod>
   </url>

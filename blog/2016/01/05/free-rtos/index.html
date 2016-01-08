@@ -3,11 +3,12 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Makefile - WenRis Blog</title>
+	<title>Free-RTOS - WenRis Blog</title>
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="wildcard(扩展通配符)用法 patsubst(替换通配符)用法 ">
+	<meta name="description" content="如何在FreeRTOS下实现低功耗 可以在空任务或者空任务钩子函数中进入低功耗模式，在系统滴答时钟中断服务函数中重新回到正常工作模式，
+多数操作系统都包含一个空任务，空任务优先级最低且一直保持就绪状态，空任务可以用于统计CPU的使用率，或者让MCU进入低功耗状态。如果不想修改空任务， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -83,10 +84,46 @@
 	
 
 	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Makefile</h2>
-	<div class="entry-content"><h2>wildcard(扩展通配符)用法</h2>
+	<h2 class="title">Free-RTOS</h2>
+	<div class="entry-content"><h2>如何在FreeRTOS下实现低功耗</h2>
 
-<h2>patsubst(替换通配符)用法</h2>
+<ol>
+<li>可以在空任务或者空任务钩子函数中进入低功耗模式，在系统滴答时钟中断服务函数中重新回到正常工作模式，</li>
+<li>多数操作系统都包含一个空任务，空任务优先级最低且一直保持就绪状态，空任务可以用于统计CPU的使用率，或者让MCU进入低功耗状态。如果不想修改空任务，还可以通过空任务的钩子函数插入实现低功耗的代码。</li>
+<li>在FreeRTOS中，若需打开空任务钩子函数，需要在FreeRTOSConfig.h中定义#define configUSE_IDLE_HOOK 1</li>
+<li>然后在钩子函数中实现低功耗的代码，比如430中：</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void vApplicationIdleHook( void )
+</span><span class='line'>{
+</span><span class='line'>    /* Called on each iteration of the idle task.  In this case the idle task
+</span><span class='line'>    just enters a low power mode. */
+</span><span class='line'>    __bis_SR_register( LPM3_bits + GIE );
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在大多数嵌入式操作系统中可以在系统滴答中断函数中退出低功耗模式</li>
+</ol>
+
+
+<h2>任务间使用队列同步数据</h2>
+
+<ol>
+<li>在嵌入式操作系统中，队列是人物间数据交换的常用手段，队列是生产者消费之模型的重要组成部分。</li>
+<li>xQueueHandle MsgQueue;声明一个队列句柄，队列句柄可以理解成一个队列的标记，不同的队列具有不同的标记。</li>
+<li>MsgQueue = xQueueCreate( 5 , sizeof( int16_t ) );创建队列，即在内存中开辟固定大小的区域。FreeRTOS中需要指定队列的深度和每个元素的字节长度</li>
+<li>xQueueSend( MsgQueue, ( void* )&amp;SendNum, 0 );向队列中填充内容，第二参数需要取出地址并进行类型转换，第三参数设置等待时间，在队列满的情况下再往队列中填充内容会阻塞任务，知道等待时间溢出；若此处填充的内容为0的话，则立即返回插入队列结果</li>
+<li>xQueueReceive( MsgQueue, &amp;ReceiveNum, 100/portTICK_RATE_MS )；从队列中取出内容，第二参数需要取出地址，第三参数为等待最大时间，若在等待的时间内队列中没有数据则返回阻塞任务。</li>
+</ol>
+
 </div>
 
 
@@ -103,7 +140,7 @@
   
 
 
-<time datetime="2015-12-24T23:31:10+08:00" pubdate data-updated="true"></time></div>
+<time datetime="2016-01-05T20:58:43+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>
@@ -144,7 +181,7 @@
 <section id="comment">
     <h2 class="title">Comments</h2>
     <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="/blog/2015/12/24/makefile" data-title="Makefile" data-url="http://suda-morris.github.io/blog/2015/12/24/makefile/"></div>
+	<div class="ds-thread" data-thread-key="/blog/2016/01/05/free-rtos" data-title="Free-RTOS" data-url="http://suda-morris.github.io/blog/2016/01/05/free-rtos/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

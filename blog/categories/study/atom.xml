@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2015-12-30T18:22:20+08:00</updated>
+  <updated>2016-01-08T23:47:06+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -168,6 +168,16 @@ scanf("%*d %d", &amp;tmp);//读到33
 char str[10] = "dir";
 printf("%*s%s",4 ,"" , str);//输出:    dir,前面有四个空白占位   
 </code></li>
+</ol>
+
+
+<h2>select机制</h2>
+
+<ol>
+<li>select()的机制中提供一fd_set的数据结构，实际上是一long类型的数组， 每一个数组元素都能与一打开的文件句柄（不管是Socket句柄，还是其他文件或命名管道或设备句柄）建立联系，建立联系的工作由程序员完成，当调用select()时，由内核根据IO状态修改fd_set的内容，由此来通知执行了select()的进程哪一Socket或文件可读或可写。</li>
+<li>程序去select的时候，如果没有数据输入，程序会一直等待，直到有数据为止，也就是程序中无需循环和sleep</li>
+<li>使用Select就可以完成非阻塞（所谓非阻塞方式non-block，就是进程或线程执行此函数时不必非要等待事件的发生，一旦执行肯定返回，以返回值的不同来反映函数的执行情况，如果事件发生则与阻塞方式相同，若事件没有发生，则返回一个代码来告知事件未发生，而进程或线程继续执行，所以效率较高）方式工作的程序，它能够监视我们需要监视的文件描述符的变化情况——读写或是异常。</li>
+<li>返回值：准备就绪的描述符数，若超时则返回0，若出错则返回-1。</li>
 </ol>
 
 ]]></content>
