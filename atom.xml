@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-01-20T15:21:50+08:00</updated>
+  <updated>2016-01-20T15:25:06+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -20,7 +20,7 @@
     <id>http://suda-morris.github.io/blog/2016/01/20/jetbrains</id>
     <content type="html"><![CDATA[<h2>如何破解DataGrid</h2>
 
-<blockquote><p>启动，在要求输出注册码的界面选择“License server”输入“<a href="http://idea.lanyus.com/%E2%80%9D%EF%BC%8C%E7%82%B9%E5%87%BBOK%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%BF%80%E6%B4%BB">http://idea.lanyus.com/%E2%80%9D%EF%BC%8C%E7%82%B9%E5%87%BBOK%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%BF%80%E6%B4%BB</a></p></blockquote>
+<blockquote><p>启动，在要求输出注册码的界面选<code>License server</code>输入<code>http://idea.lanyus.com/</code>，点击OK，快速激活</p></blockquote>
 ]]></content>
   </entry>
   
