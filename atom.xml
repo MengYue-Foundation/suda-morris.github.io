@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-01-20T15:25:06+08:00</updated>
+  <updated>2016-01-20T15:55:09+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -193,6 +193,47 @@
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<pre><code>2. 项目根目录/build.gradle，这个文件是整个项目的基础配置文件，内容主要包括两个方面，一个是声明仓库的源，一般是jcenter，jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本
+</code></pre>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">buildscript</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">repositories</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">jcenter</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="n">dependencies</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">classpath</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">tools</span><span class="p">.</span><span class="nl">build</span><span class="p">:</span><span class="nl">gradle</span><span class="p">:</span><span class="mf">1.0.0</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">allprojects</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">repositories</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">jcenter</span><span class="p">()</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>3. 项目根目录/settings.gradle，这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module，例如：``include ':app', ':extras:ShimmerAndroid'``,文件中的app，extra：ShimmerAndroid都是module，如果还有其他module都需要按照如上格式加进去
+</code></pre>
 ]]></content>
   </entry>
   
