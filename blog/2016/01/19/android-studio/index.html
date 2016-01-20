@@ -139,6 +139,7 @@
 <li>./gradlew assembleRelease编译并打Release包</li>
 </ol>
 </li>
+<li>除此以外，assemble除了能和BuildType结合外还能和ProductFlavor结合，实质上，assemble是和Build Variants一起结合使用的，而Build Variants=Build Type + Product Flavor，例如如果想打包豌豆荚渠道的release版本，执行如下命令：<code>./gradle assembleWandoujiaRelease</code>,如果只打豌豆荚渠道的版本，则：<code>./gradle assembleWandoujia</code></li>
 </ol>
 </li>
 <li>与Gradle相关的几个文件
@@ -369,6 +370,10 @@
 
 <time datetime="2016-01-19T10:06:41+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/software/'>software</a>
+
 
 </div>
 	

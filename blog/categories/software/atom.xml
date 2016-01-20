@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-01-20T16:14:47+08:00</updated>
+  <updated>2016-01-20T22:22:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -21,6 +21,285 @@
     <content type="html"><![CDATA[<h2>如何破解DataGrid</h2>
 
 <blockquote><p>启动，在要求输出注册码的界面选<code>License server</code>输入<code>http://idea.lanyus.com/</code>，点击OK，快速激活</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android_Studio]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/01/19/android-studio/"/>
+    <updated>2016-01-19T10:06:41+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/01/19/android-studio</id>
+    <content type="html"><![CDATA[<h2>最新安装的Android Studio打开软件特别慢，总是卡在“Fetching Android SDK component information”，如何解决？</h2>
+
+<ol>
+<li>进入Android Studio的安装目录下的bin目录，找到idea.properties文件，用文本编辑器打开</li>
+<li>在idea.properties文件末尾天剑一行：disable.android.first.run=true,然后保存文件</li>
+<li>关闭Android Studio后重新启动</li>
+</ol>
+
+
+<h2>给Android Studio安装Genymotion插件</h2>
+
+<ol>
+<li>File->Settings</li>
+<li>找到plugins设置项，点击Browser，输入：genymotion关键字，安装相应插件</li>
+<li>重启android studio后，点击Genymotion插件的图标，设置Genymotion在本地的路径，完成后就告成</li>
+</ol>
+
+
+<h2>设置自动导入依赖包</h2>
+
+<ol>
+<li>File->Settings->Editor</li>
+<li>找到Auto Import选项，使能：show import popup，Optimize imports on the fly，Add unambiguous imports on the fly</li>
+</ol>
+
+
+<h2>常用功能</h2>
+
+<ol>
+<li>Gradle同步，在项目运行或者更改Gradle配置的时候都要点击下这个按钮，会下载相应的依赖</li>
+<li>AVD Manager，模拟器管理</li>
+<li>SDK Manager，管理SDK版本</li>
+<li>DDMS即Dalvik Debug Monitor Service，Dalvik调试监控服务</li>
+</ol>
+
+
+<h2>Gradle</h2>
+
+<ol>
+<li>Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主，它抛弃了基于XML的各种繁琐配置，而取而代之的是一种基于Groovy的内部领域特定（DSL）语言</li>
+<li>Android Studio中新建项目成功后会自动下载Gradle，Windows下回安装到：C:\Documents and Settings\&lt;用户名>.gradle\wrapper\dists 目录</li>
+<li>命令行Gradle编译过程
+
+<ol>
+<li>切换到项目根目录，执行./gradlew -v来查看项目所用的Gradle版本，如果是第一次执行，将会去下载Gradle</li>
+<li>接着执行./gradlew clean，清除项目根目录/app目录下的build文件夹</li>
+<li>最后执行./gradlew build,检查依赖，直接编译生成相应的apk文件。接着在项目根目录/app/build/outputs/apk目录下会看到类似于app-debug-unaligned.apk，app-release-unsigned.apk等，unaligned代表没有进行zip优化的，unsigned代表没有签名的。</li>
+<li>gradlew build命令吧debug、release环境的包都打出来，如果正式发布只需要打Release的包，就需要这样使用：
+
+<ol>
+<li>./gradlew assembleDebug编译并打Debug包</li>
+<li>./gradlew assembleRelease编译并打Release包</li>
+</ol>
+</li>
+<li>除此以外，assemble除了能和BuildType结合外还能和ProductFlavor结合，实质上，assemble是和Build Variants一起结合使用的，而Build Variants=Build Type + Product Flavor，例如如果想打包豌豆荚渠道的release版本，执行如下命令：<code>./gradle assembleWandoujiaRelease</code>,如果只打豌豆荚渠道的版本，则：<code>./gradle assembleWandoujia</code></li>
+</ol>
+</li>
+<li>与Gradle相关的几个文件
+
+<ol>
+<li>项目根目录/app/build.gradle,这个文件是app文件下下这个Module的gradle配置文件，在里面会指明要编译成安卓的应用程序（com.android.application）还是库（com.android.library）；指明编译SDK的版本，build tools的版本（根据实际开发者已经下载好的版本来修改），指明应用的包名，支持的最小的SDK版本，目标SDK版本，要编译在lib目录下的哪些jar包。</li>
+<li>项目根目录/build.gradle，这个文件是整个项目的基础配置文件，内容主要包括两个方面，一个是声明仓库的源，一般是jcenter，jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本</li>
+<li>项目根目录/settings.gradle，这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module，例如：<code>include ':app', ':extras:ShimmerAndroid'</code>,文件中的app，extra：ShimmerAndroid都是module，如果还有其他module都需要按照如上格式加进去</li>
+</ol>
+</li>
+<li>完整的gradle脚本
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">apply</span> <span class="nl">plugin</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">application</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">def</span> <span class="n">releaseTime</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">new</span> <span class="n">Date</span><span class="p">().</span><span class="n">format</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">yyyy</span><span class="o">-</span><span class="n">MM</span><span class="o">-</span><span class="n">dd</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;,</span> <span class="n">TimeZone</span><span class="p">.</span><span class="n">getTimeZone</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ldquo</span><span class="p">;</span><span class="n">UTC</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="p">;))</span>
+</span><span class='line'><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">android</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">compileSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>    <span class="n">buildToolsVersion</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="mf">21.1.2</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">defaultConfig</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">applicationId</span> <span class="s">&quot;com.boohee.*&quot;</span>
+</span><span class='line'>    <span class="n">minSdkVersion</span> <span class="mi">14</span>
+</span><span class='line'>    <span class="n">targetSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>    <span class="n">versionCode</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="n">versionName</span> <span class="s">&quot;1.0&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// dex突破65535的限制</span>
+</span><span class='line'>    <span class="n">multiDexEnabled</span> <span class="nb">true</span>
+</span><span class='line'>    <span class="c1">// 默认是umeng的渠道</span>
+</span><span class='line'>    <span class="n">manifestPlaceholders</span> <span class="o">=</span> <span class="p">[</span><span class="nl">UMENG_CHANNEL_VALUE</span><span class="p">:</span> <span class="s">&quot;umeng&quot;</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">lintOptions</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">abortOnError</span> <span class="nb">false</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">signingConfigs</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">debug</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// No debug config</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">release</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">storeFile</span> <span class="n">file</span><span class="p">(</span><span class="s">&quot;../yourapp.keystore&quot;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">storePassword</span> <span class="s">&quot;your password&quot;</span>
+</span><span class='line'>        <span class="n">keyAlias</span> <span class="s">&quot;your alias&quot;</span>
+</span><span class='line'>        <span class="n">keyPassword</span> <span class="s">&quot;your password&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">buildTypes</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">debug</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 显示Log</span>
+</span><span class='line'>        <span class="n">buildConfigField</span> <span class="s">&quot;boolean&quot;</span><span class="p">,</span> <span class="s">&quot;LOG_DEBUG&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">versionNameSuffix</span> <span class="s">&quot;-debug&quot;</span>
+</span><span class='line'>        <span class="n">minifyEnabled</span> <span class="nb">false</span>
+</span><span class='line'>        <span class="n">zipAlignEnabled</span> <span class="nb">false</span>
+</span><span class='line'>        <span class="n">shrinkResources</span> <span class="nb">false</span>
+</span><span class='line'>        <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="p">.</span><span class="n">debug</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">release</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 不显示Log</span>
+</span><span class='line'>        <span class="n">buildConfigField</span> <span class="s">&quot;boolean&quot;</span><span class="p">,</span> <span class="s">&quot;LOG_DEBUG&quot;</span><span class="p">,</span> <span class="s">&quot;false&quot;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">minifyEnabled</span> <span class="nb">true</span>
+</span><span class='line'>        <span class="n">zipAlignEnabled</span> <span class="nb">true</span>
+</span><span class='line'>        <span class="c1">// 移除无用的resource文件</span>
+</span><span class='line'>        <span class="n">shrinkResources</span> <span class="nb">true</span>
+</span><span class='line'>        <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">android</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">),</span> <span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">rules</span><span class="p">.</span><span class="n">pro</span><span class="err">&#39;</span>
+</span><span class='line'>        <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="p">.</span><span class="n">release</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">applicationVariants</span><span class="p">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">variant</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">variant</span><span class="p">.</span><span class="n">outputs</span><span class="p">.</span><span class="n">each</span> <span class="p">{</span> <span class="n">output</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>                <span class="n">def</span> <span class="n">outputFile</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">outputFile</span>
+</span><span class='line'>                <span class="k">if</span> <span class="p">(</span><span class="n">outputFile</span> <span class="o">!=</span> <span class="n">null</span> <span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span><span class="o">&amp;</span><span class="n">amp</span><span class="p">;</span> <span class="n">outputFile</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">endsWith</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="n">apk</span><span class="err">&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                    <span class="c1">// 输出apk名称为boohee_v1.0_2015-01-15_wandoujia.apk</span>
+</span><span class='line'>                    <span class="n">def</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">&quot;boohee_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk&quot;</span>
+</span><span class='line'>                    <span class="n">output</span><span class="p">.</span><span class="n">outputFile</span> <span class="o">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="n">outputFile</span><span class="p">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 友盟多渠道打包</span>
+</span><span class='line'><span class="n">productFlavors</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">wandoujia</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">_360</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">baidu</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">xiaomi</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">tencent</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">taobao</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="p">...</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">productFlavors</span><span class="p">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">flavor</span> <span class="o">-&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">flavor</span><span class="p">.</span><span class="n">manifestPlaceholders</span> <span class="o">=</span> <span class="p">[</span><span class="nl">UMENG_CHANNEL_VALUE</span><span class="p">:</span> <span class="n">name</span><span class="p">]</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="p">}</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">dependencies</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="nl">dir</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">libs</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;,</span> <span class="nl">include</span><span class="p">:</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="o">*</span><span class="p">.</span><span class="n">jar</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;])</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">support</span><span class="p">:</span><span class="n">support</span><span class="o">-</span><span class="nl">v4</span><span class="p">:</span><span class="mf">21.0.3</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">com</span><span class="p">.</span><span class="nl">jakewharton</span><span class="p">:</span><span class="nl">butterknife</span><span class="p">:</span><span class="mf">6.0.0</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">hellip</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></p>
 ]]></content>
   </entry>
   
@@ -155,7 +434,7 @@
 <li>注意选择Linux安装包的时候匹配操作系统的位数，这里下载了64位Linux系统的TGA压缩包，版本5.0</li>
 <li>下载好的压缩包解压缩，打开里面的README.txt,按照其要求作相应的操作，各个本版可能要求不同，拿5.0来说，这里需要执行命令：<code>sudo cp 99-jlink.rules /etc/udev/rules.d/</code></li>
 <li>最后接入JLink的USB接口，打开软件：<code>./JLinkExe</code>,如果显示usb连接不上，请检查USB是否连接可靠，虚拟机是否已经从实体机那获得了该JLink接口，多插拔几次，在该软件中使用命令usb可以尝试再次连接usb接口，如果成功，会出现类似如下的文字：
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -173,24 +452,25 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>J-Link&gt;usb
-</span><span class='line'>Connecting to J-Link via USB (Port: 0)
-</span><span class='line'>DLL version V5.00, compiled Jun  8 2015 21:14:03
-</span><span class='line'>Firmware: J-Link ARM V8 compiled Nov 28 2014 13:44:46
-</span><span class='line'>Hardware: V8.00
-</span><span class='line'>S/N: 158000503
-</span><span class='line'>Feature(s): RDI,FlashDL,FlashBP,JFlash,GDBFull
-</span><span class='line'>VTarget = 3.319V
-</span><span class='line'>Info: TotalIRLen = 9, IRPrint = 0x0011
-</span><span class='line'>Found 2 JTAG devices, Total IRLen = 5:
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">J</span><span class="o">-</span><span class="n">Link</span><span class="o">&gt;</span><span class="n">usb</span>
+</span><span class='line'><span class="n">Connecting</span> <span class="n">to</span> <span class="n">J</span><span class="o">-</span><span class="n">Link</span> <span class="n">via</span> <span class="n">USB</span> <span class="p">(</span><span class="nl">Port</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'><span class="n">DLL</span> <span class="n">version</span> <span class="n">V5</span><span class="mf">.00</span><span class="p">,</span> <span class="n">compiled</span> <span class="n">Jun</span>  <span class="mi">8</span> <span class="mi">2015</span> <span class="mi">21</span><span class="o">:</span><span class="mi">14</span><span class="o">:</span><span class="mo">03</span>
+</span><span class='line'><span class="nl">Firmware</span><span class="p">:</span> <span class="n">J</span><span class="o">-</span><span class="n">Link</span> <span class="n">ARM</span> <span class="n">V8</span> <span class="n">compiled</span> <span class="n">Nov</span> <span class="mi">28</span> <span class="mi">2014</span> <span class="mi">13</span><span class="o">:</span><span class="mi">44</span><span class="o">:</span><span class="mi">46</span>
+</span><span class='line'><span class="nl">Hardware</span><span class="p">:</span> <span class="n">V8</span><span class="mf">.00</span>
+</span><span class='line'><span class="n">S</span><span class="o">/</span><span class="nl">N</span><span class="p">:</span> <span class="mi">158000503</span>
+</span><span class='line'><span class="n">Feature</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">:</span> <span class="n">RDI</span><span class="p">,</span><span class="n">FlashDL</span><span class="p">,</span><span class="n">FlashBP</span><span class="p">,</span><span class="n">JFlash</span><span class="p">,</span><span class="n">GDBFull</span>
+</span><span class='line'><span class="n">VTarget</span> <span class="o">=</span> <span class="mf">3.319</span><span class="n">V</span>
+</span><span class='line'><span class="nl">Info</span><span class="p">:</span> <span class="n">TotalIRLen</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="n">IRPrint</span> <span class="o">=</span> <span class="mh">0x0011</span>
+</span><span class='line'><span class="n">Found</span> <span class="mi">2</span> <span class="n">JTAG</span> <span class="n">devices</span><span class="p">,</span> <span class="n">Total</span> <span class="n">IRLen</span> <span class="o">=</span> <span class="mi">5</span><span class="o">:</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;0 Id: 0x2B900F0F, IRLen: 04, IRPrint: 0x0, ARM ETB&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">0</span> <span class="nl">Id</span><span class="p">:</span> <span class="mh">0x2B900F0F</span><span class="p">,</span> <span class="nl">IRLen</span><span class="p">:</span> <span class="mo">04</span><span class="p">,</span> <span class="nl">IRPrint</span><span class="p">:</span> <span class="mh">0x0</span><span class="p">,</span> <span class="n">ARM</span> <span class="n">ETB</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;1 Id: 0x07B76F0F, IRLen: 05, IRPrint: 0x1, ARM1176 Core&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="mi">1</span> <span class="nl">Id</span><span class="p">:</span> <span class="mh">0x07B76F0F</span><span class="p">,</span> <span class="nl">IRLen</span><span class="p">:</span> <span class="mo">05</span><span class="p">,</span> <span class="nl">IRPrint</span><span class="p">:</span> <span class="mh">0x1</span><span class="p">,</span> <span class="n">ARM1176</span> <span class="n">Core</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;ARM11 identified.
-</span><span class='line'>Target interface speed: 100 kHz
-</span><span class='line'>J-Link&gt;</span></code></pre></td></tr></table></div></figure></p></li>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">ARM11</span> <span class="n">identified</span><span class="p">.</span>
+</span><span class='line'><span class="n">Target</span> <span class="n">interface</span> <span class="nl">speed</span><span class="p">:</span> <span class="mi">100</span> <span class="n">kHz</span>
+</span><span class='line'><span class="n">J</span><span class="o">-</span><span class="n">Link</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p></li>
 </ul>
 </li>
 </ol>

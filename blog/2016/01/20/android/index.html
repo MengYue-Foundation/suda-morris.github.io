@@ -1,0 +1,293 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Android - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="Android系统架构图 应用程序框架 Activity Manager：管理各个应用程序生命周期以及通常的导航回退功能
+Window Manager：管理所有的窗口程序
+Content Provider：使得不同应用程序之间存取或者分享数据
+View System：构建应用程序的基本组件 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Android</h2>
+	<div class="entry-content"><h2>Android系统架构图</h2>
+
+<p><img src="http://i.imgur.com/fNWm4KQ.png" alt="Android系统架构" /></p>
+
+<ol>
+<li>应用程序框架
+
+<ol>
+<li>Activity Manager：管理各个应用程序生命周期以及通常的导航回退功能</li>
+<li>Window Manager：管理所有的窗口程序</li>
+<li>Content Provider：使得不同应用程序之间存取或者分享数据</li>
+<li>View System：构建应用程序的基本组件</li>
+<li>NotificationManager：使得应用程序可以在状态栏中显示自定义的提示信息</li>
+<li>Package Manager：Android系统内的程序管理</li>
+<li>TelephonyManager：管理所有的移动设备功能</li>
+<li>Resource Manager：提供应用程序使用的各种非代码资源，如本地化字符串、图片、布局文件、颜色文件等</li>
+<li>LocationManager：提供位置服务</li>
+<li>XMPP Service：提供GoogleTalk服务</li>
+</ol>
+</li>
+<li>系统运行库分成两个部分，分别是系统库和Android运行时。
+
+<ol>
+<li>系统库是应用程序框架的支撑，是连接应用程序框架层与Linux内核层的重要纽带。
+
+<ol>
+<li>Surface Manager：执行多个应用程序的时候，负责管理显示与存取操作间的互动，另外也负责2D绘图与3D绘图进行显示合成</li>
+<li>Media Framework：多媒体库，基于PacketVideo OpenCore；支持多种常用的音频、视频格式录制和回放，编码格式包络MPEG4、MP3、H.264、AAC、ARM</li>
+<li>SQLite：小型的关系型数据库引擎</li>
+<li>OpenGL|ES：根据OpenGLES1.0API标准实现的3D绘图函数库</li>
+<li>FreeType：提供点阵字与向量字的描绘与显示</li>
+<li>WebKit：一套网页浏览器的软件引擎</li>
+<li>SGL：底层的2D图形渲染引擎</li>
+<li>SSL:在Android上通信过程中实现握手</li>
+<li>Libc：从BSD继承来的标准C系统函数库，专门为基于embedded linux的设备定制</li>
+</ol>
+</li>
+<li>Android运行时，程序在Android运行时中执行，其运行分为核心库和Dalvik虚拟机两部分
+
+<ol>
+<li>核心库：核心库提供了Java语言API中的大多数功能，同时也包含了Android的一些核心API，如android.os、android.net、android.media等等</li>
+<li>Dalvik虚拟机：Android程序不同于J2ME程序，每个Android应用程序都有一个专有的进程，并且不是多个程序运行在一个虚拟机中，而是每个Android程序都有一个Dalvik虚拟机的实例，并在该实例中执行。Dalvik虚拟机是一种基于寄存爱的Java虚拟机，而不是传统的基于栈的虚拟机，并进行了内存资源使用的优化，以及支持多个虚拟机的特点。需要注意，不同于J2ME，Android程序在虚拟机中执行的并非编译后的字节码，而是通过转换工具dx将java字节码转换成dex格式的中间码</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Adnroid UI基础</h2>
+
+<ol>
+<li>Android UI由View和ViewGroup组成，ViewGroup是不可见的，用于组织和排版View和ViewGroup。View显示用户内容，以及相应用户的操作。Android UI可以在code中生产，不过更加方便的方式是在Android的XML文件中定义UI</li>
+<li>可以通过2种方式定义界面结构，一种是在XML中定义视图结构，另一种是在运行时动态创建视图结构，
+
+<ol>
+<li>通过XML定义视图结构，可以有效做到代码与界面的分离，并且提高界面的可读性。XML的文件西部包含一个root，可以是View或者ViewGroup。在节点下面增加子界面的方式来构造界面结构</li>
+<li>在编译阶段，所有的XML layout文件都会编译到一个统一的View资源里面，在需要使用layout资源的时候，需要将资源加载到程序中，一般做法是在Activity.onCreate()中做加载的资源操作</li>
+</ol>
+</li>
+<li>每一个View或者ViewGroup都有一个ID属性，该属性由class View定义。其定义语法为：android:id=&ldquo;@+id/my_button"。
+
+<ol>
+<li>@的意思是指示XML parser解析并且展开后面的内容，将其作为一个ID的资源</li>
+<li>+的意思是指示这是一个新的ID，需要将其加到资源定义文件R.java中去。有一些系统自定的ID，如果引用这些系统自定的ID，则不需要加+号，但是要加上包的命名空间，其定义非语法为：android：id=“@android：id/empty”</li>
+</ol>
+</li>
+<li>在XML文件中，通常使用layout_something来定义View在ViewGroup中的位置。ViewGroup类会实现一个嵌套类来扩展ViewGroup.LayoutParms。这个内嵌的子类会定义类型来指定字View的位置和大小。每个view group一般都会包含width和height参数，因此每个在其内部的view都需要定义这两个属性。一般不会将其指定为某一个宽度或者高度，一般写为相对的，这样可以保证适用于多种屏幕大小的设备。其中，wrap_content会根据内容的大小来调节大小。fill_parent，最大化达到父几点所允许的，在API level8后名字改为match_parent</li>
+<li>View作为一个几何图形，具有4个属性对应于它所属的容器，分别是left，top，width和height，每个属性的单位是pixel。参考API文档，可以很多函数获取位置以及View的大小信息。getLeft()，getTop(),getRight(),getBottom()。获取的值一本都是相对应与父节点的位置和大小信息。Padding是内容与View空间直接的间隔。View并未提供Margin属性，该属性一般由ViewGroup设置</li>
+<li>如果需要在界面上显示的内容是动态获取的话，可以使用Adapter和继承AdapterView的View来动态显示。Adapter是数据源和AdapterView之间的桥梁，由它从数据源获取数据，然后转换为一组实体，填充到View</li>
+<li>可以简单的使用继承自AdapterView的View来绑定Adapter，来获取外部数据源的数据。Android也提供了一些继承自Adapter的子类用于处理不同的数据形式来建立View，下面是三种比较常见的Adapter：
+
+<ol>
+<li>ArrayAdapter，当数据源是一个数组的时候，可以使用这个Adapter，默认，ArrayAdapter在调用toString()后会为每个Item创建一个TextView</li>
+<li>SimpleCursorAdapter，如果数据源是来自于游标的时候，使用这个Adapter。使用这个Adapter的时候，需要指定Cursor的哪个行，哪个列插入Layout的View</li>
+</ol>
+</li>
+<li>可以通过实现AdapterView.OnItemClickListener接口来让AdapterView响应点击事件</li>
+</ol>
+
+
+<h2>Android开发中高效的数据结构</h2>
+
+<ol>
+<li>SimpleArrayMap与ArrayMap
+
+<ol>
+<li>实质上ArrayMap继承自SimpleArrayMap，主要是为了实现像HashMap一样的api方法，让习惯使用HashMap的开发者感觉不到差异，本质上是SimpleArrayMap+Map的再封装。一般来说使用这两个类来代替HashMap，因为它们比HashMap更加高效，也对内存进行了优化</li>
+</ol>
+</li>
+<li>SparseArray与SparseArrayCompat和LongSparseArray
+
+<ol>
+<li>这3个类中，前2个基本上是同一类，只不过第二个类有removeAt方法，第三个是Long类型的。这3个类也是用来代替HashMap，只不过它们的键的类型是整形Integer或者Long类型，在实际开发中，如月份缩写的映射，或者进行文件缓存映射，viewHolder都特别适用</li>
+</ol>
+</li>
+<li>AtomicFile
+
+<ol>
+<li>AtomicFile首先不是用来代替File的，而是作为File的辅助类存在，AtomicFile的作用是实现事务性原子操作，即文件读写必须完整，适合多线程中的文件读写操作</li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-20T18:01:40+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/develop/'>develop</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2016/01/20/android" data-title="Android" data-url="http://suda-morris.github.io/blog/2016/01/20/android/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2016
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
