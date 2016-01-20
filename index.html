@@ -183,14 +183,24 @@
 <li>切换到项目根目录，执行./gradlew -v来查看项目所用的Gradle版本，如果是第一次执行，将会去下载Gradle</li>
 <li>接着执行./gradlew clean，清除项目根目录/app目录下的build文件夹</li>
 <li>最后执行./gradlew build,检查依赖，直接编译生成相应的apk文件。接着在项目根目录/app/build/outputs/apk目录下会看到类似于app-debug-unaligned.apk，app-release-unsigned.apk等，unaligned代表没有进行zip优化的，unsigned代表没有签名的。</li>
+<li>gradlew build命令吧debug、release环境的包都打出来，如果正式发布只需要打Release的包，就需要这样使用：
+
+<ol>
+<li>./gradlew assembleDebug编译并打Debug包</li>
+<li>./gradlew assembleRelease编译并打Release包</li>
+</ol>
+</li>
 </ol>
 </li>
 <li>与Gradle相关的几个文件
 
 <ol>
-<li>项目根目录/app/build.gradle,这个文件是app文件下下这个Module的gradle配置文件，在里面会指明要编译成安卓的应用程序（com.android.application）还是库（com.android.library）；指明编译SDK的版本，build tools的版本（根据实际开发者已经下载好的版本来修改），指明应用的包名，支持的最小的SDK版本，目标SDK版本，要编译在lib目录下的哪些jar包。如下所示:</li>
+<li>项目根目录/app/build.gradle,这个文件是app文件下下这个Module的gradle配置文件，在里面会指明要编译成安卓的应用程序（com.android.application）还是库（com.android.library）；指明编译SDK的版本，build tools的版本（根据实际开发者已经下载好的版本来修改），指明应用的包名，支持的最小的SDK版本，目标SDK版本，要编译在lib目录下的哪些jar包。</li>
+<li>项目根目录/build.gradle，这个文件是整个项目的基础配置文件，内容主要包括两个方面，一个是声明仓库的源，一般是jcenter，jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本</li>
+<li>项目根目录/settings.gradle，这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module，例如：<code>include ':app', ':extras:ShimmerAndroid'</code>,文件中的app，extra：ShimmerAndroid都是module，如果还有其他module都需要按照如上格式加进去</li>
 </ol>
 </li>
+<li>完整的gradle脚本</li>
 </ol>
 
 
@@ -246,101 +256,152 @@
 <span class='line-number'>50</span>
 <span class='line-number'>51</span>
 <span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// 声明是Android程序</span>
-</span><span class='line'><span class="n">apply</span> <span class="nl">plugin</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">application</span><span class="err">&#39;</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">apply</span> <span class="nl">plugin</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">application</span><span class="err">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">def</span> <span class="n">releaseTime</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">new</span> <span class="n">Date</span><span class="p">().</span><span class="n">format</span><span class="p">(</span><span class="s">&quot;yyyy-MM-dd&quot;</span><span class="p">,</span> <span class="n">TimeZone</span><span class="p">.</span><span class="n">getTimeZone</span><span class="p">(</span><span class="s">&quot;UTC&quot;</span><span class="p">))</span>
+</span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">android</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 编译SDK的版本</span>
 </span><span class='line'>    <span class="n">compileSdkVersion</span> <span class="mi">21</span>
-</span><span class='line'>    <span class="c1">// build tools的版本</span>
-</span><span class='line'>    <span class="n">buildToolsVersion</span> <span class="s">&quot;21.1.1&quot;</span>
+</span><span class='line'>    <span class="n">buildToolsVersion</span> <span class="err">&#39;</span><span class="mf">21.1.2</span><span class="err">&#39;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">defaultConfig</span> <span class="p">{</span>
-</span><span class='line'>        <span class="c1">// 应用的包名</span>
-</span><span class='line'>        <span class="n">applicationId</span> <span class="s">&quot;me.storm.ninegag&quot;</span>
+</span><span class='line'>        <span class="n">applicationId</span> <span class="s">&quot;com.boohee.*&quot;</span>
 </span><span class='line'>        <span class="n">minSdkVersion</span> <span class="mi">14</span>
 </span><span class='line'>        <span class="n">targetSdkVersion</span> <span class="mi">21</span>
 </span><span class='line'>        <span class="n">versionCode</span> <span class="mi">1</span>
-</span><span class='line'>        <span class="n">versionName</span> <span class="s">&quot;1.0.0&quot;</span>
+</span><span class='line'>        <span class="n">versionName</span> <span class="s">&quot;1.0&quot;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// dex突破65535的限制</span>
+</span><span class='line'>        <span class="n">multiDexEnabled</span> <span class="nb">true</span>
+</span><span class='line'>        <span class="c1">// 默认是umeng的渠道</span>
+</span><span class='line'>        <span class="n">manifestPlaceholders</span> <span class="o">=</span> <span class="p">[</span><span class="nl">UMENG_CHANNEL_VALUE</span><span class="p">:</span> <span class="s">&quot;umeng&quot;</span><span class="p">]</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// java版本</span>
-</span><span class='line'>    <span class="n">compileOptions</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">sourceCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
-</span><span class='line'>        <span class="n">targetCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
+</span><span class='line'>    <span class="n">lintOptions</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">abortOnError</span> <span class="nb">false</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">signingConfigs</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">debug</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// No debug config</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">release</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">storeFile</span> <span class="n">file</span><span class="p">(</span><span class="s">&quot;../yourapp.keystore&quot;</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">storePassword</span> <span class="s">&quot;your password&quot;</span>
+</span><span class='line'>            <span class="n">keyAlias</span> <span class="s">&quot;your alias&quot;</span>
+</span><span class='line'>            <span class="n">keyPassword</span> <span class="s">&quot;your password&quot;</span>
+</span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="n">buildTypes</span> <span class="p">{</span>
 </span><span class='line'>        <span class="n">debug</span> <span class="p">{</span>
-</span><span class='line'>            <span class="c1">// debug模式</span>
+</span><span class='line'>            <span class="c1">// 显示Log</span>
+</span><span class='line'>            <span class="n">buildConfigField</span> <span class="s">&quot;boolean&quot;</span><span class="p">,</span> <span class="s">&quot;LOG_DEBUG&quot;</span><span class="p">,</span> <span class="s">&quot;true&quot;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">versionNameSuffix</span> <span class="s">&quot;-debug&quot;</span>
+</span><span class='line'>            <span class="n">minifyEnabled</span> <span class="nb">false</span>
+</span><span class='line'>            <span class="n">zipAlignEnabled</span> <span class="nb">false</span>
+</span><span class='line'>            <span class="n">shrinkResources</span> <span class="nb">false</span>
+</span><span class='line'>            <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="p">.</span><span class="n">debug</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'>        <span class="n">release</span> <span class="p">{</span>
-</span><span class='line'>            <span class="c1">// 是否进行混淆</span>
-</span><span class='line'>            <span class="n">minifyEnabled</span> <span class="nb">false</span>
-</span><span class='line'>            <span class="c1">// 混淆文件的位置</span>
-</span><span class='line'>            <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">android</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">),</span> <span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">rules</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span>
+</span><span class='line'>            <span class="c1">// 不显示Log</span>
+</span><span class='line'>            <span class="n">buildConfigField</span> <span class="s">&quot;boolean&quot;</span><span class="p">,</span> <span class="s">&quot;LOG_DEBUG&quot;</span><span class="p">,</span> <span class="s">&quot;false&quot;</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">minifyEnabled</span> <span class="nb">true</span>
+</span><span class='line'>            <span class="n">zipAlignEnabled</span> <span class="nb">true</span>
+</span><span class='line'>            <span class="c1">// 移除无用的resource文件</span>
+</span><span class='line'>            <span class="n">shrinkResources</span> <span class="nb">true</span>
+</span><span class='line'>            <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">android</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">),</span> <span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">rules</span><span class="p">.</span><span class="n">pro</span><span class="err">&#39;</span>
+</span><span class='line'>            <span class="n">signingConfig</span> <span class="n">signingConfigs</span><span class="p">.</span><span class="n">release</span>
+</span><span class='line'>
+</span><span class='line'>            <span class="n">applicationVariants</span><span class="p">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">variant</span> <span class="o">-&gt;</span>
+</span><span class='line'>                <span class="n">variant</span><span class="p">.</span><span class="n">outputs</span><span class="p">.</span><span class="n">each</span> <span class="p">{</span> <span class="n">output</span> <span class="o">-&gt;</span>
+</span><span class='line'>                    <span class="n">def</span> <span class="n">outputFile</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">outputFile</span>
+</span><span class='line'>                    <span class="k">if</span> <span class="p">(</span><span class="n">outputFile</span> <span class="o">!=</span> <span class="n">null</span> <span class="o">&amp;&amp;</span> <span class="n">outputFile</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">endsWith</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="n">apk</span><span class="err">&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>                        <span class="c1">// 输出apk名称为boohee_v1.0_2015-01-15_wandoujia.apk</span>
+</span><span class='line'>                        <span class="n">def</span> <span class="n">fileName</span> <span class="o">=</span> <span class="s">&quot;boohee_v${defaultConfig.versionName}_${releaseTime()}_${variant.productFlavors[0].name}.apk&quot;</span>
+</span><span class='line'>                        <span class="n">output</span><span class="p">.</span><span class="n">outputFile</span> <span class="o">=</span> <span class="n">new</span> <span class="n">File</span><span class="p">(</span><span class="n">outputFile</span><span class="p">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">fileName</span><span class="p">)</span>
+</span><span class='line'>                    <span class="p">}</span>
+</span><span class='line'>                <span class="p">}</span>
+</span><span class='line'>            <span class="p">}</span>
 </span><span class='line'>        <span class="p">}</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="c1">// 移除lint检查的error</span>
-</span><span class='line'>    <span class="n">lintOptions</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">abortOnError</span> <span class="nb">false</span>
+</span><span class='line'>    <span class="c1">// 友盟多渠道打包</span>
+</span><span class='line'>    <span class="n">productFlavors</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">wandoujia</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="n">_360</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="n">baidu</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="n">xiaomi</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="n">tencent</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="n">taobao</span> <span class="p">{}</span>
+</span><span class='line'>        <span class="p">...</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">productFlavors</span><span class="p">.</span><span class="n">all</span> <span class="p">{</span> <span class="n">flavor</span> <span class="o">-&gt;</span>
+</span><span class='line'>        <span class="n">flavor</span><span class="p">.</span><span class="n">manifestPlaceholders</span> <span class="o">=</span> <span class="p">[</span><span class="nl">UMENG_CHANNEL_VALUE</span><span class="p">:</span> <span class="n">name</span><span class="p">]</span>
 </span><span class='line'>    <span class="p">}</span>
 </span><span class='line'><span class="p">}</span>
 </span><span class='line'>
 </span><span class='line'><span class="n">dependencies</span> <span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 编译libs目录下的所有jar包</span>
 </span><span class='line'>    <span class="n">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="nl">dir</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">libs</span><span class="err">&#39;</span><span class="p">,</span> <span class="nl">include</span><span class="p">:</span> <span class="p">[</span><span class="err">&#39;</span><span class="o">*</span><span class="p">.</span><span class="n">jar</span><span class="err">&#39;</span><span class="p">])</span>
-</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">support</span><span class="p">:</span><span class="n">support</span><span class="o">-</span><span class="nl">v4</span><span class="p">:</span><span class="mf">21.0.2</span><span class="err">&#39;</span>
-</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">etsy</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">grid</span><span class="p">:</span><span class="nl">library</span><span class="p">:</span><span class="mf">1.0.5</span><span class="err">&#39;</span>
-</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="nl">alexvasilkov</span><span class="p">:</span><span class="n">foldable</span><span class="o">-</span><span class="nl">layout</span><span class="p">:</span><span class="mf">1.0.1</span><span class="err">&#39;</span>
-</span><span class='line'>    <span class="c1">// 编译extras目录下的ShimmerAndroid模块</span>
-</span><span class='line'>    <span class="n">compile</span> <span class="n">project</span><span class="p">(</span><span class="err">&#39;</span><span class="o">:</span><span class="nl">extras</span><span class="p">:</span><span class="n">ShimmerAndroid</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">support</span><span class="p">:</span><span class="n">support</span><span class="o">-</span><span class="nl">v4</span><span class="p">:</span><span class="mf">21.0.3</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="nl">jakewharton</span><span class="p">:</span><span class="nl">butterknife</span><span class="p">:</span><span class="mf">6.0.0</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="p">...</span>
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<pre><code>2. 项目根目录/build.gradle，这个文件是整个项目的基础配置文件，内容主要包括两个方面，一个是声明仓库的源，一般是jcenter，jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。另一个是声明了android gradle plugin的版本
-</code></pre>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// Top-level build file where you can add configuration options common to all sub-projects/modules.</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">buildscript</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">repositories</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">jcenter</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">dependencies</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">classpath</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">tools</span><span class="p">.</span><span class="nl">build</span><span class="p">:</span><span class="nl">gradle</span><span class="p">:</span><span class="mf">1.0.0</span><span class="err">&#39;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">allprojects</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">repositories</span> <span class="p">{</span>
-</span><span class='line'>        <span class="n">jcenter</span><span class="p">()</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>3. 项目根目录/settings.gradle，这个文件是全局的项目配置文件，里面主要声明一些需要加入gradle的module，例如：``include ':app', ':extras:ShimmerAndroid'``,文件中的app，extra：ShimmerAndroid都是module，如果还有其他module都需要按照如上格式加进去
-</code></pre>
 
 		
 		
