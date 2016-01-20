@@ -88,6 +88,328 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2016/01/20/jetbrains/">
+		
+			Jetbrains</a>
+	</h2>
+	<div class="entry-content">
+		<h2>如何破解DataGrid</h2>
+
+<blockquote><p>启动，在要求输出注册码的界面选择“License server”输入“<a href="http://idea.lanyus.com/%E2%80%9D%EF%BC%8C%E7%82%B9%E5%87%BBOK%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%BF%80%E6%B4%BB">http://idea.lanyus.com/%E2%80%9D%EF%BC%8C%E7%82%B9%E5%87%BBOK%EF%BC%8C%E5%BF%AB%E9%80%9F%E6%BF%80%E6%B4%BB</a></p></blockquote>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-20T11:27:47+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/software/'>software</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/01/19/android-studio/">
+		
+			Android_Studio</a>
+	</h2>
+	<div class="entry-content">
+		<h2>最新安装的Android Studio打开软件特别慢，总是卡在“Fetching Android SDK component information”，如何解决？</h2>
+
+<ol>
+<li>进入Android Studio的安装目录下的bin目录，找到idea.properties文件，用文本编辑器打开</li>
+<li>在idea.properties文件末尾天剑一行：disable.android.first.run=true,然后保存文件</li>
+<li>关闭Android Studio后重新启动</li>
+</ol>
+
+
+<h2>给Android Studio安装Genymotion插件</h2>
+
+<ol>
+<li>File->Settings</li>
+<li>找到plugins设置项，点击Browser，输入：genymotion关键字，安装相应插件</li>
+<li>重启android studio后，点击Genymotion插件的图标，设置Genymotion在本地的路径，完成后就告成</li>
+</ol>
+
+
+<h2>设置自动导入依赖包</h2>
+
+<ol>
+<li>File->Settings->Editor</li>
+<li>找到Auto Import选项，使能：show import popup，Optimize imports on the fly，Add unambiguous imports on the fly</li>
+</ol>
+
+
+<h2>常用功能</h2>
+
+<ol>
+<li>Gradle同步，在项目运行或者更改Gradle配置的时候都要点击下这个按钮，会下载相应的依赖</li>
+<li>AVD Manager，模拟器管理</li>
+<li>SDK Manager，管理SDK版本</li>
+<li>DDMS即Dalvik Debug Monitor Service，Dalvik调试监控服务</li>
+</ol>
+
+
+<h2>Gradle</h2>
+
+<ol>
+<li>Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主，它抛弃了基于XML的各种繁琐配置，而取而代之的是一种基于Groovy的内部领域特定（DSL）语言</li>
+<li>Android Studio中新建项目成功后会自动下载Gradle，Windows下回安装到：C:\Documents and Settings\&lt;用户名>.gradle\wrapper\dists 目录</li>
+<li>命令行Gradle编译过程
+
+<ol>
+<li>切换到项目根目录，执行./gradlew -v来查看项目所用的Gradle版本，如果是第一次执行，将会去下载Gradle</li>
+<li>接着执行./gradlew clean，清除项目根目录/app目录下的build文件夹</li>
+<li>最后执行./gradlew build,检查依赖，直接编译生成相应的apk文件。接着在项目根目录/app/build/outputs/apk目录下会看到类似于app-debug-unaligned.apk，app-release-unsigned.apk等，unaligned代表没有进行zip优化的，unsigned代表没有签名的。</li>
+</ol>
+</li>
+<li>与Gradle相关的几个文件
+
+<ol>
+<li>项目根目录/app/build.gradle,这个文件是app文件下下这个Module的gradle配置文件，在里面会指明要编译成安卓的应用程序（com.android.application）还是库（com.android.library）；指明编译SDK的版本，build tools的版本（根据实际开发者已经下载好的版本来修改），指明应用的包名，支持的最小的SDK版本，目标SDK版本，要编译在lib目录下的哪些jar包。如下所示:</li>
+</ol>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// 声明是Android程序</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">application</span><span class="err">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">android</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 编译SDK的版本</span>
+</span><span class='line'>    <span class="n">compileSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>    <span class="c1">// build tools的版本</span>
+</span><span class='line'>    <span class="n">buildToolsVersion</span> <span class="s">&quot;21.1.1&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">defaultConfig</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 应用的包名</span>
+</span><span class='line'>        <span class="n">applicationId</span> <span class="s">&quot;me.storm.ninegag&quot;</span>
+</span><span class='line'>        <span class="n">minSdkVersion</span> <span class="mi">14</span>
+</span><span class='line'>        <span class="n">targetSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>        <span class="n">versionCode</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="n">versionName</span> <span class="s">&quot;1.0.0&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// java版本</span>
+</span><span class='line'>    <span class="n">compileOptions</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sourceCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
+</span><span class='line'>        <span class="n">targetCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">buildTypes</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">debug</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// debug模式</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">release</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// 是否进行混淆</span>
+</span><span class='line'>            <span class="n">minifyEnabled</span> <span class="nb">false</span>
+</span><span class='line'>            <span class="c1">// 混淆文件的位置</span>
+</span><span class='line'>            <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">android</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">),</span> <span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">rules</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 移除lint检查的error</span>
+</span><span class='line'>    <span class="n">lintOptions</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">abortOnError</span> <span class="nb">false</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dependencies</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 编译libs目录下的所有jar包</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="nl">dir</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">libs</span><span class="err">&#39;</span><span class="p">,</span> <span class="nl">include</span><span class="p">:</span> <span class="p">[</span><span class="err">&#39;</span><span class="o">*</span><span class="p">.</span><span class="n">jar</span><span class="err">&#39;</span><span class="p">])</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">support</span><span class="p">:</span><span class="n">support</span><span class="o">-</span><span class="nl">v4</span><span class="p">:</span><span class="mf">21.0.2</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">etsy</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">grid</span><span class="p">:</span><span class="nl">library</span><span class="p">:</span><span class="mf">1.0.5</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="nl">alexvasilkov</span><span class="p">:</span><span class="n">foldable</span><span class="o">-</span><span class="nl">layout</span><span class="p">:</span><span class="mf">1.0.1</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="c1">// 编译extras目录下的ShimmerAndroid模块</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="n">project</span><span class="p">(</span><span class="err">&#39;</span><span class="o">:</span><span class="nl">extras</span><span class="p">:</span><span class="n">ShimmerAndroid</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-19T10:06:41+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/01/11/nrf51822/">
+		
+			nRF51822</a>
+	</h2>
+	<div class="entry-content">
+		<h2>nRF51822介绍</h2>
+
+<p><img src="http://i.imgur.com/W7Ksvm4.jpg" alt="nRF51822引脚图" /></p>
+
+<ol>
+<li>通信距离30m（条件:空旷区域/1M速率）</li>
+<li>工作频段：2.4GHz</li>
+<li>工作电压：2.0V~3.6V</li>
+<li>nRF51822整合了Nordic一流的无线传送器，同时支持BLE和专用的2.4GHz蓝牙协议栈</li>
+<li>基本情况：
+
+<ol>
+<li>2.4GHz多协议无线射频</li>
+<li>32为ARM CortexM0 处理器</li>
+<li>128位AES硬件加密处理器</li>
+<li>256KB Flash，32KB RAM(最新的QF AC版本)</li>
+<li>可编程外设接口PPI</li>
+<li>全功能数字接口：SPI、I2C、UART</li>
+<li>10为ADC</li>
+<li>可编程的输出功率+4dBm到-20dBm</li>
+<li>应用开发和协议栈完全独立</li>
+<li>HWID=0083</li>
+</ol>
+</li>
+<li>参考资料：
+
+<ol>
+<li><a href="http://infocenter.nordicsemi.com/index.jsp">参考文档</a></li>
+<li><a href="https://devzone.nordicsemi.com/questions/">官方论坛</a></li>
+<li><a href="http://www.qfv8.com/forum.php">青风电子社区</a></li>
+</ol>
+</li>
+<li>版本搭配：
+
+<ol>
+<li>nRF51 IC rev:v3(第三代芯片)</li>
+<li>nRF51 SDK:10.0.0</li>
+<li>software device:S130-1.0.0</li>
+<li>software device specification:S130-1.0</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-11T11:41:13+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2016/01/05/free-rtos/">
 		
 			Free-RTOS</a>
@@ -2174,2173 +2496,6 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 
 
 <time datetime="2015-11-22T19:53:49+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/22/tinyhttpd/">
-		
-			TinyHttpd</a>
-	</h2>
-	<div class="entry-content">
-		<h2>简介</h2>
-
-<ol>
-<li>tinyhttpd是一个不到500行的超轻量型Http Server</li>
-</ol>
-
-
-<h2>函数介绍</h2>
-
-<ol>
-<li>void accept_request(int);
-
-<ul>
-<li>处理从套接字上监听到的一个HTTP请求，在这里可以很大一部分体现服务器处理请求流程</li>
-</ul>
-</li>
-<li>void bad_request(int);
-
-<ul>
-<li>返回给客户端这是一个错误请求，HTTP状态码400 BAD REQUEST</li>
-</ul>
-</li>
-<li>void cat(int, FILE *);
-
-<ul>
-<li>读取服务器上某个文件写到socket套接字</li>
-</ul>
-</li>
-<li>void cannot_execute(int);
-
-<ul>
-<li>主要处理发生在执行cgi程序时出现的错误</li>
-</ul>
-</li>
-<li>void error_die(const char *);
-
-<ul>
-<li>将错误信息写到perror并退出</li>
-</ul>
-</li>
-<li>void execute_cgi(int, const char <em>, const char </em>, const char *);
-
-<ul>
-<li>运行cgi程序的处理</li>
-</ul>
-</li>
-<li>int get_line(int, char *, int);
-
-<ul>
-<li>读取套接字的一行，把回车换行等情况都统一为换行结束符</li>
-</ul>
-</li>
-<li>void headers(int, const char *);
-
-<ul>
-<li>把HTTP响应的头部写到套接字</li>
-</ul>
-</li>
-<li>void not_found(int);
-
-<ul>
-<li>主要处理找不到请求的文件时的情况</li>
-</ul>
-</li>
-<li>void serve_file(int, const char *);
-
-<ul>
-<li>调用cat把服务器文件返回给浏览器</li>
-</ul>
-</li>
-<li>int startup(u_short *);
-
-<ul>
-<li>初始化httpd服务，包括建立套接字，绑定端口，进行监听等</li>
-</ul>
-</li>
-<li>void unimplemented(int);
-
-<ul>
-<li>返回给浏览器表明收到的HTTP请求所用的method不被支持</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>源码详解</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-<span class='line-number'>224</span>
-<span class='line-number'>225</span>
-<span class='line-number'>226</span>
-<span class='line-number'>227</span>
-<span class='line-number'>228</span>
-<span class='line-number'>229</span>
-<span class='line-number'>230</span>
-<span class='line-number'>231</span>
-<span class='line-number'>232</span>
-<span class='line-number'>233</span>
-<span class='line-number'>234</span>
-<span class='line-number'>235</span>
-<span class='line-number'>236</span>
-<span class='line-number'>237</span>
-<span class='line-number'>238</span>
-<span class='line-number'>239</span>
-<span class='line-number'>240</span>
-<span class='line-number'>241</span>
-<span class='line-number'>242</span>
-<span class='line-number'>243</span>
-<span class='line-number'>244</span>
-<span class='line-number'>245</span>
-<span class='line-number'>246</span>
-<span class='line-number'>247</span>
-<span class='line-number'>248</span>
-<span class='line-number'>249</span>
-<span class='line-number'>250</span>
-<span class='line-number'>251</span>
-<span class='line-number'>252</span>
-<span class='line-number'>253</span>
-<span class='line-number'>254</span>
-<span class='line-number'>255</span>
-<span class='line-number'>256</span>
-<span class='line-number'>257</span>
-<span class='line-number'>258</span>
-<span class='line-number'>259</span>
-<span class='line-number'>260</span>
-<span class='line-number'>261</span>
-<span class='line-number'>262</span>
-<span class='line-number'>263</span>
-<span class='line-number'>264</span>
-<span class='line-number'>265</span>
-<span class='line-number'>266</span>
-<span class='line-number'>267</span>
-<span class='line-number'>268</span>
-<span class='line-number'>269</span>
-<span class='line-number'>270</span>
-<span class='line-number'>271</span>
-<span class='line-number'>272</span>
-<span class='line-number'>273</span>
-<span class='line-number'>274</span>
-<span class='line-number'>275</span>
-<span class='line-number'>276</span>
-<span class='line-number'>277</span>
-<span class='line-number'>278</span>
-<span class='line-number'>279</span>
-<span class='line-number'>280</span>
-<span class='line-number'>281</span>
-<span class='line-number'>282</span>
-<span class='line-number'>283</span>
-<span class='line-number'>284</span>
-<span class='line-number'>285</span>
-<span class='line-number'>286</span>
-<span class='line-number'>287</span>
-<span class='line-number'>288</span>
-<span class='line-number'>289</span>
-<span class='line-number'>290</span>
-<span class='line-number'>291</span>
-<span class='line-number'>292</span>
-<span class='line-number'>293</span>
-<span class='line-number'>294</span>
-<span class='line-number'>295</span>
-<span class='line-number'>296</span>
-<span class='line-number'>297</span>
-<span class='line-number'>298</span>
-<span class='line-number'>299</span>
-<span class='line-number'>300</span>
-<span class='line-number'>301</span>
-<span class='line-number'>302</span>
-<span class='line-number'>303</span>
-<span class='line-number'>304</span>
-<span class='line-number'>305</span>
-<span class='line-number'>306</span>
-<span class='line-number'>307</span>
-<span class='line-number'>308</span>
-<span class='line-number'>309</span>
-<span class='line-number'>310</span>
-<span class='line-number'>311</span>
-<span class='line-number'>312</span>
-<span class='line-number'>313</span>
-<span class='line-number'>314</span>
-<span class='line-number'>315</span>
-<span class='line-number'>316</span>
-<span class='line-number'>317</span>
-<span class='line-number'>318</span>
-<span class='line-number'>319</span>
-<span class='line-number'>320</span>
-<span class='line-number'>321</span>
-<span class='line-number'>322</span>
-<span class='line-number'>323</span>
-<span class='line-number'>324</span>
-<span class='line-number'>325</span>
-<span class='line-number'>326</span>
-<span class='line-number'>327</span>
-<span class='line-number'>328</span>
-<span class='line-number'>329</span>
-<span class='line-number'>330</span>
-<span class='line-number'>331</span>
-<span class='line-number'>332</span>
-<span class='line-number'>333</span>
-<span class='line-number'>334</span>
-<span class='line-number'>335</span>
-<span class='line-number'>336</span>
-<span class='line-number'>337</span>
-<span class='line-number'>338</span>
-<span class='line-number'>339</span>
-<span class='line-number'>340</span>
-<span class='line-number'>341</span>
-<span class='line-number'>342</span>
-<span class='line-number'>343</span>
-<span class='line-number'>344</span>
-<span class='line-number'>345</span>
-<span class='line-number'>346</span>
-<span class='line-number'>347</span>
-<span class='line-number'>348</span>
-<span class='line-number'>349</span>
-<span class='line-number'>350</span>
-<span class='line-number'>351</span>
-<span class='line-number'>352</span>
-<span class='line-number'>353</span>
-<span class='line-number'>354</span>
-<span class='line-number'>355</span>
-<span class='line-number'>356</span>
-<span class='line-number'>357</span>
-<span class='line-number'>358</span>
-<span class='line-number'>359</span>
-<span class='line-number'>360</span>
-<span class='line-number'>361</span>
-<span class='line-number'>362</span>
-<span class='line-number'>363</span>
-<span class='line-number'>364</span>
-<span class='line-number'>365</span>
-<span class='line-number'>366</span>
-<span class='line-number'>367</span>
-<span class='line-number'>368</span>
-<span class='line-number'>369</span>
-<span class='line-number'>370</span>
-<span class='line-number'>371</span>
-<span class='line-number'>372</span>
-<span class='line-number'>373</span>
-<span class='line-number'>374</span>
-<span class='line-number'>375</span>
-<span class='line-number'>376</span>
-<span class='line-number'>377</span>
-<span class='line-number'>378</span>
-<span class='line-number'>379</span>
-<span class='line-number'>380</span>
-<span class='line-number'>381</span>
-<span class='line-number'>382</span>
-<span class='line-number'>383</span>
-<span class='line-number'>384</span>
-<span class='line-number'>385</span>
-<span class='line-number'>386</span>
-<span class='line-number'>387</span>
-<span class='line-number'>388</span>
-<span class='line-number'>389</span>
-<span class='line-number'>390</span>
-<span class='line-number'>391</span>
-<span class='line-number'>392</span>
-<span class='line-number'>393</span>
-<span class='line-number'>394</span>
-<span class='line-number'>395</span>
-<span class='line-number'>396</span>
-<span class='line-number'>397</span>
-<span class='line-number'>398</span>
-<span class='line-number'>399</span>
-<span class='line-number'>400</span>
-<span class='line-number'>401</span>
-<span class='line-number'>402</span>
-<span class='line-number'>403</span>
-<span class='line-number'>404</span>
-<span class='line-number'>405</span>
-<span class='line-number'>406</span>
-<span class='line-number'>407</span>
-<span class='line-number'>408</span>
-<span class='line-number'>409</span>
-<span class='line-number'>410</span>
-<span class='line-number'>411</span>
-<span class='line-number'>412</span>
-<span class='line-number'>413</span>
-<span class='line-number'>414</span>
-<span class='line-number'>415</span>
-<span class='line-number'>416</span>
-<span class='line-number'>417</span>
-<span class='line-number'>418</span>
-<span class='line-number'>419</span>
-<span class='line-number'>420</span>
-<span class='line-number'>421</span>
-<span class='line-number'>422</span>
-<span class='line-number'>423</span>
-<span class='line-number'>424</span>
-<span class='line-number'>425</span>
-<span class='line-number'>426</span>
-<span class='line-number'>427</span>
-<span class='line-number'>428</span>
-<span class='line-number'>429</span>
-<span class='line-number'>430</span>
-<span class='line-number'>431</span>
-<span class='line-number'>432</span>
-<span class='line-number'>433</span>
-<span class='line-number'>434</span>
-<span class='line-number'>435</span>
-<span class='line-number'>436</span>
-<span class='line-number'>437</span>
-<span class='line-number'>438</span>
-<span class='line-number'>439</span>
-<span class='line-number'>440</span>
-<span class='line-number'>441</span>
-<span class='line-number'>442</span>
-<span class='line-number'>443</span>
-<span class='line-number'>444</span>
-<span class='line-number'>445</span>
-<span class='line-number'>446</span>
-<span class='line-number'>447</span>
-<span class='line-number'>448</span>
-<span class='line-number'>449</span>
-<span class='line-number'>450</span>
-<span class='line-number'>451</span>
-<span class='line-number'>452</span>
-<span class='line-number'>453</span>
-<span class='line-number'>454</span>
-<span class='line-number'>455</span>
-<span class='line-number'>456</span>
-<span class='line-number'>457</span>
-<span class='line-number'>458</span>
-<span class='line-number'>459</span>
-<span class='line-number'>460</span>
-<span class='line-number'>461</span>
-<span class='line-number'>462</span>
-<span class='line-number'>463</span>
-<span class='line-number'>464</span>
-<span class='line-number'>465</span>
-<span class='line-number'>466</span>
-<span class='line-number'>467</span>
-<span class='line-number'>468</span>
-<span class='line-number'>469</span>
-<span class='line-number'>470</span>
-<span class='line-number'>471</span>
-<span class='line-number'>472</span>
-<span class='line-number'>473</span>
-<span class='line-number'>474</span>
-<span class='line-number'>475</span>
-<span class='line-number'>476</span>
-<span class='line-number'>477</span>
-<span class='line-number'>478</span>
-<span class='line-number'>479</span>
-<span class='line-number'>480</span>
-<span class='line-number'>481</span>
-<span class='line-number'>482</span>
-<span class='line-number'>483</span>
-<span class='line-number'>484</span>
-<span class='line-number'>485</span>
-<span class='line-number'>486</span>
-<span class='line-number'>487</span>
-<span class='line-number'>488</span>
-<span class='line-number'>489</span>
-<span class='line-number'>490</span>
-<span class='line-number'>491</span>
-<span class='line-number'>492</span>
-<span class='line-number'>493</span>
-<span class='line-number'>494</span>
-<span class='line-number'>495</span>
-<span class='line-number'>496</span>
-<span class='line-number'>497</span>
-<span class='line-number'>498</span>
-<span class='line-number'>499</span>
-<span class='line-number'>500</span>
-<span class='line-number'>501</span>
-<span class='line-number'>502</span>
-<span class='line-number'>503</span>
-<span class='line-number'>504</span>
-<span class='line-number'>505</span>
-<span class='line-number'>506</span>
-<span class='line-number'>507</span>
-<span class='line-number'>508</span>
-<span class='line-number'>509</span>
-<span class='line-number'>510</span>
-<span class='line-number'>511</span>
-<span class='line-number'>512</span>
-<span class='line-number'>513</span>
-<span class='line-number'>514</span>
-<span class='line-number'>515</span>
-<span class='line-number'>516</span>
-<span class='line-number'>517</span>
-<span class='line-number'>518</span>
-<span class='line-number'>519</span>
-<span class='line-number'>520</span>
-<span class='line-number'>521</span>
-<span class='line-number'>522</span>
-<span class='line-number'>523</span>
-<span class='line-number'>524</span>
-<span class='line-number'>525</span>
-<span class='line-number'>526</span>
-<span class='line-number'>527</span>
-<span class='line-number'>528</span>
-<span class='line-number'>529</span>
-<span class='line-number'>530</span>
-<span class='line-number'>531</span>
-<span class='line-number'>532</span>
-<span class='line-number'>533</span>
-<span class='line-number'>534</span>
-<span class='line-number'>535</span>
-<span class='line-number'>536</span>
-<span class='line-number'>537</span>
-<span class='line-number'>538</span>
-<span class='line-number'>539</span>
-<span class='line-number'>540</span>
-<span class='line-number'>541</span>
-<span class='line-number'>542</span>
-<span class='line-number'>543</span>
-<span class='line-number'>544</span>
-<span class='line-number'>545</span>
-<span class='line-number'>546</span>
-<span class='line-number'>547</span>
-<span class='line-number'>548</span>
-<span class='line-number'>549</span>
-<span class='line-number'>550</span>
-<span class='line-number'>551</span>
-<span class='line-number'>552</span>
-<span class='line-number'>553</span>
-<span class='line-number'>554</span>
-<span class='line-number'>555</span>
-<span class='line-number'>556</span>
-<span class='line-number'>557</span>
-<span class='line-number'>558</span>
-<span class='line-number'>559</span>
-<span class='line-number'>560</span>
-<span class='line-number'>561</span>
-<span class='line-number'>562</span>
-<span class='line-number'>563</span>
-<span class='line-number'>564</span>
-<span class='line-number'>565</span>
-<span class='line-number'>566</span>
-<span class='line-number'>567</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/* J. David&#39;s webserver */</span>
-</span><span class='line'><span class="cm">/* This is a simple webserver. </span>
-</span><span class='line'><span class="cm"> * Created November 1999 by J. David Blackstone. </span>
-</span><span class='line'><span class="cm"> * CSE 4344 (Network concepts), Prof. Zeigler </span>
-</span><span class='line'><span class="cm"> * University of Texas at Arlington </span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="cm">/* This program compiles for Sparc Solaris 2.6. </span>
-</span><span class='line'><span class="cm"> * To compile for Linux: </span>
-</span><span class='line'><span class="cm"> *  1) Comment out the #include &lt;pthread.h&gt; line. </span>
-</span><span class='line'><span class="cm"> *  2) Comment out the line that defines the variable newthread. </span>
-</span><span class='line'><span class="cm"> *  3) Comment out the two lines that run pthread_create(). </span>
-</span><span class='line'><span class="cm"> *  4) Uncomment the line that runs accept_request(). </span>
-</span><span class='line'><span class="cm"> *  5) Remove -lsocket from the Makefile. </span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;sys/socket.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;sys/types.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;netinet/in.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;arpa/inet.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;unistd.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;ctype.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;strings.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;string.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;sys/stat.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;pthread.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;sys/wait.h&gt;  </span>
-</span><span class='line'><span class="cp">#include &lt;stdlib.h&gt;  </span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define ISspace(x) isspace((int)(x))  </span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define SERVER_STRING &quot;Server: jdbhttpd/0.1.0\r\n&quot;  </span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="nf">accept_request</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">bad_request</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">cat</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">cannot_execute</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">error_die</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">execute_cgi</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="nf">get_line</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">headers</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">not_found</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">serve_file</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">int</span> <span class="nf">startup</span><span class="p">(</span><span class="n">u_short</span> <span class="o">*</span><span class="p">);</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">unimplemented</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* A request has caused a call to accept() on the server port to </span>
-</span><span class='line'><span class="cm"> * return.  Process the request appropriately. </span>
-</span><span class='line'><span class="cm"> * Parameters: the socket connected to the client */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">accept_request</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">method</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">url</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">path</span><span class="p">[</span><span class="mi">512</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">size_t</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">stat</span> <span class="n">st</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>      <span class="cm">/* becomes true if server decides this is a CGI program */</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="o">*</span><span class="n">query_string</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*得到请求的第一行*/</span>
-</span><span class='line'>    <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="cm">/*把客户端的请求方法存到 method 数组*/</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">method</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">method</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*如果既不是 GET 又不是 POST 则无法处理 */</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">unimplemented</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* POST 的时候开启 cgi */</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*读取 url 地址*/</span>
-</span><span class='line'>    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)))</span>
-</span><span class='line'>        <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">ISspace</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">)))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*存下 url */</span>
-</span><span class='line'>        <span class="n">url</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">i</span><span class="o">++</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">url</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*处理 GET 方法*/</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* 待处理请求为 url */</span>
-</span><span class='line'>        <span class="n">query_string</span> <span class="o">=</span> <span class="n">url</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="o">*</span><span class="n">query_string</span> <span class="o">!=</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">*</span><span class="n">query_string</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">))</span>
-</span><span class='line'>            <span class="n">query_string</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="cm">/* GET 方法特点，? 后面为参数*/</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">query_string</span> <span class="o">==</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="cm">/*开启 cgi */</span>
-</span><span class='line'>            <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>            <span class="o">*</span><span class="n">query_string</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>            <span class="n">query_string</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*格式化 url 到 path 数组，html 文件都在 htdocs 中*/</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;htdocs%s&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*默认情况为 index.html */</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="n">strlen</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;/&#39;</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">strcat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;index.html&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*根据路径找到对应文件 */</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">stat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">st</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*把所有 headers 的信息都丢弃*/</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
-</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>        <span class="cm">/*回应客户端找不到*/</span>
-</span><span class='line'>        <span class="n">not_found</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*如果是个目录，则默认使用该目录下 index.html 文件*/</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">((</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IFMT</span><span class="p">)</span> <span class="o">==</span> <span class="n">S_IFDIR</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">strcat</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;/index.html&quot;</span><span class="p">);</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">((</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXUSR</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXGRP</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">st</span><span class="p">.</span><span class="n">st_mode</span> <span class="o">&amp;</span> <span class="n">S_IXOTH</span><span class="p">)</span>    <span class="p">)</span>
-</span><span class='line'>          <span class="n">cgi</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>      <span class="cm">/*不是 cgi,直接把服务器文件返回，否则执行 cgi */</span>
-</span><span class='line'>      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cgi</span><span class="p">)</span>
-</span><span class='line'>          <span class="n">serve_file</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">);</span>
-</span><span class='line'>      <span class="k">else</span>
-</span><span class='line'>          <span class="n">execute_cgi</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">query_string</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*断开与客户端的连接（HTTP 特点：无连接）*/</span>
-</span><span class='line'>    <span class="n">close</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Inform the client that a request it has made has a problem. </span>
-</span><span class='line'><span class="cm"> * Parameters: client socket */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">bad_request</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*回应客户端错误的 HTTP 请求 */</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 400 BAD REQUEST</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;P&gt;Your browser sent a bad request, &quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;such as a POST without a Content-Length.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Put the entire contents of a file out on a socket.  This function </span>
-</span><span class='line'><span class="cm"> * is named after the UNIX &quot;cat&quot; command, because it might have been </span>
-</span><span class='line'><span class="cm"> * easier just to do something like pipe, fork, and exec(&quot;cat&quot;). </span>
-</span><span class='line'><span class="cm"> * Parameters: the client socket descriptor </span>
-</span><span class='line'><span class="cm"> *             FILE pointer for the file to cat */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">cat</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">resource</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*读取文件中的所有数据写到 socket */</span>
-</span><span class='line'>    <span class="n">fgets</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">resource</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">feof</span><span class="p">(</span><span class="n">resource</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">fgets</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">resource</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Inform the client that a CGI script could not be executed. </span>
-</span><span class='line'><span class="cm"> * Parameter: the client socket descriptor. */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">cannot_execute</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* 回应客户端 cgi 无法执行*/</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 500 Internal Server Error</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;P&gt;Error prohibited CGI execution.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Print out an error message with perror() (for system errors; based </span>
-</span><span class='line'><span class="cm"> * on value of errno, which indicates system call errors) and exit the </span>
-</span><span class='line'><span class="cm"> * program indicating an error. */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">error_die</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">sc</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="cm">/*出错信息处理 */</span>
-</span><span class='line'>    <span class="n">perror</span><span class="p">(</span><span class="n">sc</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Execute a CGI script.  Will need to set environment variables as </span>
-</span><span class='line'><span class="cm"> * appropriate. </span>
-</span><span class='line'><span class="cm"> * Parameters: client socket descriptor </span>
-</span><span class='line'><span class="cm"> *             path to the CGI script */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">execute_cgi</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">method</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">query_string</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi_output</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">cgi_input</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
-</span><span class='line'>    <span class="kt">pid_t</span> <span class="n">pid</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">content_length</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>        <span class="cm">/*把所有的 HTTP header 读取并丢弃*/</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
-</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>    <span class="k">else</span>    <span class="cm">/* POST */</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/* 对 POST 的 HTTP 请求中找出 content_length */</span>
-</span><span class='line'>        <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="cm">/*利用 \0 进行分隔 */</span>
-</span><span class='line'>            <span class="n">buf</span><span class="p">[</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>            <span class="cm">/* HTTP 请求的特点*/</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Length:&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>                <span class="n">content_length</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">buf</span><span class="p">[</span><span class="mi">16</span><span class="p">]));</span>
-</span><span class='line'>            <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="cm">/*没有找到 content_length */</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">content_length</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="cm">/*错误请求*/</span>
-</span><span class='line'>            <span class="n">bad_request</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>            <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* 正确，HTTP 状态码 200 */</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* 建立管道*/</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*错误处理*/</span>
-</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="cm">/*建立管道*/</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pipe</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*错误处理*/</span>
-</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="p">((</span><span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*错误处理*/</span>
-</span><span class='line'>        <span class="n">cannot_execute</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">return</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">pid</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="cm">/* child: CGI script */</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="kt">char</span> <span class="n">meth_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
-</span><span class='line'>        <span class="kt">char</span> <span class="n">query_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
-</span><span class='line'>        <span class="kt">char</span> <span class="n">length_env</span><span class="p">[</span><span class="mi">255</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="cm">/* 把 STDOUT 重定向到 cgi_output 的写入端 */</span>
-</span><span class='line'>        <span class="n">dup2</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>        <span class="cm">/* 把 STDIN 重定向到 cgi_input 的读取端 */</span>
-</span><span class='line'>        <span class="n">dup2</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>        <span class="cm">/* 关闭 cgi_input 的写入端 和 cgi_output 的读取端 */</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-</span><span class='line'>        <span class="cm">/*设置 request_method 的环境变量*/</span>
-</span><span class='line'>        <span class="n">sprintf</span><span class="p">(</span><span class="n">meth_env</span><span class="p">,</span> <span class="s">&quot;REQUEST_METHOD=%s&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">putenv</span><span class="p">(</span><span class="n">meth_env</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="cm">/*设置 query_string 的环境变量*/</span>
-</span><span class='line'>            <span class="n">sprintf</span><span class="p">(</span><span class="n">query_env</span><span class="p">,</span> <span class="s">&quot;QUERY_STRING=%s&quot;</span><span class="p">,</span> <span class="n">query_string</span><span class="p">);</span>
-</span><span class='line'>            <span class="n">putenv</span><span class="p">(</span><span class="n">query_env</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">else</span> <span class="p">{</span>   <span class="cm">/* POST */</span>
-</span><span class='line'>            <span class="cm">/*设置 content_length 的环境变量*/</span>
-</span><span class='line'>            <span class="n">sprintf</span><span class="p">(</span><span class="n">length_env</span><span class="p">,</span> <span class="s">&quot;CONTENT_LENGTH=%d&quot;</span><span class="p">,</span> <span class="n">content_length</span><span class="p">);</span>
-</span><span class='line'>            <span class="n">putenv</span><span class="p">(</span><span class="n">length_env</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="cm">/*用 execl 运行 cgi 程序*/</span>
-</span><span class='line'>        <span class="n">execl</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>    <span class="cm">/* parent */</span>
-</span><span class='line'>        <span class="cm">/* 关闭 cgi_input 的读取端 和 cgi_output 的写入端 */</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">strcasecmp</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="s">&quot;POST&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>            <span class="cm">/*接收 POST 过来的数据*/</span>
-</span><span class='line'>            <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">content_length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                <span class="n">recv</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>                <span class="cm">/*把 POST 数据写入 cgi_input，现在重定向到 STDIN */</span>
-</span><span class='line'>                <span class="n">write</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="cm">/*读取 cgi_output 的管道输出到客户端，该管道输入是 STDOUT */</span>
-</span><span class='line'>        <span class="k">while</span> <span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="cm">/*关闭管道*/</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_output</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-</span><span class='line'>        <span class="n">close</span><span class="p">(</span><span class="n">cgi_input</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-</span><span class='line'>        <span class="cm">/*等待子进程*/</span>
-</span><span class='line'>        <span class="n">waitpid</span><span class="p">(</span><span class="n">pid</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Get a line from a socket, whether the line ends in a newline, </span>
-</span><span class='line'><span class="cm"> * carriage return, or a CRLF combination.  Terminates the string read </span>
-</span><span class='line'><span class="cm"> * with a null character.  If no newline indicator is found before the </span>
-</span><span class='line'><span class="cm"> * end of the buffer, the string is terminated with a null.  If any of </span>
-</span><span class='line'><span class="cm"> * the above three line terminators is read, the last character of the </span>
-</span><span class='line'><span class="cm"> * string will be a linefeed and the string will be terminated with a </span>
-</span><span class='line'><span class="cm"> * null character. </span>
-</span><span class='line'><span class="cm"> * Parameters: the socket descriptor </span>
-</span><span class='line'><span class="cm"> *             the buffer to save the data in </span>
-</span><span class='line'><span class="cm"> *             the size of the buffer </span>
-</span><span class='line'><span class="cm"> * Returns: the number of bytes stored (excluding null) */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">int</span> <span class="nf">get_line</span><span class="p">(</span><span class="kt">int</span> <span class="n">sock</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">buf</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*把终止条件统一为 \n 换行符，标准化 buf 数组*/</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="sc">&#39;\n&#39;</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*一次仅接收一个字节*/</span>
-</span><span class='line'>        <span class="n">n</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>        <span class="cm">/* DEBUG printf(&quot;%02X\n&quot;, c); */</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">{</span>
-</span><span class='line'>            <span class="cm">/*收到 \r 则继续接收下个字节，因为换行符可能是 \r\n */</span>
-</span><span class='line'>            <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span>
-</span><span class='line'>            <span class="p">{</span>
-</span><span class='line'>                <span class="cm">/*使用 MSG_PEEK 标志使下一次读取依然可以得到这次读取的内容，可认为接收窗口不滑动*/</span>
-</span><span class='line'>                <span class="n">n</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">MSG_PEEK</span><span class="p">);</span>
-</span><span class='line'>                <span class="cm">/* DEBUG printf(&quot;%02X\n&quot;, c); */</span>
-</span><span class='line'>                <span class="cm">/*但如果是换行符则把它吸收掉*/</span>
-</span><span class='line'>                <span class="k">if</span> <span class="p">((</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">))</span>
-</span><span class='line'>                    <span class="n">recv</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>                <span class="k">else</span>
-</span><span class='line'>                    <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>            <span class="cm">/*存到缓冲区*/</span>
-</span><span class='line'>            <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
-</span><span class='line'>            <span class="n">i</span><span class="o">++</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="k">else</span>
-</span><span class='line'>            <span class="n">c</span> <span class="o">=</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*返回 buf 数组大小*/</span>
-</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Return the informational HTTP headers about a file. */</span>
-</span><span class='line'><span class="cm">/* Parameters: the socket to print the headers on </span>
-</span><span class='line'><span class="cm"> *             the name of the file */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">headers</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">filename</span><span class="p">;</span>  <span class="cm">/* could use filename to determine file type */</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*正常的 HTTP header */</span>
-</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
-</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">strcpy</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Give a client a 404 not found status message. */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">not_found</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* 404 页面 */</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 404 NOT FOUND</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;HTML&gt;&lt;TITLE&gt;Not Found&lt;/TITLE&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;BODY&gt;&lt;P&gt;The server could not fulfill</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;your request because the resource specified</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;is unavailable or nonexistent.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/BODY&gt;&lt;/HTML&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Send a regular file to the client.  Use headers, and report </span>
-</span><span class='line'><span class="cm"> * errors to client if they occur. </span>
-</span><span class='line'><span class="cm"> * Parameters: a pointer to a file structure produced from the socket </span>
-</span><span class='line'><span class="cm"> *              file descriptor </span>
-</span><span class='line'><span class="cm"> *             the name of the file to serve */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">serve_file</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">filename</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">FILE</span> <span class="o">*</span><span class="n">resource</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">numchars</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*读取并丢弃 header */</span>
-</span><span class='line'>    <span class="n">buf</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;A&#39;</span><span class="p">;</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">while</span> <span class="p">((</span><span class="n">numchars</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">strcmp</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span><span class="p">))</span>  <span class="cm">/* read &amp; discard headers */</span>
-</span><span class='line'>        <span class="n">numchars</span> <span class="o">=</span> <span class="n">get_line</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">));</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*打开 sever 的文件*/</span>
-</span><span class='line'>    <span class="n">resource</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">resource</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">not_found</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">else</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*写 HTTP header */</span>
-</span><span class='line'>        <span class="n">headers</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">filename</span><span class="p">);</span>
-</span><span class='line'>        <span class="cm">/*复制文件*/</span>
-</span><span class='line'>        <span class="n">cat</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">resource</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="n">fclose</span><span class="p">(</span><span class="n">resource</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* This function starts the process of listening for web connections </span>
-</span><span class='line'><span class="cm"> * on a specified port.  If the port is 0, then dynamically allocate a </span>
-</span><span class='line'><span class="cm"> * port and modify the original port variable to reflect the actual </span>
-</span><span class='line'><span class="cm"> * port. </span>
-</span><span class='line'><span class="cm"> * Parameters: pointer to variable containing the port to connect on </span>
-</span><span class='line'><span class="cm"> * Returns: the socket */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">int</span> <span class="nf">startup</span><span class="p">(</span><span class="n">u_short</span> <span class="o">*</span><span class="n">port</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">httpd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">name</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*建立 socket */</span>
-</span><span class='line'>    <span class="n">httpd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">httpd</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">));</span>
-</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="o">*</span><span class="n">port</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">name</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">htonl</span><span class="p">(</span><span class="n">INADDR_ANY</span><span class="p">);</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">bind</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;bind&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*如果当前指定端口是 0，则动态随机分配一个端口*/</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">port</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>  <span class="cm">/* if dynamically allocating a port */</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="kt">int</span> <span class="n">namelen</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">getsockname</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">namelen</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;getsockname&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="o">*</span><span class="n">port</span> <span class="o">=</span> <span class="n">ntohs</span><span class="p">(</span><span class="n">name</span><span class="p">.</span><span class="n">sin_port</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="cm">/*开始监听*/</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">listen</span><span class="p">(</span><span class="n">httpd</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>        <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;listen&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*返回 socket id */</span>
-</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="n">httpd</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="cm">/* Inform the client that the requested web method has not been </span>
-</span><span class='line'><span class="cm"> * implemented. </span>
-</span><span class='line'><span class="cm"> * Parameter: the client socket */</span>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'><span class="kt">void</span> <span class="nf">unimplemented</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/* HTTP method 不被支持*/</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 501 Method Not Implemented</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="cm">/*服务器信息*/</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SERVER_STRING</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;Content-Type: text/html</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;HTML&gt;&lt;HEAD&gt;&lt;TITLE&gt;Method Not Implemented</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/TITLE&gt;&lt;/HEAD&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;BODY&gt;&lt;P&gt;HTTP request method not supported.</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">sprintf</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="s">&quot;&lt;/BODY&gt;&lt;/HTML&gt;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">send</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**********************************************************************/</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">server_sock</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">u_short</span> <span class="n">port</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">client_sock</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">client_name</span><span class="p">;</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">client_name_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">client_name</span><span class="p">);</span>
-</span><span class='line'>    <span class="kt">pthread_t</span> <span class="n">newthread</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*在对应端口建立 httpd 服务*/</span>
-</span><span class='line'>    <span class="n">server_sock</span> <span class="o">=</span> <span class="n">startup</span><span class="p">(</span><span class="o">&amp;</span><span class="n">port</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;httpd running on port %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">{</span>
-</span><span class='line'>        <span class="cm">/*套接字收到客户端连接请求*/</span>
-</span><span class='line'>        <span class="n">client_sock</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span><span class="n">server_sock</span><span class="p">,(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">client_name</span><span class="p">,</span><span class="o">&amp;</span><span class="n">client_name_len</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">client_sock</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">error_die</span><span class="p">(</span><span class="s">&quot;accept&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="cm">/*派生新线程用 accept_request 函数处理新请求*/</span>
-</span><span class='line'>        <span class="cm">/* accept_request(client_sock); */</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">newthread</span> <span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">accept_request</span><span class="p">,</span> <span class="n">client_sock</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-</span><span class='line'>            <span class="n">perror</span><span class="p">(</span><span class="s">&quot;pthread_create&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">close</span><span class="p">(</span><span class="n">server_sock</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-22T15:56:10+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/12/i-dot-mx280/">
-		
-			i.MX280</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Linux内核组成部分</h2>
-
-<ol>
-<li>内存管理
-
-<ol>
-<li>进程管理负责控制进程对CPU的访问，如任务的创建、调度和终止等。任务调度是进程管理最核心的工作，由Linux内核调度器来完成。Linux内核调度器根据一定算法来选择最值得运行的进程</li>
-<li>运行态：已经获得了资源，并且进程正在被CPU执行进程既可以运行在内核态，也可运行在用户态
-
-<ol>
-<li>内核态：内核和驱动所运行时的状态，程序处于特权阶级，能够访问系统的任何资源</li>
-<li>用户态：用户程序运行的状态，处于非特权阶级，不能随意访问系统资源，必须通过驱动程序方可访问，用户态程序运行的状态，处于非特权阶级，不能随意访问系统资源，必须通过驱动程序方可访问，用户态程序可通过系统调用进入内核态。</li>
-</ol>
-</li>
-<li>就绪态：当系统资源已经可用，但由于前一个进程还没有执行完而释放CPU，准备进入运行状态</li>
-<li>可中断睡眠状态：当进程处于可中断等待状态时，系统不会调度改程序执行。当系统产生一个中断或者释放了进程正在等待的资源，或者进程收到一个信号，都可以被唤醒进入就绪状态或者运行态</li>
-<li>不可中断睡眠状态：处于中断等待状态，但是该进程只能被使用wake_up（）函数明确唤醒的时候才可进入就绪状态。</li>
-<li>暂停状态：当进程收到SIGSTOP、SIGSTP、SIGTTIN或者SIGTTOU就会进入暂停状态，收到SIGCONT信号即可进入运行态</li>
-<li>僵死态：进程已经被停止运行，但是其父进程还没有询问其状态
-<img src="http://i.imgur.com/bBBsOdX.png" alt="Linux进程状态和转换" /></li>
-</ol>
-</li>
-<li>内存管理
-
-<ul>
-<li>内存管理的主要作用是控制和管理多个进程，使之能够安全的共享主内存区域。当CPU提供内存管理单元MMU时，内存管理为各进程实现虚拟地址到内存物理地址的转换。在32位系统上，Linux内核将4G空间分为1G内核空间（3~4G）和3G（0~3G）用户控件，通过内存管理，每个进程都可以使用3G的用户空间</li>
-</ul>
-</li>
-<li>文件系统
-
-<ul>
-<li>Linux内核支持众多的逻辑文件系统，如Ext2、Ext3、Ext4、btrfs、NFS、VFAT等。VFS则是Linux基于各种逻辑文件系统抽象出的一种内存中的文件系统，隐藏了各种硬件设备的细节，为用户提供了同意的操作接口，是用户访问各种不同文件系统和设备时，不用区分具体的逻辑文件系统。</li>
-</ul>
-</li>
-<li>网络接口
-
-<ul>
-<li>Linux对网络支持相当完善，网络接口提供了对各种网络标准的存取和各种网络硬件的支持，接口可分为网络协议和网络驱动程序。网络协议部分负责实现每一种可能的网络传输协议。网络设备驱动程序负责与硬件设备通讯，每一种可能的硬件设备都有相应的设备驱动程序</li>
-</ul>
-</li>
-<li>进程间通信
-
-<ul>
-<li>支持进程间各种通信机制，如管道、命令管道、信号、消息队列、内存共享、信号量和套接字等。
-
-<ol>
-<li>管道通常用于具有亲缘关系的父子进程或者兄弟进程间通信，是半双工的，数据只能往一个方向流动，先入先出，与自来水管很相似。如果双方胡同时，需要建立两个管道</li>
-<li>命名管道突破了进程间的亲缘关系限制，即非父子、兄弟进程之间也可以相互通信</li>
-<li>信号是软件中断，用于在多个进程之间传递一步信号。</li>
-<li>信号能传递的信息很有限，而消息队列正好弥补了这点。</li>
-<li>共享内存常用于不同进程间进行大量数据传递。Linux下每个进程都有自己的独立空间，各自都不能直接访问其他进程的空间。</li>
-<li>信号量用于进程同步。只有获得了信号量的进程才可以运行，没有获得信号量的进程则只能等待。</li>
-<li>套接字起源于BSD，也常称“BSD套接字”，用于多个进程间通信，可以基于文件，也可以基于网络。
-<img src="http://i.imgur.com/fk3Ryjy.png" alt="Linux操作系统基本体系结构" /></li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>设置主板支持虚拟化</h2>
-
-<ol>
-<li>进入BIOS（F2或者F10等等）</li>
-<li>找到Intel Virtualization Technology选项，设置为Enable</li>
-<li>设置好后重启电脑</li>
-</ol>
-
-
-<h2>虚拟网卡有三种模式</h2>
-
-<ol>
-<li>桥接模式
-
-<ol>
-<li>这种情况下，虚拟机虚拟出来的操作系统就像是局域网中的一台独立的主机，它可以访问网内任何一台主机。在桥接模式下，虚拟系统和宿主机的关系就像连接在同一个Hub上的两台电脑。用户需要手工为虚拟系统配置IP地址、子网掩码，而且还要和宿主机器处于同一网段，这样虚拟系统才能和宿主机器进行通信。同时，由于这个虚拟系统是局域网中的而一个独立的主机系统，那么就可以手工配置它的TCP/IP配置信息，以实现通过局域网的网关或罗尤其访问互联网。在进行嵌入式Linux开发，要目标板通过NFS挂载虚拟机的NFS共享目录的话，必须将虚拟王珂配置为桥接模式</li>
-</ol>
-</li>
-<li>NAT模式
-
-<ol>
-<li>使用NAT模式，就是让虚拟机系统借助NAT（网络地址转化）功能，通过宿主机器在的网络来访问公网。也就是说，使用NAT模式可以实现在虚拟系统里访问互联网。NAT模式下的虚拟系统的TCP/IP配置信息是由VMnet8（NAT）虚拟网络的DHCP服务器提供的，虚拟机无法正常对主机锁链网络中的其他主机提供普通的而络服务，如TFTP、NFS和FTP等。采用NAT模式最大的优势是虚拟系统接入互联网非常简单，用户不需要进行任何其他的配置，只需要宿主机器能访问互联网即可</li>
-</ol>
-</li>
-<li>Host-Only模式
-
-<ol>
-<li>在某些特殊的网络调试环境中，要求将真实环境和虚拟环境隔开，这是用户就可采用仅主机（Host-Only）模式。在Host-Only模式中，所有的虚拟系统是可以相互通信的，但虚拟系统和真实的网络是被隔离开的。</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>简单的Shell</h2>
-
-<ol>
-<li>cd -:切换至之前的工作目录</li>
-<li>ls -lash:查看当前目录文件信息</li>
-<li>pwd：查看当前路径</li>
-<li>mkdir -p：创建多级目录</li>
-<li>rmdir：删除空目录</li>
-<li>alias rm=&ldquo;rm -vi"：为rm -vi取别名</li>
-<li>rm -rf:强制删除某些文件或者目录</li>
-<li>touch a：创建a文件，文件大小为0</li>
-<li>file a：读取a文件的文件头并识别文件类型。a文件必须具有可读属性</li>
-<li>more/less：两个命令都能用来浏览文本文件，可以分页查看文件内容，空格翻页。文件浏览完毕，按键盘q退出。相比来说，less命令更加灵活，支持键盘Page Up和Page Down键，可任意向前后翻页浏览，并且还支持文本搜索。使用less打开文件后，输入/abc可在文本中搜索字符串abc</li>
-<li>head/tail：这两个命令可分别查看文件头部和文件尾部，一般用于查看ASCII文件。默认显示10行，加上参数-n【数字】可以指定显示行数或者加上参数-c【数字】指定显示的字节数</li>
-<li>cat：cat命令可以将一个或者多个文件输出到标准输出上，可以用于文件查看</li>
-<li>文件合并：cat [选项] 文件1 文件2 &hellip; [>文件3]
-
-<ol>
-<li>选项
-
-<ul>
-<li>-n ：从1开始对输出进行编号</li>
-<li>-b：类似于-n，从1开始编号，但是忽略空白行</li>
-<li>-s：遇到连续两行或者以上的空白行，就替换为一行空白行</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>文件压缩/解压：tar [选项] 文件
-
-<ol>
-<li>tar是UNIX系统的一个文件打包工具，只是连续首位相连的将文件堆放起来，并不具备压缩功能，但是加上选项，tar可以调用其它压缩/解压工具，能够实现文件的压缩和解压</li>
-<li>选项
-
-<ul>
-<li>-c：创建存档文件，与-x相斥</li>
-<li>-t：列出档案文件的文件列表</li>
-<li>-x：解包存档文件，与-c相斥</li>
-<li>-A：合并存档文件</li>
-<li>-d：比较存档文件与源文件</li>
-<li>-r：追加文件到存档文件末尾</li>
-<li>-u：更新存档文件</li>
-<li>-f：指定存档文件，与其他选项同时使用时，必须在最后，如tar -xjvf a.tar.bz2</li>
-<li>-v:显示详细处理信息</li>
-<li>-C：转到指定目录，常用于解开存档文件</li>
-<li>-j：调用bzip2程序</li>
-<li>-z：调用gzip程序</li>
-<li>-Z：调用compress程序</li>
-<li>&ndash;exclude=PATH：排除指定文件或者目录，常用于打包文件</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>文件复制：cp [选项] 源文件/目录 目的文件/目录
-
-<ol>
-<li>选项：
-
-<ul>
-<li>-a：保留链接，文件属性并递归复制，等同于-dpR组合，常用于复制目录</li>
-<li>-d：复制时保留链接</li>
-<li>-f：若目标文件已经存在，则直接删除而不提示</li>
-<li>-i：若目标文件已经存在，需要用户确认操作，与-f相反</li>
-<li>-p：除复制文件内容外，把访问权限和修改时间也复制到新文件中</li>
-<li>-f：递归复制，递归复制指定目录下的文件和目录</li>
-<li>-v：显示文件复制过程</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>创建链接：ln [选项] 源文件/目录 目标文件
-
-<ol>
-<li>硬链接通过索引节点进行链接，相当于源文件的镜像，占用源文件一样大小的空间，修改其中任何一个，另外一个都会进行同样的改动。给一个文件创建硬链接后，文件属性的硬连接数会增加。硬链接不能跨越文件系统，只能在同一个文件系统内进行链接，且不能对目录文件建立硬链接，给目录文件建立硬链接会出错</li>
-<li>软连接和硬链接不同，软连接是产生一个新文件，这个文件指向另一个文件的位置，类似于Windows下的快捷方式。软连接可以跨越文件系统，且用于任何文件，包括目录文件</li>
-</ol>
-</li>
-<li>网卡配置：ifconfig 网络接口 [选项] 地址/参数
-
-<ol>
-<li>选项：
-
-<ul>
-<li>-a：查看系统拥有的全部网络接口</li>
-<li>网络接口如eth0：指定操作某个网口</li>
-<li>broadcast：设置网口的广播地址</li>
-<li>netmask：设置网口的子网掩码</li>
-<li>hw ether：设置网卡物理地址（如果驱动不支持则无效）</li>
-<li>up：激活指定网卡</li>
-<li>down：关闭指定网卡</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>安装和卸载文件系统
-
-<ol>
-<li>linux允许多个文件系统存在于同一个系统中，也允许用户在系统运行中安装内核所支持的文件系统。例如，讲一个FAT格式的U盘插入到linux系统中。</li>
-<li>linux安装文件系统：mount [参数] [设备名] [挂载点]
-
-<ol>
-<li>参数：
-
-<ul>
-<li>-a：挂载/etc/fstab文件中列出的所有文件系统</li>
-<li>-r：以只读的方式挂载</li>
-<li>-w：以可写的方式挂载（默认）</li>
-<li>-v：显示详细安装信息</li>
-<li>-t&lt;文件系统类型>：指定文件系统类型，常见的有：
-
-<ul>
-<li>ext/ext2/ext3/ext4:Linux常用文件系统</li>
-<li>msdos：MS-DOS的FAT，即FAT16</li>
-<li>vfat：Windows系统的FAT，FAT32</li>
-<li>nfs：网络文件系统</li>
-<li>ntfs：Windows2000/NT/XP的ntfs文件系统</li>
-<li>auto：自动检测文件系统</li>
-</ul>
-</li>
-<li>-o&lt;选项>：指定挂载时的一些选项，常用有：
-
-<ul>
-<li>defaults：使用默认值（auto，nouser，rw，suid）</li>
-<li>suid/nosuid：确认/不确认suid和sgid位</li>
-<li>user/nouser：允许/不允许一般用户挂载</li>
-<li>codepage=XXX：指定codepage</li>
-<li>iocharset=XXX：指定字符集</li>
-<li>ro：以只读方式挂载</li>
-<li>rw：以读写方式挂载</li>
-<li>remount：重新安装已经安装了的文件系统</li>
-<li>loop：挂载loopback设备以及ISO文件</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>挂载点必须是一个已经存在的目录</li>
-<li>一个挂载点可以被多个设备/文件重复挂载，只是后一次挂载将覆盖前一次内容，卸载后可用</li>
-<li>使用多个-o参数的时候，-o只用一次，参数之间用半角逗号隔开</li>
-<li>例如，挂载FAT格式的U盘：
-
-<ol>
-<li>mount -t vfat /dev/sda1 /mnt</li>
-</ol>
-</li>
-<li>nfs挂载，将远程主机主机Linux的某个共享目录挂载到嵌入式系统本地，当成本地设备进行操作：
-
-<ol>
-<li>mount -t nfs 192.168.1.138:/home/morris/lpc/mnt -o nolock</li>
-<li>nolock表示禁用文件锁，当连接到一个旧版本的NFS服务器时常加该选项</li>
-</ol>
-</li>
-<li>此外，嵌入式开发中常用的文件系统还有cramfs，jffs2，yaffs2以及ubifs等，特别是用于NOR Flash的jffs2和用于NAND Flash的yaffs/yaffs2,ubifs等，在进行系统操作中通常需要对各设备进行挂载或者卸载，需要在挂载的时候指定正确的文件系统类型。
-
-<ul>
-<li>挂载yaffs2分区的命令示例：mount -t yaffs2 /dev/mtdblock2 /mnt</li>
-<li>挂载ubifs分区的命令示例：mount -t ubifs ubi0:rootfs /mnt</li>
-</ul>
-</li>
-<li>文件系统卸载：umount 挂载点</li>
-</ol>
-</li>
-<li>使用sudo命令需要管理员将用户添加到sudoer组中，一般在/etc/sudoer文件中修改</li>
-<li>linux中，对文件的操作都是先保存在缓存中，并没有立即写入磁盘，经系统调度后方可写入磁盘。如果修改了缓存，还没来得及写到磁盘就断电，自然就会造成文件改变丢失。要避免这种情况，就是修改文件后，立即强制进行一次文件同步操作，将缓存的内容写入磁盘，确保文件系统的完整性。能完成这样功能的命令是sync。只需要在关闭文本编辑器后再shell输入sync即可</li>
-<li>文件搜索，find 路径 选项 其他
-
-<ol>
-<li>最常用的就是根据文件名来查找，加上-name就可以了，还可以支持通配符，进行模糊搜索。例如：find arch/arm/ -name mux*.c</li>
-</ol>
-</li>
-<li>字符串搜索： grep 选项
-
-<ol>
-<li>例如：grep &ldquo;pcf8563&rdquo; -R arch/arm</li>
-<li>关键字最好加上双引号，特别是包含空格的关键字。</li>
-<li>-R表示递归查找</li>
-</ol>
-</li>
-<li>执行Shell脚本有多种方式：
-
-<ol>
-<li>点+斜线+文件名，这种方式要求文件必须具有可执行权限</li>
-<li>点+空格+文件名，这种方式不要求文件一定具有可执行权限</li>
-<li>sh+空格+文件名，这种方式不要求文件一定具有可执行权限</li>
-<li>source+空格+文件名，这种方式不要求文件一定具有可执行权限</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>重定向</h2>
-
-<ol>
-<li>Linux Shell终端启动的时候会打开3个标准文件：标准输入（stdin）、标准输出（stdout）和标准错误（stderr）。shell从标准输入（通常是键盘）接收命令，命令执行结果信息打印到标准输出（通常是终端屏幕）上，如有错误信息，则打印到标准错误（通常是终端屏幕）上。</li>
-<li>Shell允许用户对输入输出进行重定向。输出重定向允许将输出信息从标准输出重定向到其他文件上，也可以重定向到某个设备如打印机上。</li>
-<li>重定向在Linux下用“>”和“>>”表示，“>”表示输出到一个新文件中，而“>>”则表示输出到现有文件的末尾。如果文件已经存在，直接操作文件，否则将创建新文件。</li>
-<li>echo命令将内容回显到标准输出上，使用echo命令加上重定向可以创建一个带内容的非空文件。</li>
-<li>回显内容如果不加引号，则用单空格替代多个连续空格，如果加了引号，则原封不动回显</li>
-</ol>
-
-
-<h2>使用内核模块和驱动</h2>
-
-<ol>
-<li>加载（插入）模块
-
-<ol>
-<li>linux能够动态加载和卸载模块。如果某些功能平时用不到，可以不编译进内核，而采取模块方式编译，在需要的时候再插入内核，不再需要的时候卸载。linux中最常见的模块是内核驱动</li>
-<li>insmod [选项] 模块 [符号名称=值]，常用选项
-
-<ol>
-<li>-f：强制将模块载入，不检查目前kernel版本与模块编译时的kernel是否一致</li>
-<li>-k：将模块设置为自动卸载</li>
-<li>-p：测试模块是否能正确插入</li>
-<li>-x：不导出模块符号</li>
-<li>-X：导出模块所有外部符号（默认）</li>
-<li>-v：显示执行过程</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>查看系统已经加载的模块：lsmod，其实际上就是列出/proc/modules的内容</li>
-<li>卸载驱动模块：rm [选项] 模块，常用选项
-
-<ol>
-<li>-f：强制卸载正在被使用的模块，非常危险。需要内核支持CONFIG_MODULE_FORCE_UNLOAD使能，否则无效</li>
-<li>-w：通常情况下不能卸载正在被使用的模块，加上-w选项，指定模块将会被孤立，直到不再被使用</li>
-<li>-s：将错误信息写入syslog，而不是标准错误</li>
-<li>-v：显示执行过程</li>
-</ol>
-</li>
-<li>自动处理可加载模块：insmod/rmmod分别用于加载和卸载模块，但是每次只能加载/卸载一个模块，如果一个模块依赖于多个模块，则需要进行多次操作，比较繁琐。modprobe命令集加载/卸载功能于一身，并且可以自动解决模块的依赖关系。modprobe [选项] 模块[符号=值]，常用选项：
-
-<ol>
-<li>-C&lt;文件>：不使用默认配置文件，使用指定文件作为配置文件</li>
-<li>-i：忽略配置文件中的加载和卸载命令</li>
-<li>-r：卸载指定模块，包括依赖模块</li>
-<li>-f：强制安装</li>
-<li>-l：显示所有匹配模块</li>
-<li>-a：安装所有匹配的模块</li>
-<li>&ndash;show-depends：显示模块的依赖关系</li>
-<li>-v：显示执行过程</li>
-<li>-q：不显示任何信息</li>
-<li>-V：显示版本信息</li>
-</ol>
-</li>
-<li>modprob处理模块时忽略模块的路径，这要求系统模块和驱动是按照make modules_install方式安装的，即模块必须放在/lib/modules/$(uname -r)目录下，并且有正确的/lib/modules/$(uname -r)/modules.dep文件，modprobe根据该文件来寻找和解决依赖关系</li>
-<li>如果系统不能自动创建设备节点，加载驱动后，则需要为驱动建立对应的设备节点，否则无法通过驱动来操作设备。mknod 设备名 设备类型 主设备号 次设备号</li>
-</ol>
-
-
-<h2>环境变量</h2>
-
-<ol>
-<li>Linux是一个多用户操作系统，每个用户都有自己专有的运行环境，用户所使用的环境由一系列变量所定义，这些变量被称为环境变量，系统环境变量一般都是大写</li>
-<li>常见的环境变量：
-
-<ol>
-<li>PATH：决定了Shell将到哪些目录中寻找命令或程序，这个变量是在日常使用中经常需要修改的变量</li>
-<li>TERM：指定系统终端</li>
-<li>SHELL：当前用户shell类型</li>
-<li>HOME：当前用户主目录</li>
-<li>LOGNAME：当前用户的登录名</li>
-<li>USER：当前用户名</li>
-<li>HISTSIZE：历史命令记录数</li>
-<li>HOSTNAME：主机名</li>
-<li>LANGUGE：语言相关的环境变量，多语言可以修改此环境变量</li>
-<li>MAIL：当前用户的邮件存放目录</li>
-<li>PS1：基本提示符，对于root用户是#，对于普通用户是$</li>
-<li>PS2：附属提示符，默认是“>”</li>
-<li>LS_COLORS:ls命令结果颜色显示</li>
-</ol>
-</li>
-<li>在shell下通过$符号来引用环境变量，使用echo可以查看某个具体环境变量的值</li>
-<li>使用env或者printenv命令可以查看系统全部的环境变量设置</li>
-<li>修改系统配置文件以达到修改环境变量的目的
-
-<ol>
-<li>修改/etc/profile文件会影响使用本机的全部用户</li>
-<li>修改~/.bashrc则仅仅影响当前用户</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>Linux目录树标准与文件系统</h2>
-
-<ol>
-<li>文件层次标准（FHS）对Linux根文件系统的基本目录结构做了比较详细的规定
-
-<ol>
-<li>bin：基本命令的程序文件，里面不能再包含目录</li>
-<li>boot：Bootloader静态文件</li>
-<li>dev：设备文件</li>
-<li>etc：系统配置文件，配置文件必须是静态文件，不能是二进制文件</li>
-<li>home：存放各用户的个人数据</li>
-<li>lib：基本的共享库和内核模块</li>
-<li>media：可移动介质的挂载点</li>
-<li>mnt：临时的文件系统挂载点</li>
-<li>opt：附件的应用程序软件包</li>
-<li>root：root用户目录</li>
-<li>sbin：基本的系统命令二进制文件</li>
-<li>srv：系统服务的一些数据</li>
-<li>tmp：临时文件</li>
-<li>usr
-
-<ol>
-<li>/usr/bin:众多的应用程序</li>
-<li>/usr/sbin:超级用户的一些管理程序</li>
-<li>/usr/doc:linux文档</li>
-<li>/usr/lib:常用的动态链接库和软件包的配置文件</li>
-<li>/usr/man:帮助文档</li>
-<li>/usr/src:源代码</li>
-<li>/usr/local/bin:本地增加的命令</li>
-<li>/usr/local/lib:本地增加的库</li>
-</ol>
-</li>
-<li>var：可变数据</li>
-</ol>
-</li>
-<li>Linux下所有文件的描述结构都是相同的，包含索引节点和数据
-
-<ol>
-<li>索引节点：又称I节点，是Linux文件系统用来记录文件信息的一种数据结构，信息包括文件名、文件长度、文件权限、存放位置、所属关系、创建和修改时间。文件系统维护了一个索引节点的数组，每个文件都与索引节点数组中的唯一元素对应，索引节点在数组中的索引号称为索引节点号。每个文件都有一个索引号与之对应，而一个索引节点号可以对应多个文件。</li>
-<li>数据：文件的实际内容，可以是空的，也可以非常大，并且拥有自己的结构</li>
-</ol>
-</li>
-<li>Linux系统中，文件名以点号（.）开始的文件是隐藏文件，用ls命令不加-a将看不到这类文件</li>
-<li>设备文件
-
-<ol>
-<li>设备是一种特殊的的文件，除了存放在文件I节点中的信息外，它们不包含任何数据，有效的设备文件与相应的设备对应，通过设备文件，可以操作与之对应的硬件设备</li>
-<li>设备文件包括字符设备和块设备文件。字符设备按照字符操作设备，如键盘、中断等；块设备文件以块为单位操作设备，如磁盘、光盘等。Linux系统的设备文件都放在/dev目录下，用ls -la命令可以查看各设备的属性</li>
-</ol>
-</li>
-<li>Linux支持多种文件系统，且同时存在于一个一个运行的系统中，查看/proc/filesystems文件，可以看到系统支持的全部文件系统</li>
-<li>proc文件系统
-
-<ol>
-<li>proc是Linux系统中的一种特殊的文件系统，是内核和内核模块用来向进程发送消息的机制，只存在于内存中，实际上是一个伪文件系统。用户和应用程序可通过/proc获得系统的信息，还可以改变内核的某些参数。</li>
-<li>/proc/cpuinfo：CPU信息</li>
-<li>/proc/meminfo：物理内存，交换空间信息</li>
-<li>/proc/mounts：已加载的文件系统列表</li>
-<li>/proc/devices：可用设备的列表</li>
-<li>/proc/filesystems：被支持的文件系统</li>
-<li>/proc/modules：已加载的模块</li>
-<li>/proc/version：内核版本</li>
-<li>/proc/cmdline：系统启动时输入的内核命令行参数</li>
-</ol>
-</li>
-<li>sysfs文件系统
-
-<ol>
-<li>sysfs是Linux2.6引入的新型文件系统是一个基于内存的文件系统，它的作用是将内核的信息以文件的方式提供给用户程序使用。该文件系统的目录层次结构严格按照内核的数据结构组织，除了二进制文件外，sysfs文件内容均以ASCII格式保存，且一个文件只保存一个数据，另外，一个文件不可大于一个内存页（通常为4096字节）</li>
-<li>sysfs提供一种机制，使得可以显式地描述内核对象，对象属性及对象间关系。sysfs有两组接口，一组针对内核，用于将设备映射到文件系统中，另一组针对用户程序，用于读取或操作这些设备
-<img src="http://i.imgur.com/yE7Xrtx.png" alt="sysfs内部结构与外部表现" /></li>
-<li>sysfs产生了一个包含所有系统硬件的层次视图，把连接在系统上的设备和总线组织成为一个分级的文件，向用户空间导出内核数据结构和以及它们的属性。sysfs清晰地展示了设备驱动模型中各组件的关系，顶层目录包括block、device、bus、drivers、class、power和firmware等。各目录和所包含的内容如下
-<img src="http://i.imgur.com/JjRYVxz.png" alt="sysfs目录结构" /></li>
-</ol>
-</li>
-</ol>
-
-
-<h2>vi的使用</h2>
-
-<ol>
-<li>从命令模式进入编辑模式：插入（i或者I），附件（a或者A），打开（o或者O）</li>
-<li>光标移动：命令模式下，h（左），j（下），k（上），l（右）</li>
-<li>快速光标定位：
-
-<ol>
-<li>命令G：将光标定位到最后一行</li>
-<li>命令nG：将光标定位到第n行</li>
-<li>命令gg：将光标定位到第1行</li>
-<li>命令ngg：将光标定位到第n行</li>
-<li>命令:n将光标定位到第n行</li>
-</ol>
-</li>
-<li>文本块选定
-
-<ol>
-<li>将光标移动到将要选定的文本块开始处，按esc进入命令模式，再按v，进入可视状态，然后移动光标至文本块结尾，被选定的文本块高亮显示。连按两次esc可以取消所选定的文本块</li>
-</ol>
-</li>
-<li>复制和粘贴
-
-<ol>
-<li>如果已经选定文本块，按y即可将所选定文本复制到缓冲区，将光标移到将要粘贴的地方，按p，就可完成文本粘贴</li>
-<li>在命令模式下，连按yy，即可复制光标所在的行的内容，连按yny即可复制从光标所在行开始的n行</li>
-</ol>
-</li>
-<li>剪切和删除
-
-<ol>
-<li>最后一次剪切和删除的内容都可以被粘贴到其他位置</li>
-<li>x或nx：剪切从光标所在位置开始的一个或者n个字符</li>
-<li>X或nX：剪切光标前的一个或n个字符</li>
-<li>dd：删除光标所在行</li>
-<li>D：删除光标位置开始至行尾</li>
-<li>dw：删除从光标位置至该词末尾的所有字符</li>
-<li>d0：删除从光标位置开始至行首</li>
-<li>dnd：删除光标所在行开始的n行</li>
-<li>dnG：将光标所在行至第n行删除</li>
-</ol>
-</li>
-<li>文本查找
-
-<ol>
-<li>在命令模式下，输入“/字符串”即可从光标位置开始向下查找字符串。输入“？字符串”则从光标位置开始向上查找字符串。无论向上还是向下查找，查找下一个，按键盘n键即可</li>
-<li>全局匹配搜索：先将光标移动到字符串abc，然后按下“SHIFT+*”，完成搜索。</li>
-</ol>
-</li>
-<li>文本替换
-
-<ol>
-<li>在命令模式下，输入：%s /old/new/gc，能够将文本内全部的字符串old替换为new，为了安全起见，可以在替换命令尾部加上c，这样每次替换前都需要确认一下</li>
-</ol>
-</li>
-<li>撤销和回复
-
-<ol>
-<li>在命令模式下输入u，可以撤销所做的更改，回复编辑前的状态，这里的编辑以保存命令为界。不小心多按了u时可以用Ctrl+R来恢复</li>
-</ol>
-</li>
-<li>Vi的配置文件
-
-<ol>
-<li>在vi内执行的配置命令的效果是临时IDE，关闭vi，再次打开vi，需要重新配置。vi有自己的配置文件，可以是"/etc/vim/vimrc"或者"~/.vimrc"。两者的区别是前者是全局的，影响登陆本机的全部用户，后者仅仅对当前用户有效</li>
-</ol>
-</li>
-<li>文本对比
-
-<ol>
-<li>Vim提供了文本对比工具vimdiff</li>
-<li>用法：vimdiff file1 file2 file3</li>
-<li>vimdiff可以同时进行2个以上文件的对比</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>如何使全局环境变量生效</h2>
-
-<ol>
-<li>添加在/etc/profile中的全局变量生效的方法：. /etc/profile（点+空格+文件名）</li>
-</ol>
-
-
-<h2>MCIMX28x处理器（i.MX28X）</h2>
-
-<ol>
-<li>基于ARM926EJ-S内核，主频454MHz</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-12T15:40:17+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/11/matlab/">
-		
-			Matlab基础知识</a>
-	</h2>
-	<div class="entry-content">
-		<h2>几个常用命令</h2>
-
-<ol>
-<li>help：查看某个命令的帮助文档</li>
-<li>version：获得当前Matlab的版本</li>
-<li>pwd：给出当前的工作目录名</li>
-<li>dir：ls或dir列出当前目录下的所有文件名清单</li>
-<li>cd：改变目录</li>
-<li>what：列出当前工作目录下所有的M文件、MAT文件和MEX文件</li>
-<li>who：列出当前工作空间里的变量名</li>
-<li>clock：时钟设置命令</li>
-<li>data：日期设置命令</li>
-<li>path：显示MATLAB的当前搜索路径</li>
-<li>getenv：getenv（‘matlabpath’）显示当前的MATLAB路径</li>
-<li>diary on，diary off：利用diary可以记录MATLAB窗口中进行的所有操作</li>
-<li>！（escape）：符号！是MATLAB的扩展运算符，通过该符号，用户有权使用DOS或UNIX命令</li>
-<li>demo：该命令引导使用者通过菜单选择为数众多的演示程序</li>
-<li>format：数据显示格式。系统默认的数据显示格式是5位</li>
-<li>clear：清除工作空间中所有的变量</li>
-<li>clear all：从工作空间中清除所有变量和函数</li>
-<li>clf：清除图形窗口内容</li>
-<li>delete&lt;文件名>：从磁盘中删除指定文件</li>
-<li>load name：载入‘name’文件中的所有变量到工作空间</li>
-<li>load name x y：载入‘name’文件中的变量x，y到工作空间</li>
-<li>save name：保存工作空间变量到文件name.mat中</li>
-<li>save name x y：保存工作空间变量x y到文件name.mat中</li>
-<li>pack：整理工作空间内存</li>
-<li>size：显示当前工作空间中变量的尺寸</li>
-<li>length：显示当前工作空间中变量的长度</li>
-<li>disp：显示当前工作空间中的变量</li>
-</ol>
-
-
-<h2>运算符</h2>
-
-<ul>
-<li>反除运算符：:该运算符得到商的倒数，即a\b等于b/a</li>
-<li>不等于：~=</li>
-<li>逻辑与：&amp;</li>
-<li>逻辑或：|</li>
-<li>逻辑非：~</li>
-</ul>
-
-
-<h2>变量名</h2>
-
-<ol>
-<li>区分大小写</li>
-<li>长度不能超过31位</li>
-<li>变量名以字母开头，可以是字母、数字、下划线组成</li>
-</ol>
-
-
-<h2>分支结构</h2>
-
-<blockquote><p>if-else-end语句中的else子句是可选项
-嵌套：if-elseif-elseif-&hellip;-else-end</p></blockquote>
-
-<h2>循环结构</h2>
-
-<blockquote><p>for-end
-while-end；该语句中的循环判断语句为矩阵时，当且仅当所有的矩阵元素非零时，逻辑表达式的值为真
-break；退出循环体，执行循环后的其他语句</p></blockquote>
-
-<h2>数据输入与输出</h2>
-
-<ol>
-<li>input：通过键盘输入数据</li>
-<li>fprintf：输出格式化信息和数字</li>
-<li>disp：可以在命令窗口输出数字、向量、矩阵或字符串，无需变量名</li>
-<li>sprintf：将输出写入字符串</li>
-</ol>
-
-
-<h2>数组</h2>
-
-<ol>
-<li>MATLAB中，行数组与行向量是同义语，列数组和列向量是同义语</li>
-<li>对于加法和减法，数组运算与线性代数中的向量运算相同。但是符号.*和./分别被称为数组乘法运算符和数组除法运算符，它们不同于矩阵和向量乘除法。</li>
-<li>计算数组长度：length（x）</li>
-<li>删除数组元素：z（3）=[]</li>
-<li>MATLAB里，二维数组变量等同于一个矩阵，每一行的元素以分号结束</li>
-<li>二维数组的整行或整列可以用一个冒号表示。例如：m(1,:)和m(:,3)分别表示m的第一列和第三列</li>
-<li>只有长度相同的向量才能在if语句中进行比较，如果将两个长度不同的向量进行比较，命令窗口会出现出错信息提示。在if语句中比较字符串之前一定要通过增加空格使字符串长度完全相同</li>
-</ol>
-
-
-<h2>MATLAB特有的数字特性</h2>
-
-<blockquote><p>在MATLAB里，所有的变量均为双精度，整数变量和实数变量之间没有区别，实数变量和复数变量同样也没有区别</p></blockquote>
-
-<h2>初等数学函数</h2>
-
-<ul>
-<li>sin(x)</li>
-<li>cos(x)</li>
-<li>tan(x)</li>
-<li>asin(x)</li>
-<li>acos(x)</li>
-<li>atan(x):[-π/2,π/2]</li>
-<li>atan2(y,x):与atan(y/x)结果相同，但是-π/2≥atan2(y,x)≥π</li>
-<li>sinh(x)</li>
-<li>cosh(x)</li>
-<li>tanh(x)</li>
-<li>asinh(x)</li>
-<li>acosh(x)</li>
-<li>atanh(x)</li>
-<li>abs(x):x的绝对值</li>
-<li>angle(x):复数x的相位角</li>
-<li>sqrt(x):x的平方根</li>
-<li>real(x)</li>
-<li>imag(x)</li>
-<li>conj(x):复数x的共轭数</li>
-<li>round(x):向最近整数取整</li>
-<li>fix(x):向0取整</li>
-<li>floor(x):向-∞取整</li>
-<li>ceil(x):向+∞取整</li>
-<li>sign(x):如果x>0,则为+1；如果x&lt;0,则为-1</li>
-<li>mod(x,y)：除后余数：x-y*fix(x/y)</li>
-<li>rem(x,y):除后余数：x-y*fix(x/y).如果y≤0，则与mod不同</li>
-<li>exp(x):以e为底的指数</li>
-<li>log(x):以e为底的对数</li>
-<li>log10(x):以10为底的对数</li>
-<li>factor(x):将x分解质因数</li>
-<li>isprime(x):如果x为素数，值为1，否则为0</li>
-<li>factorial(x):x!</li>
-</ul>
-
-
-<h2>功能函数</h2>
-
-<ol>
-<li>sort(x):将x按照升序重新排列,如果x是矩阵，则重新排列按列进行</li>
-<li>sum(x):如果是x是矩阵，返回值由矩阵各列元素和组成的一个行向量</li>
-<li>max(x),min(x):如果x是矩阵，函数值为一个行向量，每个元素为矩阵相应列的最大或最小值</li>
-<li>rand(n),返回一个nxn的矩阵，元素全是随机数。除非特别规定，否则所生成的是0~1之间均匀分布的随机数</li>
-<li>eval：该命令可以作为字符串被编辑，然后用eval执行。字符串可以通过input读取，或在程序中创建</li>
-</ol>
-
-
-<h2>M文件</h2>
-
-<ol>
-<li>M文件可以分为脚本文件和函数文件两种</li>
-<li>脚本文件操作对象为MATLAB工作空间内的变量，并且在脚本执行结束后，脚本中对变量的一切操作均会被保留。在MATLAB语言中也可以在脚本内部定义变量，并且该变量将会自动地被加入到当前的MATLAB工作空间中，并可以为其他的脚本或函数引用，直到MATLAB被关闭或采用一定的命令将其删除</li>
-<li>MATLAB语言的函数文件包含5个部分：
-
-<ol>
-<li>函数题头：指函数的定义行，是函数语句的第一行，在该行中将定义函数名，输入变量列表以及输出变量列表等</li>
-<li>HI行：指函数帮助文档的第一行</li>
-<li>帮助信息</li>
-<li>函数体</li>
-<li>注释部分：注释语句是以%引导的</li>
-</ol>
-</li>
-<li>echo on,echo off:M文件执行过程中，其命令语句通常不出现在屏幕上，但是当echo on命令将echo开启后，屏幕上会显示所有语句。这时，用户可以看到正在执行的那部分M文件。</li>
-<li>开发函数M文件最基本且很有效的一个办法是将第一行的函数语句用%注释掉，然后作为一个命令M文件进行测试。测试通过后，再将函数语句恢复</li>
-</ol>
-
-
-<h2>保存和载入数据</h2>
-
-<ol>
-<li>save，load：如果直接使用save，则所有当前变量将被保存到默认文件matlab.mat里。load是与save相反的命令，它取回所有被save保存的变量。</li>
-<li>save file_name data-ascii：save能以ASCII码格式保存数据。带有ASCII选项的save和load非常重要，因为他们可以从MATLAB导入和导出数据</li>
-<li>自动创建文件名：在一个M文件中，常常需要自动创建一些文件名。如果整条命令连同文件名写为一个字符串，则可通过eval执行。</li>
-</ol>
-
-
-<h2>硬拷贝</h2>
-
-<ul>
-<li>使用diary命令制作一个屏幕内容的拷贝，如果其后不加任何文件名，屏幕内容将存入名为diary的文件中，此文件可以用文本方式打开。但是在diary文件里无法得到图形</li>
-</ul>
-
-
-<h2>Matlab中的默认常量</h2>
-
-<ol>
-<li>pi：圆周率</li>
-<li>inf：无穷大</li>
-<li>nan：不定值，即0/0</li>
-<li>realmax：最大正实数</li>
-<li>realmin：最小正实数</li>
-<li>eps：浮点数的相对误差</li>
-<li>i：虚数单位</li>
-<li>nargin：函数实际输入参数个数</li>
-<li>nargout：函数实际输出参数个数</li>
-<li>ans：默认变量名</li>
-</ol>
-
-
-<h2>常用矩阵函数运算</h2>
-
-<ol>
-<li>rot90（）：矩阵逆时针旋转90°</li>
-<li>flipud（）：矩阵上下翻转</li>
-<li>fliplr（）：矩阵左右翻转</li>
-<li>flipdim（）：矩阵的某维元素翻转</li>
-<li>shiftdim（）：矩阵的元素移位</li>
-<li>eig（）：计算矩阵的特征值和特征向量</li>
-<li>rank（）：计算矩阵的秩</li>
-<li>trace（）：计算矩阵的迹</li>
-<li>norm（）：计算矩阵的范数</li>
-<li>poly（）：计算矩阵的特征方程的根</li>
-<li>svd（）：矩阵的奇异值分解</li>
-<li>qr（）：矩阵的QR分解</li>
-<li>chol（）：矩阵的Cholesky分解</li>
-<li>schur（）：矩阵的Schur分解</li>
-<li>lu（）：矩阵的LU分解</li>
-</ol>
-
-
-<h2>符号运算</h2>
-
-<ol>
-<li>syms 符号变量名1 符号变量名2 &hellip; 符号变量名n
-
-<ol>
-<li>用这种格式定义符号变量时不要在变量名上加字符串分界符，变量间用空格而不用逗号分隔</li>
-</ol>
-</li>
-<li>含有符号对象的表达式称为符号表达式，建立符号表达式有以下3中方法：
-
-<ol>
-<li>利用单引号来生成符号表达式</li>
-<li>用sym函数建立符号表达式</li>
-<li>使用已经定义的符号变量组成符号表达式
-<img src="http://i.imgur.com/sjfydxI.png" alt="符号表达式创建实例" /></li>
-</ol>
-</li>
-<li>Matlab中，数值矩阵不能直接参与符号运算，必须先转化为符号矩阵
-
-<ol>
-<li>将数值矩阵转化为符号矩阵：sym（数值矩阵）</li>
-<li>将符号矩阵转化为数值矩阵：numeric（A）</li>
-</ol>
-</li>
-<li>关于符号矩阵的函数
-
-<ol>
-<li>transpose（S）：返回S矩阵的转置矩阵</li>
-<li>determ（S）：返回S矩阵的行列式值</li>
-<li>许多数值矩阵的函数，如diag，triu，tril，inv，det，rank，eig等也可直接应用于符号矩阵</li>
-</ol>
-</li>
-<li>符号表达式的四则运算
-
-<ol>
-<li>factor（S）：对S分解因式，S是符号表达式或符号矩阵</li>
-<li>expand（S）：对S进行展开，S是符号表达式或符号矩阵</li>
-<li>collect（S，v）：对S按变量v合并同类项，S是符号表达式或符号矩阵</li>
-<li>simplify（S）：应用函数规则对S进行简化</li>
-<li>simple（S）：调用MATLAB的其他函数对表达式进行综合化简，并显示化简过程</li>
-</ol>
-</li>
-<li>常用的符号运算
-
-<ol>
-<li>limit，求极限的符号函数，常用的格式：limit（F，x，a，‘right’）或limit（F，x，a，‘left’）。当自变量x从右侧或左侧逼近a时，函数F的极值</li>
-<li>diff，求微分用的符号函数，常用格式：diff（f，x，n），表示f关于x求n阶导数</li>
-<li>int，求积分用的符号函数，常用格式：int（f，r，x0，x1），f为所要积分的表达式，r为积分变量，若为定积分，则x0与x1为积分上下限</li>
-<li>symsum，级数求和的符号函数，常用的格式：S=symsum（fk，k，k0，kn），其中fk为级数的通项，k为级数自变量，k0和kn为级数求和的起始项和终止项，且可设为inf</li>
-<li>dsolve，求解常微分方程的符号函数，常用格式：dsolve（'eqnl',&lsquo;condition&rsquo;,&lsquo;var'）;该函数求解微分方程eqnl在初始条件condition下的特解。参数var描述方程中的自变量符号，省略时按默认原则处理，若没有给出初值条件condition，则求方程的通解
-<img src="http://i.imgur.com/o1KV20Q.png" alt="极限和极值的符号运算实例" />
-<img src="http://i.imgur.com/Hp0qYod.png" alt="微积分的符号运算实例" />
-<img src="http://i.imgur.com/sHRwiap.png" alt="常微分方程符号运算实例" /></li>
-</ol>
-</li>
-</ol>
-
-
-<h2>图形绘制</h2>
-
-<ol>
-<li>ploy,绘制二维图形，常用格式：plot(x1,y,option1,x2,y2,option2,&hellip;)</li>
-<li>plot3,绘制三维图形，常用格式：plot3(x1,y1,z1,option1,x2,y2,z2,option2,&hellip;)</li>
-<li>mesh,绘制三维曲面，常用格式：mesh(X,Y,Z,C),参数X,Y,Z都为矩阵值，C表示网格曲面的颜色分布。mesh(x,y,Z,C),参数x，y为长度分别是n和m的向量值，而参数Z是维数为mxn的矩阵</li>
-<li>surf，绘制三维阴影曲面，常用格式：surf(X,Y,Z,C),surf(x,y,Z,C)
-<img src="http://i.imgur.com/pZGpcxE.png" alt="三维网格曲面图绘制应用实例" />
-<img src="http://i.imgur.com/0hS4l6O.png" alt="绘图命令使用实例" /></li>
-</ol>
-
-
-<h2>MATLAB程序</h2>
-
-<p><img src="http://i.imgur.com/xWXusd3.png" alt="MATLAB程序基本组成结构" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-11T22:45:49+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

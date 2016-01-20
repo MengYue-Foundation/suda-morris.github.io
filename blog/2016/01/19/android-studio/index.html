@@ -1,0 +1,347 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Android_Studio - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="最新安装的Android Studio打开软件特别慢，总是卡在“Fetching Android SDK component information”，如何解决？ 进入Android Studio的安装目录下的bin目录，找到idea.properties文件，用文本编辑器打开
+在idea. &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Android_Studio</h2>
+	<div class="entry-content"><h2>最新安装的Android Studio打开软件特别慢，总是卡在“Fetching Android SDK component information”，如何解决？</h2>
+
+<ol>
+<li>进入Android Studio的安装目录下的bin目录，找到idea.properties文件，用文本编辑器打开</li>
+<li>在idea.properties文件末尾天剑一行：disable.android.first.run=true,然后保存文件</li>
+<li>关闭Android Studio后重新启动</li>
+</ol>
+
+
+<h2>给Android Studio安装Genymotion插件</h2>
+
+<ol>
+<li>File->Settings</li>
+<li>找到plugins设置项，点击Browser，输入：genymotion关键字，安装相应插件</li>
+<li>重启android studio后，点击Genymotion插件的图标，设置Genymotion在本地的路径，完成后就告成</li>
+</ol>
+
+
+<h2>设置自动导入依赖包</h2>
+
+<ol>
+<li>File->Settings->Editor</li>
+<li>找到Auto Import选项，使能：show import popup，Optimize imports on the fly，Add unambiguous imports on the fly</li>
+</ol>
+
+
+<h2>常用功能</h2>
+
+<ol>
+<li>Gradle同步，在项目运行或者更改Gradle配置的时候都要点击下这个按钮，会下载相应的依赖</li>
+<li>AVD Manager，模拟器管理</li>
+<li>SDK Manager，管理SDK版本</li>
+<li>DDMS即Dalvik Debug Monitor Service，Dalvik调试监控服务</li>
+</ol>
+
+
+<h2>Gradle</h2>
+
+<ol>
+<li>Gradle是一种依赖管理工具，基于Groovy语言，面向Java应用为主，它抛弃了基于XML的各种繁琐配置，而取而代之的是一种基于Groovy的内部领域特定（DSL）语言</li>
+<li>Android Studio中新建项目成功后会自动下载Gradle，Windows下回安装到：C:\Documents and Settings\&lt;用户名>.gradle\wrapper\dists 目录</li>
+<li>命令行Gradle编译过程
+
+<ol>
+<li>切换到项目根目录，执行./gradlew -v来查看项目所用的Gradle版本，如果是第一次执行，将会去下载Gradle</li>
+<li>接着执行./gradlew clean，清除项目根目录/app目录下的build文件夹</li>
+<li>最后执行./gradlew build,检查依赖，直接编译生成相应的apk文件。接着在项目根目录/app/build/outputs/apk目录下会看到类似于app-debug-unaligned.apk，app-release-unsigned.apk等，unaligned代表没有进行zip优化的，unsigned代表没有签名的。</li>
+</ol>
+</li>
+<li>与Gradle相关的几个文件
+
+<ol>
+<li>项目根目录/app/build.gradle,这个文件是app文件下下这个Module的gradle配置文件，在里面会指明要编译成安卓的应用程序（com.android.application）还是库（com.android.library）；指明编译SDK的版本，build tools的版本（根据实际开发者已经下载好的版本来修改），指明应用的包名，支持的最小的SDK版本，目标SDK版本，要编译在lib目录下的哪些jar包。如下所示:</li>
+</ol>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">// 声明是Android程序</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">application</span><span class="err">&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">android</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 编译SDK的版本</span>
+</span><span class='line'>    <span class="n">compileSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>    <span class="c1">// build tools的版本</span>
+</span><span class='line'>    <span class="n">buildToolsVersion</span> <span class="s">&quot;21.1.1&quot;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">defaultConfig</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 应用的包名</span>
+</span><span class='line'>        <span class="n">applicationId</span> <span class="s">&quot;me.storm.ninegag&quot;</span>
+</span><span class='line'>        <span class="n">minSdkVersion</span> <span class="mi">14</span>
+</span><span class='line'>        <span class="n">targetSdkVersion</span> <span class="mi">21</span>
+</span><span class='line'>        <span class="n">versionCode</span> <span class="mi">1</span>
+</span><span class='line'>        <span class="n">versionName</span> <span class="s">&quot;1.0.0&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// java版本</span>
+</span><span class='line'>    <span class="n">compileOptions</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">sourceCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
+</span><span class='line'>        <span class="n">targetCompatibility</span> <span class="n">JavaVersion</span><span class="p">.</span><span class="n">VERSION_1_7</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">buildTypes</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">debug</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// debug模式</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">release</span> <span class="p">{</span>
+</span><span class='line'>            <span class="c1">// 是否进行混淆</span>
+</span><span class='line'>            <span class="n">minifyEnabled</span> <span class="nb">false</span>
+</span><span class='line'>            <span class="c1">// 混淆文件的位置</span>
+</span><span class='line'>            <span class="n">proguardFiles</span> <span class="n">getDefaultProguardFile</span><span class="p">(</span><span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">android</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span><span class="p">),</span> <span class="err">&#39;</span><span class="n">proguard</span><span class="o">-</span><span class="n">rules</span><span class="p">.</span><span class="n">txt</span><span class="err">&#39;</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 移除lint检查的error</span>
+</span><span class='line'>    <span class="n">lintOptions</span> <span class="p">{</span>
+</span><span class='line'>      <span class="n">abortOnError</span> <span class="nb">false</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dependencies</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 编译libs目录下的所有jar包</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="n">fileTree</span><span class="p">(</span><span class="nl">dir</span><span class="p">:</span> <span class="err">&#39;</span><span class="n">libs</span><span class="err">&#39;</span><span class="p">,</span> <span class="nl">include</span><span class="p">:</span> <span class="p">[</span><span class="err">&#39;</span><span class="o">*</span><span class="p">.</span><span class="n">jar</span><span class="err">&#39;</span><span class="p">])</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">support</span><span class="p">:</span><span class="n">support</span><span class="o">-</span><span class="nl">v4</span><span class="p">:</span><span class="mf">21.0.2</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="n">etsy</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="nl">grid</span><span class="p">:</span><span class="nl">library</span><span class="p">:</span><span class="mf">1.0.5</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="err">&#39;</span><span class="n">com</span><span class="p">.</span><span class="nl">alexvasilkov</span><span class="p">:</span><span class="n">foldable</span><span class="o">-</span><span class="nl">layout</span><span class="p">:</span><span class="mf">1.0.1</span><span class="err">&#39;</span>
+</span><span class='line'>    <span class="c1">// 编译extras目录下的ShimmerAndroid模块</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="n">project</span><span class="p">(</span><span class="err">&#39;</span><span class="o">:</span><span class="nl">extras</span><span class="p">:</span><span class="n">ShimmerAndroid</span><span class="err">&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-19T10:06:41+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2016/01/19/android-studio" data-title="Android_Studio" data-url="http://suda-morris.github.io/blog/2016/01/19/android-studio/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2016
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
