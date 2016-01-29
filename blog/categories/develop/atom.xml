@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-01-20T22:22:11+08:00</updated>
+  <updated>2016-01-29T23:03:35+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -122,6 +122,243 @@
 </li>
 </ol>
 
+
+<h2>Intent</h2>
+
+<ol>
+<li>Intent是不同组件中提供运行时绑定的对象。Intent代表一个应用“想去做什么事情”，你可以用它做各种各样的任务，不过大部分的时候他们被用来启动另一个Activity。</li>
+<li>在Activity之间传递数据包Bundle
+<code>java
+//发送端
+Bundle b = new Bundle();
+b.putString("name","morris");
+b.putInt("age",20);
+intent.putExtras(b);
+//接收端
+Bundle data = intent.getExtras();
+String name = data.getString("name");
+int age = data.getInt("age");
+</code></li>
+<li>在Activity之间传递值对象
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">方法1</span><span class="err">，</span><span class="n">使用Java的序列化</span><span class="err">，</span><span class="n">效率比较低</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'><span class="c1">//前提要求User类实现Serializable接口</span>
+</span><span class='line'><span class="c1">//发送端</span>
+</span><span class='line'><span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">user</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span><span class="k">new</span> <span class="nf">User</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">name</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span><span class="mi">20</span><span class="o">));</span>
+</span><span class='line'><span class="c1">//接收端</span>
+</span><span class='line'><span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="o">(</span><span class="n">User</span><span class="o">)</span><span class="n">intent</span><span class="o">.</span><span class="na">getSerializableExtra</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">user</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;/&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">方法2</span><span class="err">，</span><span class="n">使用Android的Parcelable</span><span class="err">，</span><span class="n">效率比较高</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;/</span>
+</span><span class='line'><span class="c1">//前提要求User类实现了Parcelable接口,并且重写了writeToParcel方法来手动实现序列化</span>
+</span><span class='line'><span class="c1">//在User类中实现方法</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">writeToParcel</span><span class="o">(</span><span class="n">Parcel</span> <span class="n">dest</span><span class="o">,</span><span class="kt">int</span> <span class="n">flags</span><span class="o">){</span>
+</span><span class='line'>    <span class="n">dest</span><span class="o">.</span><span class="na">writeString</span><span class="o">(</span><span class="n">getName</span><span class="o">());</span>
+</span><span class='line'>    <span class="n">dest</span><span class="o">.</span><span class="na">writeInt</span><span class="o">(</span><span class="n">getAge</span><span class="o">());</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="c1">//在User类中实现常量对象CREATOR</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">Creator</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">CREATOR</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CREATOR</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;(){</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">User</span> <span class="nf">createFromParcel</span><span class="o">(</span><span class="n">Parcel</span> <span class="n">source</span><span class="o">){</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">new</span> <span class="nf">User</span><span class="o">(</span><span class="n">source</span><span class="o">.</span><span class="na">readString</span><span class="o">(),</span><span class="n">source</span><span class="o">.</span><span class="na">readInt</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">User</span><span class="o">[]</span> <span class="nf">newArray</span><span class="o">(</span><span class="kt">int</span> <span class="n">size</span><span class="o">){</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">new</span> <span class="n">User</span><span class="o">[</span><span class="n">size</span><span class="o">];</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span><span class='line'><span class="c1">//发送端</span>
+</span><span class='line'><span class="n">intent</span><span class="o">.</span><span class="na">putExtra</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">user</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span><span class="k">new</span> <span class="nf">User</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">name</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;,</span><span class="mi">20</span><span class="o">));&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="c1">//接收端</span>
+</span><span class='line'><span class="n">User</span> <span class="n">user</span> <span class="o">=</span> <span class="n">intent</span><span class="o">.</span><span class="na">getParcelableExtra</span><span class="o">(&amp;</span><span class="n">ldquo</span><span class="o">;</span><span class="n">user</span><span class="o">&amp;</span><span class="n">rdquo</span><span class="o">;);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">获取Activity的返回参数</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span><span class="n">java</span>
+</span><span class='line'><span class="c1">//发送端</span>
+</span><span class='line'><span class="n">startActivityForResult</span><span class="o">(</span><span class="n">intent</span><span class="o">,</span><span class="n">requestCode</span><span class="o">);&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onActivityResult</span><span class="o">(</span><span class="kt">int</span> <span class="n">requestCode</span><span class="o">,</span> <span class="kt">int</span> <span class="n">resultCode</span><span class="o">,</span><span class="n">Intent</span> <span class="n">data</span><span class="o">){</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">onActivityResult</span><span class="o">(</span><span class="n">requestCode</span><span class="o">,</span><span class="n">resultCode</span><span class="o">,</span><span class="n">data</span><span class="o">);</span>
+</span><span class='line'>    <span class="c1">//ToDo</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="c1">//接收端</span>
+</span><span class='line'><span class="n">setResult</span><span class="o">(</span><span class="n">resultCode</span><span class="o">,</span><span class="n">intent</span><span class="o">);</span>
+</span><span class='line'><span class="n">finish</span><span class="o">();</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">隐式Intent</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span> <span class="n">在AndroidManifest文件中</span><span class="err">，</span><span class="n">为activity添加</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">intent</span><span class="o">-</span><span class="n">filter</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">标签</span><span class="err">，</span><span class="n">并为其指名category和action</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">category</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;android.intent.category.DEFAULT&quot;</span><span class="o">/&gt;</span> <span class="c1">//表示该intent-filter的行为方式是activity</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="n">action</span> <span class="nl">android:</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;字符串A&quot;</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<pre><code>2. 然后在创建Intent实例的时候把“字符串A”传入构造函数
+3. 一般来说，字符串A约定的格式为：包名.intent.action.类名
+4. 通过这种方式能够访问其他应用中的activity，但是如果在activity的标签中指名`android:exported="false"`的话，别的应用便无法访问该activity
+</code></pre>
+
+<h2>Activity的启动模式</h2>
+
+<ol>
+<li>在AndroidManifest文件中，为activity添加参数：android:lanuchMode=&ldquo;standard"。在standard启动模式中，所有实例放入同一个任务栈，因此支持后退键导航</li>
+<li>在AndroidManifest文件中，为activity添加参数：android:lanuchMode=&ldquo;singleTop"。singleTop模式和standard模式都会将intent发送给新的实例，不过，singleTop要求如果创建intent的时候栈顶已经有了要创建的Activity的实例，则将intent发送给该实例，而不创建新的实例。singleTop模式，可用来解决栈顶多个重复相同的Activity的问题。如果是A activity跳转到B activity，在跳转到A activity，行为就和standard模式一样了，会在B activity跳转到A activity的时候创建A activity的新实例，因为当时的栈顶不是A activity实例。</li>
+<li>在AndroidManifest文件中，为activity添加参数：android:lanuchMode=&ldquo;singleTask"。当intent到来，需要穿件singleTask模式Activity的时候，系统会检查任务栈里面是否已经有该Activity的实例，如果有直接将intent发送给它。</li>
+<li>在AndroidManifest文件中，为activity添加参数：android:lanuchMode=&ldquo;singleInstance"。<strong>一个任务栈只包括一个activity</strong>。比如有A，B，C三个Activity，其中B为sigleInstance模式，他们之间的跳转关系是A->B->C，现在在C中按下返回键，由于B位于独立的task中，它不属于C的上下文activity，所以此时直接返回到A中。</li>
+</ol>
+
+
+<h2>Get a string resource from you app&rsquo;s Resources</h2>
+
+<blockquote><p>String hello = getResources().getString(R.string.hello_world);</p></blockquote>
+
+<h2>Toast使用方法</h2>
+
+<blockquote><p>Toast.makeText(activity对象，“显示内容”，Toast.LENGTH_SHORT).show();</p></blockquote>
+
+<h2>适配不同的屏幕</h2>
+
+<ol>
+<li>安卓设备的屏幕的分类指标：大小(size)和分辨率(density)</li>
+<li>有四种size：small，normal，large，xlarge</li>
+<li>有四种density：low（ldpi），medium（mdpi），high（hdpi），extra high（xhdpi）</li>
+<li>每份图片需要四种分辨率的备份，比如，如果你为xhdpi设备生成一张200X200的照片，同样，你需要为hdpi设备生成150X150的照片，为mdpi设备生成100X100的照片，为ldpi设备生成75X75的照片
+
+<ol>
+<li>xhdpi：2.0</li>
+<li>hdpi：1.5</li>
+<li>mdpi：1.0（baseline）</li>
+<li>ldpi：0.75</li>
+</ol>
+</li>
+<li>一般来说，ldpi的素材是可以不需要的，因为如果你提供了hdpi的素材，系统会自动将它缩小一半来适应ldpi的设备</li>
+</ol>
+
+
+<h2>Activity的生命周期</h2>
+
+<p><img src="http://i.imgur.com/gzlBPwv.png" alt="Activity生命周期" /></p>
+
+<ol>
+<li>onPause主要完成的工作（为了快速切换到下一个Activity，这个函数里面的操作内容应该尽量简单些）
+
+<ol>
+<li>停止动画或者其他正在消耗CPU的动作</li>
+<li>提交未保存的变化，比如草稿邮件</li>
+<li>释放系统资源，包括broadcast receiver，传感器句柄等</li>
+</ol>
+</li>
+<li>onStop函数用来执行占用CPU大的shut-down操作，比如往数据库中写入数据</li>
+</ol>
+
+
+<h2>Context</h2>
+
+<ol>
+<li>它是用来访问全局信息（比如，应用程序的资源）的接口，一些常用的资源都会实现Context，这样就可以方便访问资源</li>
+<li>System.out.println(R.string.hello_world)等同于System.out.println(getContext().getResources().getText(R.string.hello_world));</li>
+</ol>
+
+
+<h2>Application</h2>
+
+<ol>
+<li>安装一个app应用后可以在桌面上显示多个应用图标(即同一个应用程序有多个主Activity)，那是因为在Manifest文件中设置了多个activity的category为android.intent.category.LAUNCHER，action为android.intent.category.LAUNCHER。但是这几个应用同属于一个Application，表现为在Manifest文件中，这些activity在同一个application标签下。</li>
+<li>在Manifest文件中，为application标签设置属性name,其值为一个继承自Application的某个自定义类，这样在任意一个activity中可以通过getApplicationContext来获取该自定义Application类的实例。从某种意义上来说，该自定义Appliacation类中的资源可以更加方便的为全局共享，里面可以存放一些全局的逻辑资源（区别于UI的资源）</li>
+<li>Application的生命周期相关的方法
+
+<ol>
+<li>onCreate，创建Application的时候调用，先于activity的onCreate</li>
+<li>onTerminate，结束后调用</li>
+<li>onLowMemory，低内存时候调用</li>
+<li>onTrimMemory，操作系统内存整理的时候调用</li>
+<li>onConfigurationChanged，配置改变的时候调用</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Service</h2>
+
+<ol>
+<li>启动服务：startService，service内部会执行onStartCommand</li>
+<li>停止服务：stopService</li>
+<li>绑定服务：bindService</li>
+<li>解绑服务：unbindService</li>
+<li>当activity与service绑定后，如果activity退出，响应的service也会停止。即service的生命周期伴随着activity的存在于消亡。若是是使用startService来启动service的话，service的生命将会独立于activity，只有通过调用stopService才能将其停止。当startService与bindService都调用了的话，若想退出服务，unbindService与stopService都必须执行</li>
+<li>同一个service只会创建1次</li>
+</ol>
+
+
+<h2>普通辅线程不允许修改UI线程中的资源！</h2>
+
+<h2>AIDL(Android Interface Definition Language)</h2>
+
+<ol>
+<li></li>
+</ol>
+
 ]]></content>
   </entry>
   
@@ -155,7 +392,7 @@
 <ol>
 <li>Uboot中开发板的IP地址:192.168.1.230,网关192.168.1.1</li>
 <li>开发板设置从SD卡启动，需要确保有一张烧写好UBoot的SD卡或者SDHC卡，Linux中的烧写方法：
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -399,252 +636,251 @@
 <span class='line-number'>242</span>
 <span class='line-number'>243</span>
 <span class='line-number'>244</span>
-<span class='line-number'>245</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/sh&lt;/h1&gt;
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;for SDHC Card,total sectors=15523840&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">for</span> <span class="n">SDHC</span> <span class="n">Card</span><span class="o">,</span><span class="n">total</span> <span class="n">sectors</span><span class="o">=</span><span class="mi">15523840</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=15522798&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="o">.</span><span class="na">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">15522798</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=15522030&lt;/h1&gt;&lt;/li&gt;
-</span><span class='line'>&lt;/ol&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="o">.</span><span class="na">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">15522030</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;for SD Card,total sectors=1961984&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">for</span> <span class="n">SD</span> <span class="n">Card</span><span class="o">,</span><span class="n">total</span> <span class="n">sectors</span><span class="o">=</span><span class="mi">1961984</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=16 seek=1961966
-</span><span class='line'>dd iflag=dsync oflag=dsync if=u-boot-sd.bin of=/dev/sdb bs=512 count=512 seek=1961198
-</span><span class='line'>sync&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="o">.</span><span class="na">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961966</span>
+</span><span class='line'><span class="n">dd</span> <span class="n">iflag</span><span class="o">=</span><span class="n">dsync</span> <span class="n">oflag</span><span class="o">=</span><span class="n">dsync</span> <span class="k">if</span><span class="o">=</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">-</span><span class="n">sd</span><span class="o">.</span><span class="na">bin</span> <span class="n">of</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdb</span> <span class="n">bs</span><span class="o">=</span><span class="mi">512</span> <span class="n">count</span><span class="o">=</span><span class="mi">512</span> <span class="n">seek</span><span class="o">=</span><span class="mi">1961198</span>
+</span><span class='line'><span class="n">sync</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;BL1:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">BL1:</span><span class="n">total</span> <span class="n">sectors</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1024</span><span class="o">(</span><span class="k">if</span> <span class="n">your</span> <span class="n">SD</span> <span class="n">Card</span> <span class="n">Size</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="n">G</span><span class="o">)</span> <span class="o">-</span><span class="mi">16</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;BL2:total sectors - 2 - 1024(if your SD Card Size &gt; 2G) -16 - 512 - 256&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">BL2:</span><span class="n">total</span> <span class="n">sectors</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1024</span><span class="o">(</span><span class="k">if</span> <span class="n">your</span> <span class="n">SD</span> <span class="n">Card</span> <span class="n">Size</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="n">G</span><span class="o">)</span> <span class="o">-</span><span class="mi">16</span> <span class="o">-</span> <span class="mi">512</span> <span class="o">-</span> <span class="mi">256</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;pre&gt;&lt;code&gt;
-</span><span class='line'>3. 进入Uboot后，测试能否ping通虚拟主机：ping 192.168.1.88。在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内，使用UBoot下的命令：pri
-</span><span class='line'>4. 使用nfs命令获取虚拟主机上的uboot二进制文件供烧写(次UBoot是用来从NandFlash启动的，不能错选从SD卡启动的UBoot),成功以后会提示用户该文件的大小，这里记为filesize(切记要使用十六进制表示的数字)
-</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/u-boot.bin
-</span><span class='line'>5. 烧写uboot至NandFlash中
-</span><span class='line'>    * nand write.i 50000000 0 $(filesize)   从0地址开始烧写UBoot
-</span><span class='line'>6. 使用nfs命令获取虚拟主机上的kernel文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/Image
-</span><span class='line'>7. 烧写kernel到NandFlash中
-</span><span class='line'>    * nand write.i 50000000 80000 $(filesize)
-</span><span class='line'>8. 使用nfs命令获取虚拟主机上的根文件系统文件，成功以后会提示用户该文件的大小，这里记为filesize((切记要使用十六进制表示的数字))
-</span><span class='line'>    * nfs 50000000 192.168.1.88:/embeded/KDM/images/v1/yaff2.img
-</span><span class='line'>9. 烧写根文件系统到NandFlash中
-</span><span class='line'>    * nand write.yaffs 50000000 580000 $(filesize)
-</span><span class='line'>10. 根据需要修改启动参数并保存,例如
-</span><span class='line'>    * setenv bootargs root=/dev/mtdblock2 console=ttySAC0,115200
-</span><span class='line'>    * saveenv
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">进入Uboot后</span><span class="err">，</span><span class="n">测试能否ping通虚拟主机</span><span class="err">：</span><span class="n">ping</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.88</span><span class="err">。</span><span class="n">在这之前可以先看看开发板的IP地址是否与虚拟主机在一个网段内</span><span class="err">，</span><span class="n">使用UBoot下的命令</span><span class="err">：</span><span class="n">pri</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">使用nfs命令获取虚拟主机上的uboot二进制文件供烧写</span><span class="o">(</span><span class="n">次UBoot是用来从NandFlash启动的</span><span class="err">，</span><span class="n">不能错选从SD卡启动的UBoot</span><span class="o">),</span><span class="n">成功以后会提示用户该文件的大小</span><span class="err">，</span><span class="n">这里记为filesize</span><span class="o">(</span><span class="n">切记要使用十六进制表示的数字</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nfs</span> <span class="mi">50000000</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.88</span><span class="o">:/</span><span class="n">embeded</span><span class="o">/</span><span class="n">KDM</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">u</span><span class="o">-</span><span class="n">boot</span><span class="o">.</span><span class="na">bin</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">烧写uboot至NandFlash中</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">.</span><span class="na">i</span> <span class="mi">50000000</span> <span class="mi">0</span> <span class="n">$</span><span class="o">(</span><span class="n">filesize</span><span class="o">)</span>   <span class="n">从0地址开始烧写UBoot</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">使用nfs命令获取虚拟主机上的kernel文件</span><span class="err">，</span><span class="n">成功以后会提示用户该文件的大小</span><span class="err">，</span><span class="n">这里记为filesize</span><span class="o">((</span><span class="n">切记要使用十六进制表示的数字</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nfs</span> <span class="mi">50000000</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.88</span><span class="o">:/</span><span class="n">embeded</span><span class="o">/</span><span class="n">KDM</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">Image</span>
+</span><span class='line'><span class="mi">7</span><span class="o">.</span> <span class="n">烧写kernel到NandFlash中</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">.</span><span class="na">i</span> <span class="mi">50000000</span> <span class="mi">80000</span> <span class="n">$</span><span class="o">(</span><span class="n">filesize</span><span class="o">)</span>
+</span><span class='line'><span class="mi">8</span><span class="o">.</span> <span class="n">使用nfs命令获取虚拟主机上的根文件系统文件</span><span class="err">，</span><span class="n">成功以后会提示用户该文件的大小</span><span class="err">，</span><span class="n">这里记为filesize</span><span class="o">((</span><span class="n">切记要使用十六进制表示的数字</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nfs</span> <span class="mi">50000000</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.88</span><span class="o">:/</span><span class="n">embeded</span><span class="o">/</span><span class="n">KDM</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">yaff2</span><span class="o">.</span><span class="na">img</span>
+</span><span class='line'><span class="mi">9</span><span class="o">.</span> <span class="n">烧写根文件系统到NandFlash中</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">.</span><span class="na">yaffs</span> <span class="mi">50000000</span> <span class="mi">580000</span> <span class="n">$</span><span class="o">(</span><span class="n">filesize</span><span class="o">)</span>
+</span><span class='line'><span class="mi">10</span><span class="o">.</span> <span class="n">根据需要修改启动参数并保存</span><span class="o">,</span><span class="n">例如</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">setenv</span> <span class="n">bootargs</span> <span class="n">root</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">mtdblock2</span> <span class="n">console</span><span class="o">=</span><span class="n">ttySAC0</span><span class="o">,</span><span class="mi">115200</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">saveenv</span>
 </span><span class='line'>
-</span><span class='line'>##测试图形界面程序
-</span><span class='line'> * 图形界面工具使用的触摸屏校准程序为tslib源码附带的校准程序ts_calibrate,所以如果触摸屏没有校准，可以在Linux系统启动后运行/usr/local/bin/ts_calibrate程序对触摸屏进行校准(通过删除/etc/pointercal文件，可以使得图形界面工具自动调用ts_calibrate程序)，校准完毕会在etc目录下生成pointercal标准文件，供触摸屏库程序转换成符合屏幕的坐标，从而达到校准目的。
+</span><span class='line'><span class="err">##</span><span class="n">测试图形界面程序</span>
+</span><span class='line'> <span class="o">*</span> <span class="n">图形界面工具使用的触摸屏校准程序为tslib源码附带的校准程序ts_calibrate</span><span class="o">,</span><span class="n">所以如果触摸屏没有校准</span><span class="err">，</span><span class="n">可以在Linux系统启动后运行</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">ts_calibrate程序对触摸屏进行校准</span><span class="o">(</span><span class="n">通过删除</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">pointercal文件</span><span class="err">，</span><span class="n">可以使得图形界面工具自动调用ts_calibrate程序</span><span class="o">)</span><span class="err">，</span><span class="n">校准完毕会在etc目录下生成pointercal标准文件</span><span class="err">，</span><span class="n">供触摸屏库程序转换成符合屏幕的坐标</span><span class="err">，</span><span class="n">从而达到校准目的</span><span class="err">。</span>
 </span><span class='line'>
-</span><span class='line'>##交叉编译器
-</span><span class='line'>* arm-linux-gcc是一个“集合命令”，它包含了4个步骤：预处理，汇编，编译和链接，通过链接阶段便生成ELF格式的可执行文件。4个步骤对应执行的程序为arm-linux-cpp，arm-linux-as，ccl，arm-linux-ld。前三个步骤对应的命令行选项为：-E,-S，-c，如果没有任何参数，则代表经过这4个步骤产生可执行文件。
-</span><span class='line'>* ELF文件的not stripped属性告诉我们在编译的时候产生的编译阶段需要的符号没有被删除
-</span><span class='line'>* 通常被编译出的程序都会使用到系统的动态库，而这些基本的动态库大部分也都是glibc库中的。例如open,read,write,select,ioctl等应用程序中的函数都是libc.so动态库中提供的，而glibc还提供了libm.so(数学库)，libcrypt.so(安全库)，libld.so(加载库)等。其中libld.so作为加载库负责在应用程序运行时，加载程序所使用到的动态库文件。在我们移植系统的过程中，这些最基本的动态库也需要被移植到根文件系统中去，这样才能保证程序被正常启动。
-</span><span class='line'>* arm-linux-strip test可以删除可执行文件中不需要的编译符号和段描述信息
-</span><span class='line'>* arm-linux-objcopy -O binary -S test test.bin 通常被用来将生成的ELF格式的文件转化为只含有二进制指令和程序数据的文件test.bin.也只有这样的二进制指令文件才能直接被硬件执行。
-</span><span class='line'>* arm-linux-dump -D test &gt; test.dis则是反编译，将ELF格式的可执行文件反编译成汇编信息文件test.dis，有助于代码的查看和调试
-</span><span class='line'>* arm-linux-readelf -a test | grep 'Shared'用来获取ELF的头信息，grep 'Shared'是获取头信息中test可执行文件调用到的动态文件
-</span><span class='line'>* arm-linux-gcc 针对arm11的设置：
-</span><span class='line'>    1. --with-cpu=arm1176jzf-s
-</span><span class='line'>    2. --with-tune=arm1176jzf-s
-</span><span class='line'>    3. --with-float=softfp
+</span><span class='line'><span class="err">##</span><span class="n">交叉编译器</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc是一个</span><span class="err">“</span><span class="n">集合命令</span><span class="err">”，</span><span class="n">它包含了4个步骤</span><span class="err">：</span><span class="n">预处理</span><span class="err">，</span><span class="n">汇编</span><span class="err">，</span><span class="n">编译和链接</span><span class="err">，</span><span class="n">通过链接阶段便生成ELF格式的可执行文件</span><span class="err">。</span><span class="mi">4</span><span class="n">个步骤对应执行的程序为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">cpp</span><span class="err">，</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">as</span><span class="err">，</span><span class="n">ccl</span><span class="err">，</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span><span class="err">。</span><span class="n">前三个步骤对应的命令行选项为</span><span class="err">：</span><span class="o">-</span><span class="n">E</span><span class="o">,-</span><span class="n">S</span><span class="err">，</span><span class="o">-</span><span class="n">c</span><span class="err">，</span><span class="n">如果没有任何参数</span><span class="err">，</span><span class="n">则代表经过这4个步骤产生可执行文件</span><span class="err">。</span>
+</span><span class='line'><span class="o">*</span> <span class="n">ELF文件的not</span> <span class="n">stripped属性告诉我们在编译的时候产生的编译阶段需要的符号没有被删除</span>
+</span><span class='line'><span class="o">*</span> <span class="n">通常被编译出的程序都会使用到系统的动态库</span><span class="err">，</span><span class="n">而这些基本的动态库大部分也都是glibc库中的</span><span class="err">。</span><span class="n">例如open</span><span class="o">,</span><span class="n">read</span><span class="o">,</span><span class="n">write</span><span class="o">,</span><span class="n">select</span><span class="o">,</span><span class="n">ioctl等应用程序中的函数都是libc</span><span class="o">.</span><span class="na">so动态库中提供的</span><span class="err">，</span><span class="n">而glibc还提供了libm</span><span class="o">.</span><span class="na">so</span><span class="o">(</span><span class="n">数学库</span><span class="o">)</span><span class="err">，</span><span class="n">libcrypt</span><span class="o">.</span><span class="na">so</span><span class="o">(</span><span class="n">安全库</span><span class="o">)</span><span class="err">，</span><span class="n">libld</span><span class="o">.</span><span class="na">so</span><span class="o">(</span><span class="n">加载库</span><span class="o">)</span><span class="n">等</span><span class="err">。</span><span class="n">其中libld</span><span class="o">.</span><span class="na">so作为加载库负责在应用程序运行时</span><span class="err">，</span><span class="n">加载程序所使用到的动态库文件</span><span class="err">。</span><span class="n">在我们移植系统的过程中</span><span class="err">，</span><span class="n">这些最基本的动态库也需要被移植到根文件系统中去</span><span class="err">，</span><span class="n">这样才能保证程序被正常启动</span><span class="err">。</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span> <span class="n">test可以删除可执行文件中不需要的编译符号和段描述信息</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">objcopy</span> <span class="o">-</span><span class="n">O</span> <span class="n">binary</span> <span class="o">-</span><span class="n">S</span> <span class="n">test</span> <span class="n">test</span><span class="o">.</span><span class="na">bin</span> <span class="n">通常被用来将生成的ELF格式的文件转化为只含有二进制指令和程序数据的文件test</span><span class="o">.</span><span class="na">bin</span><span class="o">.</span><span class="na">也只有这样的二进制指令文件才能直接被硬件执行</span><span class="err">。</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">dump</span> <span class="o">-</span><span class="n">D</span> <span class="n">test</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">test</span><span class="o">.</span><span class="na">dis则是反编译</span><span class="err">，</span><span class="n">将ELF格式的可执行文件反编译成汇编信息文件test</span><span class="o">.</span><span class="na">dis</span><span class="err">，</span><span class="n">有助于代码的查看和调试</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">readelf</span> <span class="o">-</span><span class="n">a</span> <span class="n">test</span> <span class="o">|</span> <span class="n">grep</span> <span class="err">&#39;</span><span class="n">Shared</span><span class="err">&#39;</span><span class="n">用来获取ELF的头信息</span><span class="err">，</span><span class="n">grep</span> <span class="err">&#39;</span><span class="n">Shared</span><span class="err">&#39;</span><span class="n">是获取头信息中test可执行文件调用到的动态文件</span>
+</span><span class='line'><span class="o">*</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="n">针对arm11的设置</span><span class="err">：</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">cpu</span><span class="o">=</span><span class="n">arm1176jzf</span><span class="o">-</span><span class="n">s</span>
+</span><span class='line'>    <span class="mi">2</span><span class="o">.</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">tune</span><span class="o">=</span><span class="n">arm1176jzf</span><span class="o">-</span><span class="n">s</span>
+</span><span class='line'>    <span class="mi">3</span><span class="o">.</span> <span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="kt">float</span><span class="o">=</span><span class="n">softfp</span>
 </span><span class='line'>
-</span><span class='line'>##bootloader
-</span><span class='line'>* 目标机上的Bootloader通过串口与主机之间进行文件传输，传输协议通常是xmodem/ymodem/zmodem协议中的一种，但是，串口传输速度有限，因此通过以太网连接并借助tftp或者nfs协议来下载文件是个更好的选择
-</span><span class='line'>* bootloader的stage1通常包括的步骤：
-</span><span class='line'>    1. 硬件设备初始化
-</span><span class='line'>        * 屏蔽所有中断
-</span><span class='line'>        * 设置CPU的速度和时钟频率
-</span><span class='line'>        * RAM初始化
-</span><span class='line'>        * 关闭CPU内部指令/数据cache
-</span><span class='line'>    2. 为加载Bootloader的stage2准备RAM空间
-</span><span class='line'>    3. 复制bootloader的stage2到RAM空间
-</span><span class='line'>    4. 设置好堆栈指针sp
-</span><span class='line'>    5. 跳转到stage2的C入口点（修改PC寄存器为核实的地址来实现）
-</span><span class='line'>* bootloader的stage2通常包括的步骤：
-</span><span class='line'>    1. 初始化本阶段要使用到的硬件设备
-</span><span class='line'>        * 至少一个串口用来和终端用户进行I/O输出信息
-</span><span class='line'>    2. 检测系统内存映射
-</span><span class='line'>    3. 将kernel镜像和根文件系统镜像从Flash上读到RAM空间中(需要编写Nand Flash裸驱动)
-</span><span class='line'>    4. 为内核设置启动参数
-</span><span class='line'>        * linux2.4以后的内核都期望以标记列表的形式来传递启动参数，启动参数标记列表以标记ATAG_CORE尅是，以标记ATAG_NONE结束
-</span><span class='line'>        * 每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成，数据结构tag和tag_header定义在Linux内核源码的include/asm/setup.h头文件中
-</span><span class='line'>        * 在嵌入式Linux系统中，通常需要由Bootloader设置的常见启动参数有：ATAG_CORE,ATAG_MEN,ATAG_CMDLINE
-</span><span class='line'>    5. 调用内核，跳转到内核第一条指令处，跳转时要满足下列条件
-</span><span class='line'>        1. CPU寄存器的设置
-</span><span class='line'>            * R0=0
-</span><span class='line'>            * R1=机器类型ID，关于Machine Type Number可以参见linux/arch/arm/tools/mach-types
-</span><span class='line'>            * R2=启动参数标记列表在RAM中的起始基地址
-</span><span class='line'>        2. CPU模式
-</span><span class='line'>            *  必须禁止中断(IRQs和FIQs)
-</span><span class='line'>            * CPU必须处于SVC模式
-</span><span class='line'>        3. Cache和MMU的设置
-</span><span class='line'>            * MMU必须关闭
-</span><span class='line'>            * 指令Cache可以打开亦可以关闭
-</span><span class='line'>            * 数据Cache必须关闭
-</span><span class='line'>* U-boot目录结构
-</span><span class='line'>    1. 与处理器体系结构或者开发板硬件直接相关
-</span><span class='line'>    2. 通用的函数或者驱动程序
-</span><span class='line'>    3. U-Boot的应用程序、工具或者文档
+</span><span class='line'><span class="err">##</span><span class="n">bootloader</span>
+</span><span class='line'><span class="o">*</span> <span class="n">目标机上的Bootloader通过串口与主机之间进行文件传输</span><span class="err">，</span><span class="n">传输协议通常是xmodem</span><span class="o">/</span><span class="n">ymodem</span><span class="o">/</span><span class="n">zmodem协议中的一种</span><span class="err">，</span><span class="n">但是</span><span class="err">，</span><span class="n">串口传输速度有限</span><span class="err">，</span><span class="n">因此通过以太网连接并借助tftp或者nfs协议来下载文件是个更好的选择</span>
+</span><span class='line'><span class="o">*</span> <span class="n">bootloader的stage1通常包括的步骤</span><span class="err">：</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span> <span class="n">硬件设备初始化</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">屏蔽所有中断</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">设置CPU的速度和时钟频率</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">RAM初始化</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">关闭CPU内部指令</span><span class="o">/</span><span class="n">数据cache</span>
+</span><span class='line'>    <span class="mi">2</span><span class="o">.</span> <span class="n">为加载Bootloader的stage2准备RAM空间</span>
+</span><span class='line'>    <span class="mi">3</span><span class="o">.</span> <span class="n">复制bootloader的stage2到RAM空间</span>
+</span><span class='line'>    <span class="mi">4</span><span class="o">.</span> <span class="n">设置好堆栈指针sp</span>
+</span><span class='line'>    <span class="mi">5</span><span class="o">.</span> <span class="n">跳转到stage2的C入口点</span><span class="err">（</span><span class="n">修改PC寄存器为核实的地址来实现</span><span class="err">）</span>
+</span><span class='line'><span class="o">*</span> <span class="n">bootloader的stage2通常包括的步骤</span><span class="err">：</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span> <span class="n">初始化本阶段要使用到的硬件设备</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">至少一个串口用来和终端用户进行I</span><span class="o">/</span><span class="n">O输出信息</span>
+</span><span class='line'>    <span class="mi">2</span><span class="o">.</span> <span class="n">检测系统内存映射</span>
+</span><span class='line'>    <span class="mi">3</span><span class="o">.</span> <span class="n">将kernel镜像和根文件系统镜像从Flash上读到RAM空间中</span><span class="o">(</span><span class="n">需要编写Nand</span> <span class="n">Flash裸驱动</span><span class="o">)</span>
+</span><span class='line'>    <span class="mi">4</span><span class="o">.</span> <span class="n">为内核设置启动参数</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">linux2</span><span class="o">.</span><span class="mi">4</span><span class="n">以后的内核都期望以标记列表的形式来传递启动参数</span><span class="err">，</span><span class="n">启动参数标记列表以标记ATAG_CORE尅是</span><span class="err">，</span><span class="n">以标记ATAG_NONE结束</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">每个标记由标识被传递参数的tag_header结构以及随后的参数值数据结构来组成</span><span class="err">，</span><span class="n">数据结构tag和tag_header定义在Linux内核源码的include</span><span class="o">/</span><span class="n">asm</span><span class="o">/</span><span class="n">setup</span><span class="o">.</span><span class="na">h头文件中</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">在嵌入式Linux系统中</span><span class="err">，</span><span class="n">通常需要由Bootloader设置的常见启动参数有</span><span class="err">：</span><span class="n">ATAG_CORE</span><span class="o">,</span><span class="n">ATAG_MEN</span><span class="o">,</span><span class="n">ATAG_CMDLINE</span>
+</span><span class='line'>    <span class="mi">5</span><span class="o">.</span> <span class="n">调用内核</span><span class="err">，</span><span class="n">跳转到内核第一条指令处</span><span class="err">，</span><span class="n">跳转时要满足下列条件</span>
+</span><span class='line'>        <span class="mi">1</span><span class="o">.</span> <span class="n">CPU寄存器的设置</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">R0</span><span class="o">=</span><span class="mi">0</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">R1</span><span class="o">=</span><span class="n">机器类型ID</span><span class="err">，</span><span class="n">关于Machine</span> <span class="n">Type</span> <span class="n">Number可以参见linux</span><span class="o">/</span><span class="n">arch</span><span class="o">/</span><span class="n">arm</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">mach</span><span class="o">-</span><span class="n">types</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">R2</span><span class="o">=</span><span class="n">启动参数标记列表在RAM中的起始基地址</span>
+</span><span class='line'>        <span class="mi">2</span><span class="o">.</span> <span class="n">CPU模式</span>
+</span><span class='line'>            <span class="o">*</span>  <span class="n">必须禁止中断</span><span class="o">(</span><span class="n">IRQs和FIQs</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">CPU必须处于SVC模式</span>
+</span><span class='line'>        <span class="mi">3</span><span class="o">.</span> <span class="n">Cache和MMU的设置</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">MMU必须关闭</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">指令Cache可以打开亦可以关闭</span>
+</span><span class='line'>            <span class="o">*</span> <span class="n">数据Cache必须关闭</span>
+</span><span class='line'><span class="o">*</span> <span class="n">U</span><span class="o">-</span><span class="n">boot目录结构</span>
+</span><span class='line'>    <span class="mi">1</span><span class="o">.</span> <span class="n">与处理器体系结构或者开发板硬件直接相关</span>
+</span><span class='line'>    <span class="mi">2</span><span class="o">.</span> <span class="n">通用的函数或者驱动程序</span>
+</span><span class='line'>    <span class="mi">3</span><span class="o">.</span> <span class="n">U</span><span class="o">-</span><span class="n">Boot的应用程序</span><span class="err">、</span><span class="n">工具或者文档</span>
 </span><span class='line'>
-</span><span class='line'>##Uboot常用命令
-</span><span class='line'>&gt; 1. 使用命令时，可以使用其开头的若干个字母代替它
-</span><span class='line'>&gt; 2. 当运行一个命令之后，如果它是可重复执行的（代码中使用U_BOOT_CMD定义这个命令时，第三个参数是1），若想再次运行可以直接输入回车
-</span><span class='line'>&gt; 3. Uboot接受的数据都是16进制，输入时可以省略前缀0x
+</span><span class='line'><span class="err">##</span><span class="n">Uboot常用命令</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="mi">1</span><span class="o">.</span> <span class="n">使用命令时</span><span class="err">，</span><span class="n">可以使用其开头的若干个字母代替它</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="mi">2</span><span class="o">.</span> <span class="n">当运行一个命令之后</span><span class="err">，</span><span class="n">如果它是可重复执行的</span><span class="err">（</span><span class="n">代码中使用U_BOOT_CMD定义这个命令时</span><span class="err">，</span><span class="n">第三个参数是1</span><span class="err">），</span><span class="n">若想再次运行可以直接输入回车</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="mi">3</span><span class="o">.</span> <span class="n">Uboot接受的数据都是16进制</span><span class="err">，</span><span class="n">输入时可以省略前缀0x</span>
 </span><span class='line'>
-</span><span class='line'>1. 运行`help`命令可以看到所有命令的作用，如果要查看某个命令的使用方法，运行`help 命令名`。可以使用`?`来代替`help`
-</span><span class='line'>2. Uboot支持串口下载，网络下载，USB下载，相关命令有：loadb,loads,loadx,loady;tftpboot,nfs;usbslave。使用方法：
-</span><span class='line'>    * loadx [off] [baud];off表示文件下载后存放的内存地址，baud表示使用的波特率，如果off参数省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR
-</span><span class='line'>    * tftpboot [loadAddress] [bootfilename]; loadAddress表示文件下载后存放的内存地址，bootfilename表示要下载的文件名称。loadAddress省略，存放的位置为配置文件中定义的宏CFG_LOAD_ADDR。如果bootfilename省略，则使用单板的IP地址构造一个文件名
-</span><span class='line'>    * nfs [loadAddress] [host ip addr:bootfilename];host ip addr表示服务器的IP地址
-</span><span class='line'>    * usbslave [wait] [loadAddress]；在PC端使用dnw工具发送文件，U-boot通过USB Device接口接收文件。wait可以取值1或0，表示是否等得数据传输完成，当wait取0时，在后台进行下载，这时在Uboot仍可执行其他操作。下载文件成功后，Uboot会自动创建或者更新环境变量filezise，它表示下载的文件长度，可以在后续命令中使用$(filesize)来引用它
-</span><span class='line'>3. 常用的内存操作命令有：查看内存命令md，修改内存命令mm,填充内存命令mw,复制命令cp。这些命令都可以带上后缀".b",".w",".l"表示以字节、字、双字为单位进行操作。
-</span><span class='line'>    * md[.b,.w,.l] address [count],表示以字节、字、双字（默认是双字）为单位，显示从地址address开始的内存数据，显示的数据个数为count
-</span><span class='line'>    * mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出
-</span><span class='line'>    * mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。
-</span><span class='line'>    * cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存
-</span><span class='line'>4. 常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
-</span><span class='line'>    * nand info，查看Nand Flash信息
-</span><span class='line'>    * nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash
-</span><span class='line'>    * nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同
-</span><span class='line'>    * nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同
-</span><span class='line'>    * nand read.yaffs addr off size，从Nand Flash偏移地址off处读出size个字节的数据（包括OOB区域），存放到开始地址为addr的内存中
-</span><span class='line'>    * nand write.yaffs addr off size，把开始地址为addr的内存中的size个字节数据(只要有要写入OOB区域的数据)，写到Nand Flash的偏移地址off处
-</span><span class='line'>    * nand dump off，将Nand Flash偏移地址off的一个山区的数据打印出来，包括OOB数据
-</span><span class='line'>5. 环境变量命令(下面的命令只是在内存中进行，最后需要使用`saveenv`命令将更改后的所有环境变量写入Flash中)
-</span><span class='line'>    * `printenv`命令打印全部环境变量，“printenv name1 name2 ...”打印名字为name1,name2......的环境变量
-</span><span class='line'>    * `setenv name value`设置名字为name的环境变量的值为value
-</span><span class='line'>    * `setenv name`删除名字为name的环境变量
-</span><span class='line'>6. 启动命令,不带参数的`boot`,`bootm`命令都是执行环境变量bootcmd所指定的命令
-</span><span class='line'>    * "bootm [addr [arg ...]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg ...]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR
-</span><span class='line'>    * go addr [arg ...]与bootm命令类似，启动存放在地址addr处的二进制文件，[arg ...]表示参数
-</span><span class='line'>    * nboot [[[loadAddr] dev] offset]命令将Nand Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处，然后，如果环境变量autostart的值为yes，就启动这个映像，如果loadAddr参数省略，存放地址为配置文件中定义的宏CFG_LOAD_ADDR。如果dev参数省略，则它的取值为环境变量bootdevice的值，如果offset参数省略，则默认为0
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="n">运行</span><span class="err">`</span><span class="n">help</span><span class="err">`</span><span class="n">命令可以看到所有命令的作用</span><span class="err">，</span><span class="n">如果要查看某个命令的使用方法</span><span class="err">，</span><span class="n">运行</span><span class="err">`</span><span class="n">help</span> <span class="n">命令名</span><span class="err">`。</span><span class="n">可以使用</span><span class="err">`</span><span class="o">?</span><span class="err">`</span><span class="n">来代替</span><span class="err">`</span><span class="n">help</span><span class="err">`</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">Uboot支持串口下载</span><span class="err">，</span><span class="n">网络下载</span><span class="err">，</span><span class="n">USB下载</span><span class="err">，</span><span class="n">相关命令有</span><span class="err">：</span><span class="n">loadb</span><span class="o">,</span><span class="n">loads</span><span class="o">,</span><span class="n">loadx</span><span class="o">,</span><span class="n">loady</span><span class="o">;</span><span class="n">tftpboot</span><span class="o">,</span><span class="n">nfs</span><span class="o">;</span><span class="n">usbslave</span><span class="err">。</span><span class="n">使用方法</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">loadx</span> <span class="o">[</span><span class="n">off</span><span class="o">]</span> <span class="o">[</span><span class="n">baud</span><span class="o">];</span><span class="n">off表示文件下载后存放的内存地址</span><span class="err">，</span><span class="n">baud表示使用的波特率</span><span class="err">，</span><span class="n">如果off参数省略</span><span class="err">，</span><span class="n">存放的位置为配置文件中定义的宏CFG_LOAD_ADDR</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">tftpboot</span> <span class="o">[</span><span class="n">loadAddress</span><span class="o">]</span> <span class="o">[</span><span class="n">bootfilename</span><span class="o">];</span> <span class="n">loadAddress表示文件下载后存放的内存地址</span><span class="err">，</span><span class="n">bootfilename表示要下载的文件名称</span><span class="err">。</span><span class="n">loadAddress省略</span><span class="err">，</span><span class="n">存放的位置为配置文件中定义的宏CFG_LOAD_ADDR</span><span class="err">。</span><span class="n">如果bootfilename省略</span><span class="err">，</span><span class="n">则使用单板的IP地址构造一个文件名</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nfs</span> <span class="o">[</span><span class="n">loadAddress</span><span class="o">]</span> <span class="o">[</span><span class="n">host</span> <span class="n">ip</span> <span class="nl">addr:</span><span class="n">bootfilename</span><span class="o">];</span><span class="n">host</span> <span class="n">ip</span> <span class="n">addr表示服务器的IP地址</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">usbslave</span> <span class="o">[</span><span class="n">wait</span><span class="o">]</span> <span class="o">[</span><span class="n">loadAddress</span><span class="o">]</span><span class="err">；</span><span class="n">在PC端使用dnw工具发送文件</span><span class="err">，</span><span class="n">U</span><span class="o">-</span><span class="n">boot通过USB</span> <span class="n">Device接口接收文件</span><span class="err">。</span><span class="n">wait可以取值1或0</span><span class="err">，</span><span class="n">表示是否等得数据传输完成</span><span class="err">，</span><span class="n">当wait取0时</span><span class="err">，</span><span class="n">在后台进行下载</span><span class="err">，</span><span class="n">这时在Uboot仍可执行其他操作</span><span class="err">。</span><span class="n">下载文件成功后</span><span class="err">，</span><span class="n">Uboot会自动创建或者更新环境变量filezise</span><span class="err">，</span><span class="n">它表示下载的文件长度</span><span class="err">，</span><span class="n">可以在后续命令中使用$</span><span class="o">(</span><span class="n">filesize</span><span class="o">)</span><span class="n">来引用它</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">常用的内存操作命令有</span><span class="err">：</span><span class="n">查看内存命令md</span><span class="err">，</span><span class="n">修改内存命令mm</span><span class="o">,</span><span class="n">填充内存命令mw</span><span class="o">,</span><span class="n">复制命令cp</span><span class="err">。</span><span class="n">这些命令都可以带上后缀</span><span class="s">&quot;.b&quot;</span><span class="o">,</span><span class="s">&quot;.w&quot;</span><span class="o">,</span><span class="s">&quot;.l&quot;</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字</span><span class="err">、</span><span class="n">双字为单位进行操作</span><span class="err">。</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">md</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span> <span class="o">[</span><span class="n">count</span><span class="o">],</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字</span><span class="err">、</span><span class="n">双字</span><span class="err">（</span><span class="n">默认是双字</span><span class="err">）</span><span class="n">为单位</span><span class="err">，</span><span class="n">显示从地址address开始的内存数据</span><span class="err">，</span><span class="n">显示的数据个数为count</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mm</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span><span class="o">,</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">从地址address开始修改内存数据</span><span class="err">，</span><span class="n">执行mm命令后</span><span class="err">，</span><span class="n">输入新数据后回车</span><span class="err">，</span><span class="n">地址会自动增加</span><span class="err">，</span><span class="n">Ctrl</span><span class="o">+</span><span class="n">C退出</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mw</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span> <span class="n">value</span> <span class="o">[</span><span class="n">count</span><span class="o">],</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">往开始地址为address的内存中填充count个数据</span><span class="err">，</span><span class="n">数据值为value</span><span class="err">。</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">cp</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">source</span> <span class="n">target</span> <span class="n">count</span><span class="o">,</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">从原地址source的内存复制count个数据到目的地址target的内存</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">常用的Nand</span> <span class="n">Flash操作命令只有一个</span><span class="err">，</span><span class="n">它根据不同的参数进行不同的操作</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">info</span><span class="err">，</span><span class="n">查看Nand</span> <span class="n">Flash信息</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">erase</span> <span class="o">[</span><span class="n">clean</span><span class="o">]</span> <span class="o">[</span><span class="n">off</span> <span class="n">size</span><span class="o">],</span><span class="n">擦除Nand</span> <span class="n">Flash</span><span class="err">，</span><span class="n">加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记</span><span class="err">；</span><span class="n">off</span><span class="err">、</span><span class="n">size表示要擦除的开始偏移地址和长度</span><span class="err">，</span><span class="n">如果省略off和size表示要擦除整个Nand</span> <span class="n">Flash</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">read</span><span class="o">[.</span><span class="na">jffs2</span><span class="o">]</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="o">,</span><span class="n">从Nand</span> <span class="n">Flash偏移地址off处读出size个字节的数据</span><span class="err">，</span><span class="n">存放到开始地址为addr的内存中</span><span class="err">。</span><span class="n">是否加后缀</span><span class="o">.</span><span class="na">jffs的差别只是读操作时ECC校验方法不同</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">[.</span><span class="na">jffs2</span><span class="o">]</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="o">,</span><span class="n">把开始地址为addr的内存中的size个字节数据</span><span class="err">，</span><span class="n">写到Nand</span> <span class="n">Flash的偏移地址off处</span><span class="err">。</span><span class="n">是否加后缀</span><span class="o">.</span><span class="na">jffs的差别只是读操作时ECC校验方法不同</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">read</span><span class="o">.</span><span class="na">yaffs</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="err">，</span><span class="n">从Nand</span> <span class="n">Flash偏移地址off处读出size个字节的数据</span><span class="err">（</span><span class="n">包括OOB区域</span><span class="err">），</span><span class="n">存放到开始地址为addr的内存中</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">.</span><span class="na">yaffs</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="err">，</span><span class="n">把开始地址为addr的内存中的size个字节数据</span><span class="o">(</span><span class="n">只要有要写入OOB区域的数据</span><span class="o">)</span><span class="err">，</span><span class="n">写到Nand</span> <span class="n">Flash的偏移地址off处</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">dump</span> <span class="n">off</span><span class="err">，</span><span class="n">将Nand</span> <span class="n">Flash偏移地址off的一个山区的数据打印出来</span><span class="err">，</span><span class="n">包括OOB数据</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">环境变量命令</span><span class="o">(</span><span class="n">下面的命令只是在内存中进行</span><span class="err">，</span><span class="n">最后需要使用</span><span class="err">`</span><span class="n">saveenv</span><span class="err">`</span><span class="n">命令将更改后的所有环境变量写入Flash中</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">printenv</span><span class="err">`</span><span class="n">命令打印全部环境变量</span><span class="err">，“</span><span class="n">printenv</span> <span class="n">name1</span> <span class="n">name2</span> <span class="o">...</span><span class="err">”</span><span class="n">打印名字为name1</span><span class="o">,</span><span class="n">name2</span><span class="o">......</span><span class="na">的环境变量</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">setenv</span> <span class="n">name</span> <span class="n">value</span><span class="err">`</span><span class="n">设置名字为name的环境变量的值为value</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">setenv</span> <span class="n">name</span><span class="err">`</span><span class="n">删除名字为name的环境变量</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">启动命令</span><span class="o">,</span><span class="n">不带参数的</span><span class="err">`</span><span class="n">boot</span><span class="err">`</span><span class="o">,</span><span class="err">`</span><span class="n">bootm</span><span class="err">`</span><span class="n">命令都是执行环境变量bootcmd所指定的命令</span>
+</span><span class='line'>    <span class="o">*</span> <span class="s">&quot;bootm [addr [arg ...]]&quot;</span><span class="n">命令启动存放在地址addr处的Uboot格式的映像文件</span><span class="err">（</span><span class="n">使用Uboot目录tools下的mkimage工具制作得到</span><span class="err">），</span><span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">表示参数</span><span class="err">，</span><span class="n">如果addr参数省略</span><span class="err">，</span><span class="n">映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">go</span> <span class="n">addr</span> <span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">与bootm命令类似</span><span class="err">，</span><span class="n">启动存放在地址addr处的二进制文件</span><span class="err">，</span><span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">表示参数</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nboot</span> <span class="o">[[[</span><span class="n">loadAddr</span><span class="o">]</span> <span class="n">dev</span><span class="o">]</span> <span class="n">offset</span><span class="o">]</span><span class="n">命令将Nand</span> <span class="n">Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处</span><span class="err">，</span><span class="n">然后</span><span class="err">，</span><span class="n">如果环境变量autostart的值为yes</span><span class="err">，</span><span class="n">就启动这个映像</span><span class="err">，</span><span class="n">如果loadAddr参数省略</span><span class="err">，</span><span class="n">存放地址为配置文件中定义的宏CFG_LOAD_ADDR</span><span class="err">。</span><span class="n">如果dev参数省略</span><span class="err">，</span><span class="n">则它的取值为环境变量bootdevice的值</span><span class="err">，</span><span class="n">如果offset参数省略</span><span class="err">，</span><span class="n">则默认为0</span>
 </span><span class='line'>
-</span><span class='line'>##根文件系统
-</span><span class='line'>1. 所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定。该标准规定了根目录下各个子目录的名称及其存放的内容：
-</span><span class='line'>    * /bin：必备的用户命令，例如ls,cp等
-</span><span class='line'>    * /sbin:必备的系统管理员命令，例如ifconfig，reboot
-</span><span class='line'>    * /dev:设备文件，例如mtdblock0，tty1等
-</span><span class='line'>    * /etc:系统配置文件，包括启动文件，例如inittab
-</span><span class='line'>    * /lib:必要的链接库，例如C链接库、内核模块
-</span><span class='line'>    * /home:普通用户主目录
-</span><span class='line'>    * /root:root用户主目录
-</span><span class='line'>    * /usr/bin:非必备的用户程序，例如find、du等
-</span><span class='line'>    * /usr/sbin:非必备的管理员程序，例如chroot，inetd等
-</span><span class='line'>    * /usr/lib：库文件
-</span><span class='line'>    * /var:守护进程和工具程序所存放的可变，例如日志文件
-</span><span class='line'>    * /proc:用来提供内核和进程信息的虚拟文件系统，有内核自动生成目录下的内容
-</span><span class='line'>    * /sys:用来提供内核与设备信息的虚拟文件系统，由内核自动生成目录下的内容
-</span><span class='line'>    * /mnt:文件系统挂载点，用于临时安装文件系统
-</span><span class='line'>    * /tmp:临时性的文件，重启后将自动清除
-</span><span class='line'>2. 编译安装busybox：
-</span><span class='line'>    * 下载源码包，解压缩后进入文件夹根目录
-</span><span class='line'>    * make defconfig
-</span><span class='line'>    * make menuconfig
-</span><span class='line'>        * Busybox Settings:选择动态链接C库，指定交叉编译器的prefix为arm-linux-，为各命令安装为指向busybox的软连接，指定busybox的安装位置，选择支持Tab completion和Username completion
-</span><span class='line'>        * Applets：基本保持默认设置
-</span><span class='line'>    * make -j4
-</span><span class='line'>    * make install
-</span><span class='line'>3. busybox只用到了2个库，通用C库(libc)、数学库(libm),每个库有4个文件，四个文件中，.a文件是静态库文件，另外三个是：实际的共享链接库（libLIBRARY_NAME-GLIBC_VERSION.so），主修订版本的符号链接，指向实际的共享链接库(libLIBRARY_NAME.so.MAJOR_REVISION_VERSION,一旦程序连接了特定的链接库，将会参用该符号链接)，与版本无关的符号链接，指向主修订版本的符号链接(libLIBRARY_NAME.so,是为编译程序时提供一个通用条目)
-</span><span class='line'>4. 当使用`gcc hello.c -o hello -lm`编译程序的时候，gcc会根据-lm的提示，加头(lib)添尾(.so)得到libm.so，从而沿着与版本无关的符号链接(libm.so-&gt;libm.so.6)找到libm.so.6并记录在案(hello的ELF头中)，表示hello需要使用libm.so.6这个库文件所代表的数学库中的库函数。而当hello被执行的时候，动态链接库加载器会从hello的ELF头中找到libm.so.6这个记录，然后沿着主修订版本的符号链接(libm.so.6-&gt;libm-2.3.6.so)找到实际的共享链接库libm-2.3.6.so从而将其与hello做动态链接。可见**与版本无关的符号链接是供编译器使用的，主修订版本的符号链接是供动态链接库加载器使用的，而实际的共享链接库则是供应用程序使用的** 
-</span><span class='line'>5. init进程的主配置文件inittab用于决定init进程要启动哪些子进程，以及如何启动这些子进程。busybox的inittab文件的语法、语义和传统的SYSV的inittab有所不同
-</span><span class='line'>    * inittab文件中每个条目用来定义需要init启动的子进程，并确定它的启动方式，格式为&lt;id&gt;:&lt;runlevel&gt;:&lt;action&gt;:&lt;process&gt;,例如：ttySAC0：：ask-first:-/bin/sh
-</span><span class='line'>    * &lt;id&gt;表示子进程要使用的控制台，若省略则使用与init进程一样的控制台
-</span><span class='line'>    * &lt;runlevel&gt;表示运行级别，busybox init程序这个字段没有意义
-</span><span class='line'>    * &lt;action&gt;表示init进程如何空着这个子进程
-</span><span class='line'>        * sysinit：以该方式启动的子进程最先被init启动，该子进程只会被启动一次，如该子进程结束，init将不会重新启动它
-</span><span class='line'>        * wait：系统执行完sysinit条目后才启动该子进程，该子进程只执行一次，init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作
-</span><span class='line'>        * once:系统执行完wait条目后才启动该子进程，该子进程只执行一次，init进程不必等待该子进程的结束就可以执行启动其他子进程的动作
-</span><span class='line'>        * respawn：系统执行完once条目后才能启动该子进程，init进程会持续监测该子进程的状态，若发现该子进程退出，会重新启动它
-</span><span class='line'>        * askfirst：系统启动完respawn条目后才能启动该子进程，与respawn类似，不过init进程先输出“Please press Enter to active this console”，等用户输入回车后才启动子进程
-</span><span class='line'>        * shutdown：当系统关机时启动该子进程
-</span><span class='line'>        * restart：Busybox中配置了CONFIG_FEATURE_USE_INITAB，并且init进程接收到SIGUP信号时执行，先重新读取、解析/etc/inittab文件，再执行restart程序
-</span><span class='line'>        * ctrlaltdel：按下Ctrl+Alt+Del键时启动该子进程，不过在串口控制台中无法输入它
-</span><span class='line'>    * &lt;process&gt;表示进程对应的二进制文件，如果前面有-号，表示该程序是“可以与用户进行交互的”
-</span><span class='line'>6. 手工构建/dev目录：新建dev文件夹，在里面`sudo mknod console c 5 1`,它表示穿件console字符设备文件，主设备号是5，次设备号是1
-</span><span class='line'>7. 构建/dev目录的方法是使用udev(user dev),mdev是busybox中对udev的简化实现，其工作原理是：操作系统启动的时候会将识别到的所有设备的信息自动导出到/sys目录，在此基础上，用户态的应用程序mdev -s就可以扫描/sys/class和/sys/block中所有的类设备目录，如果在目录中含有名为“dev”的文件，且文件中包含的是设备号，则mdev就利用这些信息为这个设备在/dev下创建设备节点文件
-</span><span class='line'>8. Linux系统下实现热插拔的机制：当有热插拔事件产生时，内核就会调用位于/sbin目录下的mdev。这时mdev通过环境变量中的ACTION和DEVPATH(这两个变量是系统自带的)来确定此次热插拔事件的动作以及影响了/dev中的哪个目录。接着会看看这个目录中是否有“dev”的属性文件，如果有就利用这些信息为这个设备在/dev下创建或删除设备节点文件。我们需要告知操作系统，当它发现热插拔事件时应调用mdev，而不是别的程序。
-</span><span class='line'>9. 嵌入式Linux对文件系统的要求：
-</span><span class='line'>    * 要求文件系统在频繁的文件操作下能够保持较高的读写性能，要求低碎片化
-</span><span class='line'>    * Linux下的日志文件系统(XFS,ReiserFS,Ext3等)能保持数据的完整性，但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用。并且这些都是专门为硬盘类的存储设备进行了优化，对于Flash这类的存储介质并不适用
-</span><span class='line'>    * 嵌入式文件系统的载体是以Flash为主的存储介质，Flash的擦除次数是有限的，所以为了延长Flash的使用寿命，应该尽量减少对Flash的读写操作，并尽量使对Flash的写入操作均匀分布在整个Flash上
-</span><span class='line'>10. 在内核的配置菜单中可以看到块设备中有哟个ramdisk选项，并可以设置它的大小，默认的大小为4096KB，在配置内核的时候用户也可以指定ramdisk的大小。ramdisk是基于ram的块设备，所以它占据了一块固定内存的大小，并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容。由于ramdisk在很多场合并不太实用，在Linux的2.4版本开始支持了ramfs文件系统，它是一个简单的基于Linux的。可以动态分配大小的内存文件系统，它属于内核虚拟文件系统层(VFS)，与ramdisk相比，并不是基于虚拟在内存中的其他文件系统，例如ext2文件系统。使用方法：
-</span><span class='line'>    * mkdir /mnt/ramfs
-</span><span class='line'>    * mount -t ramfs none /mnt/ramfs(缺省大小，被限制最大maxsize为内存总和/2)
-</span><span class='line'>    * mount -t ramfs none /mnt/ramfs -o maxsize=1000(创建最大大小为1M的ramfs文件系统)
-</span><span class='line'>11. tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质，并且它的大小和ramfs一样，可以动态分配。**它主要用于减少对闪存不必要的写操作**这唯一目的。因为tmpfs驻留在RAM中，所以写/读/擦除的操作发生在RAM中而不是在闪存中。因此，当将日志消息写入挂载为tmpfs文件系统的目录时，是将其写入RAM而不是闪存中，在重新引导时不会保留它们。它的原理是：
-</span><span class='line'>    * 在Linux内核中有虚拟内存的概念，而虚拟内存是由物理内存RAM和交换分区swap组成，这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理。tmpfs会向虚拟内存子系统申请页来存储文件，但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区
-</span><span class='line'>12. tmpfs文件系统在内核中的打开方式为：
-</span><span class='line'>    * 在内核中选择“File systems--Pseudo filesystems--Virtual memory filesystem support”一项来支持对tmpfs虚拟文件系统的管理
-</span><span class='line'>13. 在启动时，经常可以看到启动脚本中有以下内容：
-</span><span class='line'>    * `mount none /dev -t tmpfs`
-</span><span class='line'>    * 这也是由于Linux系统的设备可以热插拔的原因
-</span><span class='line'>14. ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放，这样虚拟内存管理系统就不会将这些page释放或者交换到swap，从而实现文件总在物理内存中。tmpfs也是存放于内存中，但它可以被VM交换到swap，它其实是ramfs的一个变体
-</span><span class='line'>15. jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中
-</span><span class='line'>16. yaffs文件系统在mount的时候需要很少的内存（如果是小页--512B/Page,每1MB NandFlash大约需要4KB内存；大页需要大概1KB RAM/1 MB NandFlash）
-</span><span class='line'>17. yaffs文件系统的基本单位是Chunk，相当于页。Chunk中的资料包括两部分：一部分是资料区，占用Flash的一页；另一部分是文件信息以及冗余资料区，占用Flash页的OOB区。其冗余资料主要是ECC校验资料，对于小页的Flash，每页都有6位元祖的ECC资料，对于大页的Flash，每页有24位元祖的ECC资料 
-</span><span class='line'>18. yaffs文件系统的第一个块用于存放整个文件系统的信息，所以真实的数据应该从第二个块开始。
-</span><span class='line'>19. ubifs在设计与性能上均较yaffs2、jffs2更适合MLC NandFlash。例如：ubifs支持write-back，其写入的资料会被cache，直到有必要写入时才写到Flash，大大降低分散小区块数量并提高I/O效率。
+</span><span class='line'><span class="err">##</span><span class="n">根文件系统</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="n">所有的Linux发行版在对根文件系统布局上都遵循FHS标准的建议规定</span><span class="err">。</span><span class="n">该标准规定了根目录下各个子目录的名称及其存放的内容</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="n">bin</span><span class="err">：</span><span class="n">必备的用户命令</span><span class="err">，</span><span class="n">例如ls</span><span class="o">,</span><span class="n">cp等</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">sbin:</span><span class="n">必备的系统管理员命令</span><span class="err">，</span><span class="n">例如ifconfig</span><span class="err">，</span><span class="n">reboot</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">dev:</span><span class="n">设备文件</span><span class="err">，</span><span class="n">例如mtdblock0</span><span class="err">，</span><span class="n">tty1等</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">etc:</span><span class="n">系统配置文件</span><span class="err">，</span><span class="n">包括启动文件</span><span class="err">，</span><span class="n">例如inittab</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">lib:</span><span class="n">必要的链接库</span><span class="err">，</span><span class="n">例如C链接库</span><span class="err">、</span><span class="n">内核模块</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">home:</span><span class="n">普通用户主目录</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">root:</span><span class="n">root用户主目录</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nl">bin:</span><span class="n">非必备的用户程序</span><span class="err">，</span><span class="n">例如find</span><span class="err">、</span><span class="n">du等</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nl">sbin:</span><span class="n">非必备的管理员程序</span><span class="err">，</span><span class="n">例如chroot</span><span class="err">，</span><span class="n">inetd等</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="err">：</span><span class="n">库文件</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">var:</span><span class="n">守护进程和工具程序所存放的可变</span><span class="err">，</span><span class="n">例如日志文件</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">proc:</span><span class="n">用来提供内核和进程信息的虚拟文件系统</span><span class="err">，</span><span class="n">有内核自动生成目录下的内容</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">sys:</span><span class="n">用来提供内核与设备信息的虚拟文件系统</span><span class="err">，</span><span class="n">由内核自动生成目录下的内容</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">mnt:</span><span class="n">文件系统挂载点</span><span class="err">，</span><span class="n">用于临时安装文件系统</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">/</span><span class="nl">tmp:</span><span class="n">临时性的文件</span><span class="err">，</span><span class="n">重启后将自动清除</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">编译安装busybox</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">下载源码包</span><span class="err">，</span><span class="n">解压缩后进入文件夹根目录</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">make</span> <span class="n">defconfig</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">make</span> <span class="n">menuconfig</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">Busybox</span> <span class="nl">Settings:</span><span class="n">选择动态链接C库</span><span class="err">，</span><span class="n">指定交叉编译器的prefix为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="err">，</span><span class="n">为各命令安装为指向busybox的软连接</span><span class="err">，</span><span class="n">指定busybox的安装位置</span><span class="err">，</span><span class="n">选择支持Tab</span> <span class="n">completion和Username</span> <span class="n">completion</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">Applets</span><span class="err">：</span><span class="n">基本保持默认设置</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">make</span> <span class="o">-</span><span class="n">j4</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">make</span> <span class="n">install</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">busybox只用到了2个库</span><span class="err">，</span><span class="n">通用C库</span><span class="o">(</span><span class="n">libc</span><span class="o">)</span><span class="err">、</span><span class="n">数学库</span><span class="o">(</span><span class="n">libm</span><span class="o">),</span><span class="n">每个库有4个文件</span><span class="err">，</span><span class="n">四个文件中</span><span class="err">，</span><span class="o">.</span><span class="na">a文件是静态库文件</span><span class="err">，</span><span class="n">另外三个是</span><span class="err">：</span><span class="n">实际的共享链接库</span><span class="err">（</span><span class="n">libLIBRARY_NAME</span><span class="o">-</span><span class="n">GLIBC_VERSION</span><span class="o">.</span><span class="na">so</span><span class="err">），</span><span class="n">主修订版本的符号链接</span><span class="err">，</span><span class="n">指向实际的共享链接库</span><span class="o">(</span><span class="n">libLIBRARY_NAME</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="na">MAJOR_REVISION_VERSION</span><span class="o">,</span><span class="n">一旦程序连接了特定的链接库</span><span class="err">，</span><span class="n">将会参用该符号链接</span><span class="o">)</span><span class="err">，</span><span class="n">与版本无关的符号链接</span><span class="err">，</span><span class="n">指向主修订版本的符号链接</span><span class="o">(</span><span class="n">libLIBRARY_NAME</span><span class="o">.</span><span class="na">so</span><span class="o">,</span><span class="n">是为编译程序时提供一个通用条目</span><span class="o">)</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">当使用</span><span class="err">`</span><span class="n">gcc</span> <span class="n">hello</span><span class="o">.</span><span class="na">c</span> <span class="o">-</span><span class="n">o</span> <span class="n">hello</span> <span class="o">-</span><span class="n">lm</span><span class="err">`</span><span class="n">编译程序的时候</span><span class="err">，</span><span class="n">gcc会根据</span><span class="o">-</span><span class="n">lm的提示</span><span class="err">，</span><span class="n">加头</span><span class="o">(</span><span class="n">lib</span><span class="o">)</span><span class="n">添尾</span><span class="o">(.</span><span class="na">so</span><span class="o">)</span><span class="n">得到libm</span><span class="o">.</span><span class="na">so</span><span class="err">，</span><span class="n">从而沿着与版本无关的符号链接</span><span class="o">(</span><span class="n">libm</span><span class="o">.</span><span class="na">so</span><span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">libm</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">6</span><span class="o">)</span><span class="n">找到libm</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">6</span><span class="n">并记录在案</span><span class="o">(</span><span class="n">hello的ELF头中</span><span class="o">)</span><span class="err">，</span><span class="n">表示hello需要使用libm</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">6</span><span class="n">这个库文件所代表的数学库中的库函数</span><span class="err">。</span><span class="n">而当hello被执行的时候</span><span class="err">，</span><span class="n">动态链接库加载器会从hello的ELF头中找到libm</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">6</span><span class="n">这个记录</span><span class="err">，</span><span class="n">然后沿着主修订版本的符号链接</span><span class="o">(</span><span class="n">libm</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mi">6</span><span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">libm</span><span class="o">-</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="na">so</span><span class="o">)</span><span class="n">找到实际的共享链接库libm</span><span class="o">-</span><span class="mf">2.3</span><span class="o">.</span><span class="mi">6</span><span class="o">.</span><span class="na">so从而将其与hello做动态链接</span><span class="err">。</span><span class="n">可见</span><span class="o">**</span><span class="n">与版本无关的符号链接是供编译器使用的</span><span class="err">，</span><span class="n">主修订版本的符号链接是供动态链接库加载器使用的</span><span class="err">，</span><span class="n">而实际的共享链接库则是供应用程序使用的</span><span class="o">**</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">init进程的主配置文件inittab用于决定init进程要启动哪些子进程</span><span class="err">，</span><span class="n">以及如何启动这些子进程</span><span class="err">。</span><span class="n">busybox的inittab文件的语法</span><span class="err">、</span><span class="n">语义和传统的SYSV的inittab有所不同</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">inittab文件中每个条目用来定义需要init启动的子进程</span><span class="err">，</span><span class="n">并确定它的启动方式</span><span class="err">，</span><span class="n">格式为</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">id</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;:&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">runlevel</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;:&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">action</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;:&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">process</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;,</span><span class="n">例如</span><span class="err">：</span><span class="n">ttySAC0</span><span class="err">：：</span><span class="n">ask</span><span class="o">-</span><span class="nl">first:</span><span class="o">-/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">id</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">表示子进程要使用的控制台</span><span class="err">，</span><span class="n">若省略则使用与init进程一样的控制台</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">runlevel</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">表示运行级别</span><span class="err">，</span><span class="n">busybox</span> <span class="n">init程序这个字段没有意义</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">action</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">表示init进程如何空着这个子进程</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">sysinit</span><span class="err">：</span><span class="n">以该方式启动的子进程最先被init启动</span><span class="err">，</span><span class="n">该子进程只会被启动一次</span><span class="err">，</span><span class="n">如该子进程结束</span><span class="err">，</span><span class="n">init将不会重新启动它</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">wait</span><span class="err">：</span><span class="n">系统执行完sysinit条目后才启动该子进程</span><span class="err">，</span><span class="n">该子进程只执行一次</span><span class="err">，</span><span class="n">init进程必须等待该子进程结束后才能继续执行启动其他子进程的动作</span>
+</span><span class='line'>        <span class="o">*</span> <span class="nl">once:</span><span class="n">系统执行完wait条目后才启动该子进程</span><span class="err">，</span><span class="n">该子进程只执行一次</span><span class="err">，</span><span class="n">init进程不必等待该子进程的结束就可以执行启动其他子进程的动作</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">respawn</span><span class="err">：</span><span class="n">系统执行完once条目后才能启动该子进程</span><span class="err">，</span><span class="n">init进程会持续监测该子进程的状态</span><span class="err">，</span><span class="n">若发现该子进程退出</span><span class="err">，</span><span class="n">会重新启动它</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">askfirst</span><span class="err">：</span><span class="n">系统启动完respawn条目后才能启动该子进程</span><span class="err">，</span><span class="n">与respawn类似</span><span class="err">，</span><span class="n">不过init进程先输出</span><span class="err">“</span><span class="n">Please</span> <span class="n">press</span> <span class="n">Enter</span> <span class="n">to</span> <span class="n">active</span> <span class="k">this</span> <span class="n">console</span><span class="err">”，</span><span class="n">等用户输入回车后才启动子进程</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">shutdown</span><span class="err">：</span><span class="n">当系统关机时启动该子进程</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">restart</span><span class="err">：</span><span class="n">Busybox中配置了CONFIG_FEATURE_USE_INITAB</span><span class="err">，</span><span class="n">并且init进程接收到SIGUP信号时执行</span><span class="err">，</span><span class="n">先重新读取</span><span class="err">、</span><span class="n">解析</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">inittab文件</span><span class="err">，</span><span class="n">再执行restart程序</span>
+</span><span class='line'>        <span class="o">*</span> <span class="n">ctrlaltdel</span><span class="err">：</span><span class="n">按下Ctrl</span><span class="o">+</span><span class="n">Alt</span><span class="o">+</span><span class="n">Del键时启动该子进程</span><span class="err">，</span><span class="n">不过在串口控制台中无法输入它</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">process</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">表示进程对应的二进制文件</span><span class="err">，</span><span class="n">如果前面有</span><span class="o">-</span><span class="n">号</span><span class="err">，</span><span class="n">表示该程序是</span><span class="err">“</span><span class="n">可以与用户进行交互的</span><span class="err">”</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">手工构建</span><span class="o">/</span><span class="n">dev目录</span><span class="err">：</span><span class="n">新建dev文件夹</span><span class="err">，</span><span class="n">在里面</span><span class="err">`</span><span class="n">sudo</span> <span class="n">mknod</span> <span class="n">console</span> <span class="n">c</span> <span class="mi">5</span> <span class="mi">1</span><span class="err">`</span><span class="o">,</span><span class="n">它表示穿件console字符设备文件</span><span class="err">，</span><span class="n">主设备号是5</span><span class="err">，</span><span class="n">次设备号是1</span>
+</span><span class='line'><span class="mi">7</span><span class="o">.</span> <span class="n">构建</span><span class="o">/</span><span class="n">dev目录的方法是使用udev</span><span class="o">(</span><span class="n">user</span> <span class="n">dev</span><span class="o">),</span><span class="n">mdev是busybox中对udev的简化实现</span><span class="err">，</span><span class="n">其工作原理是</span><span class="err">：</span><span class="n">操作系统启动的时候会将识别到的所有设备的信息自动导出到</span><span class="o">/</span><span class="n">sys目录</span><span class="err">，</span><span class="n">在此基础上</span><span class="err">，</span><span class="n">用户态的应用程序mdev</span> <span class="o">-</span><span class="n">s就可以扫描</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">class和</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">block中所有的类设备目录</span><span class="err">，</span><span class="n">如果在目录中含有名为</span><span class="err">“</span><span class="n">dev</span><span class="err">”</span><span class="n">的文件</span><span class="err">，</span><span class="n">且文件中包含的是设备号</span><span class="err">，</span><span class="n">则mdev就利用这些信息为这个设备在</span><span class="o">/</span><span class="n">dev下创建设备节点文件</span>
+</span><span class='line'><span class="mi">8</span><span class="o">.</span> <span class="n">Linux系统下实现热插拔的机制</span><span class="err">：</span><span class="n">当有热插拔事件产生时</span><span class="err">，</span><span class="n">内核就会调用位于</span><span class="o">/</span><span class="n">sbin目录下的mdev</span><span class="err">。</span><span class="n">这时mdev通过环境变量中的ACTION和DEVPATH</span><span class="o">(</span><span class="n">这两个变量是系统自带的</span><span class="o">)</span><span class="n">来确定此次热插拔事件的动作以及影响了</span><span class="o">/</span><span class="n">dev中的哪个目录</span><span class="err">。</span><span class="n">接着会看看这个目录中是否有</span><span class="err">“</span><span class="n">dev</span><span class="err">”</span><span class="n">的属性文件</span><span class="err">，</span><span class="n">如果有就利用这些信息为这个设备在</span><span class="o">/</span><span class="n">dev下创建或删除设备节点文件</span><span class="err">。</span><span class="n">我们需要告知操作系统</span><span class="err">，</span><span class="n">当它发现热插拔事件时应调用mdev</span><span class="err">，</span><span class="n">而不是别的程序</span><span class="err">。</span>
+</span><span class='line'><span class="mi">9</span><span class="o">.</span> <span class="n">嵌入式Linux对文件系统的要求</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">要求文件系统在频繁的文件操作下能够保持较高的读写性能</span><span class="err">，</span><span class="n">要求低碎片化</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">Linux下的日志文件系统</span><span class="o">(</span><span class="n">XFS</span><span class="o">,</span><span class="n">ReiserFS</span><span class="o">,</span><span class="n">Ext3等</span><span class="o">)</span><span class="n">能保持数据的完整性</span><span class="err">，</span><span class="n">但消耗过多的系统资源的弱点使之不能成为嵌入式系统中的主流应用</span><span class="err">。</span><span class="n">并且这些都是专门为硬盘类的存储设备进行了优化</span><span class="err">，</span><span class="n">对于Flash这类的存储介质并不适用</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">嵌入式文件系统的载体是以Flash为主的存储介质</span><span class="err">，</span><span class="n">Flash的擦除次数是有限的</span><span class="err">，</span><span class="n">所以为了延长Flash的使用寿命</span><span class="err">，</span><span class="n">应该尽量减少对Flash的读写操作</span><span class="err">，</span><span class="n">并尽量使对Flash的写入操作均匀分布在整个Flash上</span>
+</span><span class='line'><span class="mi">10</span><span class="o">.</span> <span class="n">在内核的配置菜单中可以看到块设备中有哟个ramdisk选项</span><span class="err">，</span><span class="n">并可以设置它的大小</span><span class="err">，</span><span class="n">默认的大小为4096KB</span><span class="err">，</span><span class="n">在配置内核的时候用户也可以指定ramdisk的大小</span><span class="err">。</span><span class="n">ramdisk是基于ram的块设备</span><span class="err">，</span><span class="n">所以它占据了一块固定内存的大小</span><span class="err">，</span><span class="n">并且需要使用mke2fs格式化以及相对应的文件系统的驱动程序去读取设备上的内容</span><span class="err">。</span><span class="n">由于ramdisk在很多场合并不太实用</span><span class="err">，</span><span class="n">在Linux的2</span><span class="o">.</span><span class="mi">4</span><span class="n">版本开始支持了ramfs文件系统</span><span class="err">，</span><span class="n">它是一个简单的基于Linux的</span><span class="err">。</span><span class="n">可以动态分配大小的内存文件系统</span><span class="err">，</span><span class="n">它属于内核虚拟文件系统层</span><span class="o">(</span><span class="n">VFS</span><span class="o">)</span><span class="err">，</span><span class="n">与ramdisk相比</span><span class="err">，</span><span class="n">并不是基于虚拟在内存中的其他文件系统</span><span class="err">，</span><span class="n">例如ext2文件系统</span><span class="err">。</span><span class="n">使用方法</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ramfs</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">ramfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ramfs</span><span class="o">(</span><span class="n">缺省大小</span><span class="err">，</span><span class="n">被限制最大maxsize为内存总和</span><span class="o">/</span><span class="mi">2</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">ramfs</span> <span class="n">none</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">ramfs</span> <span class="o">-</span><span class="n">o</span> <span class="n">maxsize</span><span class="o">=</span><span class="mi">1000</span><span class="o">(</span><span class="n">创建最大大小为1M的ramfs文件系统</span><span class="o">)</span>
+</span><span class='line'><span class="mi">11</span><span class="o">.</span> <span class="n">tmpfs文件系统既可以使用内存也可以使用磁盘来作为存储介质</span><span class="err">，</span><span class="n">并且它的大小和ramfs一样</span><span class="err">，</span><span class="n">可以动态分配</span><span class="err">。</span><span class="o">**</span><span class="n">它主要用于减少对闪存不必要的写操作</span><span class="o">**</span><span class="n">这唯一目的</span><span class="err">。</span><span class="n">因为tmpfs驻留在RAM中</span><span class="err">，</span><span class="n">所以写</span><span class="o">/</span><span class="n">读</span><span class="o">/</span><span class="n">擦除的操作发生在RAM中而不是在闪存中</span><span class="err">。</span><span class="n">因此</span><span class="err">，</span><span class="n">当将日志消息写入挂载为tmpfs文件系统的目录时</span><span class="err">，</span><span class="n">是将其写入RAM而不是闪存中</span><span class="err">，</span><span class="n">在重新引导时不会保留它们</span><span class="err">。</span><span class="n">它的原理是</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">在Linux内核中有虚拟内存的概念</span><span class="err">，</span><span class="n">而虚拟内存是由物理内存RAM和交换分区swap组成</span><span class="err">，</span><span class="n">这些虚拟内存资源又是由Linux内核中的虚拟内存子系统管理</span><span class="err">。</span><span class="n">tmpfs会向虚拟内存子系统申请页来存储文件</span><span class="err">，</span><span class="n">但它不知道虚拟内存子系统分配给自己的页是在物理内存还是属于交换分区</span>
+</span><span class='line'><span class="mi">12</span><span class="o">.</span> <span class="n">tmpfs文件系统在内核中的打开方式为</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">在内核中选择</span><span class="err">“</span><span class="n">File</span> <span class="n">systems</span><span class="o">--</span><span class="n">Pseudo</span> <span class="n">filesystems</span><span class="o">--</span><span class="n">Virtual</span> <span class="n">memory</span> <span class="n">filesystem</span> <span class="n">support</span><span class="err">”</span><span class="n">一项来支持对tmpfs虚拟文件系统的管理</span>
+</span><span class='line'><span class="mi">13</span><span class="o">.</span> <span class="n">在启动时</span><span class="err">，</span><span class="n">经常可以看到启动脚本中有以下内容</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">mount</span> <span class="n">none</span> <span class="o">/</span><span class="n">dev</span> <span class="o">-</span><span class="n">t</span> <span class="n">tmpfs</span><span class="err">`</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">这也是由于Linux系统的设备可以热插拔的原因</span>
+</span><span class='line'><span class="mi">14</span><span class="o">.</span> <span class="n">ramfs实现机制是将cache在物理内存的文件占用的page不标记为可释放</span><span class="err">，</span><span class="n">这样虚拟内存管理系统就不会将这些page释放或者交换到swap</span><span class="err">，</span><span class="n">从而实现文件总在物理内存中</span><span class="err">。</span><span class="n">tmpfs也是存放于内存中</span><span class="err">，</span><span class="n">但它可以被VM交换到swap</span><span class="err">，</span><span class="n">它其实是ramfs的一个变体</span>
+</span><span class='line'><span class="mi">15</span><span class="o">.</span> <span class="n">jffs文件系统被用到NorFlash和小于64MB的NandFlash闪存中</span>
+</span><span class='line'><span class="mi">16</span><span class="o">.</span> <span class="n">yaffs文件系统在mount的时候需要很少的内存</span><span class="err">（</span><span class="n">如果是小页</span><span class="o">--</span><span class="mi">512</span><span class="n">B</span><span class="o">/</span><span class="n">Page</span><span class="o">,</span><span class="n">每1MB</span> <span class="n">NandFlash大约需要4KB内存</span><span class="err">；</span><span class="n">大页需要大概1KB</span> <span class="n">RAM</span><span class="o">/</span><span class="mi">1</span> <span class="n">MB</span> <span class="n">NandFlash</span><span class="err">）</span>
+</span><span class='line'><span class="mi">17</span><span class="o">.</span> <span class="n">yaffs文件系统的基本单位是Chunk</span><span class="err">，</span><span class="n">相当于页</span><span class="err">。</span><span class="n">Chunk中的资料包括两部分</span><span class="err">：</span><span class="n">一部分是资料区</span><span class="err">，</span><span class="n">占用Flash的一页</span><span class="err">；</span><span class="n">另一部分是文件信息以及冗余资料区</span><span class="err">，</span><span class="n">占用Flash页的OOB区</span><span class="err">。</span><span class="n">其冗余资料主要是ECC校验资料</span><span class="err">，</span><span class="n">对于小页的Flash</span><span class="err">，</span><span class="n">每页都有6位元祖的ECC资料</span><span class="err">，</span><span class="n">对于大页的Flash</span><span class="err">，</span><span class="n">每页有24位元祖的ECC资料</span>
+</span><span class='line'><span class="mi">18</span><span class="o">.</span> <span class="n">yaffs文件系统的第一个块用于存放整个文件系统的信息</span><span class="err">，</span><span class="n">所以真实的数据应该从第二个块开始</span><span class="err">。</span>
+</span><span class='line'><span class="mi">19</span><span class="o">.</span> <span class="n">ubifs在设计与性能上均较yaffs2</span><span class="err">、</span><span class="n">jffs2更适合MLC</span> <span class="n">NandFlash</span><span class="err">。</span><span class="n">例如</span><span class="err">：</span><span class="n">ubifs支持write</span><span class="o">-</span><span class="n">back</span><span class="err">，</span><span class="n">其写入的资料会被cache</span><span class="err">，</span><span class="n">直到有必要写入时才写到Flash</span><span class="err">，</span><span class="n">大大降低分散小区块数量并提高I</span><span class="o">/</span><span class="n">O效率</span><span class="err">。</span>
 </span><span class='line'>
-</span><span class='line'>##交叉编译移植所要修改的环境变量
-</span><span class='line'>1. CC编译器，系统默认gcc，需要修改为arm-linux-gcc
-</span><span class='line'>2. AR库工具，用以创建和修改库，需要修改为arm-linux-ar
-</span><span class='line'>3. LD链接器，系统默认为ld，需要修改为arm-linux-ld
-</span><span class='line'>4. RANLIB随机库创建器，系统默认为ranlib，需要修改为arm-linux-ranlib
-</span><span class='line'>5. AS汇编器，系统默认为as，需要修改为arm-linux-as
-</span><span class='line'>6. NM库查看工具，系统默认为nm，需要修改为arm-linux-nm
+</span><span class='line'><span class="err">##</span><span class="n">交叉编译移植所要修改的环境变量</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="n">CC编译器</span><span class="err">，</span><span class="n">系统默认gcc</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">AR库工具</span><span class="err">，</span><span class="n">用以创建和修改库</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">LD链接器</span><span class="err">，</span><span class="n">系统默认为ld</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">RANLIB随机库创建器</span><span class="err">，</span><span class="n">系统默认为ranlib</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">AS汇编器</span><span class="err">，</span><span class="n">系统默认为as</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">as</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">NM库查看工具</span><span class="err">，</span><span class="n">系统默认为nm</span><span class="err">，</span><span class="n">需要修改为arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">nm</span>
 </span><span class='line'>
-</span><span class='line'>##新建用户与用户组
-</span><span class='line'>* 在/etc/passwd中第一行新增：root:x:0:0:Root,,,:/root:/bin/sh
-</span><span class='line'>* passwd root,设置root用户密码
-</span><span class='line'>* chown root:root /bin/busybox,改变busybox的属主，否则将来u+s后第一个用户进程init的权限将不是root的权限
-</span><span class='line'>* chmod u+s /bin/busybox，这使得普通用户能使用passwd修改自己的密码，同时也使login程序能够正常工作
-</span><span class='line'>* adduser morris -h /home/morris -s /bin/sh -G morris
-</span><span class='line'>* adduser ftp -h /var/ftp -s /bin/sh -G ftp
-</span><span class='line'>* adduser ftpuser -h /sdcard/local -s /bin/sh -G ftp
-</span><span class='line'>* adduser ftproot -h /sdcard/tmp -s /bin/sh -G ftp
+</span><span class='line'><span class="err">##</span><span class="n">新建用户与用户组</span>
+</span><span class='line'><span class="o">*</span> <span class="n">在</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd中第一行新增</span><span class="err">：</span><span class="nl">root:x:</span><span class="mi">0</span><span class="o">:</span><span class="mi">0</span><span class="o">:</span><span class="n">Root</span><span class="o">,,,:/</span><span class="nl">root:</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'><span class="o">*</span> <span class="n">passwd</span> <span class="n">root</span><span class="o">,</span><span class="n">设置root用户密码</span>
+</span><span class='line'><span class="o">*</span> <span class="n">chown</span> <span class="nl">root:</span><span class="n">root</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">busybox</span><span class="o">,</span><span class="n">改变busybox的属主</span><span class="err">，</span><span class="n">否则将来u</span><span class="o">+</span><span class="n">s后第一个用户进程init的权限将不是root的权限</span>
+</span><span class='line'><span class="o">*</span> <span class="n">chmod</span> <span class="n">u</span><span class="o">+</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">busybox</span><span class="err">，</span><span class="n">这使得普通用户能使用passwd修改自己的密码</span><span class="err">，</span><span class="n">同时也使login程序能够正常工作</span>
+</span><span class='line'><span class="o">*</span> <span class="n">adduser</span> <span class="n">morris</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">morris</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">G</span> <span class="n">morris</span>
+</span><span class='line'><span class="o">*</span> <span class="n">adduser</span> <span class="n">ftp</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">ftp</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">G</span> <span class="n">ftp</span>
+</span><span class='line'><span class="o">*</span> <span class="n">adduser</span> <span class="n">ftpuser</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span><span class="n">sdcard</span><span class="o">/</span><span class="n">local</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">G</span> <span class="n">ftp</span>
+</span><span class='line'><span class="o">*</span> <span class="n">adduser</span> <span class="n">ftproot</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span><span class="n">sdcard</span><span class="o">/</span><span class="n">tmp</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">G</span> <span class="n">ftp</span>
 </span><span class='line'>
-</span><span class='line'>##移植telnet服务器
-</span><span class='line'>1. 如上创建好用户
-</span><span class='line'>2. 修改/etc/inittab,使得telnetd开机自动启动：
-</span><span class='line'>    * ::once/usr/sbin/telnetd#这里一定要使用once，不能使用respawn，因为telnetd是守护进程，其实现会fork自己后让自己结束
-</span><span class='line'>3. 创建并挂载/dev/pts,它将供telnetd服务使用
-</span><span class='line'>    * mkdir /dev/pts
-</span><span class='line'>    * mount -t devpts devpts /dev/pts
-</span><span class='line'>4. 更改/dev/tty和/dev/console的权限，以使普通用户登录系统时也能读写控制终端
-</span><span class='line'>    * chmod 666 /dev/tty
-</span><span class='line'>    * chmod 600 /dev/console
+</span><span class='line'><span class="err">##</span><span class="n">移植telnet服务器</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="n">如上创建好用户</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">修改</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">inittab</span><span class="o">,</span><span class="n">使得telnetd开机自动启动</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">::</span><span class="n">once</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">telnetd</span><span class="err">#</span><span class="n">这里一定要使用once</span><span class="err">，</span><span class="n">不能使用respawn</span><span class="err">，</span><span class="n">因为telnetd是守护进程</span><span class="err">，</span><span class="n">其实现会fork自己后让自己结束</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">创建并挂载</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span><span class="o">,</span><span class="n">它将供telnetd服务使用</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mkdir</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">mount</span> <span class="o">-</span><span class="n">t</span> <span class="n">devpts</span> <span class="n">devpts</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">pts</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">更改</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">tty和</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">console的权限</span><span class="err">，</span><span class="n">以使普通用户登录系统时也能读写控制终端</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">chmod</span> <span class="mi">666</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">tty</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">chmod</span> <span class="mi">600</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">console</span>
 </span><span class='line'>
-</span><span class='line'>##移植ftp服务器
-</span><span class='line'>1. [下载vsftpd2.3.5并解压](http://download.chinaunix.net/download/0001000/19.shtml)
-</span><span class='line'>2. 修改Makefile，指定交叉编译器`CC=arm-linux-gcc`
-</span><span class='line'>3. 修改vsf_findlibs.sh,将所有/lib和/usr/lib前面加上交叉编译器的库目录地址，比如`/embeded/crosstool/arm-wenris-linux-gnueabi/sysroot`
-</span><span class='line'>4. make -j4,将生成的vsftp复制到开发板根文件系统相应目录/usr/sbin
-</span><span class='line'>5. 复制vsftpd依赖的动态库文件到开发板根文件系统相应目录
-</span><span class='line'>6. 将模板配置文件vsftpd.conf复制到开发板/etc目录，修改该配置文件，使有效配置如下：
-</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'><span class="err">##</span><span class="n">移植ftp服务器</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="o">[</span><span class="n">下载vsftpd2</span><span class="o">.</span><span class="mf">3.5</span><span class="n">并解压</span><span class="o">](</span><span class="nl">http:</span><span class="c1">//download.chinaunix.net/download/0001000/19.shtml)</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">修改Makefile</span><span class="err">，</span><span class="n">指定交叉编译器</span><span class="err">`</span><span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span><span class="err">`</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">修改vsf_findlibs</span><span class="o">.</span><span class="na">sh</span><span class="o">,</span><span class="n">将所有</span><span class="o">/</span><span class="n">lib和</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib前面加上交叉编译器的库目录地址</span><span class="err">，</span><span class="n">比如</span><span class="err">`</span><span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">crosstool</span><span class="o">/</span><span class="n">arm</span><span class="o">-</span><span class="n">wenris</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnueabi</span><span class="o">/</span><span class="n">sysroot</span><span class="err">`</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">make</span> <span class="o">-</span><span class="n">j4</span><span class="o">,</span><span class="n">将生成的vsftp复制到开发板根文件系统相应目录</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span>
+</span><span class='line'><span class="mi">5</span><span class="o">.</span> <span class="n">复制vsftpd依赖的动态库文件到开发板根文件系统相应目录</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">将模板配置文件vsftpd</span><span class="o">.</span><span class="na">conf复制到开发板</span><span class="o">/</span><span class="n">etc目录</span><span class="err">，</span><span class="n">修改该配置文件</span><span class="err">，</span><span class="n">使有效配置如下</span><span class="err">：</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;anonymous_enable=NO
-</span><span class='line'>local_enable=YES
-</span><span class='line'>write_enable=YES
-</span><span class='line'>anon_upload_enable=NO
-</span><span class='line'>anon_mkdir_write_enable=NO
-</span><span class='line'>dirmessage_enable=YES
-</span><span class='line'>xferlog_enable=YES
-</span><span class='line'>connect_from_port_20=YES
-</span><span class='line'>xferlog_file=/var/log/vsftpd.log
-</span><span class='line'>xferlog_std_format=YES
-</span><span class='line'>idle_session_timeout=600
-</span><span class='line'>data_connection_timeout=120
-</span><span class='line'>nopriv_user=ftp
-</span><span class='line'>ftpd_banner=Welcome to WenRis FTP service
-</span><span class='line'>listen=YES</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">local_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">write_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">anon_upload_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">anon_mkdir_write_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="n">dirmessage_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">xferlog_enable</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">connect_from_port_20</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">xferlog_file</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">vsftpd</span><span class="o">.</span><span class="na">log</span>
+</span><span class='line'><span class="n">xferlog_std_format</span><span class="o">=</span><span class="n">YES</span>
+</span><span class='line'><span class="n">idle_session_timeout</span><span class="o">=</span><span class="mi">600</span>
+</span><span class='line'><span class="n">data_connection_timeout</span><span class="o">=</span><span class="mi">120</span>
+</span><span class='line'><span class="n">nopriv_user</span><span class="o">=</span><span class="n">ftp</span>
+</span><span class='line'><span class="n">ftpd_banner</span><span class="o">=</span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">WenRis</span> <span class="n">FTP</span> <span class="n">service</span>
+</span><span class='line'><span class="n">listen</span><span class="o">=</span><span class="n">YES</span>
+</span></code></pre></td></tr></table></div></figure>
 7. 由于vsftp源代码程序一定要使用一个目录/usr/share/empty,所以必须要预先创建它
 8. 修改/etc/inittab,使得vsftpd在开机时候自动启动：
     * ::respawn:/usr/sbin/vsftpd</p>
@@ -675,20 +911,21 @@
 <ol>
 <li><a href="http://www.boa.org/">获取源码，并解压缩</a></li>
 <li><p>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>由于arm-linux-gcc 编译器版本过高，对语法的支持有一些改变，所以需要修改compat.h中的
-</span><span class='line'>  #define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff
-</span><span class='line'>为：&lt;/p&gt;
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">由于arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="n">编译器版本过高</span><span class="err">，</span><span class="n">对语法的支持有一些改变</span><span class="err">，</span><span class="n">所以需要修改compat</span><span class="o">.</span><span class="na">h中的</span>
+</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="err">##</span><span class="o">-&gt;</span><span class="n">tm_gmtoff</span>
+</span><span class='line'><span class="n">为</span><span class="err">：</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;   #define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff
-</span><span class='line'>不然在编译的时候会提示如下错误：
-</span><span class='line'>  util.c: 100: 1: pasting “t” and “-&gt;” does not give a valid preprocessing token make: [util.o] Error1</span></code></pre></td></tr></table></div></figure></p></li>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">tm_gmtoff</span>
+</span><span class='line'><span class="n">不然在编译的时候会提示如下错误</span><span class="err">：</span>
+</span><span class='line'>  <span class="n">util</span><span class="o">.</span><span class="na">c</span><span class="o">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make:</span> <span class="o">[</span><span class="n">util</span><span class="o">.</span><span class="na">o</span><span class="o">]</span> <span class="n">Error1</span>
+</span></code></pre></td></tr></table></div></figure></p></li>
 </ol>
 
 
@@ -720,7 +957,7 @@ CPP = arm-linux-gcc -E
 <li><p>在当前目录下编译Boa源文件： make</p></li>
 <li>将生成的boa可执行程序复制到根文件系统的/usr/sbin目录下</li>
 <li>将boa.conf文件复制到根文件系统/etc/boa文件夹下面，并且作如下修改：
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -765,51 +1002,52 @@ CPP = arm-linux-gcc -E
 <span class='line-number'>43</span>
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>(1) 修改25行的port端口，用来设置服务器监听的端口：
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">(</span><span class="mi">1</span><span class="o">)</span> <span class="n">修改25行的port端口</span><span class="err">，</span><span class="n">用来设置服务器监听的端口</span><span class="err">：</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Port: The port Boa runs on.  The default port for http servers is 80.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">Port:</span> <span class="n">The</span> <span class="n">port</span> <span class="n">Boa</span> <span class="n">runs</span> <span class="n">on</span><span class="o">.</span>  <span class="n">The</span> <span class="k">default</span> <span class="n">port</span> <span class="k">for</span> <span class="n">http</span> <span class="n">servers</span> <span class="n">is</span> <span class="mi">80</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;If it is less than 1024, the server must be started as root.&lt;/h1&gt;&lt;/li&gt;
-</span><span class='line'>&lt;/ol&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">If</span> <span class="n">it</span> <span class="n">is</span> <span class="n">less</span> <span class="n">than</span> <span class="mi">1024</span><span class="o">,</span> <span class="n">the</span> <span class="n">server</span> <span class="n">must</span> <span class="n">be</span> <span class="n">started</span> <span class="n">as</span> <span class="n">root</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;Port 80
-</span><span class='line'>(2) 注释43行的监听IP地址：默认监听该主机上的所有IP地址&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">Port</span> <span class="mi">80</span>
+</span><span class='line'><span class="o">(</span><span class="mi">2</span><span class="o">)</span> <span class="n">注释43行的监听IP地址</span><span class="err">：</span><span class="n">默认监听该主机上的所有IP地址</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Listen 192.68.0.5&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Listen</span> <span class="mf">192.68</span><span class="o">.</span><span class="mf">0.5</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;(3) 修改53、54行的user和Group 启动的UID和GID，使其以root身份启动&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;(</span><span class="mi">3</span><span class="o">)</span> <span class="n">修改53</span><span class="err">、</span><span class="mi">54</span><span class="n">行的user和Group</span> <span class="n">启动的UID和GID</span><span class="err">，</span><span class="n">使其以root身份启动</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;User: The name or UID the server should run as.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">User:</span> <span class="n">The</span> <span class="n">name</span> <span class="n">or</span> <span class="n">UID</span> <span class="n">the</span> <span class="n">server</span> <span class="n">should</span> <span class="n">run</span> <span class="n">as</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Group: The group name or GID the server should run as.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">Group:</span> <span class="n">The</span> <span class="n">group</span> <span class="n">name</span> <span class="n">or</span> <span class="n">GID</span> <span class="n">the</span> <span class="n">server</span> <span class="n">should</span> <span class="n">run</span> <span class="n">as</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;User root
-</span><span class='line'>Group root
-</span><span class='line'>(4) 修改116行的DocumentRoot地址，即客户端要显示的HTML页面存放位置&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">User</span> <span class="n">root</span>
+</span><span class='line'><span class="n">Group</span> <span class="nf">root</span>
+</span><span class='line'><span class="o">(</span><span class="mi">4</span><span class="o">)</span> <span class="n">修改116行的DocumentRoot地址</span><span class="err">，</span><span class="n">即客户端要显示的HTML页面存放位置</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;DocumentRoot: The root directory of the HTML documents.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">DocumentRoot:</span> <span class="n">The</span> <span class="n">root</span> <span class="n">directory</span> <span class="n">of</span> <span class="n">the</span> <span class="n">HTML</span> <span class="n">documents</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Comment out to disable server non user files.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Comment</span> <span class="n">out</span> <span class="n">to</span> <span class="n">disable</span> <span class="n">server</span> <span class="n">non</span> <span class="n">user</span> <span class="n">files</span><span class="o">.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;DocumentRoot /usr/local/boa
-</span><span class='line'>(5) 修改输入网页输入主机IP时要显示的页面：这里设为index.html
-</span><span class='line'> # DirectoryIndex: Name of the file to use as a pre-written HTML&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">DocumentRoot</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span>
+</span><span class='line'><span class="o">(</span><span class="mi">5</span><span class="o">)</span> <span class="n">修改输入网页输入主机IP时要显示的页面</span><span class="err">：</span><span class="n">这里设为index</span><span class="o">.</span><span class="na">html</span>
+</span><span class='line'> <span class="err">#</span> <span class="nl">DirectoryIndex:</span> <span class="n">Name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">file</span> <span class="n">to</span> <span class="n">use</span> <span class="n">as</span> <span class="n">a</span> <span class="n">pre</span><span class="o">-</span><span class="n">written</span> <span class="n">HTML</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;directory index.  Please MAKE AND USE THESE FILES.  On the&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">directory</span> <span class="n">index</span><span class="o">.</span>  <span class="n">Please</span> <span class="n">MAKE</span> <span class="n">AND</span> <span class="n">USE</span> <span class="n">THESE</span> <span class="n">FILES</span><span class="o">.</span>  <span class="n">On</span> <span class="n">the</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;fly creation of directory indexes can be &lt;em&gt;slow&lt;/em&gt;.&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">fly</span> <span class="n">creation</span> <span class="n">of</span> <span class="n">directory</span> <span class="n">indexes</span> <span class="n">can</span> <span class="n">be</span> <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="n">slow</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;.&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Comment out to always use DirectoryMaker&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Comment</span> <span class="n">out</span> <span class="n">to</span> <span class="n">always</span> <span class="n">use</span> <span class="n">DirectoryMaker</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;DirectoryIndex index.html
-</span><span class='line'>(6) 修改CGI程序存放的位置：以&lt;a href="http://IP/cgi-bin/cginame"&gt;http://IP/cgi-bin/cginame&lt;/a&gt; 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序&lt;/p&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">DirectoryIndex</span> <span class="n">index</span><span class="o">.</span><span class="na">html</span>
+</span><span class='line'><span class="o">(</span><span class="mi">6</span><span class="o">)</span> <span class="n">修改CGI程序存放的位置</span><span class="err">：</span><span class="n">以</span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;http://IP/cgi-bin/cginame&quot;</span><span class="o">&gt;</span><span class="nl">http:</span><span class="c1">//IP/cgi-bin/cginame&lt;/a&gt; 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序&lt;/p&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;ScriptAlias: Maps a virtual path to a directory for serving scripts&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">ScriptAlias:</span> <span class="n">Maps</span> <span class="n">a</span> <span class="n">virtual</span> <span class="n">path</span> <span class="n">to</span> <span class="n">a</span> <span class="n">directory</span> <span class="k">for</span> <span class="n">serving</span> <span class="n">scripts</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;h1&gt;Example: ScriptAlias /htbin/ /www/htbin/&lt;/h1&gt;
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="nl">Example:</span> <span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">htbin</span><span class="o">/</span> <span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">htbin</span><span class="o">/&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;ScriptAlias /cgi-bin/ /usr/local/boa/cgi-bin/</span></code></pre></td></tr></table></div></figure></p>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <ol>
 <li>创建/var/log/boa/ 目录，这样Boa服务器启动时会在该目录下创建日志文件</li>
@@ -1091,7 +1329,7 @@ cgi.assign      = (".cgi" =&gt; "")
 <ol>
 <li><a href="http://matt.ucc.asn.au/dropbear/">下载源码包，解压缩</a></li>
 <li>配置：
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1103,18 +1341,19 @@ cgi.assign      = (".cgi" =&gt; "")
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>./configure &ndash;prefix=$PWD/results \
-</span><span class='line'>&ndash;host=arm-linux \
-</span><span class='line'>&ndash;with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib&lt;/li&gt;
-</span><span class='line'>&lt;/ol&gt;
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="err">#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
+</span><span class='line'><span class="o">./</span><span class="n">configure</span> <span class="o">&amp;</span><span class="n">ndash</span><span class="o">;</span><span class="n">prefix</span><span class="o">=</span><span class="n">$PWD</span><span class="o">/</span><span class="n">results</span> <span class="err">\</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">ndash</span><span class="o">;</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> <span class="err">\</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">ndash</span><span class="o">;</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'>
-</span><span class='line'>&lt;p&gt;make
-</span><span class='line'>make scp
-</span><span class='line'>make install
-</span><span class='line'>cp scp results/bin
-</span><span class='line'>arm-linux-strip results/bin/&lt;em&gt; results/sbin/&lt;/em&gt;</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">make</span>
+</span><span class='line'><span class="n">make</span> <span class="n">scp</span>
+</span><span class='line'><span class="n">make</span> <span class="n">install</span>
+</span><span class='line'><span class="n">cp</span> <span class="n">scp</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span>
+</span><span class='line'><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span><span class="o">/&lt;</span><span class="n">em</span><span class="o">&gt;</span> <span class="n">results</span><span class="o">/</span><span class="n">sbin</span><span class="o">/&lt;/</span><span class="n">em</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
 3. 将生成的bin，sin放到开发板相应文件夹下</p>
 
 <h2>编译tslib</h2>
