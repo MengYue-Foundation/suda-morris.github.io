@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-02-06T13:52:45+08:00</updated>
+  <updated>2016-02-22T21:23:11+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,156 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[altium_designer]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/02/19/altium-designer/"/>
+    <updated>2016-02-19T15:12:32+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/02/19/altium-designer</id>
+    <content type="html"><![CDATA[<h2>软件汉化</h2>
+
+<ol>
+<li>DXP->Preferences</li>
+<li>在System->General中选择Use localized resources复选框</li>
+<li>重启软件</li>
+</ol>
+
+
+<h2>恢复桌面布局</h2>
+
+<p>当文件桌面发生混乱时，可通过View->Desktop Layout->Default命令来恢复默认的桌面布局</p>
+
+<h2>公制与英制</h2>
+
+<p>1mil = 1/1000inch = 0.0254mm</p>
+
+<h2>设置图纸格点</h2>
+
+<p>图纸格点设置包括两个方面，一个是图纸的Snap捕捉格点，一个是可视格点，还有一个是电栅格（电气格点）。
+1. snap捕捉格点：表示放置线时可以捕捉到放置端点位置的点。
+2. 可视格点：表示可见到的网格大小
+3. 电栅格：绘制原理图的导线时系统会以电栅格大小为半径，以光标所在位置为中心进行查找电气节点，如果在此范围内有电气节点则光标会自动移动到此电气节点上</p>
+
+<h2>视图的刷新</h2>
+
+<p>绘制原理图时，在完成滚动画面、移动元件等操作后，又会出现画面显示残留的斑点、线段或图形变性等问题。虽然这些内容不会影响电路的正确性，但是为了美观，通过View->Refresh命令可以使显示恢复</p>
+
+<h2>选择一个连接上的所有导线</h2>
+
+<p>选择Edit->Select->Connection命令，将鼠标指针移动到某个连接的导线上，单击，则该连接上的所有导线都被选中，并高亮地显示出来，元器件也被特殊标示出来</p>
+
+<h2>绘制椭圆曲线</h2>
+
+<p>在绘图工具栏中选择绘制椭圆，按Tab键，输入相应的配置参数后在不移动鼠标的情况下连续单击5次</p>
+
+<h2>使用Ultra Librarian软件自动生成原理图库和封装库</h2>
+
+<ol>
+<li><a href="http://webench.ti.com/cad/ULib.zip">下载ULib</a>，解压缩后安装</li>
+<li>打开软件，Load Data导入bxl文件(芯片厂商提供)</li>
+<li>选择输出格式为Altium Designer，然后Export，导出的文件一般放在软件目录的Exported下，比如D:\UltraLibrarian\Library\Exported
+<img src="http://i.imgur.com/H9HAk1N.png" alt="数据文件导入" /></li>
+<li>进入导出后的文件夹，用altium软件打开PrjScr工程文件</li>
+<li>在打开的软件中双击打开UL_Form.pas文件，并运行</li>
+<li>紧接着弹出的对话框中，选择导出文件夹下的【日期.txt]格式的文件</li>
+<li>完成后会在相同的目录下生成需要的库文件
+<img src="http://i.imgur.com/l3Mzy9u.png" alt="使用Altium软件完成余下工作" /></li>
+</ol>
+
+
+<h2>测量距离</h2>
+
+<p>快捷键：Ctrl+M</p>
+
+<h2>Mechanical13和Mechanical15</h2>
+
+<ol>
+<li>Mechanical13用于代表元件封装本体外形</li>
+<li>Mechanical15用于表示囊括元件外形（包括管脚）所需的最小矩形</li>
+</ol>
+
+
+<h2>从PCB文件生成封装库文件</h2>
+
+<ol>
+<li>Altium提供了一个从PCB文件生成封装库文件的功能，该功能自动创建一个封装库并将PCB文件中所有用到的元件封装导入该封装库</li>
+<li>方法：在PCB编辑器中单击：Design->Make PCB Library</li>
+</ol>
+
+
+<h2>敷铜</h2>
+
+<ol>
+<li>印刷线路板上大面积的敷铜通常有两种，一种用作散热，一种用作屏蔽来减小干扰</li>
+<li>大面积敷铜上一般要开窗口（网状），这是由于印刷线路板板材的基板与铜箔之间的粘合剂在浸焊或长时间受热（如波峰焊），会产生挥发性气体无法排出，热量不易散发，以致产生铜箔膨胀、脱落现象。</li>
+<li>每个板卡都包含了大量敷铜多边形，在设计时一个方便的管理方法就是把他们堆放在一起，即所谓敷铜搁置，也称敷铜堆放。堆放敷铜多边形不会将他们删除，而是把它们放进PCB文件中保留其完整的定义，但在设计窗口中他们将不再出现。</li>
+<li>敷铜管理器：Tool->Polygon Pours->Polygon Manager</li>
+</ol>
+
+
+<h2>PCB的组成部分</h2>
+
+<ol>
+<li>元件：用于完成电路功能的各种器件</li>
+<li>铜箔：铜箔在电路板上可以表现为导线、焊盘、过孔和敷铜等</li>
+<li>丝印层：印刷电路板的顶层，采用绝缘材料制成。在丝印层上可以标注文字，注释电路板上的元件和整个电路板。丝印层还能起到保护顶层导线的功能</li>
+<li>印制材料：采用绝缘材料制成，用于支撑整个电路板</li>
+</ol>
+
+
+<h2>PCB的板层</h2>
+
+<ol>
+<li>Altium Designer提供堆栈管理器对各层属性进行管理，在堆栈管理器中可以定义层的结构，看到堆栈层的立体效果。选择：Design->Layer Stack Manager</li>
+<li>PCB工作层面可以分成以下几种类型：
+
+<ol>
+<li>信号层：即为用于建立电气连接的铜箔层</li>
+<li>内平面：是专门用于建立电源网络的铜箔，可以算作信号层的一种</li>
+<li>机械层：是用于支持电路板的印制材料层</li>
+<li>掩膜层：为了方便焊接而设立的
+
+<ol>
+<li>Top/Bottom Solder，阻焊层，是指印刷电路板要上绿油的部分。实际上这阻焊层使用的是负片输出，所以在阻焊层的形状映射到板子上以后，并不是上了绿油阻焊，反而是露出了铜皮。所以阻焊层的意思是在整片阻焊的绿油上开窗，目的是允许焊接，默认情况下，没有阻焊层的区域都要上绿油</li>
+<li>Top/Bottom Paste，焊膏层，这一层只要露出所有需要焊接的焊盘</li>
+</ol>
+</li>
+<li>丝印层：即电路板的说明文字层</li>
+<li>其余层
+
+<ol>
+<li>Drill Guide和Drill Drawing：用于描述钻孔图及钻孔位置</li>
+<li>Keep-out Layer：禁止布线层</li>
+<li>Multi-Layer：设置更多层面</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>电路板物理与电气边界</h2>
+
+<ol>
+<li>电路板的物理边界由机械层1来定义</li>
+<li>电路板的电气边界由Keep-out层来定义</li>
+<li>一般物理边界与电气边界间距50mil即可。比如电路板大小为5000milX4000mil，那么电气边界大小为4900milX3900mil</li>
+</ol>
+
+
+<h2>PCB设计规则(执行菜单命令：Design->Rules)</h2>
+
+<ol>
+<li>电气规则(Electrical)
+
+<ol>
+<li></li>
+</ol>
+</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android]]></title>
@@ -3532,6 +3682,17 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 </span><span class='line'> <span class="k">endmodule</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h2>VGA</h2>
+
+<ol>
+<li>VGA全称Video Graphic Array，也叫显示绘图阵列，是逐行扫描的显示制式，其支持的分辨率为640X480，对更高分辨率800X600称为SVGA模式；1024X768称为XVGA</li>
+<li>VGA时序分行时序和帧时序，两者都包含同步脉冲（Sync a），显示后延（Back porch b），显示时序段（Display interval c）和显示前沿（Front porch d）四个部分
+<img src="http://i.imgur.com/xTENNYJ.png" alt="VGA时序" /></li>
+<li>各种分辨率的行场同步时序如图
+<img src="http://i.imgur.com/VTCZg6j.png" alt="VGA参考时序数据表" /></li>
+</ol>
+
 ]]></content>
   </entry>
   
@@ -6173,29 +6334,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>常用的汉字内码系统有GB2312，GB13000，GBK，BIG5（繁体）等几种，其中GB2312支持的汉字仅有几千个，很多时候不够用，而GBK内码不仅完全兼容GB2312，还支持繁体字，总汉字数量达到2万多个。</li>
 <li>每个GBK码由2字节组成，第一个字节为0X81~0xFE，第二个字节分为两部分，一是0x40~0x7E，二是0x80~0xFE。第一个字节代表的意义称为区，GBK里面总共有126个区，每个区内有190个汉字。</li>
 <li></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FRDM_KL02Z]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z/"/>
-    <updated>2015-10-26T15:51:29+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z</id>
-    <content type="html"><![CDATA[<h2>FRDM_KL02Z开发板简介</h2>
-
-<ol>
-<li>MKL02Z32VFM4 MCU – 48 MHz、32 KB闪存、4 KB SRAM、32QFN</li>
-<li>电容滑动触摸传感板，MMA8451Q加速度传感器，三色LED</li>
-<li>新型OpenSDA调试接口：
-
-<ol>
-<li>大容量存储设备闪存编程接口(默认)；无需安装任何工具即可评估演示应用</li>
-<li>P&amp;E调试接口具有运行控制调试功能并兼容IDE工具</li>
-<li>CMSIS-DAP接口：面向嵌入式调试接口的ARM新标准</li>
-</ol>
-</li>
 </ol>
 
 ]]></content>
