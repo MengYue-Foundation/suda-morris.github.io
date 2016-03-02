@@ -88,509 +88,6 @@
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2015/09/25/html5-introduce/">
-		
-			HTML5知识点清单</a>
-	</h2>
-	<div class="entry-content">
-		<h2>基础</h2>
-
-<ol>
-<li>声明：&lt;!DOCTYPE>
-
-<ul>
-<li>HTML有多个不同版本，只有完全明白页面中使用的确切的HTML版本，浏览器才能完全正确地显示出HTML页面</li>
-<li>HTML5：
-
-<ul>
-<li>&lt;!DOCTYPE html></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>元素：指的是从开始标签到结束标签的所有代码
-
-<ul>
-<li><code>&lt;p&gt; this is my web page &lt;/p&gt;</code>中的<code>this is my web page</code>就是元素内容</li>
-<li><code>&lt;br/&gt;</code>表示不含任何元素的空标签，即换行</li>
-<li>空元素在开始标签中进行关闭</li>
-<li>大多数的HTML元素可拥有属性</li>
-</ul>
-</li>
-<li>属性
-
-<ul>
-<li>属性以键值对的形式出现</li>
-<li>常用标签属性
-
-<ul>
-<li><code>&lt;h1&gt;:align对齐方式</code></li>
-<li><code>&lt;body&gt;:bgcolor背景颜色</code></li>
-<li><code>&lt;a&gt;:target规定在何处打开连接</code></li>
-</ul>
-</li>
-<li>通用属性
-
-<ul>
-<li><code>class：规定元素的类名</code></li>
-<li><code>id：规定元素唯一ID</code></li>
-<li><code>style：规定元素的样式</code></li>
-<li><code>title：规定元素的额外信息</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>格式化
-
-<ul>
-<li><code>&lt;b&gt;定义粗体文字</code></li>
-<li><code>&lt;big&gt;定义大号文字</code></li>
-<li><code>&lt;em&gt;定义着重文字</code></li>
-<li><code>&lt;i&gt;定义斜体文字</code></li>
-<li><code>&lt;small&gt;定义小号文字</code></li>
-<li><code>&lt;strong&gt;定义加重语气</code></li>
-<li><code>&lt;sub&gt;定义下标文字</code></li>
-<li><code>&lt;sup&gt;定义上标文字</code></li>
-<li><code>&lt;ins&gt;定义插入字</code></li>
-<li><code>&lt;del&gt;定义删除字</code></li>
-</ul>
-</li>
-<li>样式
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;style&gt;:样式定义</code></li>
-<li><code>&lt;link&gt;:资源引用</code></li>
-</ul>
-</li>
-<li>属性
-
-<ul>
-<li><code>rel="stylesheet"：外部样式表</code></li>
-<li><code>type="text/css":引入文档的类型</code></li>
-<li><code>margin-left:边距</code></li>
-</ul>
-</li>
-<li>三种样式表插入方法：
-
-<ol>
-<li>外部样式表：<code>&lt;link rel="stylesheet" type="text/css" href="mystyle.css"&gt;</code></li>
-<li>内部样式表：<code>&lt;style type="text/css"&gt;body{background-color:red} p{margin-left:20px}&lt;/style&gt;</code></li>
-<li>内联样式表：<code>&lt;p style="color:red"&gt;</code></li>
-</ol>
-</li>
-</ol>
-</li>
-<li>链接
-
-<ol>
-<li>标签：<a></a></li>
-<li>连接数据：文本链接，图片链接</li>
-<li>属性：
-
-<ol>
-<li>href属性：指向另一个文档的链接</li>
-<li>name属性：创建文档内的链接
-
-<ul>
-<li><code>&lt;a name="tips"&gt;hello&lt;/a&gt;</code></li>
-<li><code>&lt;a href="#tips"&gt;跳转&lt;/a&gt;</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>img标签属性
-
-<ol>
-<li>alt：替换文本属性</li>
-<li>width：宽</li>
-<li>height：高</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>表格
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;table&gt;：定义表格</code>,属性border定义边框大小，属性cellpadding定义单元格边距，属性cellspacing定义单元格间距，属性bgcolor定义表格背景色，属性background定义表格图片</li>
-<li><code>&lt;caption&gt;：定义表格标题</code></li>
-<li><code>&lt;th&gt;：定义表格表头</code></li>
-<li><code>&lt;tr&gt;：定义表格的行</code></li>
-<li><code>&lt;td&gt;：定义表格的单元</code>,属性colspan的值定义了要合并的单元格数目</li>
-<li><code>&lt;thead&gt;：定义表格的页眉</code></li>
-<li><code>&lt;tbody&gt;：定义表格的主题</code></li>
-<li><code>&lt;tfoot&gt;：定义表格的页脚</code></li>
-<li><code>&lt;col&gt;：定义表格的列属性</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>列表
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;ol&gt;：有序列表</code>，type属性值A,a,I ,i,start</li>
-<li><code>&lt;ul&gt;：无序列表</code>，type属性值disc,circle,square</li>
-<li><code>&lt;li&gt;：列表项</code></li>
-<li><code>&lt;dl&gt;：自定义列表</code></li>
-<li><code>&lt;dt&gt;：自定义列表项</code></li>
-<li><code>&lt;dd&gt;：自定义列表描述</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li>块
-
-<ol>
-<li>HTML块元素
-
-<ul>
-<li>块元素在显示时，通常会以新行开始，比如<code>&lt;h1&gt;,&lt;p&gt;,&lt;ul&gt;</code></li>
-</ul>
-</li>
-<li>HTML内联元素
-
-<ul>
-<li>内联元素通常不会以新行开始，比如<code>&lt;b&gt;,&lt;a&gt;,&lt;img&gt;</code></li>
-</ul>
-</li>
-<li><code>HTML&lt;div&gt;</code>元素
-
-<ul>
-<li><code>&lt;div&gt;</code>元素也被称称为块元素，其主要是组合HTML元素的容器</li>
-</ul>
-</li>
-<li><code>HTML&lt;span&gt;</code>元素
-
-<ul>
-<li><code>&lt;span&gt;</code>元素是内联元素，可作为文本的容器</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>使用div元素布局</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="cp">&lt;!DOCTYPE html&gt;</span>
-</span><span class='line'><span class="nt">&lt;html&gt;</span>
-</span><span class='line'><span class="nt">&lt;head</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;title&gt;</span>html布局测试<span class="nt">&lt;/title&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;style </span><span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        <span class="nt">body</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#page</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">950px</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#head</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">red</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#left</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">greenyellow</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#middle</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">gray</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#right</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">cornflowerblue</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">20%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="nt">div</span><span class="nf">#foot</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">background-color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-</span><span class='line'>            <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="nt">&lt;/style&gt;</span>
-</span><span class='line'><span class="nt">&lt;/head&gt;</span>
-</span><span class='line'><span class="nt">&lt;body&gt;</span>
-</span><span class='line'><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;page&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;head&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        head
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_L
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;middle&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_M
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;right&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        main_R
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'>    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;foot&quot;</span><span class="nt">&gt;</span>
-</span><span class='line'>        foot
-</span><span class='line'>    <span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/div&gt;</span>
-</span><span class='line'><span class="nt">&lt;/body&gt;</span>
-</span><span class='line'><span class="nt">&lt;/html&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li><p>表单</p>
-
-<ol>
-<li>标签
-
-<ul>
-<li><code>&lt;form&gt;表单</code>，属性值有action，method</li>
-<li><code>&lt;input&gt;输入域</code>，属性type的值有：text，password，checkbox，radio(需要和name属性搭配使用),button(需要和value属性搭配使用),submit(需要和value属性搭配使用)</li>
-<li><code>&lt;textarea&gt;文本域</code>，属性有cols,rows</li>
-<li><code>&lt;label&gt;控制标签</code></li>
-<li><code>&lt;fieldset&gt;定义域</code></li>
-<li><code>&lt;legend&gt;域的标题</code></li>
-<li><code>&lt;select&gt;选择列表</code></li>
-<li><code>&lt;optgroup&gt;选项组</code></li>
-<li><code>&lt;option&gt;下拉列表中的选项</code>,需要被<code>&lt;select&gt;</code>包围</li>
-<li><code>&lt;button&gt;按钮</code></li>
-</ul>
-</li>
-</ol>
-</li>
-<li><p>框架</p>
-
-<ol>
-<li>框架标签<code>&lt;frame?</code></li>
-<li>框架集标签<code>&lt;frameset&gt;</code></li>
-<li>常用标签
-
-<ul>
-<li>noresize:固定框架大小</li>
-<li>cols:列</li>
-<li>rows:行</li>
-</ul>
-</li>
-<li>内联框架<code>&lt;iframe&gt;</code>,属性src指名引用的框架路径，属性frameborder指名是否需要边框</li>
-</ol>
-</li>
-<li><p>实体</p>
-
-<ul>
-<li>HTML中预留字符串必须被替换成字符实体，如&lt;（小于号），>（大于号）</li>
-<li>常用的字符实体
-
-<ul>
-<li>空格：&amp;nbsp</li>
-<li>小于号：&amp;lt</li>
-<li>大于号：&amp;gt</li>
-<li>和号：&amp;amp</li>
-<li>引号：&amp;quot</li>
-<li>撇号：&amp;apos</li>
-<li>分：&amp;cent</li>
-<li>镑：&amp;pound</li>
-<li>元：&amp;yen</li>
-<li>欧元：&amp;euro</li>
-<li>小节：&amp;sect</li>
-<li>版权：&amp;copy</li>
-<li>注册商标：&amp;reg</li>
-<li>商标：&amp;trade</li>
-<li>乘号：&amp;times</li>
-<li>除号：&amp;divide</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-
-
-<h2>HTML5 Web Storage</h2>
-
-<ol>
-<li>Web Storage功能就是在Web上存储数据的功能，这里的储存是针对客户端本地而言的，具体分为两种：
-
-<ul>
-<li>sessionStorage：将数据保存在session对象中，session是指用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是用户浏览这个网站所花费的时间。session对象可以用来保存在这段时间内所要求保存的任何数据</li>
-<li>localStorage：将数据保存在客户端本地的硬件设备中，即使浏览器被关闭了，该数据任然存在，下一次打开浏览器访问网站时仍然可以继续使用</li>
-</ul>
-</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>sessionStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">sessionStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span>localStorage</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="kd">function</span> <span class="nx">saveStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">str</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
-</span><span class='line'>  <span class="nx">localStorage</span><span class="p">.</span><span class="nx">setItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="nx">str</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">function</span> <span class="nx">loadStorage</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">msg</span> <span class="o">=</span> <span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">);</span>
-</span><span class='line'>  <span class="nx">target</span><span class="p">.</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>HTML5 本地数据库</h2>
-
-<ol>
-<li>HTML5中内置了两种本地数据库，一种为SQLite，一种为indexedDB</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-25T22:26:10+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
 		<a href="/blog/2015/09/23/project-manager/">
 		
 			系统集成项目管理</a>
@@ -3245,6 +2742,72 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 	<a class='category' href='/blog/categories/qt4/'>qt4</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/07/13/ut4418-introduce/">
+		
+			UT4418_Introduce</a>
+	</h2>
+	<div class="entry-content">
+		<h2>S5PV4418简介</h2>
+
+<blockquote><p>S5PV4418处理器是三星2014年推出的4核处理器，使用Cortex-A9四核心，整体性能比Cortex-A8核心高出50%，提供6.4GB/s内存带宽，支持1080P的全高清视频输出，以及3D图形显示，支持LCD显示1080P高清电视输出等。完全是Exynos4412的升级版芯片，性能远远超过Exynos4412，并且基本兼容Exynos412</p></blockquote>
+
+<h2>开发板配置</h2>
+
+<ol>
+<li>4G iNand(SDIN5C1-4G),1G DDR3(H5TQ4G63AFR-PBC),三星电源管理芯片&ndash;NXE2000</li>
+<li>尺寸：120mm*90mm</li>
+<li>TF卡支持热插拔，容量最大支持32G</li>
+<li>设有开机键，长按3秒后开机</li>
+<li>设有复位键，长按3秒后硬件复位，在系统启动后，可以通过软件去配置PMU来改变复位键长按时间的长短</li>
+<li>通过SDA7123转换出VGA信号，VGA支持LCD同步显示，支持1080P视频输出</li>
+<li>HDMI信号通过MCU直接引出，减少了转换芯片的链接，支持与LCD同步播放视频，支持的视频输出格式为480P，720P,1080P</li>
+<li>以太网接口采用RTL8211E-VB-CG芯片，支持10M，100M，1000M网自适应</li>
+<li>配置了USB接口的wifi模块&ndash;RTL8188</li>
+<li>配置了FT-009红外接收头，支持红外遥控接收</li>
+</ol>
+
+
+<h2>开发环境搭建</h2>
+
+<ol>
+<li>使用虚拟机VirtualBox安装Ubuntu14.04.2LTS系统</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-13T13:10:17+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/s5pv4418/'>s5pv4418</a>
 
 
 </div>

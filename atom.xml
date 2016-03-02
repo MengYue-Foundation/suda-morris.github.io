@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-02-29T20:07:33+08:00</updated>
+  <updated>2016-03-02T09:40:47+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -2748,20 +2748,6 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 </span><span class='line'> <span class="n">cJSON_Delete</span><span class="p">(</span><span class="n">pRoot</span><span class="p">);</span>
 </span><span class='line'> <span class="n">free</span><span class="p">(</span><span class="n">szJSON</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[电源设计]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/12/03/power-design/"/>
-    <updated>2015-12-03T12:21:30+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/12/03/power-design</id>
-    <content type="html"><![CDATA[<h2>开关电源芯片</h2>
-
-<ol>
-<li>MP1584</li>
-</ol>
 
 ]]></content>
   </entry>
@@ -6444,6 +6430,29 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>常用的汉字内码系统有GB2312，GB13000，GBK，BIG5（繁体）等几种，其中GB2312支持的汉字仅有几千个，很多时候不够用，而GBK内码不仅完全兼容GB2312，还支持繁体字，总汉字数量达到2万多个。</li>
 <li>每个GBK码由2字节组成，第一个字节为0X81~0xFE，第二个字节分为两部分，一是0x40~0x7E，二是0x80~0xFE。第一个字节代表的意义称为区，GBK里面总共有126个区，每个区内有190个汉字。</li>
 <li></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[FRDM_KL02Z]]></title>
+    <link href="http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z/"/>
+    <updated>2015-10-26T15:51:29+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z</id>
+    <content type="html"><![CDATA[<h2>FRDM_KL02Z开发板简介</h2>
+
+<ol>
+<li>MKL02Z32VFM4 MCU – 48 MHz、32 KB闪存、4 KB SRAM、32QFN</li>
+<li>电容滑动触摸传感板，MMA8451Q加速度传感器，三色LED</li>
+<li>新型OpenSDA调试接口：
+
+<ol>
+<li>大容量存储设备闪存编程接口(默认)；无需安装任何工具即可评估演示应用</li>
+<li>P&amp;E调试接口具有运行控制调试功能并兼容IDE工具</li>
+<li>CMSIS-DAP接口：面向嵌入式调试接口的ARM新标准</li>
+</ol>
+</li>
 </ol>
 
 ]]></content>
