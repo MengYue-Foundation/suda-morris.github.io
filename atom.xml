@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-03-02T09:40:47+08:00</updated>
+  <updated>2016-03-09T11:46:28+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[FieldBus]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/03/09/fieldbus/"/>
+    <updated>2016-03-09T11:46:13+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/03/09/fieldbus</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[altium_designer]]></title>
@@ -266,6 +275,22 @@
 
 <ol>
 <li>接口标识均为斜体标注的接口注释</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>布线总结</h2>
+
+<ol>
+<li>按小键盘的*键或大键盘的数字2键添加一个过孔</li>
+<li>按L键可以切换布线层</li>
+<li>按数字3可设定最小线宽、典型线宽、最大线宽的值进行切换</li>
+<li>差分布线
+
+<ol>
+<li>差分网络是两条存在耦合的传输线，一天携带信号，另一条则携带它的互补信号。使用差分对布线前要对设定差分对网络进行设置。设置可以在原理图中设置，也可以在PCB中进行设置</li>
+<li>原理图中添加差分对规则:在命名差分对网络时，必须保证网络名的前缀是一样的，后缀中用下划线带一个N和一个P字母即可。命名好之后，点击菜单Place->Directives->DifferentialPair命令，在差分对上放置两个差分图标</li>
 </ol>
 </li>
 </ol>
@@ -6430,29 +6455,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <li>常用的汉字内码系统有GB2312，GB13000，GBK，BIG5（繁体）等几种，其中GB2312支持的汉字仅有几千个，很多时候不够用，而GBK内码不仅完全兼容GB2312，还支持繁体字，总汉字数量达到2万多个。</li>
 <li>每个GBK码由2字节组成，第一个字节为0X81~0xFE，第二个字节分为两部分，一是0x40~0x7E，二是0x80~0xFE。第一个字节代表的意义称为区，GBK里面总共有126个区，每个区内有190个汉字。</li>
 <li></li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[FRDM_KL02Z]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z/"/>
-    <updated>2015-10-26T15:51:29+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/10/26/frdm-kl02z</id>
-    <content type="html"><![CDATA[<h2>FRDM_KL02Z开发板简介</h2>
-
-<ol>
-<li>MKL02Z32VFM4 MCU – 48 MHz、32 KB闪存、4 KB SRAM、32QFN</li>
-<li>电容滑动触摸传感板，MMA8451Q加速度传感器，三色LED</li>
-<li>新型OpenSDA调试接口：
-
-<ol>
-<li>大容量存储设备闪存编程接口(默认)；无需安装任何工具即可评估演示应用</li>
-<li>P&amp;E调试接口具有运行控制调试功能并兼容IDE工具</li>
-<li>CMSIS-DAP接口：面向嵌入式调试接口的ARM新标准</li>
-</ol>
-</li>
 </ol>
 
 ]]></content>

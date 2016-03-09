@@ -4,7 +4,7 @@
   <title><![CDATA[Category: poe | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/poe/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-03-02T09:40:47+08:00</updated>
+  <updated>2016-03-09T11:46:28+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -295,13 +295,53 @@
 
 <p>欠压关断模式可保证IC在供电电压不足的时候不至于损坏，一个低电压锁定（UVLO）电路可确保IC在电池电压未达到安全操作电压前不会激活，UVLO的功能会展示滞后现象，以确保在电源供应上的噪音不会不慎导致系统故障。为了更稳定的工作，某些DC/DC转换器具有UVLO功能，电源开启后，UVLO功能使内部电路处于待机状态，直到DC/DC转换器的输入电压达到UVLO电压，以此来减少消费电流并避免误操作</p>
 
-<h2>TPS54160</h2>
+<h2>TPS54160（1.5A,60V,降压DC/DC转换器）</h2>
 
 <ol>
 <li>支持3.5V~60V的输入电压范围</li>
-<li></li>
+<li>内部高端MOSFET的导通电阻200mΩ。（low side一般指MOSFET接地，其驱动信号是基于地信号的，在驱动电路中不需要加电压抬升电路；如果是high side即常说的高端驱动，其驱动信号是浮动的，需要加电压抬升电路）</li>
+<li>低负载的转换效率也很高，因为设计了独特的Pulse Skipping Eco-mode</li>
+<li>可调节的UVLO电压和滞后时间</li>
+<li>116uA的静态工作电流</li>
+<li>1.3uA的关断电流</li>
+<li>100KHz~2.5MHz的开关频率</li>
+<li>与外部时钟同步</li>
+<li>内部有0.8V的参考电压</li>
+<li>欠压（UV）输出保护内部默认设置为2.5V，但是可以通过EN引脚来提高</li>
+<li>输出电压启动坡度可以通过SS（slow start）引脚来控制
+<img src="http://i.imgur.com/TSjMe8c.png" alt="简化的原理图" /></li>
+<li>在BOOT引脚和PH（内部高端MOEFET的源极）引脚之间需要一个自举电容，当其上的电压少于器件的最低要求，输出将会被关闭，直到自举电容被刷新</li>
+<li>COMP是误差放大器的输出，并且会输入到内部的电流比较器中。这个引脚需要连接频率补偿元件</li>
+<li>EN脚电压低于1.2后会使芯片不工作，悬空可以工作（芯片内部该引脚上拉到电流源）。要求电压范围不超过5V</li>
+<li>PWRGD开漏输出，如果芯片过压、关断、跌落，该引脚会输出低电平</li>
+<li>RT(Resistor Timing)/CLK内部的放大器会使该引脚维持在一个固定的电压值，该引脚通过一个连接到地的电阻来设置开关频率</li>
+<li>SS/TR该引脚到地的电容可以设置输出电压的抬升时间，降低启动过程中的浪涌电流</li>
+<li>VSENSE反馈电压不能超过3V</li>
+<li>电流模式控制可以降低输出电容，简化频率补偿
+<img src="http://i.imgur.com/n8qTBGt.png" alt="内部结构图" /></li>
+<li>输出电压调节
+<img src="http://i.imgur.com/PPkiol6.png" alt="调节输出电压" /></li>
+<li>如果Vin电压小于2.5V，那么TPS54160将不工作，如果需要更高的UVLO电压，可以如图所示
+<img src="http://i.imgur.com/7U5iiB1.png" alt="提高UVLO" /></li>
+<li>开关频率由以下公式确定
+<img src="http://i.imgur.com/EcqbYXX.png" alt="开关频率确定公式" /></li>
+<li>PCB Layout要领
+
+<ol>
+<li>Vin需要使用低等效串联电阻(ESR)的陶瓷电容旁路，可以选择X5R或者X7R的陶瓷电容</li>
+<li>减小由旁路电容的连线，Vin引脚和续流二极管的正极所构成的回路</li>
+<li>power pad连接到GND，并且通过多个过孔连接至地平面</li>
+<li>续流二极管的阴极和输出电感需要靠近PH引脚</li>
+<li>Rt电阻离RT/CLK引脚的距离越近越好
+<img src="http://i.imgur.com/Itr7Gst.png" alt="Layout举例" /></li>
+</ol>
+</li>
 </ol>
 
+
+<h2>开尔文连接</h2>
+
+<p>开尔文连接是一种用于模拟信号远传的连接方法，其特点是不在驱动器的输出端直接连接反馈到反相端，而是从负载端将反馈接到驱动器的反相端的而一种连接方法，其目的是减小线路电阻引起的误差</p>
 ]]></content>
   </entry>
   
