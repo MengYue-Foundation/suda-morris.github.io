@@ -88,6 +88,1098 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/07/19/qt4-knowldegs/">
+		
+			QT4知识点</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Qt核心模块</h2>
+
+<p>Qt是一个大库，由数个较小的库或者模块组成，其中最为常见的有如下这些，除了core和gui，其余模块都需要在qmake的工程文件中启用：</p>
+
+<ol>
+<li>core：包括QObject，QThread，QFile，Qvariant等等</li>
+<li>gui：所有从QWidget派生的类外加一些相关的类</li>
+<li>xml：用于解析和序列化XML</li>
+<li>sql：用于与SQL数据库通信</li>
+<li>phonon：用于播放多媒体文件</li>
+<li>webkit：用于使用一种嵌入式web浏览器，QtWebkit</li>
+</ol>
+
+
+<h2>工程文件.pro</h2>
+
+<ol>
+<li>对于Qt程序，程序不必编写Makefile文件，Qt提供了一个qmake工具，它会根据工程文件来产生对应的Makefile文件。亦可以用qmake -project命令产生一个简单的工程文件，当执行这个命令的时候，qmake会将当前工作目录下的全部源文件(<em>.cpp)作为SOURCES列出来，而将该目录下的全部头文件(</em>.h)作为HEADERS列出来。最终生成的可执行文件的名称由TARGET变量指定，其默认为工程的名称</li>
+<li>TEMPLATE=app，表明qmake应该以一个适合建立这个应用的模板化的Makefile开始，如果这个工程文件用于建立库，则应当使用语句TEMPLATE=lib，以表明应使用Makefile库模板。第三种可能是源代码文件分布在多个子目录下，而每一个子目录下的文件都具有自己的工程文件，这种情况下，位于父目录的工程文件中应该包含语句TMPLATE=subdirs，这会导致在父目录和每一个子目录下都生成Malefile</li>
+<li>添加库：LIBS += -Lpathtolibs</li>
+<li>CONFIG += console表示是控制台程序</li>
+<li>当编写并测试完库之后，在编译链接过程结束后它将被安装到由qmake变量DESTDIR指定的目录下。例如，dataobjects库的工程文件包含如下相关的行：
+
+<ul>
+<li>TEMPLATE = lib</li>
+<li>DESTDIR = pathto_install_libs</li>
+</ul>
+</li>
+<li>对于库模板，qmake将产生一个包含install目标的Makefile，这样，在成功编译链接之后执行命令make install将会把这个库复制到某个特定的位置</li>
+</ol>
+
+
+<h2>Qt中获取命令行参数</h2>
+
+<ul>
+<li>QCoreApplication app(argc,argv);</li>
+<li>QStringList arglist = app.arguments();</li>
+<li>arglist.size等于命令行参数的个数</li>
+</ul>
+
+
+<h2>Qt中的字符串</h2>
+
+<ol>
+<li>const char*，主要用于与C语言库的接口</li>
+<li>来自C++标准库的string，任何地方都可以使用这种类型</li>
+<li>QString，优于STL中的字符串类型，有着更加丰富的API而且更加容易使用。</li>
+<li>在Qt中使用类似于iostream中的cin，cout：
+
+<ul>
+<li><h1>include &lt;QString></h1></li>
+<li><h1>include &lt;QTextStream></h1></li>
+<li>QTextStream cout(stdout)</li>
+<li>QTextStream cin(stdin)</li>
+<li>cin.readLine()</li>
+</ul>
+</li>
+<li>sizeof(QString)=4,sizeof(QChar)=2,sizeof(QDate)=4,sizeof(qint32)=4,sizeof(qint64)=8;QString是一个使用动态内存的复杂类，因此必须调用length()来获得字符串中QChar的数量。由于QChar的大小为char的两倍，所以在计算内存中QString中实际大小时需要将长度乘以2，在运行时，QString能够与具有同一个值的另一个字符串共享内存</li>
+</ol>
+
+
+<h2>去掉最大、最小、关闭按钮</h2>
+
+<blockquote><p>setWindowFlags(windowFlags()|Qt::FramelessWindowHint|Qt::WindowTitleHint);</p></blockquote>
+
+<h2>使用中文</h2>
+
+<blockquote><ol>
+<li>下载qpf格式的font_wenquanyi字体，将下载的字库文件复制到qt安装目录的lib/fonts子目录下</li>
+</ol>
+</blockquote>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>\#include &lt;QTextCodec&gt;
+</span><span class='line'>  QApplication a(argc, argv);
+</span><span class='line'>    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));     //中文支持
+</span><span class='line'>    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));       //支持Tr中文
+</span><span class='line'>    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8")); //支持中文文件名显示
+</span><span class='line'>    QFont font;
+</span><span class='line'>    font.setPointSize(160);                                           //实际上是16的字号，但设成16却不行
+</span><span class='line'>    font.setFamily(("wenquanyi"));
+</span><span class='line'>    font.setBold(false);
+</span><span class='line'>    a.setFont(font);</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>隐藏鼠标箭头</h2>
+
+<blockquote><ol>
+<li>对于整个程序: QApplication::setOverrideCursor(Qt::BlankCursor);</li>
+<li>对单个控件：lable->setCursor(Qt::BlankCursor);//隐藏鼠标  label->setCursor(Qt::ArrowCursor);//显示正常鼠标</li>
+</ol>
+</blockquote>
+
+<h2>QStringList与迭代</h2>
+
+<blockquote><ol>
+<li>QStringList实际上就是一个QList<QString>,此外，QStringList还具有一些特别针对字符串的方便函数，例如indexOf(),join()和replaceInStrings()。利用split()函数和join()函数，在列表与字符串之间进行转换相当简单</li>
+<li>QStringList对象可以调用方法takeFirst()来依次获得列表中的字符串对象</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="n">winter</span> <span class="o">=</span> <span class="s">&quot;December,January,February&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">spring</span> <span class="o">=</span> <span class="s">&quot;March,April,May&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">summer</span> <span class="o">=</span> <span class="s">&quot;June,July,August&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">fall</span> <span class="o">=</span> <span class="s">&quot;September,October,November&quot;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">QStringList</span> <span class="n">list</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span> <span class="o">&lt;&lt;</span> <span class="n">winter</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span> <span class="o">+=</span> <span class="n">spring</span><span class="p">;</span>
+</span><span class='line'><span class="n">list</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">summer</span><span class="p">);</span>
+</span><span class='line'><span class="n">list</span> <span class="o">&lt;&lt;</span> <span class="n">fall</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">QString</span> <span class="n">allmonths</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">);</span>  <span class="cm">/*从列表到字符串，以逗号为分隔符*/</span>
+</span><span class='line'><span class="n">QStringList</span> <span class="n">list2</span> <span class="o">=</span> <span class="n">allmonths</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">);</span> <span class="cm">/*从字符串到列表，以逗号为分隔符*/</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">foreach</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">str</span><span class="p">,</span><span class="n">list</span><span class="p">){</span> <span class="cm">/*Qt foreach循环*/</span>
+</span><span class='line'>  <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="n">QStringList</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">list</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">it</span> <span class="o">!=</span> <span class="n">list</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">current</span> <span class="o">=</span> <span class="o">*</span><span class="n">it</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">QListIterator</span><span class="o">&lt;</span><span class="n">QString</span><span class="o">&gt;</span> <span class="n">itr</span><span class="p">(</span><span class="n">list2</span><span class="p">);</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">itr</span><span class="p">.</span><span class="n">hasNext</span><span class="p">()){</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">current</span> <span class="o">=</span> <span class="n">itr</span><span class="p">.</span><span class="n">next</span><span class="p">();</span>
+</span><span class='line'>  <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QDir，QFileInfo和QDirIterator</h2>
+
+<figure class='code'><figcaption><span>利用QDir类和QFileInfo类获取目录的内容列表以及关于每一个项的信息</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="nf">recurseAddDir</span><span class="p">(</span><span class="n">QDir</span> <span class="n">d</span><span class="p">,</span><span class="kt">bool</span> <span class="n">recursive</span><span class="o">=</span><span class="nb">true</span><span class="p">,</span><span class="kt">bool</span> <span class="n">symlinks</span><span class="o">=</span><span class="nb">false</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">d</span><span class="p">.</span><span class="n">setSorting</span><span class="p">(</span><span class="n">QDir</span><span class="o">::</span><span class="n">Name</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QDir</span><span class="o">::</span><span class="n">Filters</span> <span class="n">df</span> <span class="o">=</span> <span class="n">QDir</span><span class="o">::</span><span class="n">Files</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">::</span><span class="n">NoDotAndDotDot</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">recursive</span><span class="p">)</span> <span class="n">df</span> <span class="o">|=</span> <span class="n">QDir</span><span class="o">::</span><span class="n">Dirs</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">not</span> <span class="n">symlinks</span><span class="p">)</span> <span class="n">df</span> <span class="o">|=</span> <span class="n">QDir</span><span class="o">::</span><span class="n">NoSymLinks</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QStringList</span> <span class="n">qsl</span> <span class="o">=</span> <span class="n">d</span><span class="p">.</span><span class="n">entryList</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">QDir</span><span class="o">::</span><span class="n">Name</span><span class="o">|</span><span class="n">QDir</span><span class="o">::</span><span class="n">DirsFirst</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">foreach</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="o">&amp;</span><span class="n">entry</span><span class="p">,</span><span class="n">qsl</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">QFileInfo</span> <span class="n">finfo</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">entry</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">finfo</span><span class="p">.</span><span class="n">isDir</span><span class="p">()){</span>
+</span><span class='line'>          <span class="n">QDir</span> <span class="n">sd</span><span class="p">(</span><span class="n">finfo</span><span class="p">.</span><span class="n">absoluteFilePath</span><span class="p">());</span>
+</span><span class='line'>          <span class="n">recurseAddDir</span><span class="p">(</span><span class="n">sd</span><span class="p">);</span>
+</span><span class='line'>      <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+</span><span class='line'>          <span class="k">if</span><span class="p">(</span><span class="n">finfo</span><span class="p">.</span><span class="n">completeSuffix</span><span class="p">()</span><span class="o">==</span><span class="s">&quot;mp3&quot;</span><span class="p">){</span>
+</span><span class='line'>              <span class="n">addMp3File</span><span class="p">(</span><span class="n">finfo</span><span class="p">.</span><span class="n">absoluteFilePath</span><span class="p">());</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>使用QDirIterator实现相同功能</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QDir</span> <span class="n">dir</span> <span class="o">=</span> <span class="n">QDir</span><span class="o">::</span><span class="n">current</span><span class="p">();</span>
+</span><span class='line'><span class="n">QDirIterator</span> <span class="nf">qdi</span><span class="p">(</span><span class="n">dir</span><span class="p">.</span><span class="n">absolutePath</span><span class="p">(),</span> <span class="n">QStringList</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;*.mp3&quot;</span><span class="p">,</span> <span class="n">QDir</span><span class="o">::</span><span class="n">NoSymLinks</span> <span class="o">|</span> <span class="n">QDir</span><span class="o">::</span><span class="n">Files</span><span class="p">,</span> <span class="n">QDirIterator</span><span class="o">::</span><span class="n">Subdirectories</span><span class="p">);</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="n">qdi</span><span class="p">.</span><span class="n">hasNext</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">addMp3File</span><span class="p">(</span><span class="n">qdi</span><span class="p">.</span><span class="n">next</span><span class="p">());</span>
+</span><span class='line'>  <span class="c1">//TODO</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QDate</h2>
+
+<blockquote><ol>
+<li>static QDate currentDate = QDate::currentDate();</li>
+</ol>
+</blockquote>
+
+<h2>Qt中字符串的数据流操作</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="n">Student</span><span class="o">::</span><span class="n">toString</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">retval</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QTextStream</span> <span class="nf">os</span><span class="p">(</span><span class="o">&amp;</span><span class="n">retval</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">os</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;name:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_Name</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;;ID:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">m_StudentID</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>`</p>
+
+<h2>qDeleteAll(container)只对包含指针的容器有意义，该函数将释放所有对象，但并不删除容器中的指针；删除容器中的指针需要调用容器的clear()函数</h2>
+
+<h2>容器（Qt容器被定义成模板类）</h2>
+
+<blockquote><ol>
+<li>QList<T>是用数组实现的，数组的两端都有预分配的空间。它针对按索引的随机访问以及少于1000项的列表进行了优化。对于prepend()和append()这样的操作，它有很好的性能表现</li>
+<li>QStringList是派生自QList<QString>的一个便利类</li>
+<li>QLinkedList<T>针对迭代器的顺序访问以及快速、常量时间的列表插入操作进行了优化，但排序和搜索比较缓慢。它提供多个便利函数来处理那些经常用到的操作
+QVector<T>以连续的内存位置保存数据，并针对按索引的随机访问进行了优化。通常而言，QVector对象都是用其初始大小进行构造的，在其两端都不存在预先自动分配的内存空间，所以中间掺入、末端插入以及前端插入都是耗时的</li>
+<li>QStack<T>是派生自QVector<T>的public类，所以QVector类的public接口可以用于QStack对象。不过，push(),pop()以及top()函数采用的是后入先出(LIFO)的语法</li>
+<li>QMap&lt;Key,T>是一个有序的关联容器，它保存的是键/值对，其作用是根据键来快速找到对应的值。它也被设计成支持适量的快速插入操作和删除操作。它将键有序排列，以便能够快速搜索和快速缩小搜索范围，采用的是一个跳跃列表字典，这个字典在概率上是平衡的并且高效的利用了内存。键的类型必须是operator&lt;()和operator==()</li>
+<li>QHash&lt;Key,T>也是一个关联容器，它使用哈希表来进行键的查找。它提供快速的查找(键精确匹配)和插入操作，但其搜索速度较慢，且没有排序功能。键的类型必须是operator==()</li>
+<li>QMultiMap&lt;Key,T>是QMap的一个子类，而QMultiHash&lt;Key,T>是QHash的一个子类。这两个类是的一个键可以与多个值关联</li>
+<li>QCache&lt;Key,T>是一个关联容器，它对最近使用过的项提供最快速的访问，并会根据几个开销函数的结果自动移除哪些不常用的项</li>
+<li>QSet<T>用QHash保存T类型的值，QHash中的键位于T中，而其中的哑值与每一个键相关联。这种安排可优化查找和插入操作。QSet中的几个函数用于常规的集合操作。它的默认构造函数会创建一个空集合</li>
+</ol>
+
+
+<p><strong>用于模板容器类的类型参数T，或者用于关联容器的键类型都必须为可赋值数据类型，即值类型。这意味着T必须具有public类型的默认构造函数、拷贝构造函数和赋值运算符。基本类例如int，double，char和指针都是可赋值的，有些Qt类型是可赋值的，例如QString，QDate，QTime。QObject以及派生自QObject的类型都是不可赋值的，如果需要使用某种不可赋值类型的对象，则可以定义一个指针容器，例如QList&lt;QFile*></strong></p></blockquote>
+
+<h2>QFile</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QFile</span> <span class="nf">outf</span><span class="p">((</span><span class="s">&quot;filename&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">outf</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">);</span>
+</span><span class='line'><span class="n">QTextStream</span> <span class="nf">outstr</span><span class="p">(</span><span class="o">&amp;</span><span class="n">outf</span><span class="p">);</span>
+</span><span class='line'><span class="n">outstr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;content&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">outf</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>序列化器模式：QTextStream和QDataStream</h2>
+
+<blockquote><ol>
+<li>序列化器是一种只负责读取或者写入对象的对象，Qt的QTextStream序列化器用于读写人可读的文件，而QDataStream序列化器用于读写结构化的二进制数据。这些类都是用序列化器模式实现的</li>
+<li>利用QDataStream就可以序列化和解序列化QVariant支持的全部类型，包括QList，QMap，QVector以及其他类型。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QFile</span> <span class="nf">textFile</span><span class="p">(</span><span class="s">&quot;playlist1.tsv&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">QFile</span> <span class="nf">binaryFile</span><span class="p">(</span><span class="s">&quot;playlist1.bin&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">QTextStream</span> <span class="n">textStream</span><span class="err">；</span>
+</span><span class='line'><span class="n">QDataStream</span> <span class="n">dataStream</span><span class="err">；</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="n">textFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">ReadOnly</span><span class="p">)){</span>
+</span><span class='line'>  <span class="n">textStream</span><span class="p">.</span><span class="n">setDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">textFile</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">if</span><span class="p">(</span><span class="n">binaryFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">)){</span>
+</span><span class='line'>  <span class="n">dataStream</span><span class="p">.</span><span class="n">setDevice</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryFile</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">QList</span><span class="o">&lt;</span><span class="n">MetaDataValue</span><span class="o">&gt;</span> <span class="n">values</span><span class="p">;</span>
+</span><span class='line'><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">textStream</span><span class="p">.</span><span class="n">atEnd</span><span class="p">()){</span>
+</span><span class='line'>  <span class="n">MetaDataValue</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">textStream</span> <span class="o">&gt;&gt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">values</span> <span class="o">&lt;&lt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">dataStream</span> <span class="o">&lt;&lt;</span> <span class="n">mdv</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QObject</h2>
+
+<blockquote><ol>
+<li>QObject是Qt库中许多重要的类的基类，如QEvent，QApplication，QLayout和QWidget。</li>
+<li>QObject使基于事件的编程成为了可能，其中用到了QApplication和Qt的事件循环</li>
+<li>QObject没有公有的拷贝构造函数或复制赋值运算符。QObject类定义的结尾处有一个宏Q_DISABLE_COPY(QObject)，它显示地确保任何QObject都不能被复制。QObject不是设计用于复制的，QObject会用来代表具有唯一身份的对象。这种不带拷贝构造函数策略的一个直接后果就是永远无法通过值传递方式向函数传递OBject。</li>
+<li>QObject及其派生类的单参数构造函数应当予以显式声明explicit，以免意外的隐式转换的发生。</li>
+<li>每个QObject都可以有（至多）一个父QObject，且可以拥有任意数量的子QObject。</li>
+<li>每个QObject都将指向各个子对象的指针存放在一个QObjectList中，在调用QObject的析构函数时会自动销毁该对象的子对象</li>
+<li>通常而言，没有父对象的QObject应当在程序栈区(stack)中进行定义，而那些有父对象的QObject则应当在堆区(heap)动态创建出来，这样可有助于确保发生正确的析构操作。</li>
+<li>QObject有一个成员函数，可以返回一个指向主对象中全部子对象的指针列表：const QObjeectList&amp; QObject::children() const</li>
+<li>QObject还提供了两个名称为findChildren()的重载(递归)每个都会返回一个满足特定条件的子对象列表：QList<T> parentObj.findChildren<T>(const QString&amp; name=QString()) const 该函数返回一个类型为T的子对象列表，其对象名与name相等。如果name是空字符串，那么将会起到一个类过滤器的作用，返回结果是一个QList，其中包含指向全部子对象的指针，而这些子对象都可以通过类型转换变成类型T的对象</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QList</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">*&gt;</span> <span class="n">custlist</span> <span class="o">=</span> <span class="n">parent</span><span class="p">.</span><span class="n">findChildren</span><span class="o">&lt;</span><span class="n">Customer</span><span class="o">*&gt;</span><span class="p">();</span>
+</span><span class='line'><span class="n">foreach</span> <span class="p">(</span><span class="k">const</span> <span class="n">Customer</span><span class="o">*</span> <span class="n">current</span><span class="p">,</span><span class="n">custlist</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">qDebug</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">current</span><span class="o">-&gt;</span><span class="n">toString</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QEvent</h2>
+
+<blockquote><ol>
+<li>QEvent类封装了底层事件的概念。QEvent类是若干特定事件类的基类，例如QActionEvent,QFileOpenEvent,QHoverEvent,QInputEvent,QMouseEvent等。QEvent对象可以由窗口系统创建以响应用户的动作(例如，QMouseEvent)或按照指定的时间间隔(QTimerEvent)完成创建，也可以由应用程序显式地创建。成员type()会返回一个美剧，其中含有近百个特定的值，以区分不同种类的各式事件(例如,关闭、DragEnter、DragMove、放下、输入、GrabMouse、HoverEnter、KeyPress、MouseButtonDblClick、MouseMove、Resize)</li>
+<li>一个典型的Qt程序会创建对象，连接各个对象，然后再告诉应用程序开始发送exec()，在运行时，应用程序就进入了事件循环，各个对象之间可以通过各种方式相互发送消息。</li>
+<li>只有在事件循环，特别是QApplication::exec()进入的事件循环中，信号才能发送到槽上。这是因为信号和槽在其外表之下是使用事件循环来传递消息的。</li>
+<li>QObject支持一些普通C++对象通常没有的特性：信号和槽，元对象、元属性、元方法，qobject_cast</li>
+<li>元对象编辑器，即moc，会针对每个使用Q_OBJECT宏的QObject派生类生成额外的函数，生成的代码可以在名称为moc_filename.cpp的文件中找到。</li>
+</ol>
+</blockquote>
+
+<h2>信号和槽</h2>
+
+<blockquote><ol>
+<li>信号是在类定义中给出的类似于void函数声明的一种消息。它有参数列表却没有函数体。信号时一个类的接口的一部分，它看起来想函数，但不用同样的方式进行调用&mdash;它被此类的对象发射</li>
+<li>槽通常是一个void成员函数，它可以像普通的成员函数一样进行调用，或者可以由QMetaObject系统进行间接调用</li>
+<li>连接语句的语法：bool QObject::connect(senderQObjectPtr,SIGNAL(signalName(argumentList)),receiverQObjectPtr,SLOT(slotName(argumentList))optionalConnectionType);optionalConnectionType让你可以明确说明，你是否希望从发射点处同步(阻塞)或者非同步(排队)地调用目标槽</li>
+<li>如果有多个信号连接到同一个槽上且需要知道是那哟个QPbject发射的信号，则可以在该槽中调用sender(),它会返回一个指向那个对象的指针</li>
+</ol>
+</blockquote>
+
+<h2>堆还是栈</h2>
+
+<blockquote><p>一般情况下，没有父对象的QObject应当在栈上创建，或者定义成另一个类的子对象。有父对象的QObject不应该在栈上创建，因为那样的话，它有可能会被删除两次。
+不推荐直接删除QObject，在带有事件循环的程序中，最好利用QObject::deleteLater()来删除QObject。这样做，可以在应用程序处理事件并在当前槽返回之后就安排该对象的销毁。希望能够在槽内删除信号的sender(),这么做实际上是必须的</p></blockquote>
+
+<h2>QWidget和其余GUI开发中常用的类</h2>
+
+<blockquote><ol>
+<li>QWidget是一个采用了多重继承的类，首先，QWidget是一个QObject，因此它可以有父对象、信号、槽以及可受管理的子对象。同时QWidget也是一个QPaintDevice，这个类是所有可在屏幕上进行绘制的对象的基类</li>
+<li>Qt数据类型——QPoint,QSize,QColor,QImage和QPixmap是在处理图形对象时常用到的类型</li>
+<li>布局——这些类能够动态地管理Widget的布局，其中有些事常用的特殊布局，包括QHBoxLayout，QVBoxLayout，QGridLayout，QFormLayout等</li>
+<li>模型——QAbstractItemModel及其各个派生类，如QAbstractListModel和QAbstractTableModel，外加一些已有的可继承实体类，如QSqlQueryModel和QFileSystemModel，都是Qt模型/视图框架中的一部分，该框架内置将一个模型和其他不同视图相连接的机制，以便对一个组件的修改可以自动变换到其他组件上</li>
+<li>控制类——QApplication和QAction两者都是管理GUI应用程序控制流的对象。QItemDelegate用作模型和视图之间的控制器</li>
+</ol>
+</blockquote>
+
+<h2>对话框</h2>
+
+<blockquote><ol>
+<li>QDialog是Qt所有对话框的基类。对话框窗口可以是模态(modal)对话框也可以是非模态(nonmodal)对话框。</li>
+<li>当程序调用静态的便利函数"QMessageBox::&ldquo;或者"QFileDialog::"时，弹出的对话框就是模态对话框。当模态对话框显示在屏幕上时，它会冻结同一应用程序中的其他所有可见窗口的输入功能。用户解除模态对话框后，与应用程序的常规交互才可以继续下去。QDialog::exec()是将模态对话框放到屏幕上的另一种方式。当用户完成了所需的响应后，对话框就可以返回数据，也可以返回对话框代码(QDialog::Accepted或者QDialog::Rejected);</li>
+<li>可以像QWidget一样通过show()显示一个QDialog，在此情况下，对话框是非模态的，用户也就可以与应用程序的其他窗口继续交互。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QApplication</span> <span class="nf">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">);</span>
+</span><span class='line'><span class="n">QProgressDialog</span> <span class="n">nonModal</span><span class="p">;</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s">&quot;Non Modal Parent Dialog&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">show</span><span class="p">();</span>
+</span><span class='line'><span class="n">nonModal</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nonModal</span><span class="p">,</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">finished</span><span class="p">()),</span><span class="o">&amp;</span><span class="n">app</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">quit</span><span class="p">()));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>图标、图像与资源</h2>
+
+<blockquote><ol>
+<li>Qt提供了至少两种方式来获得标准的图标。一种方式来自于桌面样式的QStyle::standardIcon()，另一种则来自插件型图标主题:QIcon::fromTheme()</li>
+<li>把所需的二进制数据文件作为资源附加到工程中会让工程更为健壮。源代码无须为资源文件使用一些不可移植的路径名。要引用一个存储成资源的文件，可以使用在.rcc文件中指定的别名并在前面带一个前缀":/&ldquo;。于是，每个资源好像位于一个私有虚文件系统中，其根为&rdquo;:/&ldquo;。然而，得到这些好处是需要付出代价的，可执行文件会更大，程序也会需要更多的内存</li>
+<li>有3个Qt类可以简化处理图片：
+
+<ul>
+<li>QImage——用于离屏操作，输入输出操作，并可直接访问像素</li>
+<li>QPixmap——用于在屏幕上进行绘制并优化，仅用在主线程中</li>
+<li>QIcon——用于视频内存的缓冲且经常用到，但仅用在主线程中</li>
+<li>QPicture——存储绘制的操作而不是实际的位图图片</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>布局</h2>
+
+<blockquote><ol>
+<li>布局可以将它们的Widgets排列成如下几种形式：
+
+<ul>
+<li>垂直型(QVBoxLayout)</li>
+<li>水平型(QHBoxLayout)</li>
+<li>网格型(QGridLayout)</li>
+<li>窗体型(QFormLayout)</li>
+<li>栈型，任何时候都只有一个窗件可见(QStackedLayout)</li>
+</ul>
+</li>
+<li>可以使用addWidget()函数向QLayout添加窗件，当窗件添加到布局中时，它会称为拥有该布局的窗件的子对象。窗件永远不会称为布局的子对象</li>
+<li>为了能够顺利地管理其几何形状，每个QLayout对象都必须有一个父对象，这可以是一个QWidget，也可以是一个QLayout。可以在创建布局时通过向构造函数传递一个指向父窗件或者布局的指针来指定其父对象。当然，也可以先创建一个QLayout而不指定QLayout的父对象，这种情况下，可以稍后通过调用QWidget::addLayout()来指定其父对象</li>
+<li>布局可以拥有子布局，通过调用addLayout()函数，可以将一个布局添加为另外一个布局的子布局。如果布局的父对象是一个窗件，那么该窗件将再也无法称为另外一个布局的父对象</li>
+<li>不使用Qt设计师时，可以使用QLayout类的API来直接指定各个窗件之间的分割、伸展和支撑
+
+<ul>
+<li>addSpacing(int size)会向布局的末尾添加固定数量的像素</li>
+<li>addStretch(int stretch = 0)会添加数目不定的像素。此函数由一个最小的数目开始，然后逐渐扩展到使用所有的可用空间。如果在同一个布局中进行多次扩展，可以用此作为一个增长因子</li>
+<li>addStrut(int size)讲给处置方向施加一个最小的数值(也就是，QVBoxLayout的宽度或者QHBoxLayout的高度)</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>QTimer</h2>
+
+<blockquote><ol>
+<li>QTimer对象是一个倒数计时器，以毫秒级时间间隔启动，当其到达零时会发出一个timeout()信号.QTimer可用来以规则的间隔来发射信号，或者如果singleShot属性已设置成true，则在给定的时间间隔后仅发射一次信号。QTimer有一个静态函数singleShot()，可以在给定的时间间隔后调用一次槽。如果倒数间隔设置成0，QTimer会在事件队列中的全部事件处理完后就立刻发出timeout()信号</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QTimer</span><span class="o">::</span><span class="n">singleShot</span><span class="p">(</span><span class="n">m_expInterval</span><span class="p">,</span><span class="n">this</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">timerDisplayRandStr</span><span class="p">()));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>绘制事件和画图</h2>
+
+<blockquote><ol>
+<li>一个Widget应当在其paintEvent()方法中执行适当的绘制操作。这是QWidget中唯一可以创建QPainter painter(this)的地方。有下面几个原因使得QPaintEvent可以被发送到QWidget上。
+
+<ol>
+<li>窗件是隐藏的，然后又显露了出来</li>
+<li>窗件改变了大小或者进行了重新排布</li>
+<li>调用了update()或者repaint()。repaint()在paintEvent()得到调用后才会返回。update()在QPaintEvent被放进事件队列后会立即返回</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="n">LifeWidget</span><span class="o">::</span><span class="n">paintEvent</span><span class="p">(</span><span class="n">QPaintEvent</span><span class="o">*</span> <span class="n">evt</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">QPainter</span> <span class="n">painter</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">m_image</span><span class="p">.</span><span class="n">isNull</span><span class="p">()){</span>
+</span><span class='line'>      <span class="n">painter</span><span class="p">.</span><span class="n">drawImage</span><span class="p">(</span><span class="n">QPoint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">m_image</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QMainWindow</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">MyMainWindow</span><span class="p">:</span><span class="n">public</span> <span class="n">QMainWindow</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">Q_OBJECT</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">explicit</span> <span class="n">MyMainWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="o">*</span> <span class="n">parent</span><span class="o">=</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="n">QCloseEvent</span><span class="o">*</span> <span class="n">event</span><span class="p">);</span>
+</span><span class='line'><span class="n">protected</span> <span class="nl">slots</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">void</span> <span class="n">newFile</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">void</span> <span class="nf">open</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">virtual</span> <span class="kt">bool</span> <span class="nf">save</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QAction</h2>
+
+<blockquote><ol>
+<li>QAction从QObject派生而来，是用于用户选定动作的一个基类。它提供了丰富的接口，它还可以用于许多种动作中。QWidget接口使得每个窗件都可以维护一个QList&lt;QAction*>。所有QWidget都可以拥有QAction，一些窗件借助上下文提供了QAction的清单，其他借助菜单栏。</li>
+<li>QMenu是一个能够给QAction集合提供特殊视图的QWidget。QMenuBar是菜单的一个集合，常见于QMainWindow中。</li>
+<li>每次调用QMenu::addAction(text,target,slot,shortcut)函数，都会窗件一个未命名的QAction，并且会将其添加到这个QMenu上。然后会调用它的积累函数，QWidget::addAction(QAction*),这样把新建的QAction添加到用于上下文菜单的QMenu的QAction清单中。</li>
+</ol>
+</blockquote>
+
+<h2>QSettings</h2>
+
+<blockquote><ol>
+<li>QSettings会管理键/值对的永久映射关系，它是一个QObject，并且会使用一些与QObject相似的属性接口——setValue()和value()——来设置和获取它的值。这个类可以用来存储任何需要在多次执行之间进行记忆的数据</li>
+<li>QSettings需要一个组织名和一个应用程序名，但当使用默认的构造函数时，QSettings会从QApplication中获得这些值。每个名称组合都会定义一个唯一的永久映射，这使得不会与其他命名的Qt应用程序产生冲突</li>
+<li>允许多个实例共享相同状态的类，可以看成是Monodtate模式的一种实现。拥有相同组织/应用程序名称的两个QSettings实例，可以访问同一个永久映射数据。这简化了应用程序从不同源文件访问公共设置值的过程。QSettings是Monostate模式的一种实现</li>
+</ol>
+</blockquote>
+
+<h2>剪切板</h2>
+
+<blockquote><ol>
+<li>每个Qt应用程序都可以使用qApp->clipboard()访问系统的剪贴板。剪贴板会保存带类型的数据(文本，图片，URL或者自定义数据)。要往剪贴板中放置数据，可以创建一个QMimeData，以一定的方式对数据进行编码，并且调用QClipBoard->setMimeData()。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">connect</span><span class="p">(</span><span class="n">qApp</span><span class="o">-&gt;</span><span class="n">clipboard</span><span class="p">(),</span><span class="n">SIGNAL</span><span class="p">(</span><span class="n">changed</span><span class="p">(</span><span class="n">QClipboard</span><span class="o">::</span><span class="n">Mode</span><span class="p">)),</span><span class="n">this</span><span class="p">,</span><span class="n">SLOT</span><span class="p">(</span><span class="n">clipboardChanged</span><span class="p">(</span><span class="n">QClipboard</span><span class="o">::</span><span class="n">Mode</span><span class="p">)));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QImage</h2>
+
+<blockquote><ol>
+<li>QImage在像素处理上得到了优化，QPixmap使用了视频存储器，它也是需要在屏幕上显示图片的多种窗件要用到的类。可以吧QImage转换成QPixmap并将其在QLabel进行显示</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">h</span><span class="p">(</span><span class="n">m_Image</span><span class="p">.</span><span class="n">height</span><span class="p">()),</span><span class="n">w</span><span class="p">(</span><span class="n">m_Image</span><span class="p">.</span><span class="n">width</span><span class="p">());</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">;</span>
+</span><span class='line'><span class="n">QRgb</span> <span class="n">oldpix</span><span class="p">,</span><span class="n">newpix</span><span class="p">;</span>
+</span><span class='line'><span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">y</span><span class="o">&lt;</span><span class="n">h</span><span class="p">;</span><span class="n">y</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">x</span><span class="o">&lt;</span><span class="n">w</span><span class="p">;</span><span class="n">x</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">oldpix</span><span class="o">=</span><span class="n">m_Image</span><span class="p">.</span><span class="n">pixel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">r</span><span class="o">=</span><span class="n">qRed</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">radj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">g</span><span class="o">=</span><span class="n">qGreen</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">gadj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">b</span><span class="o">=</span><span class="n">qBlue</span><span class="p">(</span><span class="n">oldpix</span><span class="p">)</span><span class="o">*</span><span class="n">badj</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">newpix</span><span class="o">=</span><span class="n">qRgb</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">m_Image</span><span class="p">.</span><span class="n">setPix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">newpix</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>模板类</h2>
+
+<blockquote><p>因为每个Q_OBJECT都需要通过moc为其生成代码，而且moc并未智能到知道如何生成模板类的特化，孤儿不允许使一个已经标记为Q_OBJECT的类再次成为模板类</p></blockquote>
+
+<h2>qSort</h2>
+
+<blockquote><ol>
+<li>qSort()函数是一个使用堆分类算法进行实现的范型方法。qSort()可以应用到任何Qt容器，只要容器内的对象拥有公共接口operator&lt;()和operator==()。基本数据类型的容器也可以使用此函数进行排序</li>
+</ol>
+</blockquote>
+
+<h2>反射与元对象</h2>
+
+<blockquote><ol>
+<li>所谓反射，就是指对象成员的自我检查，使用反射编程，就可以编写出通用的操作，可对具有各种不同结构的类进行操作。使用通用的值存储器QVariant，就可以按照一种统一的方式来对基本类型和其他普通类型进行操作</li>
+<li>所谓元对象就是描述另一个对象结构的对象。QMetaObject是元对象模式的一个Qt实现，它提供了一个QObject对象所拥有的属性和方法的信息。元对象模式有时也称为反射模式</li>
+<li>一个拥有元对象的类就可以支持反射。这是一个许多面向对象语言都具有的性质。虽然C++中不存在反射，但Qt的元对象编译器(moc)可以为QObject生成支持这种机制的代码</li>
+<li>只要满足一定条件(每个类都必须在头文件中定义，并且列举在工程文件的HEADERS中，同时此类的定义中还必须包括Q_OBJECT宏)，每个派生自QObject的类都会拥有一个有moc为其生成的QMetaObject。QObject拥有有个成员函数，它能够返回指向对象的QMetaObject的指针，这个函数原型是：QMetaObject* QObject：：metaObject() const[virtual]</li>
+<li>可以使用QMetaObject的下面这些方法来获取一个QObject的信息：
+
+<ul>
+<li>className(),它会将类的名称以const char*格式返回</li>
+<li>superClass(),如果存在基类的QMetaObject，则返回其指针，如果不存在返回0</li>
+<li>mathodCount(),返回类的成员函数的个数</li>
+</ul>
+</li>
+<li>信号和槽机制同样需要依赖与QMetaObject</li>
+<li>通过使用QMetaObject和QMetaProperty就可以编写足够通用的代码来处理所有具有自我描述能力的类</li>
+<li>除了C++的RTTI运算符dynamic_cast和typeid之外，Qt还提供了两种运行时的类型识别机制：
+
+<ul>
+<li>qobject_cast</li>
+<li>QObject::inherits()</li>
+</ul>
+</li>
+<li>qobject_cast是一个ANSI风格的类型转换运算符：DestType<em> qobject_cast&lt;DestType</em>> (QObject* qoptr),如果转换失败返回NULL。qobject_cast实际是一个向下转换运算符，类似于dynamic_cast。拥有指向派生类的基类指针时，向下转换允许调用在基类接口中不存在的派生类方法。</li>
+<li>访问数据成员的方式：
+
+<ul>
+<li>直接访问，通过经典的gettet/settet，速度快，更为有效</li>
+<li>间接访问，通过QObject/QMetaObject接口，可让代码复用性更好</li>
+</ul>
+</li>
+<li>使用Q_PROPERTY宏来描述QObject的属性：Q_PROPERTY(type name READ getFunction [WRITE setFunction] [RESET resetFunction] [NOTIFY notifySignal] [DESIGNABLE bool] [SCRIPTABLE bool] [STORED bool]),例如：</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span>customer-props.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">Customer</span><span class="p">:</span><span class="n">public</span> <span class="n">QObject</span><span class="p">{</span>
+</span><span class='line'>  <span class="n">Q_OBJECT</span>         <span class="c1">//moc预处理类需要的宏</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">id</span> <span class="n">READ</span> <span class="n">getId</span> <span class="n">WRITE</span> <span class="n">setId</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">name</span> <span class="n">READ</span> <span class="n">getName</span> <span class="n">WRITE</span> <span class="n">setName</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">address</span> <span class="n">READ</span> <span class="n">getAddress</span> <span class="n">WRITE</span> <span class="n">setAddress</span> <span class="n">NOTIFY</span> <span class="n">addressChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QString</span> <span class="n">phone</span> <span class="n">READ</span> <span class="n">getPhone</span> <span class="n">WRITE</span> <span class="n">setPhone</span> <span class="n">NOTIFY</span> <span class="n">phoneChanged</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">QDate</span> <span class="n">dateEstablished</span> <span class="n">READ</span> <span class="n">getDateEstablished</span><span class="p">);</span>     <span class="c1">//只读属性</span>
+</span><span class='line'>  <span class="n">Q_PROPERTY</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">type</span> <span class="n">READ</span> <span class="n">getType</span> <span class="n">WRITE</span> <span class="n">setType</span> <span class="n">NOTIFY</span> <span class="n">valueChanged</span><span class="p">);</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="k">enum</span> <span class="n">CustomerType</span><span class="p">{</span>
+</span><span class='line'>              <span class="n">Corporate</span><span class="p">,</span><span class="n">Individual</span><span class="p">,</span><span class="n">Educational</span><span class="p">,</span><span class="n">Government</span>
+</span><span class='line'>                  <span class="p">};</span>                                               <span class="c1">//枚举类型定义必须与Q_ENUMS宏的定义出现在同一类定义中</span>
+</span><span class='line'>  <span class="n">Q_ENUMS</span><span class="p">(</span><span class="n">CustomerType</span><span class="p">);</span>                                          <span class="c1">//特殊的宏可以实现生成字符串到枚举之间的转换功能；必须在同一个类中</span>
+</span><span class='line'>  <span class="n">explicit</span> <span class="nf">Customer</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="n">name</span> <span class="o">=</span> <span class="n">QString</span><span class="p">(),</span><span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span><span class="c1">//之所以声明为explicit，是因为不希望从QString转换到Customer时出现意外</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">getId</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>      <span class="k">return</span> <span class="n">m_id</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">setType</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">newType</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">setType</span><span class="p">(</span><span class="n">QString</span> <span class="n">newType</span><span class="p">);</span>
+</span><span class='line'><span class="nl">signals</span><span class="p">:</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="n">addressChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">newAddress</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">propertyName</span><span class="p">,</span><span class="n">QVariant</span> <span class="n">newValue</span><span class="p">,</span><span class="n">QVariant</span> <span class="n">oldValue</span><span class="o">=</span><span class="n">QVariant</span><span class="p">());</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">phoneChanged</span><span class="p">(</span><span class="n">QString</span> <span class="n">newPhone</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span> <span class="nf">typeChanged</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">type</span><span class="p">);</span>
+</span><span class='line'><span class="nl">private</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">QString</span> <span class="n">m_id</span><span class="p">,</span><span class="n">m_name</span><span class="p">,</span><span class="n">m_address</span><span class="p">,</span><span class="n">m_phone</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QDate</span> <span class="n">m_date</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">CustomerType</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>customer-props.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">Customer</span><span class="o">::</span><span class="n">Customer</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span> <span class="n">name</span><span class="p">,</span><span class="n">QObject</span><span class="o">*</span> <span class="n">parent</span><span class="p">)</span><span class="o">:</span><span class="n">QObject</span><span class="p">(</span><span class="n">parent</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">setObjectName</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setId</span><span class="p">(</span><span class="k">const</span> <span class="n">QString</span><span class="o">&amp;</span> <span class="n">newId</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">newId</span> <span class="o">!=</span> <span class="n">m_id</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">QString</span> <span class="n">oldId</span> <span class="o">=</span> <span class="n">m_id</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_id</span> <span class="o">=</span> <span class="n">newId</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="n">newId</span><span class="p">,</span><span class="n">oldId</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setType</span><span class="p">(</span><span class="n">CustomerType</span> <span class="n">theType</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">m_type</span> <span class="o">!=</span> <span class="n">theType</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">CustomerType</span> <span class="n">oldType</span> <span class="o">=</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_type</span> <span class="o">=</span> <span class="n">theType</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="n">theType</span><span class="p">,</span><span class="n">oldType</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="n">Customer</span><span class="o">::</span><span class="n">setType</span><span class="p">(</span><span class="n">QString</span> <span class="n">newType</span><span class="p">){</span>
+</span><span class='line'>  <span class="k">static</span> <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">metaObject</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">propindex</span> <span class="o">=</span> <span class="n">meta</span><span class="o">-&gt;</span><span class="n">indexOfProperty</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">static</span> <span class="k">const</span> <span class="n">QMetaProperty</span> <span class="n">mp</span> <span class="o">=</span> <span class="n">meta</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">propindex</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">QMetaEnum</span> <span class="n">menum</span> <span class="o">=</span> <span class="n">mp</span><span class="p">.</span><span class="n">enumerator</span><span class="p">();</span>
+</span><span class='line'>  <span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ntyp</span> <span class="o">=</span> <span class="n">newType</span><span class="p">.</span><span class="n">toAscii</span><span class="p">().</span><span class="n">data</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">CustomerType</span> <span class="n">theType</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">CustomerType</span><span class="o">&gt;</span><span class="p">(</span><span class="n">menum</span><span class="p">.</span><span class="n">keyToValue</span><span class="p">(</span><span class="n">ntyp</span><span class="p">));</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">theType</span> <span class="o">!=</span> <span class="n">m_type</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">CustomerType</span> <span class="n">oldType</span> <span class="o">=</span> <span class="n">m_type</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">m_type</span> <span class="o">=</span> <span class="n">theType</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">emit</span> <span class="nf">valueChanged</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span><span class="n">theType</span><span class="p">,</span><span class="n">oldType</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">QString</span> <span class="n">Customer</span><span class="o">::</span><span class="n">getTypeString</span><span class="p">()</span> <span class="k">const</span><span class="p">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">property</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">).</span><span class="n">toString</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>可以通多下面的函数来获得任意属性的值：QVariant QObject::property(QString propertyName);
+QVariant是一个联合体的封装，其中包含了所有基本类型和所允许的全部Q_PROPERTY类型。QVariant有一个toString()函数能够为它支持的许多类型返回其QString表示。
+QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
+同一类的所有对象会共享同一个metaObject，因而会有相同元属性组</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QString</span> <span class="nf">objTOString</span><span class="p">(</span><span class="k">const</span> <span class="n">QObject</span><span class="o">*</span> <span class="n">obj</span><span class="p">){</span>
+</span><span class='line'>  <span class="n">QStringList</span> <span class="n">result</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">const</span> <span class="n">QMetaObject</span><span class="o">*</span> <span class="n">meta</span> <span class="o">=</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">metaObject</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">+=</span> <span class="n">QString</span><span class="p">(</span><span class="s">&quot;class %1:public %2 {&quot;</span><span class="p">).</span><span class="n">arg</span><span class="p">(</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">()).</span><span class="n">arg</span><span class="p">(</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">superClass</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">());</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">propertyCount</span><span class="p">();</span><span class="o">++</span><span class="n">i</span><span class="p">){</span>
+</span><span class='line'>      <span class="k">const</span> <span class="n">QMetaProperty</span> <span class="n">qmp</span><span class="o">=</span><span class="n">meta</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+</span><span class='line'>      <span class="n">QVariant</span> <span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">-&gt;</span><span class="n">property</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">name</span><span class="p">());</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">canConvert</span><span class="p">(</span><span class="n">QVariant</span><span class="o">::</span><span class="n">String</span><span class="p">)){</span>
+</span><span class='line'>          <span class="n">result</span> <span class="o">+=</span> <span class="n">QString</span><span class="p">(</span><span class="s">&quot;%1 %2=%3;&quot;</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">typeName</span><span class="p">())</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">qmp</span><span class="p">.</span><span class="n">name</span><span class="p">())</span>
+</span><span class='line'>          <span class="p">.</span><span class="n">arg</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">toString</span><span class="p">());</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">result</span> <span class="o">+=</span> <span class="s">&quot;};&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">result</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QMetaType</h2>
+
+<blockquote><ol>
+<li>QMetaType是一个用于值类型的辅助类，对于60多种内置类型，QMetaType为每个类型ID关联了一个类型名，从而使构造和析构可以在运行时动态发生。有一个名称为QMetaType::Type的公共枚举，它有所有QVariant兼容类型的值。在QMetaType::Type中的枚举值与QVariant::Type中的枚举值一样
+通过使用Q_ENUMS宏可以在QVariant系统中加入一些自定义的枚举类型。
+使用Q_DECLARE_METATYPE(MyType)宏也有可能把自己的值类型加到QMetaType列表中。如果MyType有公共的默认复制构造函数和公共的复制构造函数以及一个公共的析构函数，Q_DECLARE_METATYPE宏使得它可用作QVariant中的自定义类型
+要注册的元类型必须已经用Q_DECLARE_METATYPE声明过。模板函数qRegisterMetaType<T>()会注册类型T并返回由QMetaType使用的内部ID。这个函数有一个重载版本，qRegisterMetaType<T>(const char* name),它可以让你注册一个名称作为类型T的名称。对于这个函数的调用必须早早地出现在主程序中。</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span>fraction.h</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">class</span> <span class="nl">Fraction</span><span class="p">:</span><span class="n">public</span> <span class="n">QPair</span><span class="o">&lt;</span><span class="n">qint32</span><span class="p">,</span><span class="n">qint32</span><span class="o">&gt;</span><span class="p">{</span>
+</span><span class='line'><span class="nl">public</span><span class="p">:</span>
+</span><span class='line'>  <span class="n">Fraction</span><span class="p">(</span><span class="n">qint32</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">qint32</span> <span class="n">d</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">:</span><span class="n">QPair</span><span class="o">&lt;</span><span class="n">qint32</span><span class="p">,</span><span class="n">qint32</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n</span><span class="p">.</span><span class="n">d</span><span class="p">){}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="n">Q_DECLARE_METATYPE</span><span class="p">(</span><span class="n">Fraction</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>metatype.cpp</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span><span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[]){</span>
+</span><span class='line'>  <span class="n">QApplication</span> <span class="n">app</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="n">argv</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">qRegissterMetaType</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Fraction&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">twoThirds</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QVariant</span> <span class="n">var</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">var</span><span class="p">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">twoThirds</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="n">var</span><span class="p">.</span><span class="n">value</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span><span class="p">()</span> <span class="o">==</span> <span class="n">twoThirds</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">oneHalf</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span> <span class="n">threeQuarters</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QList</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span> <span class="n">fractions</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">fractions</span><span class="o">&lt;&lt;</span><span class="n">oneHalf</span><span class="o">&lt;&lt;</span><span class="n">twoThirds</span><span class="o">&lt;&lt;</span><span class="n">threeQuarters</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">QFile</span> <span class="n">binaryTestFile</span><span class="p">(</span><span class="s">&quot;testMetaType.bin&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">WriteOnly</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QDataStream</span> <span class="n">dout</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryTestFile</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">dout</span><span class="o">&lt;&lt;</span><span class="n">fractions</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span><span class="n">QIODevice</span><span class="o">::</span><span class="n">ReadOnly</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QDataStream</span> <span class="n">din</span><span class="p">(</span><span class="o">&amp;</span><span class="n">binaryTestFile</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">QList</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">&gt;</span> <span class="n">frac2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">din</span> <span class="o">&gt;&gt;</span> <span class="n">frac2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">binaryTestFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="n">fractions</span> <span class="o">==</span> <span class="n">frac2</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">creatTest</span><span class="p">();</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">creatTest</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">static</span> <span class="kt">int</span> <span class="n">fracType</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">type</span><span class="p">(</span><span class="s">&quot;Fraction&quot;</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">void</span><span class="o">*</span> <span class="n">vp</span> <span class="o">=</span> <span class="n">QMetaType</span><span class="o">::</span><span class="n">construct</span><span class="p">(</span><span class="n">fracType</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">Fraction</span><span class="o">*</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">reinterpret_cast</span><span class="o">&lt;</span><span class="n">Fraction</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">vp</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">first</span>  <span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">fp</span><span class="o">-&gt;</span><span class="n">second</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span><span class='line'>  <span class="n">Q_ASSERT</span><span class="p">(</span><span class="o">*</span><span class="n">fp</span> <span class="o">==</span> <span class="n">Fraction</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>invokeMethod()</h2>
+
+<blockquote><ol>
+<li>Qt把信号连接到槽需要一种机制：通过名称以类型安全的方式来间接调用这些槽，当调用槽时，实际是由invokeMethod()完成的。</li>
+<li>与QObject::connect()类似，invokeMethod()接受一个可选参数Qt::ConnectionType,该参数可让你来决定是要用同步调用还是要用异步调用。默认情况下是Qt::AutoConnection，表示发射者和接收者处于同一线程中时会同步执行一个槽</li>
+<li>要通过invokeMethod()向函数传递类型参数，可以用Q_ARG宏创建一些值，这样会返回一个QGenericArgument，它封装了单个参数的类型和值信息</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">void</span> <span class="n">AutoSaver</span><span class="o">::</span><span class="n">saveIfNecessary</span><span class="p">(){</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="n">QMetaObject</span><span class="o">::</span><span class="n">invokeMethod</span><span class="p">(</span><span class="n">parent</span><span class="p">(),</span><span class="s">&quot;save&quot;</span><span class="p">)){</span>
+</span><span class='line'>      <span class="n">qWarning</span><span class="p">()</span><span class="o">&lt;&lt;</span><span class="s">&quot;AutoSaver:error invoking save() on parent&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QByteArray</span> <span class="n">buffer</span><span class="o">=</span><span class="p">...;</span>
+</span><span class='line'><span class="k">const</span> <span class="kt">bool</span> <span class="n">b</span> <span class="o">=</span> <span class="n">QMetaObject</span><span class="o">::</span><span class="n">invokeMethod</span><span class="p">(</span><span class="n">m_thread</span><span class="p">,</span><span class="s">&quot;caculateSpectrum&quot;</span><span class="p">,</span><span class="n">Qt</span><span class="o">::</span><span class="n">AutoConnection</span><span class="p">,</span><span class="n">Q_ARG</span><span class="p">(</span><span class="n">QByteArray</span><span class="p">,</span><span class="n">buffer</span><span class="p">),</span><span class="n">Q_ARG</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="n">format</span><span class="p">.</span><span class="n">frequency</span><span class="p">()),</span><span class="n">Q_ARG</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="n">bytesPerSample</span><span class="p">));</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<h2>MVC设计模式</h2>
+
+<blockquote><ol>
+<li>MVC由三类对象组成。模型是应用程序对象，视图是它的屏幕展示，控制器定义了用户界面对用户输入的反应行为。</li>
+<li>在Qt中，不同的控制器类的基类是QAbstractItemDelegate。那些连接信号与槽的connect语句也可以认为是控制器代码</li>
+<li>Qt中包含有一个模型/视图框架，用于维护数据的组织管理和向用户的呈现方式之间的分离。三个最常用的视图类(列表、树和表格)都是默认提供的。另外，它还提供了抽象的和具体的数据模型，这些数据模型可被扩展和自定义以保存不同类型的数据。</li>
+<li>视图是获取、修改和呈现数据的对象。QAbstractItemModel定义了视图(还有委托)访问数据的一个标准接口。模型中存储供显示和操作的具体数据。通过信号和槽，他们将数据的变化通知给所有相关联的视图。每个视图对象都有一个指向模型对象的指针，视图对象会频繁访问模型的方法以获取或设置数据，或者做各种其他操作。</li>
+<li>模型中每个数据项都用一个模型索引来表示。模型索引为视图和委托提供了在不知道其底层数据结构的情况下间接访问模型中数据项的方法。QModeIndex对象由模型创建，可以被模型、视图或委托代码用于定位数据模型中特定项。QModeIndex对象具有很短的生命周期，可能在刚刚创建后就变成无效的状态，因此它们应该被立即使用而后丢弃</li>
+<li>如果使用一个在若干指令操作前已经存在的QModeIndex，那么应该先调用QModelIndex::isValid（）。QPersistentModelIndex对象具有更长的生命周期，但是在使用前任然应该先调用isValid()来进行检查</li>
+</ol>
+</blockquote>
+
+<h2>智能指针</h2>
+
+<blockquote><ol>
+<li>一个重写了指针解引用操作operator*()和operator->()的类被称为智能指针。</li>
+<li>QScopedPointer是一个在指针作用域结束后自动删除所引用对象的智能指针。它类似于std::auto_ptr。复制QScopedPointer是毫无意义的，因为它会导致所引用的对象重复删除</li>
+<li>QSharedPointer是一个自动删除它所引用的对象的智能指针，但是它允许被复制，而且QSharedPointer会保持一个引用计数。共享的堆对象只有在最后一个指向它的只能指针销毁时才会被删除。</li>
+</ol>
+</blockquote>
+
+<h2>输入掩码</h2>
+
+<blockquote><p>1.所谓的输入掩码，是一种控制用户在输入窗件中可键入的内容的主动模式。它有助于防止输入某些类型的不正确的数据。每个QLineEdit都有一个QString属性用来存储掩码字符。输入掩码可以指定在键入QLineEdit的字符串中那个位置处的何种字符是允许的。该字符串由一些特殊的、预定义的掩码字符和一些占据输入字符串相应位置的普通字符构成
+掩码字符：
+    * A:ASCII字母型字符——大写或者小写
+    * N:ASCII字母数字型字符——大写或者小写
+    * X:任意的ASCII字符
+    * D:ASCII非零数字
+    * 9:ASCII数字
+    * H:十六进制数字
+    * B:二进制数字
+    * >:随后的字母字符是大写
+    * &lt;:随后的字母字符是小写
+    * ！:结束大小写转换
+    * :转义字符</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">QLineEdit</span><span class="o">*</span> <span class="n">m_StringEntry</span><span class="p">;</span>
+</span><span class='line'><span class="n">m_StringEntry</span><span class="o">-&gt;</span><span class="n">setInputMask</span><span class="p">(</span><span class="n">m_InputMask</span><span class="o">-&gt;</span><span class="n">text</span><span class="p">());</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>QRegExp</h2>
+
+<blockquote><ol>
+<li>正则表达式是验证输入、从输入中提取数据以及对输入进行搜索和替换的强大工具。Qt提供了QRegExp类，它实现了Perl风格的扩展正则表达式语言的大部分功能</li>
+<li>特殊字符：
+
+<ul>
+<li>&lsquo;.'可以与任意字符相匹配，称之为元字符</li>
+<li>&lsquo;\n'匹配换行符</li>
+<li>&lsquo;\f'匹配换页符</li>
+<li>&lsquo;\t'匹配制表符</li>
+<li>&lsquo;\xhhhh'匹配一个Unicode字符，其对应的码值是范围为0x0000到0xFFFF之间的一个十六进制数hhhh</li>
+</ul>
+</li>
+<li>量词——说明前面的字符(或字符组)在匹配的表达式中可出现次数的修饰符
+
+<ul>
+<li>&lsquo;+&rsquo; 出现1次或者更多次</li>
+<li>&lsquo;?&rsquo; 出现0次或者1次</li>
+<li>&lsquo;*&rsquo; 出现0次或者更多次</li>
+<li>{i,j} 出现至少i次但不超过j次</li>
+</ul>
+</li>
+<li>字符集——在匹配表达式指定位置允许出现的字符集合
+
+<ul>
+<li>&lsquo;\s&rsquo; 匹配任何空白符</li>
+<li>&lsquo;\S&rsquo; 匹配任何非空白符</li>
+<li>&lsquo;\d&rsquo; 匹配任何数字字符：从'0'到'9'</li>
+<li>&lsquo;\D&rsquo; 匹配任何非数字字符</li>
+<li>&lsquo;\w&rsquo; 匹配任何“单词”字符，也就是任意的字母、数字或者下划线</li>
+<li>&lsquo;\W&rsquo; 匹配任意的非单词字符</li>
+</ul>
+</li>
+<li>字符集也可以使用方括号指定:
+
+<ul>
+<li>[AEIOU]匹配这五个字符中的任意一个</li>
+<li>[a-g]短线使此集合可匹配从'a'到'g'的字符</li>
+<li>[^xyz]匹配任何除这三字符以外的字符</li>
+</ul>
+</li>
+<li>分组和捕获字符——(圆括号)是可以用来把字符划分成组的特殊字符。字符组可以是后向引用的。也就是说，如果存在一个匹配，那么分组了的值将可以通过各种方法来捕获和访问。为了简便起见，一般规定在一个正则表达式中最多可以引用9个分组，即使用\1到\9这样的修饰符。此外还有一个QRegExp成员函数cap(int nth),它返回第那个分组(基于QString的形式返回)</li>
+<li>锚点字符——去顶尝试进行匹配操作的边界
+
+<ul>
+<li>脱字符(^),如果它是正则表达式中的第一个字符，则说明匹配过程从字符串的开头处开始</li>
+<li>美元符($),如果它是正则表达式的最后一个字符，则表明匹配过程指导字符串的结尾才结束</li>
+<li>此外，还有单词边界(\b)断言或者非单词边界(\B),有助于我们关注正则表达式本身</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>Qt环境变量的获取与设置</h2>
+
+<blockquote><p>QProcess::environment()函数和setEnvironment()函数</p></blockquote>
+
+<h2>QProcess和进程控制</h2>
+
+<blockquote><ol>
+<li>QProcess是一个能够非常方便而且跨平台的用于启动和控制其他进程的类。它从QPbject派生而来，可充分利用信号和槽来简化和其他Qt类的交互</li>
+<li>一个QProcess可以使用start()函数来启动另外一个进程，新进程将会成为一个子进程并且在父进程终止时而随之终止</li>
+<li>Qt的线程模型允许线程的优先次序和控制。QThread是一个低级类，适合用于显式的构建长期运行的线程</li>
+<li>QtConcurrent是一个命名空间，提供了用于编写并发软件的更高层次的类和算法。该命名空间有一个重要的类，QThreadPool，这是一个管理线程池的类。每个Qt应用程序都有一个QThreadPool::globalInstance()函数，它带有一个推荐的最大线程数，在大多数系统上，处理核的数量就是该值的默认值</li>
+<li>借助QtConcurrent中函数式的map/filter/reduce算法，通过将进程分布在由线程池管理的多个线程上，可编写一个能够自动利用系统多核的程序。另外，在命令模式和利用QtConcurrent::run()工作时可把QRunnable用作基类。在这些情况下，无须显示地创建线程或者直接管理他们，只需简单把工作片段描述为具有正确接口的对象即可</li>
+</ol>
+</blockquote>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-19T20:52:44+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/qt4/'>qt4</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/07/13/ut4418-introduce/">
 		
 			UT4418_Introduce</a>
@@ -5446,494 +6538,6 @@
 
 
 <time datetime="2015-06-18T15:38:36+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/17/mini6410-dot-h/">
-		
-			Mini6410.h</a>
-	</h2>
-	<div class="entry-content">
-		<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_UBOOT_SIZE       (2*1024*1024)   </span><span class="cm">/*定义Uboot大小为2M字节*/</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_ENABLE_MMU    </span><span class="cm">/*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define MEMORY_BASE_ADDRESS  0x50000000  </span><span class="cm">/*DDR起始地址*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   MEMORY_BASE_ADDRESS + 0x7e00000 </span><span class="cm">/*Uboot的物理地址0x57e00000*/</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
-</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0xc7e00000</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0x57e00000</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/***********************************************Size of malloc() pool********************************/</span>
-</span><span class='line'><span class="cp">#define CFG_MALLOC_LEN       (CFG_ENV_SIZE + 1024*1024)</span>
-</span><span class='line'><span class="cp">#define CFG_GBL_DATA_SIZE    128 </span><span class="cm">/* size in bytes reserved for initial data */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_STACK_SIZE       512*1024</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
-</span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
-</span><span class='line'><span class="cp">#define CFG_NAND_BASE           (0x70200010)</span>
-</span><span class='line'><span class="cp">#define NAND_MAX_CHIPS          1</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define NAND_DISABLE_CE()    (NFCONT_REG |= (1 &lt;&lt; 1))</span>
-</span><span class='line'><span class="cp">#define NAND_ENABLE_CE() (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))</span>
-</span><span class='line'><span class="cp">#define NF_TRANSRnB()        do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CFG_NAND_SKIP_BAD_DOT_I  1  </span><span class="cm">/* &quot;.i&quot; read skips bad blocks   */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define  CFG_NAND_WP     1</span>
-</span><span class='line'><span class="cp">#define CFG_NAND_YAFFS_WRITE 1  </span><span class="cm">/* support yaffs write */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
-</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_MEDIA_SD) </span><span class="cm">/*启动介质是SD Card*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CONFIG_BOOT_MOVINAND</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'><span class="cp">#error Boot media not defined</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
-</span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE         </span><span class="cm">/*用户内存位于代码之上*/</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/******************************************系统时钟宏定义*******************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_CLK_532_133_66                </span><span class="cm">/*FIN=12MHz,Fout=532MHz*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define APLL_MDIV    266</span>
-</span><span class='line'><span class="cp">#define APLL_PDIV    3</span>
-</span><span class='line'><span class="cp">#define APLL_SDIV    1</span>
-</span><span class='line'><span class="cp">#define CONFIG_SYNC_MODE</span>
-</span><span class='line'><span class="cp">#define set_pll(mdiv, pdiv, sdiv)    (1&lt;&lt;31 | mdiv&lt;&lt;16 | pdiv&lt;&lt;8 | sdiv)</span>
-</span><span class='line'><span class="cp">#define APLL_VAL set_pll(APLL_MDIV, APLL_PDIV, APLL_SDIV)</span>
-</span><span class='line'><span class="cp">#define Startup_APLL (CONFIG_SYS_CLK_FREQ/(APLL_PDIV&lt;&lt;APLL_SDIV)*APLL_MDIV)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define MPLL_MDIV    266                     </span><span class="cm">/* fixed MPLL 533MHz */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define MPLL_PDIV    3</span>
-</span><span class='line'><span class="cp">#define MPLL_SDIV    1</span>
-</span><span class='line'><span class="cp">#define MPLL_VAL set_pll(MPLL_MDIV, MPLL_PDIV, MPLL_SDIV)</span>
-</span><span class='line'><span class="cp">#define Startup_MPLL ((CONFIG_SYS_CLK_FREQ)/(MPLL_PDIV&lt;&lt;MPLL_SDIV)*MPLL_MDIV)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define Startup_APLLdiv      0</span>
-</span><span class='line'><span class="cp">#define Startup_HCLKx2div    1</span>
-</span><span class='line'><span class="cp">#define  Startup_PCLKdiv     3</span>
-</span><span class='line'><span class="cp">#define Startup_HCLKdiv      1</span>
-</span><span class='line'><span class="cp">#define Startup_MPLLdiv      1</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CLK_DIV_VAL  ((Startup_PCLKdiv&lt;&lt;12)|(Startup_HCLKx2div&lt;&lt;9)|(Startup_HCLKdiv&lt;&lt;8)|(Startup_MPLLdiv&lt;&lt;4)|Startup_APLLdiv)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_SYNC_MODE)</span>
-</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_APLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_MPLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_CLKSRC_CLKUART</span>
-</span><span class='line'><span class="cp">#define CONFIG_UART_66                       </span><span class="cm">/*CLKUART=66.5MHz*/</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*****************************************DDR控制器宏定义*******************************************/</span>
-</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_RAM256)</span>
-</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (3&lt;&lt;3) | (2&lt;&lt;0))   </span><span class="cm">/*column address(10):A0~A9;row address(14):A0~A13;Burst Length =4*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F0                                 </span><span class="cm">/*Bank-Row-Column organization */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x10000000 </span><span class="cm">/* 256 MB */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_RAM128)</span>
-</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (2&lt;&lt;3)| (2&lt;&lt;0))</span>
-</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F8</span>
-</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x8000000 </span><span class="cm">/* 128 MB */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'><span class="cp">#error RAM size must be defined</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41       </span><span class="cm">/*Memory with=32,Mobile DDR SDRAM,Read delay 1 cycle*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/* DDR Parameters */</span>
-</span><span class='line'><span class="cp">#define DDR_tREFRESH     7800        </span><span class="cm">/* ns */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRAS     45      </span><span class="cm">/* ns (min: 45ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRC      68      </span><span class="cm">/* ns (min: 67.5ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRCD     23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRFC     80      </span><span class="cm">/* ns (min: 80ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRP      23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tRRD     15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tWR      15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_tXSR     120     </span><span class="cm">/* ns (min: 120ns)*/</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define DDR_CASL     3       </span><span class="cm">/* CAS Latency 3 */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define DMC_DDR_BA_EMRS  2</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_MEM_CASLAT   3</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_CAS_LATENCY  (DDR_CASL&lt;&lt;1)                     </span><span class="c1">//6   Set Cas Latency to 3</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_DQSS       1                           </span><span class="c1">// Min 0.75 ~ 1.25</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_MRD        2                           </span><span class="c1">//Min 2 tck</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RAS        (((Startup_HCLK / 1000 * DDR_tRAS) - 1) / 1000000 + 1)  </span><span class="c1">//7, Min 45ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RC     (((Startup_HCLK / 1000 * DDR_tRC) - 1) / 1000000 + 1)   </span><span class="c1">//10, Min 67.5ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RCD        (((Startup_HCLK / 1000 * DDR_tRCD) - 1) / 1000000 + 1)  </span><span class="c1">//4,5(TRM), Min 22.5ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RCD ((DMC_DDR_t_RCD - 3) &lt;&lt; 3)</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RFC        (((Startup_HCLK / 1000 * DDR_tRFC) - 1) / 1000000 + 1)  </span><span class="c1">//11,18(TRM) Min 80ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RFC ((DMC_DDR_t_RFC - 3) &lt;&lt; 5)</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RP     (((Startup_HCLK / 1000 * DDR_tRP) - 1) / 1000000 + 1)   </span><span class="c1">//4, 5(TRM) Min 22.5ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RP  ((DMC_DDR_t_RP - 3) &lt;&lt; 3)</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_RRD        (((Startup_HCLK / 1000 * DDR_tRRD) - 1) / 1000000 + 1)  </span><span class="c1">//3, Min 15ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_WR     (((Startup_HCLK / 1000 * DDR_tWR) - 1) / 1000000 + 1)   </span><span class="c1">//Min 15ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_WTR        2</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_XP     2                           </span><span class="c1">//1tck + tIS(1.5ns)</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_XSR        (((Startup_HCLK / 1000 * DDR_tXSR) - 1) / 1000000 + 1)  </span><span class="c1">//17, Min 120ns</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_t_ESR        DMC_DDR_t_XSR</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_REFRESH_PRD  (((Startup_HCLK / 1000 * DDR_tREFRESH) - 1) / 1000000)  </span><span class="c1">// TRM 2656</span>
-</span><span class='line'><span class="cp">#define DMC_DDR_USER_CONFIG  1                           </span><span class="c1">// 2b01 : mDDR</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_CPUINFO</span>
-</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_BOARDINFO</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/************************************************DM9000*********************************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000 1</span>
-</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000_NO_EEPROM   1</span>
-</span><span class='line'><span class="cp">#define CONFIG_DM9000_USE_16BIT 1</span>
-</span><span class='line'><span class="cp">#define CONFIG_DM9000_BASE   0x18000300</span>
-</span><span class='line'><span class="cp">#define DM9000_IO CONFIG_DM9000_BASE</span>
-</span><span class='line'><span class="cp">#define DM9000_DATA (CONFIG_DM9000_BASE+4)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_INCLUDE_TEST</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_ZIMAGE_BOOT</span>
-</span><span class='line'><span class="cp">#define CONFIG_IMAGE_BOOT</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define BOARD_LATE_INIT</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_SETUP_MEMORY_TAGS</span>
-</span><span class='line'><span class="cp">#define CONFIG_CMDLINE_TAG</span>
-</span><span class='line'><span class="cp">#define CONFIG_INITRD_TAG</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/******************************************************Shell*******************************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_SERIAL1          1            </span><span class="cm">/* we use SERIAL 1 on SMDK6410 */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_HUSH_PARSER                      </span><span class="cm">/* use &quot;hush&quot; command parser  */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CFG_HUSH_PARSER</span>
-</span><span class='line'><span class="cp">#define CFG_PROMPT_HUSH_PS2  &quot;&gt; &quot;</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*******************************************************Command definition*****************************************/</span>
-</span><span class='line'><span class="cp">#define CONFIG_COMMANDS \</span>
-</span><span class='line'><span class="cp">                        (CONFIG_CMD_DFL | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_CACHE   | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_USB     | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_REGINFO | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_LOADS   | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_LOADB   | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_ENV     | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_NAND    | \</span>
-</span><span class='line'><span class="cp">                     CFG_CMD_PING    | \</span>
-</span><span class='line'><span class="cp">                        CFG_CMD_MOVINAND) \</span>
-</span><span class='line'><span class="cp">                        &amp; ~(CFG_CMD_AUTOSCRIPT  | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_BOOTD   | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_IMI     | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_RUN     | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_CONSOLE | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_DOCG3P3 | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_EEPROM   | \</span>
-</span><span class='line'><span class="cp">                                CFG_CMD_I2C     | \</span>
-</span><span class='line'><span class="cp">                                0)</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*********************************************************************************************************************/</span>
-</span><span class='line'><span class="cp">#include &lt;cmd_confdefs.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_BOOTDELAY 0</span>
-</span><span class='line'><span class="cp">#define CONFIG_BOOTARGS      &quot;root=/dev/mtdblock2 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200&quot;</span>
-</span><span class='line'><span class="cp">#define CONFIG_ETHADDR       08:90:90:90:90:90</span>
-</span><span class='line'><span class="cp">#define CONFIG_NETMASK          255.255.255.0</span>
-</span><span class='line'><span class="cp">#define CONFIG_IPADDR        192.168.1.230</span>
-</span><span class='line'><span class="cp">#define CONFIG_SERVERIP      192.168.1.88</span>
-</span><span class='line'><span class="cp">#define CONFIG_GATEWAYIP 192.168.1.1</span>
-</span><span class='line'><span class="cp">#define CONFIG_DEVICENUM    0</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#define CONFIG_ZERO_BOOTDELAY_CHECK</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/************************************************************************************************************************/</span>
-</span><span class='line'><span class="cp">#define CFG_LONGHELP             </span><span class="cm">/* undef to save memory     */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_PROMPT       &quot;iggsensor # &quot;    </span><span class="cm">/* Monitor Command Prompt   */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_CBSIZE       256     </span><span class="cm">/* Console I/O Buffer Size  */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_PBSIZE       384     </span><span class="cm">/* Print Buffer Size */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_MAXARGS      16      </span><span class="cm">/* max number of command args   */</span><span class="cp"></span>
-</span><span class='line'><span class="cp">#define CFG_BARGSIZE     CFG_CBSIZE  </span><span class="cm">/* Boot Argument Buffer Size    */</span><span class="cp"></span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*************************************************************************************************************************/</span>
-</span><span class='line'><span class="cp">#define MACH_TYPE        2520</span>
-</span><span class='line'><span class="cp">#define UBOOT_MAGIC      (0x43090000 | MACH_TYPE)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-17T11:49:49+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 

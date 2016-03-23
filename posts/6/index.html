@@ -88,6 +88,494 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/17/mini6410-dot-h/">
+		
+			Mini6410.h</a>
+	</h2>
+	<div class="entry-content">
+		<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+<span class='line-number'>195</span>
+<span class='line-number'>196</span>
+<span class='line-number'>197</span>
+<span class='line-number'>198</span>
+<span class='line-number'>199</span>
+<span class='line-number'>200</span>
+<span class='line-number'>201</span>
+<span class='line-number'>202</span>
+<span class='line-number'>203</span>
+<span class='line-number'>204</span>
+<span class='line-number'>205</span>
+<span class='line-number'>206</span>
+<span class='line-number'>207</span>
+<span class='line-number'>208</span>
+<span class='line-number'>209</span>
+<span class='line-number'>210</span>
+<span class='line-number'>211</span>
+<span class='line-number'>212</span>
+<span class='line-number'>213</span>
+<span class='line-number'>214</span>
+<span class='line-number'>215</span>
+<span class='line-number'>216</span>
+<span class='line-number'>217</span>
+<span class='line-number'>218</span>
+<span class='line-number'>219</span>
+<span class='line-number'>220</span>
+<span class='line-number'>221</span>
+<span class='line-number'>222</span>
+<span class='line-number'>223</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#define CONFIG_S3C6410     1       </span><span class="cm">/* in a SAMSUNG S3C6410 SoC */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_S3C64XX       1       </span><span class="cm">/* in a SAMSUNG S3C64XX Family  */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_MINI6410      1       </span><span class="cm">/* in a FriendlyARM MINI6410 Board */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_SIZE       (2*1024*1024)   </span><span class="cm">/*定义Uboot大小为2M字节*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ENABLE_MMU    </span><span class="cm">/*在Uboot中开启MMU,目的为了开启DCache来提高运行速度*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define MEMORY_BASE_ADDRESS  0x50000000  </span><span class="cm">/*DDR起始地址*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PHY_UBOOT_BASE   MEMORY_BASE_ADDRESS + 0x7e00000 </span><span class="cm">/*Uboot的物理地址0x57e00000*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0xc7e00000</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define CFG_UBOOT_BASE       0x57e00000</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_ENV_OFFSET       0x00040000      </span><span class="cm">/*Uboot中环境变量偏移地址*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_ENV_SIZE     0x20000         </span><span class="cm">/* Total Size of Environment Sector */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***********************************************Size of malloc() pool********************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MALLOC_LEN       (CFG_ENV_SIZE + 1024*1024)</span>
+</span><span class='line'><span class="cp">#define CFG_GBL_DATA_SIZE    128 </span><span class="cm">/* size in bytes reserved for initial data */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_STACK_SIZE       512*1024</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/****************************************NANDFlash宏定义*********************************************/</span>
+</span><span class='line'><span class="cp">#define CFG_MAX_NAND_DEVICE     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_BASE           (0x70200010)</span>
+</span><span class='line'><span class="cp">#define NAND_MAX_CHIPS          1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define NAND_DISABLE_CE()    (NFCONT_REG |= (1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NAND_ENABLE_CE() (NFCONT_REG &amp;= ~(1 &lt;&lt; 1))</span>
+</span><span class='line'><span class="cp">#define NF_TRANSRnB()        do { while(!(NFSTAT_REG &amp; (1 &lt;&lt; 0))); } while(0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CFG_NAND_SKIP_BAD_DOT_I  1  </span><span class="cm">/* &quot;.i&quot; read skips bad blocks   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define  CFG_NAND_WP     1</span>
+</span><span class='line'><span class="cp">#define CFG_NAND_YAFFS_WRITE 1  </span><span class="cm">/* support yaffs write */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_MEDIA_NAND) </span><span class="cm">/*启动介质是NandFlash*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOT_NAND</span>
+</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_MEDIA_SD) </span><span class="cm">/*启动介质是SD Card*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOT_MOVINAND</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#error Boot media not defined</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define  CONFIG_NAND</span>
+</span><span class='line'><span class="cp">#define CONFIG_MOVINAND</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_MEMORY_UPPER_CODE         </span><span class="cm">/*用户内存位于代码之上*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#undef CONFIG_USE_IRQ                        </span><span class="cm">/* Uboot中不使用IRQ/FIQ*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/******************************************系统时钟宏定义*******************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_CLK_532_133_66                </span><span class="cm">/*FIN=12MHz,Fout=532MHz*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define APLL_MDIV    266</span>
+</span><span class='line'><span class="cp">#define APLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define APLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define CONFIG_SYNC_MODE</span>
+</span><span class='line'><span class="cp">#define set_pll(mdiv, pdiv, sdiv)    (1&lt;&lt;31 | mdiv&lt;&lt;16 | pdiv&lt;&lt;8 | sdiv)</span>
+</span><span class='line'><span class="cp">#define APLL_VAL set_pll(APLL_MDIV, APLL_PDIV, APLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_APLL (CONFIG_SYS_CLK_FREQ/(APLL_PDIV&lt;&lt;APLL_SDIV)*APLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define MPLL_MDIV    266                     </span><span class="cm">/* fixed MPLL 533MHz */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define MPLL_PDIV    3</span>
+</span><span class='line'><span class="cp">#define MPLL_SDIV    1</span>
+</span><span class='line'><span class="cp">#define MPLL_VAL set_pll(MPLL_MDIV, MPLL_PDIV, MPLL_SDIV)</span>
+</span><span class='line'><span class="cp">#define Startup_MPLL ((CONFIG_SYS_CLK_FREQ)/(MPLL_PDIV&lt;&lt;MPLL_SDIV)*MPLL_MDIV)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define Startup_APLLdiv      0</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKx2div    1</span>
+</span><span class='line'><span class="cp">#define  Startup_PCLKdiv     3</span>
+</span><span class='line'><span class="cp">#define Startup_HCLKdiv      1</span>
+</span><span class='line'><span class="cp">#define Startup_MPLLdiv      1</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CLK_DIV_VAL  ((Startup_PCLKdiv&lt;&lt;12)|(Startup_HCLKx2div&lt;&lt;9)|(Startup_HCLKdiv&lt;&lt;8)|(Startup_MPLLdiv&lt;&lt;4)|Startup_APLLdiv)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#if defined(CONFIG_SYNC_MODE)</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_APLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#define Startup_HCLK (Startup_MPLL/(Startup_HCLKx2div+1)/(Startup_HCLKdiv+1))</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_CLKSRC_CLKUART</span>
+</span><span class='line'><span class="cp">#define CONFIG_UART_66                       </span><span class="cm">/*CLKUART=66.5MHz*/</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*****************************************DDR控制器宏定义*******************************************/</span>
+</span><span class='line'><span class="cp">#if defined(FRIENDLYARM_BOOT_RAM256)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (3&lt;&lt;3) | (2&lt;&lt;0))   </span><span class="cm">/*column address(10):A0~A9;row address(14):A0~A13;Burst Length =4*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F0                                 </span><span class="cm">/*Bank-Row-Column organization */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x10000000 </span><span class="cm">/* 256 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#elif defined(FRIENDLYARM_BOOT_RAM128)</span>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG     ((1&lt;&lt;30) | (2&lt;&lt;15) | (2&lt;&lt;3)| (2&lt;&lt;0))</span>
+</span><span class='line'><span class="cp">#define DMC1_CHIP0_CFG       0x150F8</span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1_SIZE    0x8000000 </span><span class="cm">/* 128 MB */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#else</span>
+</span><span class='line'><span class="cp">#error RAM size must be defined</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define DMC1_MEM_CFG2        0xB41       </span><span class="cm">/*Memory with=32,Mobile DDR SDRAM,Read delay 1 cycle*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DMC_DDR_32_CFG       0x0         </span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/* DDR Parameters */</span>
+</span><span class='line'><span class="cp">#define DDR_tREFRESH     7800        </span><span class="cm">/* ns */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRAS     45      </span><span class="cm">/* ns (min: 45ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRC      68      </span><span class="cm">/* ns (min: 67.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRCD     23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRFC     80      </span><span class="cm">/* ns (min: 80ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRP      23      </span><span class="cm">/* ns (min: 22.5ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tRRD     15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tWR      15      </span><span class="cm">/* ns (min: 15ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_tXSR     120     </span><span class="cm">/* ns (min: 120ns)*/</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define DDR_CASL     3       </span><span class="cm">/* CAS Latency 3 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define DMC_DDR_BA_EMRS  2</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_MEM_CASLAT   3</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_CAS_LATENCY  (DDR_CASL&lt;&lt;1)                     </span><span class="c1">//6   Set Cas Latency to 3</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_DQSS       1                           </span><span class="c1">// Min 0.75 ~ 1.25</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_MRD        2                           </span><span class="c1">//Min 2 tck</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RAS        (((Startup_HCLK / 1000 * DDR_tRAS) - 1) / 1000000 + 1)  </span><span class="c1">//7, Min 45ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RC     (((Startup_HCLK / 1000 * DDR_tRC) - 1) / 1000000 + 1)   </span><span class="c1">//10, Min 67.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RCD        (((Startup_HCLK / 1000 * DDR_tRCD) - 1) / 1000000 + 1)  </span><span class="c1">//4,5(TRM), Min 22.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RCD ((DMC_DDR_t_RCD - 3) &lt;&lt; 3)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RFC        (((Startup_HCLK / 1000 * DDR_tRFC) - 1) / 1000000 + 1)  </span><span class="c1">//11,18(TRM) Min 80ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RFC ((DMC_DDR_t_RFC - 3) &lt;&lt; 5)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RP     (((Startup_HCLK / 1000 * DDR_tRP) - 1) / 1000000 + 1)   </span><span class="c1">//4, 5(TRM) Min 22.5ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_schedule_RP  ((DMC_DDR_t_RP - 3) &lt;&lt; 3)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_RRD        (((Startup_HCLK / 1000 * DDR_tRRD) - 1) / 1000000 + 1)  </span><span class="c1">//3, Min 15ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_WR     (((Startup_HCLK / 1000 * DDR_tWR) - 1) / 1000000 + 1)   </span><span class="c1">//Min 15ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_WTR        2</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_XP     2                           </span><span class="c1">//1tck + tIS(1.5ns)</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_XSR        (((Startup_HCLK / 1000 * DDR_tXSR) - 1) / 1000000 + 1)  </span><span class="c1">//17, Min 120ns</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_t_ESR        DMC_DDR_t_XSR</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_REFRESH_PRD  (((Startup_HCLK / 1000 * DDR_tREFRESH) - 1) / 1000000)  </span><span class="c1">// TRM 2656</span>
+</span><span class='line'><span class="cp">#define DMC_DDR_USER_CONFIG  1                           </span><span class="c1">// 2b01 : mDDR</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_NR_DRAM_BANKS 1      </span><span class="cm">/* we have 2 bank of DRAM */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define PHYS_SDRAM_1     MEMORY_BASE_ADDRESS </span><span class="cm">/* SDRAM Bank #1 */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_CPUINFO</span>
+</span><span class='line'><span class="cp">#define CONFIG_DISPLAY_BOARDINFO</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************DM9000*********************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DRIVER_DM9000_NO_EEPROM   1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_USE_16BIT 1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DM9000_BASE   0x18000300</span>
+</span><span class='line'><span class="cp">#define DM9000_IO CONFIG_DM9000_BASE</span>
+</span><span class='line'><span class="cp">#define DM9000_DATA (CONFIG_DM9000_BASE+4)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/***************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_INCLUDE_TEST</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ZIMAGE_BOOT</span>
+</span><span class='line'><span class="cp">#define CONFIG_IMAGE_BOOT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define BOARD_LATE_INIT</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_SETUP_MEMORY_TAGS</span>
+</span><span class='line'><span class="cp">#define CONFIG_CMDLINE_TAG</span>
+</span><span class='line'><span class="cp">#define CONFIG_INITRD_TAG</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/******************************************************Shell*******************************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_SERIAL1          1            </span><span class="cm">/* we use SERIAL 1 on SMDK6410 */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_HUSH_PARSER                      </span><span class="cm">/* use &quot;hush&quot; command parser  */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#ifdef CFG_HUSH_PARSER</span>
+</span><span class='line'><span class="cp">#define CFG_PROMPT_HUSH_PS2  &quot;&gt; &quot;</span>
+</span><span class='line'><span class="cp">#endif</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*******************************************************Command definition*****************************************/</span>
+</span><span class='line'><span class="cp">#define CONFIG_COMMANDS \</span>
+</span><span class='line'><span class="cp">                        (CONFIG_CMD_DFL | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_CACHE   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_USB     | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_REGINFO | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_LOADS   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_LOADB   | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_ENV     | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_NAND    | \</span>
+</span><span class='line'><span class="cp">                     CFG_CMD_PING    | \</span>
+</span><span class='line'><span class="cp">                        CFG_CMD_MOVINAND) \</span>
+</span><span class='line'><span class="cp">                        &amp; ~(CFG_CMD_AUTOSCRIPT  | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_BOOTD   | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_IMI     | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_RUN     | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_CONSOLE | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_DOCG3P3 | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_EEPROM   | \</span>
+</span><span class='line'><span class="cp">                                CFG_CMD_I2C     | \</span>
+</span><span class='line'><span class="cp">                                0)</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*********************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#include &lt;cmd_confdefs.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_BOOTDELAY 0</span>
+</span><span class='line'><span class="cp">#define CONFIG_BOOTARGS      &quot;root=/dev/mtdblock2 rootfstype=yaffs2 init=/linuxrc console=ttySAC0,115200&quot;</span>
+</span><span class='line'><span class="cp">#define CONFIG_ETHADDR       08:90:90:90:90:90</span>
+</span><span class='line'><span class="cp">#define CONFIG_NETMASK          255.255.255.0</span>
+</span><span class='line'><span class="cp">#define CONFIG_IPADDR        192.168.1.230</span>
+</span><span class='line'><span class="cp">#define CONFIG_SERVERIP      192.168.1.88</span>
+</span><span class='line'><span class="cp">#define CONFIG_GATEWAYIP 192.168.1.1</span>
+</span><span class='line'><span class="cp">#define CONFIG_DEVICENUM    0</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#define CONFIG_ZERO_BOOTDELAY_CHECK</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/************************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define CFG_LONGHELP             </span><span class="cm">/* undef to save memory     */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PROMPT       &quot;iggsensor # &quot;    </span><span class="cm">/* Monitor Command Prompt   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_CBSIZE       256     </span><span class="cm">/* Console I/O Buffer Size  */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_PBSIZE       384     </span><span class="cm">/* Print Buffer Size */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_MAXARGS      16      </span><span class="cm">/* max number of command args   */</span><span class="cp"></span>
+</span><span class='line'><span class="cp">#define CFG_BARGSIZE     CFG_CBSIZE  </span><span class="cm">/* Boot Argument Buffer Size    */</span><span class="cp"></span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/*************************************************************************************************************************/</span>
+</span><span class='line'><span class="cp">#define MACH_TYPE        2520</span>
+</span><span class='line'><span class="cp">#define UBOOT_MAGIC      (0x43090000 | MACH_TYPE)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-17T11:49:49+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/14/raw-machine-code/">
 		
 			Raw_machine_code</a>
@@ -4335,74 +4823,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 	<a class='category' href='/blog/categories/software/'>software</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/05/23/nuvoton-m451-eadc/">
-		
-			Nuvoton-M451-EADC</a>
-	</h2>
-	<div class="entry-content">
-		<h2>新唐CortexM4内核芯片M451学习之&mdash;-模数转换EADC</h2>
-
-<blockquote><ul>
-<li>包含一个12位带16个外部输入通道或者8对差分模拟输入通道和3个内部通道的SAR-ADC(逐次逼近型模数转换器)</li>
-<li>可以通过软件触发，PWM0/1触发，timer0~3溢出脉冲触发，ADINT0，ADINT1中断EOC(转换结束)脉冲触发和外部管脚(STADC)输入信号来启动转换</li>
-<li>Vref最大5V，12位分辨率，保证10位精度</li>
-<li>3个内部通道，分别为带隙电压,温度传感器和电池源</li>
-<li>4个独立中断向量地址的ADC中断(ADINT0~3)</li>
-<li>最大ADC时钟频率是20MHz</li>
-<li>高达1Msps采样频率</li>
-<li>内部采样时间可配置</li>
-<li>双缓存用于采样控制逻辑模块0~3</li>
-<li>转换结果存在18个数据寄存器中，带有效/溢出提示标志</li>
-<li>支持PDMA</li>
-<li>共有4个ADC中断ADINT0~3，每个中断有自己的中断向量地址并且ADINT0/ADINT1可以配置多个采样模块EOC脉冲(采样模块0~18的转换结束脉冲)作为它们的中断触发源</li>
-<li>ADC控制器提供4个比较寄存器<code>EADC_CMP0~EADC_CMP3</code>来监控从采样模块0~18中指定的最多4个模块的A/D转换结果</li>
-<li>DC控制器支持窗口比较模式，用户可以通过CMPWEN使能这个功能。如果用户使能了这个功能，当<code>EADC_CMP0</code>和<code>EADC_CMP1</code>比较条件都匹配时，ADCMPF0被置位。当<code>EADC_CMP2</code>和<code>EADC_CMP3</code>比较条件都匹配时，ADCMPF2将被置位</li>
-<li>触发延时时间=<code>TRGDLYCNT*ADC_CLK*n</code>(n=1,2,4,16来自TRGDLYDIV设置).</li>
-</ul>
-</blockquote>
-
-<h2>中断源</h2>
-
-<p><img src="http://i.imgur.com/6HZ5VTs.png" alt="Nuvoton-M451-EADC中断源" /></p>
-
-<h2>API</h2>
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-05-23T22:28:12+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nuvoton-m451/'>nuvoton-m451</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>
