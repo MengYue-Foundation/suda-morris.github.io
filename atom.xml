@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-03-23T15:35:15+08:00</updated>
+  <updated>2016-03-24T13:08:01+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -136,8 +136,46 @@
 <h2>文字与符号</h2>
 
 <ol>
+<li>LaTeX中的特殊字母
+<img src="http://i.imgur.com/lWzOtlB.png" alt="LaTeX中的特殊字母及命令" /></li>
 <li>LaTeX提供了babel宏包，可以方便同时访问多种语言的字母表，babel宏包可带有一个或多个语言的可选参数，支持不同的语言，如:\usepackage[greek,english]{babel},将使用英语和希腊语，其中最后一个参数的英语是默认语言，此时希腊语就可以用ASCII字符代替：\textgreek{abcd}</li>
+<li>LaTeX在盘拌种会将单词中的一些字母连写为一个符号，即连字，连字的有无和多少一般是由使用的字体决定的，比如fi和fl连在了一起，有时候为了美观考虑取消连字，可以使用空的分组，比如：f{}ind</li>
+<li>在每个标点之后应该加上空格，以保证正确的距离和换行</li>
 <li>LaTeX中遇到单引号和双引号连续出现的情形，则在双引号和单引号之间用\隔开</li>
+<li>除了在数学模式中表示减号，符号-在LaTeX正文中也有多种用途：单独使用时它是连字符，两个连用时en dash，用来表示数字范围；三个连用是em dash，即破折号</li>
+<li>圣罗浩使用\ldots或者\dots命令产生，相比直接输入三个句号，它所略微拉开的间距要合理的多</li>
+<li>标准键盘上不能直接录入的标点符号
+<img src="http://i.imgur.com/FT4ZOtP.png" alt="标准键盘不能直接录入的标点符号" /></li>
+<li>文本中的空格起分隔单词的作用，任意多个空格与一个空格的功能相同；只有字符后面的空格使有效的，每行最前面的空格会被忽略。单个换行也被看做是一个空格</li>
+<li>有一种不可打断的空格，在TeX中被称为带子，用~表示，TeX禁止在这种空格之间分行，因为可以用来表示一些不宜分开的情况
+<img src="http://i.imgur.com/qKvkp9w.png" alt="带子的使用" /></li>
+<li>西文的逗号、句号、分号等标点后面应该加空格，这不仅能保证正确的间距，也能保证正确的换行。这是因为，标点后如果没有空格，就不能换行。</li>
+<li>空行，即用连续两个换行表示分段，段与段之间会自动得到合适的缩进，任意多个空行与一个空行的效果相同</li>
+<li>除了分段，也可以让LaTeX直接另起一行，并不分段。\命令直接另起一行，上一行保持原来的样子，\命令可以带一个可选的长度参数，表示换行后增加的额外垂直间距，例如\[2cm]。\linebreak则指定一行的断点，上一行仍按完整一行散开对齐</li>
+<li>特殊符号
+<img src="http://i.imgur.com/T5X1sug.png" alt="正文中常用的特殊符号" /></li>
+<li>LaTeX的基本工具宏包textcomp就定义了大量用于文本的符号，例如欧元符号\texteuro，千分符\textperthousand等。tipa宏包提供了国际音标字体的访问</li>
+<li>预定义命令的字体族有3种：罗马字体族、无衬底字体族和打字机字体族，其命令为：
+<img src="http://i.imgur.com/uiy67RS.png" alt="预定义命令的字体族" /></li>
+<li>预定义命令的字体形状有4种：直立形状、意大利形状、倾斜形状、小型大写形状，其命令为：
+<img src="http://i.imgur.com/NPpS0NK.png" alt="预定义命令的字体形状" /></li>
+<li>预定义命令的字体系列有中等和加宽加粗两类
+<img src="http://i.imgur.com/kIXpFT7.png" alt="预定义命令的字体系列" /></li>
+<li>对于中文字体，一般只是用不同字体族进行区分。xeCJK和CJK宏包机制下，中文字体的选择命令和西文字体是分离，选择中文字体族使用\CJKfamily</li>
+<li>中文的字体族，根据不同的系统和使用方式有不同，在ctex宏包及文档下有一些预定义
+<img src="http://i.imgur.com/eBwRbYt.png" alt="ctex宏包提供的简化中文字体命令" /></li>
+<li>字体命令：
+
+<ol>
+<li>\emph表示强调，用于把直立体改为意大利体，把意大利体改为直立体</li>
+<li>\underline可以给文字或公式加下划线</li>
+</ol>
+</li>
+<li>基本的LaTeX提供了10个简单的生命是命令调整文字的大小
+<img src="http://i.imgur.com/QXMMMsV.png" alt="声明式命令调整文字大小" /></li>
+<li>中文字号可以使用ctex宏包或者ctexart等文档类提供的\zihao命令设置
+<img src="http://i.imgur.com/H0dDab2.png" alt="中文字号" /></li>
+<li>LaTeX中的行距是与字号直接相关的，在设置字号的时候，同时也就设置了基本行距为文字大小的1.2倍</li>
 </ol>
 
 ]]></content>

@@ -196,8 +196,140 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 </ul>
 </li>
 <li>Python的行连接符：\</li>
+</ol>
+
+
+<h2>数据类型</h2>
+
+<ol>
+<li>Python语言的类型有：数字类型，字符串类型，元组类型，列表类型，文件类型，字典类型</li>
+<li>数字类型
+
+<ol>
+<li>复数类型的表示：z=a+bj,其中a是实数部分，b是虚数部分，a和b都是浮点类型</li>
+</ol>
+</li>
+<li>字符串类型
+
+<ol>
+<li>假设字符串长度为L，那么字一个字符的序号为0或者-L，最后一字符的序号是L-1或者-1</li>
+<li>字符串之间可以通过+或*进行连接，加法操作将两个字符串连接成为一个新的字符串，乘法操作构建一个由其本身字符串重复连接而成的字符串</li>
+<li>大多数数据类型都可以通过str()函数转换为字符串</li>
+<li>遍历字符串中每个字符：<code>for &lt;var&gt; in &lt;string&gt;</code>
+<img src="http://i.imgur.com/s0unbao.png" alt="字符串处理方法" /></li>
+</ol>
+</li>
+<li>元祖类型
+
+<ol>
+<li>元祖是包含多个元素的类型，元素之间用逗号分隔。元祖可以是空的，元祖外侧可以使用括号，也可以不使用</li>
+<li>元祖中元素可以是不同类型，元组中各元素存在先后关系，可以通过索引访问元祖中元素，元祖定义后不能修改，也不能删除</li>
+</ol>
+</li>
+<li>列表类型
+
+<ol>
+<li>列表与元祖类似，列表中每个元素可以不一样，访问列表中元素时采用索引形式</li>
+<li>列表的大小没有限制，可以随时修改
+<img src="http://i.imgur.com/d3bAmPU.png" alt="列表的操作" /></li>
+</ol>
+</li>
 <li></li>
 </ol>
+
+
+<h2>数学库及其应用</h2>
+
+<p><img src="http://i.imgur.com/ashlYUy.png" alt="数学库及其应用" /></p>
+
+<h2>随机数库及其应用</h2>
+
+<p><img src="http://i.imgur.com/s7wJNuN.png" alt="随机数库及其应用" /></p>
+
+<h2>Python异常处理机制</h2>
+
+<p>Python使用try&hellip;except&hellip;，可使程序不因运行错误而崩溃</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span> <span class="o">&lt;</span><span class="n">ErrorType1</span><span class="o">&gt;</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler1</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span> <span class="o">&lt;</span><span class="n">ErrorType2</span><span class="o">&gt;</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler2</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler0</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">process_else</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">process_finally</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>ETC</h2>
+
+<ol>
+<li>使用同步赋值语句实现x与y的值交换：x,y=y,x</li>
+<li>val=pow(2,1000),用一行代码返回val结果的长度值:len(str(val))</li>
+</ol>
+
+
+<h2>使用turtle库绘制蟒蛇</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">draw_snake</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="nb">len</span><span class="p">,</span> <span class="n">neckrad</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="o">-</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">fd</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">neckrad</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">fd</span><span class="p">(</span><span class="n">rad</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">1300</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pythonsize</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="n">pythonsize</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">pencolor</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">seth</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">draw_snake</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">pythonsize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
