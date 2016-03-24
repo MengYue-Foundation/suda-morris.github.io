@@ -315,6 +315,18 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 
 <h2>词频统计</h2>
 
+<h2>数学库及其应用</h2>
+
+<p><img src="http://i.imgur.com/ashlYUy.png" alt="数学库及其应用" /></p>
+
+<h2>随机数库及其应用</h2>
+
+<p><img src="http://i.imgur.com/s7wJNuN.png" alt="随机数库及其应用" /></p>
+
+<h2>Python异常处理机制</h2>
+
+<p>Python使用try&hellip;except&hellip;else&hellip;finally，可使程序不因运行错误而崩溃,异常捕获机制可以捕捉任何类型的错误，比如：输入非数值类型（NameError），输入无效的表达式(SyntaxError)等。只有当try中的语句没有发生异常，else语句才会被执行，finally无论有无异常都会被执行</p>
+
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -325,32 +337,132 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="sb">``</span><span class="err">`</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">##数学库及其应用</span>
-</span><span class='line'><span class="err">!</span><span class="p">[</span><span class="err">数学库及其应用</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">i</span><span class="o">.</span><span class="n">imgur</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ashlYUy</span><span class="o">.</span><span class="n">png</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">##随机数库及其应用</span>
-</span><span class='line'><span class="err">!</span><span class="p">[</span><span class="err">随机数库及其应用</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">i</span><span class="o">.</span><span class="n">imgur</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">s7wJNuN</span><span class="o">.</span><span class="n">png</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">##Python异常处理机制</span>
-</span><span class='line'><span class="n">Python</span><span class="err">使用</span><span class="k">try</span><span class="o">...</span><span class="k">except</span><span class="o">...</span><span class="k">else</span><span class="o">...</span><span class="k">finally</span><span class="err">，可使程序不因运行错误而崩溃</span><span class="p">,</span><span class="err">异常捕获机制可以捕捉任何类型的错误，比如：输入非数值类型（</span><span class="ne">NameError</span><span class="err">），输入无效的表达式</span><span class="p">(</span><span class="ne">SyntaxError</span><span class="p">)</span><span class="err">等。只有当</span><span class="k">try</span><span class="err">中的语句没有发生异常，</span><span class="k">else</span><span class="err">语句才会被执行，</span><span class="k">finally</span><span class="err">无论有无异常都会被执行</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">try</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span> <span class="o">&lt;</span><span class="n">ErrorType1</span><span class="o">&gt;</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler1</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span> <span class="o">&lt;</span><span class="n">ErrorType2</span><span class="o">&gt;</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler2</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">except</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">handler0</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">else</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">process_else</span><span class="o">&gt;</span>
+</span><span class='line'><span class="k">finally</span><span class="p">:</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">process_finally</span><span class="o">&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>python
-try:
-    <body>
-except <ErrorType1>:
-    <handler1>
-except <ErrorType2>:
-    <handler2>
-except:
-    <handler0>
-else:
-    <process_else>
-finally:
-    <process_finally></p>
+<h2>ETC</h2>
+
+<ol>
+<li>使用同步赋值语句实现x与y的值交换：x,y=y,x</li>
+<li>val=pow(2,1000),用一行代码返回val结果的长度值:len(str(val))</li>
+<li>布尔运算符的优先级从高到低依次是：not，and，or</li>
+<li>对于数字的零值被认为是false，任何非零值都是true。对序列类型来说，空序列被认为是false，非空序列认为是true</li>
+<li>常用编码
+
+<ol>
+<li>ASCII码是标准化字符集，用7个二进制位编码表示128个字符</li>
+<li>Unicode跨语言，跨平台，同意且唯一的二进制编码，每个字符两个字节长</li>
+<li>UTF8编码，可变长度的Unicode，英文对应1个字节，中文对应3个字节</li>
+</ol>
+</li>
+<li>python中字符串类型未编码，可以用encode()进行编码，decode()进行解码
+<img src="http://i.imgur.com/6CefLm3.png" alt="python中的编解码" /></li>
+</ol>
+
+
+<h2>turtle库的常用指令</h2>
+
+<ol>
+<li>turtle库以屏幕中心为坐标原点</li>
+<li>forward（distance）将箭头移到某一指定坐标</li>
+<li>left（angle）/right（angle）向左/右旋转一个角度</li>
+<li>penup（）提起笔，用于另起一个地方绘制时使用，与pendown()配对使用</li>
+<li>goto(x,y)</li>
+<li>home()</li>
+<li>circle(radius)</li>
+<li>speed()</li>
+</ol>
+
+
+<h2>使用turtle库绘制五角星</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">p</span> <span class="o">=</span> <span class="n">turtle</span><span class="o">.</span><span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">fillcolor</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">begin_fill</span><span class="p">()</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="mi">144</span><span class="p">)</span>
+</span><span class='line'><span class="n">p</span><span class="o">.</span><span class="n">end_fill</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用turtle库绘制蟒蛇</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">draw_snake</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="nb">len</span><span class="p">,</span> <span class="n">neckrad</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="o">-</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">rad</span><span class="p">,</span> <span class="n">angle</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">fd</span><span class="p">(</span><span class="n">rad</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">neckrad</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">fd</span><span class="p">(</span><span class="n">rad</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">1300</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pythonsize</span> <span class="o">=</span> <span class="mi">30</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="n">pythonsize</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">pencolor</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">seth</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">draw_snake</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">pythonsize</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用turtle库绘制树</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -375,219 +487,239 @@ finally:
 <span class='line-number'>21</span>
 <span class='line-number'>22</span>
 <span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##ETC</span>
-</span><span class='line'><span class="mf">1.</span> <span class="err">使用同步赋值语句实现</span><span class="n">x</span><span class="err">与</span><span class="n">y</span><span class="err">的值交换：</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span><span class="n">x</span>
-</span><span class='line'><span class="mf">2.</span> <span class="n">val</span><span class="o">=</span><span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span><span class="err">用一行代码返回</span><span class="n">val</span><span class="err">结果的长度值</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
-</span><span class='line'><span class="mf">3.</span> <span class="err">布尔运算符的优先级从高到低依次是：</span><span class="ow">not</span><span class="err">，</span><span class="ow">and</span><span class="err">，</span><span class="ow">or</span>
-</span><span class='line'><span class="mf">4.</span> <span class="err">对于数字的零值被认为是</span><span class="n">false</span><span class="err">，任何非零值都是</span><span class="n">true</span><span class="err">。对序列类型来说，空序列被认为是</span><span class="n">false</span><span class="err">，非空序列认为是</span><span class="n">true</span>
-</span><span class='line'><span class="mf">5.</span> <span class="err">常用编码</span>
-</span><span class='line'>  <span class="mf">1.</span> <span class="n">ASCII</span><span class="err">码是标准化字符集，用</span><span class="mi">7</span><span class="err">个二进制位编码表示</span><span class="mi">128</span><span class="err">个字符</span>
-</span><span class='line'>  <span class="mf">2.</span> <span class="n">Unicode</span><span class="err">跨语言，跨平台，同意且唯一的二进制编码，每个字符两个字节长</span>
-</span><span class='line'>  <span class="mf">3.</span> <span class="n">UTF8</span><span class="err">编码，可变长度的</span><span class="n">Unicode</span><span class="err">，英文对应</span><span class="mi">1</span><span class="err">个字节，中文对应</span><span class="mi">3</span><span class="err">个字节</span>
-</span><span class='line'><span class="mf">6.</span> <span class="n">python</span><span class="err">中字符串类型未编码，可以用</span><span class="n">encode</span><span class="p">()</span><span class="err">进行编码，</span><span class="n">decode</span><span class="p">()</span><span class="err">进行解码</span>
-</span><span class='line'><span class="err">!</span><span class="p">[</span><span class="n">python</span><span class="err">中的编解码</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">i</span><span class="o">.</span><span class="n">imgur</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">6</span><span class="n">CefLm3</span><span class="o">.</span><span class="n">png</span><span class="p">)</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span>
 </span><span class='line'>
-</span><span class='line'><span class="c">##turtle库的常用指令</span>
-</span><span class='line'><span class="mf">1.</span> <span class="n">turtle</span><span class="err">库以屏幕中心为坐标原点</span>
-</span><span class='line'><span class="mf">2.</span> <span class="n">forward</span><span class="err">（</span><span class="n">distance</span><span class="err">）将箭头移到某一指定坐标</span>
-</span><span class='line'><span class="mf">3.</span> <span class="n">left</span><span class="err">（</span><span class="n">angle</span><span class="err">）</span><span class="o">/</span><span class="n">right</span><span class="err">（</span><span class="n">angle</span><span class="err">）向左</span><span class="o">/</span><span class="err">右旋转一个角度</span>
-</span><span class='line'><span class="mf">4.</span> <span class="n">penup</span><span class="err">（）提起笔，用于另起一个地方绘制时使用，与</span><span class="n">pendown</span><span class="p">()</span><span class="err">配对使用</span>
-</span><span class='line'><span class="mf">5.</span> <span class="n">goto</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-</span><span class='line'><span class="mf">6.</span> <span class="n">home</span><span class="p">()</span>
-</span><span class='line'><span class="mf">7.</span> <span class="n">circle</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
-</span><span class='line'><span class="mf">8.</span> <span class="n">speed</span><span class="p">()</span>
 </span><span class='line'>
-</span><span class='line'><span class="c">##使用turtle库绘制五角星</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">tree</span><span class="p">(</span><span class="n">plist</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+</span><span class='line'>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span class='line'><span class="sd">    plist is a list of pens</span>
+</span><span class='line'><span class="sd">    l is the length od branch</span>
+</span><span class='line'><span class="sd">    a is half of angle between 2 branches</span>
+</span><span class='line'><span class="sd">    f is factor by which branch is shortened from level to level</span>
+</span><span class='line'><span class="sd">    &quot;&quot;&quot;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">plist</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">p</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">q</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+</span><span class='line'>            <span class="n">p</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">q</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tree</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span> <span class="n">l</span> <span class="o">*</span> <span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">maketree</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">p</span> <span class="o">=</span> <span class="n">turtle</span><span class="o">.</span><span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s">&quot;green&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">hideturtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="c"># p.speed(5)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">getscreen</span><span class="p">()</span><span class="o">.</span><span class="n">tracer</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c"># 调整绘画的速率</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">penup</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p</span><span class="o">.</span><span class="n">pendown</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">tree</span><span class="p">([</span><span class="n">p</span><span class="p">],</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mf">0.707</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;使用turtle绘制树&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">1200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">maketree</span><span class="p">(</span><span class="o">-</span><span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">maketree</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">maketree</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="o">-</span><span class="mi">300</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>python
-import turtle</p>
-
-<p>p = turtle.Turtle()
-p.speed(3)
-p.pensize(5)
-p.color(&ldquo;black&rdquo;)
-p.fillcolor(&ldquo;red&rdquo;)
-p.begin_fill()
-for i in range(5):
-    p.forward(200)
-    p.right(144)
-p.end_fill()</p>
+<h2>数据驱动的动态路径绘制</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##使用turtle库绘制蟒蛇</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;数据驱动的动态路径绘制&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">turtle</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">pen</span> <span class="o">=</span> <span class="n">turtle</span><span class="o">.</span><span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">pen</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pen</span><span class="o">.</span><span class="n">width</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pen</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&quot;turtle&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pen</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span class='line'>    <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;a.txt&quot;</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">file</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">))))</span>
+</span><span class='line'>    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)):</span>
+</span><span class='line'>        <span class="n">pen</span><span class="o">.</span><span class="n">color</span><span class="p">((</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">3</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">5</span><span class="p">]))</span>
+</span><span class='line'>        <span class="n">pen</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+</span><span class='line'>            <span class="n">pen</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">pen</span><span class="o">.</span><span class="n">left</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">pen</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>python
-import turtle</p>
-
-<p>def draw_snake(rad, angle, len, neckrad):
-    for i in range(len):
-        turtle.circle(rad, angle)
-        turtle.circle(-rad, angle)
-    turtle.circle(rad, angle, 2)
-    turtle.fd(rad)
-    turtle.circle(neckrad + 1, 180)
-    turtle.fd(rad * 2 / 3)</p>
-
-<p>def main():
-    turtle.setup(1300, 800, 0, 0)
-    pythonsize = 30
-    turtle.pensize(pythonsize)
-    turtle.pencolor(&ldquo;blue&rdquo;)
-    turtle.seth(-40)
-    draw_snake(40, 80, 5, pythonsize / 2)</p>
-
-<p>main()</p>
+<h2>使用蒙特卡洛方法估计圆周率的值</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##使用turtle库绘制树</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span>  <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">DARTS</span> <span class="o">=</span> <span class="mi">1000000</span>
+</span><span class='line'><span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'><span class="n">clock</span><span class="p">()</span>
+</span><span class='line'><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">DARTS</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="n">random</span><span class="p">(),</span><span class="n">random</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">dist</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">if</span><span class="p">(</span><span class="n">dist</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">hits</span> <span class="o">=</span> <span class="n">hits</span><span class="o">+</span><span class="mi">1</span>
+</span><span class='line'><span class="n">pi</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="p">(</span><span class="n">hits</span><span class="o">/</span><span class="n">DARTS</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="s">&quot;Pi的值是:</span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">pi</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="s">&quot;程序运行时间是 </span><span class="si">%-5.5s</span><span class="s">s&quot;</span><span class="o">%</span><span class="n">clock</span><span class="p">())</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>python
-import turtle</p>
-
-<p>def tree(plist, l, a, f):
-    &ldquo;&rdquo;&ldquo;
-    plist is a list of pens
-    l is the length od branch
-    a is half of angle between 2 branches
-    f is factor by which branch is shortened from level to level
-    &rdquo;&ldquo;&rdquo;
-    if l > 5:
-        lst = []
-        for p in plist:
-            p.forward(l)
-            q = p.clone()
-            p.left(a)
-            q.right(a)
-            lst.append(p)
-            lst.append(q)
-        tree(lst, l * f, a, f)</p>
-
-<p>def maketree(x, y):
-    p = turtle.Turtle()
-    p.color(&ldquo;green&rdquo;)
-    p.pensize(5)
-    p.hideturtle()
-    # p.speed(5)
-    p.getscreen().tracer(30, 0)  # 调整绘画的速率
-    p.left(90)
-    p.penup()
-    p.goto(x, y)
-    p.pendown()
-    tree([p], 110, 65, 0.707)</p>
-
-<p>def main():
-    turtle.title(&ldquo;使用turtle绘制树&rdquo;)
-    turtle.setup(1200, 800, 0, 0)
-    maketree(-300, -300)
-    maketree(0, 0)
-    maketree(300, -300)</p>
-
-<p>main()</p>
+<h2>寻找素数</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##数据驱动的动态路径绘制</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s">&quot;equals&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="s">&quot;*&quot;</span><span class="p">,</span> <span class="n">n</span><span class="o">//</span><span class="n">x</span><span class="p">)</span>
+</span><span class='line'>            <span class="k">break</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="s">&quot;is a prime number&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>python
-import turtle</p>
-
-<p>def main():
-    turtle.title(&ldquo;数据驱动的动态路径绘制&rdquo;)
-    turtle.setup(800, 600, 0, 0)</p>
-
-<pre><code>pen = turtle.Turtle()
-pen.color('red')
-pen.width(5)
-pen.shape("turtle")
-pen.speed(5)
-
-result = []
-file = open("a.txt", 'r')
-for line in file:
-    result.append(list(map(float, line.split(','))))
-print(result)
-
-for i in range(len(result)):
-    pen.color((result[i][3], result[i][4], result[i][5]))
-    pen.forward(result[i][0])
-    if result[i][1]:
-        pen.right(result[i][2])
-    else:
-        pen.left(result[i][2])
-
-pen.goto(0, 0)
-</code></pre>
-
-<p>if <strong>name</strong> == &lsquo;<strong>main</strong>&rsquo;:
-    main()</p>
+<h2>文件循环</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##使用蒙特卡洛方法估计圆周率的值</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">file_name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&quot;What&#39;s the file path?&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">try</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">infile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">except</span> <span class="n">FileNotFoundError</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">File not found&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">msum</span> <span class="o">=</span> <span class="mf">0.0</span>
+</span><span class='line'>        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span class='line'>        <span class="n">line</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">msum</span> <span class="o">+=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span class='line'>            <span class="n">line</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">The average of the numbers is&quot;</span><span class="p">,</span> <span class="n">msum</span> <span class="o">/</span> <span class="n">count</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>python
-from random import *
-from math import  *
-from time import *</p>
-
-<p>DARTS = 1000000
-hits = 0
-clock()
-for i in range(1,DARTS):
-    x,y=random(),random()
-    dist = sqrt(x<strong>2+y</strong>2)
-    if(dist &lt;= 1.0):
-        hits = hits+1
-pi = 4*(hits/DARTS)
-print(&ldquo;Pi的值是:%s&rdquo;%pi)
-print(&ldquo;程序运行时间是 %-5.5ss&rdquo;%clock())</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##寻找素数</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>python
-for n in range(2,100):
-    for x in range(2,n):
-        if n % x == 0:
-            print(n, &ldquo;equals&rdquo;, x, &ldquo;*&rdquo;, n//x)
-            break;
-    else:
-        print(n, &ldquo;is a prime number&rdquo;)</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">##文件循环</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>python
-def main():
-    file_name = input(&ldquo;What&rsquo;s the file path?&rdquo;)
-    try:
-        infile = open(file_name, &lsquo;r&rsquo;)
-    except FileNotFoundError:
-        print(&ldquo;\nFile not found&rdquo;)
-    else:
-        msum = 0.0
-        count = 0
-        line = infile.readline()
-        while line != &ldquo;&rdquo;:
-            msum += eval(line)
-            count += 1
-            line = infile.readline()
-        print(&ldquo;\nThe average of the numbers is&rdquo;, msum / count)</p>
-
-<p>main()
-```</p>
 </div>
 
 
