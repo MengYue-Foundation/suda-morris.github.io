@@ -4,7 +4,7 @@
   <title><![CDATA[Category: python | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/python/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-03-24T22:00:52+08:00</updated>
+  <updated>2016-03-25T15:49:01+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -196,8 +196,6 @@ sys.modules[__name__] = _const()
 
 main()
 </code></pre>
-
-<h2>词频统计</h2>
 
 <h2>数学库及其应用</h2>
 
@@ -431,6 +429,149 @@ print("程序运行时间是 %-5.5ss"%clock())
             count += 1
             line = infile.readline()
         print("\nThe average of the numbers is", msum / count)
+
+
+main()
+</code></pre>
+
+<h2>图形用户界面</h2>
+
+<ol>
+<li><p>TKinter——Python标准GUI</p>
+
+<ol>
+<li>15中常见的Tk控件
+<img src="http://i.imgur.com/vyefEMa.png" alt="常见的Tk控件" /></li>
+<li>3种布局管理方法
+<img src="http://i.imgur.com/NEIDZxP.png" alt="Tkinter三种几何管理方法" /></li>
+<li>控件的共同属性
+<img src="http://i.imgur.com/QVe2hIH.png" alt="共同属性" /></li>
+</ol>
+</li>
+<li><p>Graphics——基于Tkinter扩展</p>
+
+<ol>
+<li>GraphWin对象常用方法
+<img src="http://i.imgur.com/tgowXan.png" alt="GraphWin对象常用方法" /></li>
+<li>图形对象通用方法
+<img src="http://i.imgur.com/n6lAydo.png" alt="图形对象通用方法" /></li>
+<li>Point对象方法
+<img src="http://i.imgur.com/IKM5dHA.png" alt="Point对象方法" /></li>
+<li>Line对象方法
+<img src="http://i.imgur.com/nwyIK0E.png" alt="Line对象方法" /></li>
+<li>Circle对象方法
+<img src="http://i.imgur.com/jmscbxO.png" alt="Circle对象方法" /></li>
+<li>Rectangle对象方法
+<img src="http://i.imgur.com/G67viyS.png" alt="Rectangle对象方法" /></li>
+<li>Oval对象方法
+<img src="http://i.imgur.com/4gQEpov.png" alt="Oval对象方法" /></li>
+<li>Polygon对象方法
+<img src="http://i.imgur.com/y983x7H.png" alt="Polygon对象方法" /></li>
+<li>Text对象方法
+<img src="http://i.imgur.com/G9XjFhU.png" alt="Text对象方法" /></li>
+</ol>
+</li>
+<li><p>Turtle——Python内置的图形库</p></li>
+</ol>
+
+
+<h2>使用graphics库实现交互式多边形绘制</h2>
+
+<pre><code class="python">from graphics import *
+
+
+def main():
+    win = GraphWin("Draw a polygon", 300, 300)
+    win.setCoords(0, 0, 300, 300)
+    message = Text(Point(150, 20), "CLick on five points")
+    message.draw(win)
+
+    p1 = win.getMouse()
+    p1.draw(win)
+    p2 = win.getMouse()
+    p2.draw(win)
+    p3 = win.getMouse()
+    p3.draw(win)
+    p4 = win.getMouse()
+    p4.draw(win)
+    p5 = win.getMouse()
+    p5.draw(win)
+
+    polygon = Polygon(p1, p2, p3, p4, p5)
+    polygon.setFill("peachpuff")
+    polygon.setOutline("black")
+    polygon.draw(win)
+
+    message.setText("Click anywhere to quit.")
+    win.getMouse()
+
+
+main()
+</code></pre>
+
+<h2>使用TKinter实现简单的聊天界面</h2>
+
+<pre><code class="python">from tkinter import *
+import time
+
+
+def main():
+    def send_msg():
+        strMsg = "我：" + time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()) + "\n"
+        txtMsgList.insert(END, strMsg, 'greencolor')
+        txtMsgList.insert(END, txtMsg.get('0.0', END))
+        txtMsg.delete('0.0', END)
+
+    def cancelMsg():
+        txtMsg.delete('0.0', END)
+
+    def send_msg_event(event):
+        if event.keysym == "Up":
+            send_msg()
+
+    # 创建窗口
+    t = Tk()
+    t.title("与Python聊天中")
+
+    # 创建Frame容器
+    frmLT = Frame(width=500, height=320, bg="white")
+    frmLC = Frame(width=500, height=150, bg="white")
+    frmLB = Frame(width=500, height=30)
+    frmRT = Frame(width=200, height=500)
+
+    # 创建控件
+    txtMsgList = Text(frmLT)
+    txtMsgList.tag_configure("greencolor", foreground="#008c00")  # 创建tag
+
+    txtMsg = Text(frmLC)
+    txtMsg.bind("&lt;KeyPress-Up&gt;", send_msg_event)
+
+    btnSend = Button(frmLB, text='发送', width=8, command=send_msg)
+    btnCancel = Button(frmLB, text='取消', width=8, command=cancelMsg)
+
+    imgInfo = PhotoImage(file="python.gif")
+    lblImage = Label(frmRT, image=imgInfo)
+    lblImage.image = imgInfo
+
+    # 窗口布局
+    frmLT.grid(row=0, column=0, columnspan=2, padx=1, pady=3)
+    frmLC.grid(row=1, column=0, columnspan=2, padx=1, pady=3)
+    frmLB.grid(row=2, column=0, columnspan=2)
+    frmRT.grid(row=0, column=2, rowspan=3, padx=2, pady=3)
+
+    # 固定大小
+    frmLT.grid_propagate(0)
+    frmLC.grid_propagate(0)
+    frmLB.grid_propagate(0)
+    frmRT.grid_propagate(0)
+
+    btnSend.grid(row=2, column=0)
+    btnCancel.grid(row=2, column=1)
+    lblImage.grid()
+    txtMsgList.grid()
+    txtMsg.grid()
+
+    t.mainloop()
 
 
 main()

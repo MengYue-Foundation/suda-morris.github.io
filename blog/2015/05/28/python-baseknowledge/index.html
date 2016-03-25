@@ -313,8 +313,6 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>词频统计</h2>
-
 <h2>数学库及其应用</h2>
 
 <p><img src="http://i.imgur.com/ashlYUy.png" alt="数学库及其应用" /></p>
@@ -715,6 +713,245 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 </span><span class='line'>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span class='line'>            <span class="n">line</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
 </span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">The average of the numbers is&quot;</span><span class="p">,</span> <span class="n">msum</span> <span class="o">/</span> <span class="n">count</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>图形用户界面</h2>
+
+<ol>
+<li><p>TKinter——Python标准GUI</p>
+
+<ol>
+<li>15中常见的Tk控件
+<img src="http://i.imgur.com/vyefEMa.png" alt="常见的Tk控件" /></li>
+<li>3种布局管理方法
+<img src="http://i.imgur.com/NEIDZxP.png" alt="Tkinter三种几何管理方法" /></li>
+<li>控件的共同属性
+<img src="http://i.imgur.com/QVe2hIH.png" alt="共同属性" /></li>
+</ol>
+</li>
+<li><p>Graphics——基于Tkinter扩展</p>
+
+<ol>
+<li>GraphWin对象常用方法
+<img src="http://i.imgur.com/tgowXan.png" alt="GraphWin对象常用方法" /></li>
+<li>图形对象通用方法
+<img src="http://i.imgur.com/n6lAydo.png" alt="图形对象通用方法" /></li>
+<li>Point对象方法
+<img src="http://i.imgur.com/IKM5dHA.png" alt="Point对象方法" /></li>
+<li>Line对象方法
+<img src="http://i.imgur.com/nwyIK0E.png" alt="Line对象方法" /></li>
+<li>Circle对象方法
+<img src="http://i.imgur.com/jmscbxO.png" alt="Circle对象方法" /></li>
+<li>Rectangle对象方法
+<img src="http://i.imgur.com/G67viyS.png" alt="Rectangle对象方法" /></li>
+<li>Oval对象方法
+<img src="http://i.imgur.com/4gQEpov.png" alt="Oval对象方法" /></li>
+<li>Polygon对象方法
+<img src="http://i.imgur.com/y983x7H.png" alt="Polygon对象方法" /></li>
+<li>Text对象方法
+<img src="http://i.imgur.com/G9XjFhU.png" alt="Text对象方法" /></li>
+</ol>
+</li>
+<li><p>Turtle——Python内置的图形库</p></li>
+</ol>
+
+
+<h2>使用graphics库实现交互式多边形绘制</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">graphics</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">win</span> <span class="o">=</span> <span class="n">GraphWin</span><span class="p">(</span><span class="s">&quot;Draw a polygon&quot;</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">win</span><span class="o">.</span><span class="n">setCoords</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">message</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">Point</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="s">&quot;CLick on five points&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">message</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">p1</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p2</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p2</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p3</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p3</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p4</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p4</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">p5</span> <span class="o">=</span> <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">p5</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">polygon</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">polygon</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s">&quot;peachpuff&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">polygon</span><span class="o">.</span><span class="n">setOutline</span><span class="p">(</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">polygon</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">win</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">message</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;Click anywhere to quit.&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">win</span><span class="o">.</span><span class="n">getMouse</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用TKinter实现简单的聊天界面</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">send_msg</span><span class="p">():</span>
+</span><span class='line'>        <span class="n">strMsg</span> <span class="o">=</span> <span class="s">&quot;我：&quot;</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%Y-%m-</span><span class="si">%d</span><span class="s"> %H:%M:%S&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+</span><span class='line'>        <span class="n">txtMsgList</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">strMsg</span><span class="p">,</span> <span class="s">&#39;greencolor&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">txtMsgList</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">END</span><span class="p">,</span> <span class="n">txtMsg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;0.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">txtMsg</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s">&#39;0.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">cancelMsg</span><span class="p">():</span>
+</span><span class='line'>        <span class="n">txtMsg</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s">&#39;0.0&#39;</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">send_msg_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">keysym</span> <span class="o">==</span> <span class="s">&quot;Up&quot;</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">send_msg</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># 创建窗口</span>
+</span><span class='line'>    <span class="n">t</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&quot;与Python聊天中&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># 创建Frame容器</span>
+</span><span class='line'>    <span class="n">frmLT</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">320</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLC</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">bg</span><span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLB</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmRT</span> <span class="o">=</span> <span class="n">Frame</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># 创建控件</span>
+</span><span class='line'>    <span class="n">txtMsgList</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">frmLT</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">txtMsgList</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s">&quot;greencolor&quot;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s">&quot;#008c00&quot;</span><span class="p">)</span>  <span class="c"># 创建tag</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">txtMsg</span> <span class="o">=</span> <span class="n">Text</span><span class="p">(</span><span class="n">frmLC</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">txtMsg</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s">&quot;&lt;KeyPress-Up&gt;&quot;</span><span class="p">,</span> <span class="n">send_msg_event</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">btnSend</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">frmLB</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;发送&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">send_msg</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">btnCancel</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">frmLB</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">&#39;取消&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="n">cancelMsg</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">imgInfo</span> <span class="o">=</span> <span class="n">PhotoImage</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="s">&quot;python.gif&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">lblImage</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">frmRT</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">imgInfo</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">lblImage</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">imgInfo</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># 窗口布局</span>
+</span><span class='line'>    <span class="n">frmLT</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLC</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLB</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">columnspan</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmRT</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">rowspan</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c"># 固定大小</span>
+</span><span class='line'>    <span class="n">frmLT</span><span class="o">.</span><span class="n">grid_propagate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLC</span><span class="o">.</span><span class="n">grid_propagate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmLB</span><span class="o">.</span><span class="n">grid_propagate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">frmRT</span><span class="o">.</span><span class="n">grid_propagate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">btnSend</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">btnCancel</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">lblImage</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">txtMsgList</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">txtMsg</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">t</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
 </span><span class='line'>
 </span><span class='line'>
 </span><span class='line'><span class="n">main</span><span class="p">()</span>
