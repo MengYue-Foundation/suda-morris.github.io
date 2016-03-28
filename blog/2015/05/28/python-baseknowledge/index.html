@@ -957,6 +957,1362 @@ class _const(object) class ConstError(TypeError): pass def __setattr__(self,name
 </span><span class='line'><span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h2>使用Turtle库绘制模拟时钟</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">turtle</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">Skip</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">penup</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">forward</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">pendown</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">mkHand</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+</span><span class='line'>    <span class="c"># 注册Turtle形状，建立表针Turtle</span>
+</span><span class='line'>    <span class="n">reset</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">Skip</span><span class="p">(</span><span class="o">-</span><span class="n">length</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">begin_poly</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">forward</span><span class="p">(</span><span class="n">length</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">end_poly</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">handForm</span> <span class="o">=</span> <span class="n">get_poly</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">register_shape</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">handForm</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">Init</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">global</span> <span class="n">secHand</span><span class="p">,</span> <span class="n">minHand</span><span class="p">,</span> <span class="n">hurHand</span><span class="p">,</span> <span class="n">printer</span>
+</span><span class='line'>    <span class="n">mode</span><span class="p">(</span><span class="s">&quot;logo&quot;</span><span class="p">)</span>  <span class="c"># 重置Turtle指向北</span>
+</span><span class='line'>    <span class="c"># 建立三个表针Turtle并初始化</span>
+</span><span class='line'>    <span class="n">mkHand</span><span class="p">(</span><span class="s">&quot;secHand&quot;</span><span class="p">,</span> <span class="mi">125</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">mkHand</span><span class="p">(</span><span class="s">&quot;minHand&quot;</span><span class="p">,</span> <span class="mi">130</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">mkHand</span><span class="p">(</span><span class="s">&quot;hurHand&quot;</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">secHand</span> <span class="o">=</span> <span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">secHand</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&quot;secHand&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">minHand</span> <span class="o">=</span> <span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">minHand</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&quot;minHand&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">hurHand</span> <span class="o">=</span> <span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">hurHand</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="s">&quot;hurHand&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">hand</span> <span class="ow">in</span> <span class="n">secHand</span><span class="p">,</span> <span class="n">minHand</span><span class="p">,</span> <span class="n">hurHand</span><span class="p">:</span>
+</span><span class='line'>        <span class="n">hand</span><span class="o">.</span><span class="n">shapesize</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">hand</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="c"># 建立输出文字Turtle</span>
+</span><span class='line'>    <span class="n">printer</span> <span class="o">=</span> <span class="n">Turtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">hideturtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">penup</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">SetupClock</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+</span><span class='line'>    <span class="c"># 建立表的外框</span>
+</span><span class='line'>    <span class="n">reset</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">pensize</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">Skip</span><span class="p">(</span><span class="n">radius</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">forward</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">Skip</span><span class="p">(</span><span class="o">-</span><span class="n">radius</span> <span class="o">-</span> <span class="mi">20</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">dot</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">Skip</span><span class="p">(</span><span class="o">-</span><span class="n">radius</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">right</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">Week</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">week</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;星期一&quot;</span><span class="p">,</span> <span class="s">&quot;星期二&quot;</span><span class="p">,</span> <span class="s">&quot;星期三&quot;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s">&quot;星期四&quot;</span><span class="p">,</span> <span class="s">&quot;星期五&quot;</span><span class="p">,</span> <span class="s">&quot;星期六&quot;</span><span class="p">,</span> <span class="s">&quot;星期日&quot;</span><span class="p">]</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">week</span><span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">weekday</span><span class="p">()]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">Date</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">y</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">year</span>
+</span><span class='line'>    <span class="n">m</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">month</span>
+</span><span class='line'>    <span class="n">d</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">day</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">Tick</span><span class="p">():</span>
+</span><span class='line'>    <span class="c"># 绘制表针的动态显示</span>
+</span><span class='line'>    <span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">second</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">second</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">microsecond</span> <span class="o">*</span> <span class="mf">0.000001</span>
+</span><span class='line'>    <span class="n">minute</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">minute</span> <span class="o">+</span> <span class="n">second</span> <span class="o">/</span> <span class="mf">60.0</span>
+</span><span class='line'>    <span class="n">hour</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span> <span class="o">+</span> <span class="n">minute</span> <span class="o">/</span> <span class="mf">60.0</span>
+</span><span class='line'>    <span class="n">secHand</span><span class="o">.</span><span class="n">setheading</span><span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">second</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">minHand</span><span class="o">.</span><span class="n">setheading</span><span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">minute</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">hurHand</span><span class="o">.</span><span class="n">setheading</span><span class="p">(</span><span class="mi">30</span> <span class="o">*</span> <span class="n">hour</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">tracer</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="mi">65</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">Week</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;Courier&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s">&quot;bold&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">back</span><span class="p">(</span><span class="mi">130</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">Date</span><span class="p">(</span><span class="n">t</span><span class="p">),</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;center&quot;</span><span class="p">,</span>
+</span><span class='line'>                  <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;Courier&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="s">&quot;bold&quot;</span><span class="p">))</span>
+</span><span class='line'>    <span class="n">printer</span><span class="o">.</span><span class="n">home</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">tracer</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ontimer</span><span class="p">(</span><span class="n">Tick</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c"># 100ms后继续调用tick</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">tracer</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">Init</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">SetupClock</span><span class="p">(</span><span class="mi">160</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tracer</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">Tick</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">mainloop</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用turtle库绘制雪花图</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">turtle</span> <span class="kn">as</span> <span class="nn">tt</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">random</span> <span class="kn">as</span> <span class="nn">rd</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">ground</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">hideturtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">400</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">x</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">400</span><span class="p">,</span> <span class="mi">350</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">y</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">280</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">r</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span> <span class="o">/</span> <span class="mi">280</span>
+</span><span class='line'>        <span class="n">g</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span> <span class="o">/</span> <span class="mi">280</span>
+</span><span class='line'>        <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="n">y</span> <span class="o">/</span> <span class="mi">280</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">pencolor</span><span class="p">((</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">penup</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">goto</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">pendown</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">snow</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">hideturtle</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">pensize</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">speed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">r</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">g</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">b</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">pencolor</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">penup</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">setx</span><span class="p">(</span><span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="o">-</span><span class="mi">350</span><span class="p">,</span> <span class="mi">350</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">sety</span><span class="p">(</span><span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">270</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">tt</span><span class="o">.</span><span class="n">pendown</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">dens</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">snowsize</span> <span class="o">=</span> <span class="n">rd</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">14</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">dens</span><span class="p">):</span>
+</span><span class='line'>            <span class="n">tt</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">snowsize</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">tt</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">snowsize</span><span class="p">)</span>
+</span><span class='line'>            <span class="n">tt</span><span class="o">.</span><span class="n">right</span><span class="p">(</span><span class="mi">360</span> <span class="o">/</span> <span class="n">dens</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">tracer</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">bgcolor</span><span class="p">(</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">snow</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">ground</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">tracer</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">tt</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">main</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Python库</h2>
+
+<ol>
+<li><a href="https://pypi.python.org">Python官网提供的Python库索引</a></li>
+<li>Python库的安装
+
+<ol>
+<li>自定义安装,去国内镜像站下载软件<a href="http://pypi.douban.com/simple/">国内pipy镜像站</a></li>
+<li>使用pip工具
+<img src="http://i.imgur.com/A358sfq.png" alt="pip常用命令" /></li>
+<li>文件安装，通过.whl文件安装
+
+<ol>
+<li>pip inatall xxx.whl</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>pip工具的安装
+
+<ol>
+<li><a href="https://pypi.python.org/pypi/pip/">pip源码下载地址</a></li>
+<li>解压后执行：python setup.py install即可</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>OS库常用函数</h2>
+
+<ol>
+<li>OS库常用函数
+<img src="http://i.imgur.com/7a826hS.png" alt="OS库常用函数" /></li>
+<li>os.path是处理操作系统的一个字库，os.path常用函数
+<img src="http://i.imgur.com/1vWI5ie.png" alt="os.path常用函数" /></li>
+<li>os.walk(path)用于遍历一个目录，返回一个三元组
+
+<ol>
+<li>root,dirs,files = os.walk(path)</li>
+<li>root是字符串，dirs和files是列表类型，表示root中的所有目录和所有文件</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>sched库</h2>
+
+<ol>
+<li>sched库用来进行任务调度</li>
+<li>sched.scheduler()用来创建一个调度任务</li>
+<li>当需要对一个任务进行时间调度时，用这个函数scheduler.enter(delay,priority,action,argument=())
+
+<ol>
+<li>delay表示延时多少时间去执行</li>
+<li>priority表示优先级</li>
+<li>action是具体需要调度的函数</li>
+<li>argument表示action函数需要的参数变量</li>
+</ol>
+</li>
+<li>scheduler.run（）运行调度任务中的全部调度事件</li>
+<li>scheduler.cancel(event)取消某个调度事件</li>
+</ol>
+
+
+<h2>函数定时执行</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">sched</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">print_time</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s">&#39;default&#39;</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span><span class="p">(</span><span class="s">&quot;当前时间&quot;</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="n">msg</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">s</span> <span class="o">=</span> <span class="n">sched</span><span class="o">.</span><span class="n">scheduler</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">enter</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">print_time</span><span class="p">,</span> <span class="n">argument</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;延迟5秒，优先级1&quot;</span><span class="p">,))</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">enter</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">print_time</span><span class="p">,</span> <span class="n">argument</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;延迟3秒，优先级2&quot;</span><span class="p">,))</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">enter</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">print_time</span><span class="p">,</span> <span class="n">argument</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;延迟3秒，优先级1&quot;</span><span class="p">,))</span>
+</span><span class='line'><span class="n">s</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>打印某一个目录下的全部文件</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">os</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">path</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&quot;请输入一个路径:&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>打包发布python应用程序（使用py2exe库）</h2>
+
+<ol>
+<li>确定python程序可以执行，比如lesson.py</li>
+<li>写一个发布脚本setup.py（与lesson.py同目录）,在里面指名需要调用运行的python程序</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">py2exe</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">setup</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;lesson.py&#39;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>在命令行下执行python setup.py py2exe</li>
+<li>程序正确执行后会生成dist目录和<strong>pycache</strong>目录，前者包含了发布的exe程序，后者可以删除</li>
+</ol>
+
+
+<h2>NumPy库</h2>
+
+<ol>
+<li>NumPy系统是Python的一种开源的数值计算扩展，能够存储和处理大型矩阵
+
+<ol>
+<li>N维数组对象Array</li>
+<li>函数库</li>
+<li>实用的线性代数、傅里叶变换和随机数生成函数</li>
+</ol>
+</li>
+<li>NumPy提供了许多高级的数值编程工具
+
+<ol>
+<li>矩阵数据类型</li>
+<li>矢量处理</li>
+<li>运算库</li>
+</ol>
+</li>
+<li>NumPy的主要对象是同种元素的多维数组
+
+<ol>
+<li>维度叫做轴</li>
+<li>轴的个数叫做秩</li>
+</ol>
+</li>
+<li>NumPy的数组类被称为ndarray，通常被称作数组
+<img src="http://i.imgur.com/u1hf8bi.png" alt="ndarray主要属性" />
+
+<ol>
+<li>创建数组
+
+<ol>
+<li>使用array函数，利用常规的Python列表和元祖创造数组，所创建的数组类型由原序列中的元素类型决定，例如：a=array([[1,2],[3,4]],dtype=complex)</li>
+<li>使用占位符创建数组，例如函数zeros创建一个全是0的数组，函数ones创建一个全是1的数组，函数empty创建一个内容随机并且依赖于内存状态的数组</li>
+<li>利用arrange创建数组：arrange(10,30,5),从10开始，每次加5，直到30(不包括)</li>
+</ol>
+</li>
+<li>打印数组，类似于嵌套列表</li>
+<li>数组的算数运算按元素进行，NumPy中的乘法运算符*指示按元素计算</li>
+<li>矩阵乘法可以使用dot函数或创建矩阵对象实现</li>
+<li>NumPy提供常见的数学函数如sin、cos和exp</li>
+<li>NumPy对于多维数组的运算，缺省情况下并不使用矩阵运算，对数组进行矩阵运算，可调用相应的函数</li>
+<li>NumPy库提供了matrix类，使用matrix类创建的是矩阵对象，他们的加减乘除运算采用矩阵方式计算</li>
+<li>创建等比数列：numpy.logspace(1,10,3)表示在1到10中生成3个等比数列</li>
+<li>创建结构数组：
+
+<ol>
+<li>声明结构数组类型：person=np.dtype({&lsquo;names&rsquo;:[&lsquo;name&rsquo;,&lsquo;age&rsquo;],&lsquo;formats&rsquo;:[&lsquo;S32&rsquo;,&lsquo;i&rsquo;]})</li>
+<li>创建结构数组：a = np.array([(&lsquo;zhang&rsquo;,12)],dtype=person)</li>
+<li>访问结构数组的成员：<code>a[0]['name']</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>更高级的运算：NumPy线型代数子库linalg
+
+<ol>
+<li>inv函数：计算逆矩阵</li>
+<li>solve函数：求解多元一次方程组</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Matplotlib库</h2>
+
+<ol>
+<li>Matplotlib是一个数据可视化函数库</li>
+<li>pyplot子库提供了2D图表制作的基本函数</li>
+<li>matplotlib提供的直方图绘制函数为hist()</li>
+<li>matplotlib的image子库可用来对图像进行操作
+
+<ol>
+<li>imread()函数将图像的各像素点的RGB值存入数组</li>
+<li>imshow()函数将存有RGB值的图像数组以图像的方式显示出来</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>使用Matplotlib库绘制曲线</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">import</span> <span class="o">*</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</span><span class='line'><span class="n">C</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span> <span class="o">*</span> <span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="s">&quot;ro&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;$cos(X^2)$&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;$sin(x)$&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;xlabel&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;ylabel&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">legend</span><span class="p">()</span>
+</span><span class='line'><span class="n">title</span><span class="p">(</span><span class="s">&quot;This is Title&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">show</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用Matplotlib子图的功能</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">t1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</span><span class='line'><span class="n">t2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">211</span><span class="p">)</span>
+</span><span class='line'><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">t1</span><span class="p">),</span> <span class="s">&#39;bo&#39;</span><span class="p">,</span> <span class="n">t2</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">t2</span><span class="p">),</span> <span class="s">&#39;k&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">212</span><span class="p">)</span>
+</span><span class='line'><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">t2</span><span class="p">),</span> <span class="s">&#39;r--&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>wxPython</h2>
+
+<ol>
+<li>wxPython是wxWidgets在python语言下的封装，wxWidgets是一个跨平台的GUI应用程序接口，使用C++编写</li>
+<li><a href="http://wxpython.org/Phoenix/snapshot-builds/">对于Python3，wxPython的下载地址</a>,注意选择对应的python版本号以及电脑的位数</li>
+<li>控件的事件
+
+<ol>
+<li>按钮点击</li>
+<li>文本域内容的改变</li>
+<li>鼠标滑过</li>
+<li>鼠标双击</li>
+<li>键盘按下</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>使用wxPython的绝对布局</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># -*-coding:utf8-*-</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">wx</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">&#39;&#39;&#39;堆砌各个控件，基于坐标位置的控件绝对布局&#39;&#39;&#39;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Lesson</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">u&#39;极客学院&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">panel</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Panel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Centre</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">button</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;我是按钮&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">statictext</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;我是不能编辑的文本框&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">text</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;请在这里输入内容&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">210</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">password</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;请在这里输入内容&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">TE_PASSWORD</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">250</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">mutiText</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;我是多行</span><span class="se">\n</span><span class="s">文本框&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">TE_MULTILINE</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">checkBox1</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">CheckBox</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;我是复选框1&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">checkBox2</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">CheckBox</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;我是复选框2&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">40</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">radio1</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">RadioButton</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;我是单选按钮1&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">RB_GROUP</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">radio2</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">RadioButton</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;我是单选按钮2&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">80</span><span class="p">))</span>
+</span><span class='line'>        <span class="n">radio3</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">RadioButton</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;我是单选按钮3&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">radioList</span> <span class="o">=</span> <span class="p">[</span><span class="s">u&#39;一组单选按钮之1&#39;</span><span class="p">,</span> <span class="s">u&#39;一组单选按钮之2&#39;</span><span class="p">,</span> <span class="s">u&#39;一组单选按钮之3&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="n">wx</span><span class="o">.</span><span class="n">RadioBox</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&quot;一组单选按钮&quot;</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">120</span><span class="p">),</span> <span class="n">wx</span><span class="o">.</span><span class="n">DefaultSize</span><span class="p">,</span> <span class="n">radioList</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">RA_SPECIFY_ROWS</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">jikexueyuan</span> <span class="o">=</span> <span class="p">[</span><span class="s">u&#39;极&#39;</span><span class="p">,</span> <span class="s">u&#39;客&#39;</span><span class="p">,</span> <span class="s">u&#39;学&#39;</span><span class="p">,</span> <span class="s">u&#39;院&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;6&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="n">listBox</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">ListBox</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">choices</span><span class="o">=</span><span class="n">jikexueyuan</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">LB_MULTIPLE</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">img</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s">r&#39;python.gif&#39;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_ANY</span><span class="p">)</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">sb1</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticBitmap</span><span class="p">(</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span> <span class="o">=</span> <span class="n">Lesson</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用wxPython的相对布局</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># -*-coding:utf8-*-</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">wx</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">&#39;&#39;&#39;基于Sizer的控件相对布局&#39;&#39;&#39;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Lesson</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">u&#39;极客学院&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Panel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Centre</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 定义我们需要的各个控件</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">commandStatic</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;输命令:&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">writePyStatic</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;写代码:&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">commandText</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">writePyText</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;&#39;&#39;#-*-coding:utf-8-*-</span><span class="se">\n</span><span class="s">#在这写Python代码&#39;&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>                                  <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">TE_MULTILINE</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">send</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;发送命令&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">clear</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;清空命令&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">screen</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;查看屏幕&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">serverList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;192.168.0.4&#39;</span><span class="p">,</span> <span class="s">&#39;10.19.2.1&#39;</span><span class="p">,</span> <span class="s">&#39;192.168.0.111&#39;</span><span class="p">,</span> <span class="s">&#39;172.26.123.5&#39;</span><span class="p">,</span> <span class="s">&#39;192.168.6.11&#39;</span><span class="p">,</span> <span class="s">&#39;192.99.8.8&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="n">server</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">ListBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">choices</span><span class="o">=</span><span class="n">serverList</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">LB_SINGLE</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">img</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s">r&#39;python_logo.gif&#39;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_ANY</span><span class="p">)</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">screenBox</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticBitmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 基于BoxSizer布局</span>
+</span><span class='line'>        <span class="c"># hBoxAll = wx.BoxSizer(wx.HORIZONTAL)</span>
+</span><span class='line'>        <span class="c"># vBoxControl = wx.BoxSizer(wx.VERTICAL)</span>
+</span><span class='line'>        <span class="c"># hBoxCommand = wx.BoxSizer(wx.HORIZONTAL)</span>
+</span><span class='line'>        <span class="c"># vBoxWrite = wx.BoxSizer(wx.VERTICAL)</span>
+</span><span class='line'>        <span class="c"># hBoxButton = wx.BoxSizer(wx.HORIZONTAL)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># hBoxCommand.Add(commandStatic, proportion=1, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c"># hBoxCommand.Add(commandText, proportion=2, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># vBoxWrite.Add(writePyStatic, proportion=0, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c"># vBoxWrite.Add(writePyText, proportion=0, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># vBoxControl.Add(hBoxCommand, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c"># vBoxControl.Add(vBoxWrite, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># hBoxButton.Add(send, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c"># hBoxButton.Add(clear, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c"># hBoxButton.Add(screen, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># vBoxControl.Add(hBoxButton, proportion=0, flag=wx.ALL, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># hBoxAll.Add(server, proportion=1, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c"># hBoxAll.Add(vBoxControl, proportion=2, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c"># hBoxAll.Add(screenBox, proportion=3, flag=wx.ALL | wx.EXPAND, border=5)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># self.panel.SetSizer(hBoxAll)</span>
+</span><span class='line'>        <span class="c"># hBoxAll.Fit(self)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 基于GridSizer布局</span>
+</span><span class='line'>        <span class="c"># gridSizerAll= wx.GridSizer(rows=3, cols=3, hgap=5, vgap=5)</span>
+</span><span class='line'>        <span class="c"># gridSizerAll.AddMany([(server, 0, wx.EXPAND), (commandStatic, 0, wx.EXPAND), (commandText, 0, wx.EXPAND),</span>
+</span><span class='line'>        <span class="c"># (writePyStatic, 0, wx.EXPAND), (send, 0, wx.EXPAND), (clear, 0, wx.EXPAND),</span>
+</span><span class='line'>        <span class="c">#                      (writePyText, 0, wx.EXPAND), (screen, 0, wx.EXPAND), (screenBox, 0, wx.EXPAND)])</span>
+</span><span class='line'>        <span class="c"># self.panel.SetSizer(gridSizerAll)</span>
+</span><span class='line'>        <span class="c"># gridSizerAll.Fit(self)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c">#基于FlexGridSizer布局</span>
+</span><span class='line'>        <span class="c"># flexGridSizerAll = wx.FlexGridSizer(rows=3, cols=3, hgap=5, vgap=5)</span>
+</span><span class='line'>        <span class="c"># flexGridSizerAll.AddMany([(server, 0, wx.EXPAND), (commandStatic, 0, wx.EXPAND), (commandText, 0, wx.EXPAND),</span>
+</span><span class='line'>        <span class="c">#                           (writePyStatic, 0, wx.EXPAND), (send, 0, wx.EXPAND), (clear, 0, wx.EXPAND),</span>
+</span><span class='line'>        <span class="c">#                           (writePyText, 0, wx.EXPAND), (screen, 0, wx.EXPAND), (screenBox, 0, wx.EXPAND)])</span>
+</span><span class='line'>        <span class="c"># self.panel.SetSizer(flexGridSizerAll)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># flexGridSizerAll.AddGrowableCol(2, 1)</span>
+</span><span class='line'>        <span class="c"># flexGridSizerAll.AddGrowableRow(2, 1)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># flexGridSizerAll.Fit(self)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c">#基于GirdBagSizer布局</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">GridBagSizer</span><span class="p">(</span><span class="n">hgap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">vgap</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">commandStatic</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">commandText</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">writePyStatic</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">writePyText</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">clear</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">screen</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">screenBox</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+</span><span class='line'>                            <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                            <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">SetSizer</span><span class="p">(</span><span class="n">gridBagSizerAll</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">SetSizeHints</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">700</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>  <span class="c"># 设定窗口的最大最小值</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(0, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(1, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(2, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(3, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(4, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(5, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableCol(6, 1)</span>
+</span><span class='line'>        <span class="c">#</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(0, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(1, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(2, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(3, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(4, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(5, 1)</span>
+</span><span class='line'>        <span class="c"># gridBagSizerAll.AddGrowableRow(6, 1)</span>
+</span><span class='line'>        <span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span> <span class="o">=</span> <span class="n">Lesson</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>wxPython事件编程</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c"># -*-coding:utf8-*-</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">time</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">wx</span>
+</span><span class='line'>
+</span><span class='line'><span class="sd">&#39;&#39;&#39;基于Sizer的控件相对布局&#39;&#39;&#39;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">class</span> <span class="nc">Example3</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">wx</span><span class="o">.</span><span class="n">Frame</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">id</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">u&#39;极客学院&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">600</span><span class="p">))</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Panel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Centre</span><span class="p">()</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 定义我们需要的各个控件</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">commandStatic</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;输命令:&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">writePyStatic</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;写代码:&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">commandText</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">writePyText</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">TextCtrl</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="s">u&#39;&#39;&#39;#-*-coding:utf-8-*-</span><span class="se">\n</span><span class="s">#在这写Python代码&#39;&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>                                       <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">TE_MULTILINE</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">send</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;发送命令&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;清空命令&#39;</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">u&#39;查看屏幕&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">serverList</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;192.168.0.4&#39;</span><span class="p">,</span> <span class="s">&#39;10.19.2.1&#39;</span><span class="p">,</span> <span class="s">&#39;192.168.0.111&#39;</span><span class="p">,</span> <span class="s">&#39;172.26.123.5&#39;</span><span class="p">,</span> <span class="s">&#39;192.168.6.11&#39;</span><span class="p">,</span> <span class="s">&#39;192.99.8.8&#39;</span><span class="p">]</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">ListBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">choices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">serverList</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">LB_SINGLE</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">img</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s">r&#39;python_logo.gif&#39;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_ANY</span><span class="p">)</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">screenBox</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">StaticBitmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_BUTTON</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">onSend</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_BUTTON</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">onClear</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">EVT_BUTTON</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">onScreen</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># 基于GirdBagSizer布局</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">GridBagSizer</span><span class="p">(</span><span class="n">hgap</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">vgap</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">EXPAND</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">commandStatic</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">commandText</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="n">writePyStatic</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">writePyText</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screenBox</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+</span><span class='line'>                                 <span class="n">flag</span><span class="o">=</span><span class="n">wx</span><span class="o">.</span><span class="n">ALL</span> <span class="o">|</span> <span class="n">wx</span><span class="o">.</span><span class="n">ALIGN_CENTER_VERTICAL</span><span class="p">,</span>
+</span><span class='line'>                                 <span class="n">span</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">border</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">SetSizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c"># self.SetSizeHints(250, 200, 700, 400) #设定窗口的最大最小值</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableCol</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">AddGrowableRow</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">onSend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">GetSelection</span><span class="p">()</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">server</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serverList</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">GetSelection</span><span class="p">()]</span>
+</span><span class='line'>        <span class="k">else</span><span class="p">:</span>
+</span><span class='line'>            <span class="n">server</span> <span class="o">=</span> <span class="s">u&#39;未选择服务器&#39;</span>
+</span><span class='line'>        <span class="n">command</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">commandText</span><span class="o">.</span><span class="n">GetValue</span><span class="p">()</span>
+</span><span class='line'>        <span class="n">writePy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writePyText</span><span class="o">.</span><span class="n">GetValue</span><span class="p">()</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">u&#39;选中的服务器是： </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">server</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">u&#39;执行的内置命令是： </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">command</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">print</span><span class="p">(</span><span class="s">u&#39;写入的Python代码是:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">writePy</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">onClear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">commandText</span><span class="o">.</span><span class="n">Clear</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">writePyText</span><span class="o">.</span><span class="n">Clear</span><span class="p">()</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">writePyText</span><span class="o">.</span><span class="n">AppendText</span><span class="p">(</span><span class="s">u&#39;&#39;&#39;#-*-coding:utf-8-*-</span><span class="se">\n</span><span class="s">#在这些Python代码&#39;&#39;&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">onScreen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+</span><span class='line'>        <span class="n">img</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span><span class="s">r&#39;python.gif&#39;</span><span class="p">,</span> <span class="n">wx</span><span class="o">.</span><span class="n">BITMAP_TYPE_ANY</span><span class="p">)</span><span class="o">.</span><span class="n">Scale</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">screenBox</span><span class="o">.</span><span class="n">SetBitmap</span><span class="p">(</span><span class="n">wx</span><span class="o">.</span><span class="n">BitmapFromImage</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
+</span><span class='line'>        <span class="bp">self</span><span class="o">.</span><span class="n">gridBagSizerAll</span><span class="o">.</span><span class="n">Fit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">app</span> <span class="o">=</span> <span class="n">wx</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span> <span class="o">=</span> <span class="n">Example3</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">frame</span><span class="o">.</span><span class="n">Show</span><span class="p">()</span>
+</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">MainLoop</span><span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Python中的多线程编程</h2>
+
+<ol>
+<li>thread.start_new_thread(函数名，（参数1，参数2，···）)</li>
+<li>或者使用Threading模块创建线程</li>
+</ol>
+
+
+<h2>scipy库</h2>
+
+<ol>
+<li>解非线性方程组
+
+<ol>
+<li>scipy.optimize子库中的fsolve函数：fsolve(函数, 初始解, 雅可比矩阵)</li>
+</ol>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>求解非线性方程组</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>        <span class="mi">5</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span>
+</span><span class='line'>        <span class="mi">4</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">-</span> <span class="mf">1.5</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">j</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">8</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)],</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">]</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">r</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fprime</span><span class="o">=</span><span class="n">j</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>数值积分
+
+<ol>
+<li>scipy.integrate子库中的quad函数：</li>
+<li>一重积分：quad(函数，定积分下限，定积分上限)</li>
+<li>双重积分：dblquad</li>
+<li>三重积分：tplquad</li>
+</ol>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>求解一重积分</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="n">p</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 

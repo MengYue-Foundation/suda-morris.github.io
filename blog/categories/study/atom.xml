@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-03-25T15:49:01+08:00</updated>
+  <updated>2016-03-28T09:29:48+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -778,6 +778,831 @@ def main():
 
 main()
 </code></pre>
+
+<h2>使用Turtle库绘制模拟时钟</h2>
+
+<pre><code class="python">from turtle import *
+from datetime import *
+
+
+def Skip(step):
+    penup()
+    forward(step)
+    pendown()
+
+
+def mkHand(name, length):
+    # 注册Turtle形状，建立表针Turtle
+    reset()
+    Skip(-length * 0.1)
+    begin_poly()
+    forward(length * 1.1)
+    end_poly()
+    handForm = get_poly()
+    register_shape(name, handForm)
+
+
+def Init():
+    global secHand, minHand, hurHand, printer
+    mode("logo")  # 重置Turtle指向北
+    # 建立三个表针Turtle并初始化
+    mkHand("secHand", 125)
+    mkHand("minHand", 130)
+    mkHand("hurHand", 90)
+    secHand = Turtle()
+    secHand.shape("secHand")
+    minHand = Turtle()
+    minHand.shape("minHand")
+    hurHand = Turtle()
+    hurHand.shape("hurHand")
+    for hand in secHand, minHand, hurHand:
+        hand.shapesize(1, 1, 3)
+        hand.speed(0)
+    # 建立输出文字Turtle
+    printer = Turtle()
+    printer.hideturtle()
+    printer.penup()
+
+
+def SetupClock(radius):
+    # 建立表的外框
+    reset()
+    pensize(7)
+    for i in range(60):
+        Skip(radius)
+        if i % 5 == 0:
+            forward(20)
+            Skip(-radius - 20)
+        else:
+            dot(5)
+            Skip(-radius)
+        right(6)
+
+
+def Week(t):
+    week = ["星期一", "星期二", "星期三",
+            "星期四", "星期五", "星期六", "星期日"]
+    return week[t.weekday()]
+
+
+def Date(t):
+    y = t.year
+    m = t.month
+    d = t.day
+    return "%s %d %d" % (y, m, d)
+
+
+def Tick():
+    # 绘制表针的动态显示
+    t = datetime.today()
+    second = t.second + t.microsecond * 0.000001
+    minute = t.minute + second / 60.0
+    hour = t.hour + minute / 60.0
+    secHand.setheading(6 * second)
+    minHand.setheading(6 * minute)
+    hurHand.setheading(30 * hour)
+
+    tracer(False)
+    printer.forward(65)
+    printer.write(Week(t), align="center",
+                  font=("Courier", 14, "bold"))
+    printer.back(130)
+    printer.write(Date(t), align="center",
+                  font=("Courier", 14, "bold"))
+    printer.home()
+    tracer(True)
+
+    ontimer(Tick, 100)  # 100ms后继续调用tick
+
+
+def main():
+    tracer(False)
+    Init()
+    SetupClock(160)
+    tracer(True)
+    Tick()
+    mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>使用turtle库绘制雪花图</h2>
+
+<pre><code class="python">import turtle as tt
+import random as rd
+
+
+def ground():
+    tt.hideturtle()
+    tt.speed(100)
+    for i in range(400):
+        tt.pensize(rd.randint(5, 10))
+        x = rd.randint(-400, 350)
+        y = rd.randint(-280, -1)
+        r = -y / 280
+        g = -y / 280
+        b = -y / 280
+        tt.pencolor((r, g, b))
+        tt.penup()
+        tt.goto(x, y)
+        tt.pendown()
+        tt.forward(rd.randint(40, 100))
+
+
+def snow():
+    tt.hideturtle()
+    tt.pensize(2)
+    tt.speed(100)
+    for i in range(100):
+        r = rd.random()
+        g = rd.random()
+        b = rd.random()
+        tt.pencolor(r, g, b)
+        tt.penup()
+        tt.setx(rd.randint(-350, 350))
+        tt.sety(rd.randint(1, 270))
+        tt.pendown()
+        dens = rd.randint(8, 12)
+        snowsize = rd.randint(10, 14)
+        for j in range(dens):
+            tt.forward(snowsize)
+            tt.backward(snowsize)
+            tt.right(360 / dens)
+
+
+def main():
+    tt.setup(800, 600, 0, 0)
+    tt.tracer(False)
+    tt.bgcolor("black")
+    snow()
+    ground()
+    tt.tracer(True)
+    tt.mainloop()
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+<h2>Python库</h2>
+
+<ol>
+<li><a href="https://pypi.python.org">Python官网提供的Python库索引</a></li>
+<li>Python库的安装
+
+<ol>
+<li>自定义安装,去国内镜像站下载软件<a href="http://pypi.douban.com/simple/">国内pipy镜像站</a></li>
+<li>使用pip工具
+<img src="http://i.imgur.com/A358sfq.png" alt="pip常用命令" /></li>
+<li>文件安装，通过.whl文件安装
+
+<ol>
+<li>pip inatall xxx.whl</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>pip工具的安装
+
+<ol>
+<li><a href="https://pypi.python.org/pypi/pip/">pip源码下载地址</a></li>
+<li>解压后执行：python setup.py install即可</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>OS库常用函数</h2>
+
+<ol>
+<li>OS库常用函数
+<img src="http://i.imgur.com/7a826hS.png" alt="OS库常用函数" /></li>
+<li>os.path是处理操作系统的一个字库，os.path常用函数
+<img src="http://i.imgur.com/1vWI5ie.png" alt="os.path常用函数" /></li>
+<li>os.walk(path)用于遍历一个目录，返回一个三元组
+
+<ol>
+<li>root,dirs,files = os.walk(path)</li>
+<li>root是字符串，dirs和files是列表类型，表示root中的所有目录和所有文件</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>sched库</h2>
+
+<ol>
+<li>sched库用来进行任务调度</li>
+<li>sched.scheduler()用来创建一个调度任务</li>
+<li>当需要对一个任务进行时间调度时，用这个函数scheduler.enter(delay,priority,action,argument=())
+
+<ol>
+<li>delay表示延时多少时间去执行</li>
+<li>priority表示优先级</li>
+<li>action是具体需要调度的函数</li>
+<li>argument表示action函数需要的参数变量</li>
+</ol>
+</li>
+<li>scheduler.run（）运行调度任务中的全部调度事件</li>
+<li>scheduler.cancel(event)取消某个调度事件</li>
+</ol>
+
+
+<h2>函数定时执行</h2>
+
+<pre><code class="python">import sched
+import time
+
+
+def print_time(msg='default'):
+    print("当前时间", time.time(), msg)
+
+
+s = sched.scheduler(time.time, time.sleep)
+print(time.time())
+s.enter(5, 1, print_time, argument=("延迟5秒，优先级1",))
+s.enter(3, 2, print_time, argument=("延迟3秒，优先级2",))
+s.enter(3, 1, print_time, argument=("延迟3秒，优先级1",))
+s.run()
+print(time.time())
+</code></pre>
+
+<h2>打印某一个目录下的全部文件</h2>
+
+<pre><code class="python">import os
+
+path = input("请输入一个路径:")
+
+for root, dirs, files in os.walk(path):
+    for name in files:
+        print(os.path.join(root, name))
+</code></pre>
+
+<h2>打包发布python应用程序（使用py2exe库）</h2>
+
+<ol>
+<li>确定python程序可以执行，比如lesson.py</li>
+<li>写一个发布脚本setup.py（与lesson.py同目录）,在里面指名需要调用运行的python程序
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">distutils.core</span> <span class="kn">import</span> <span class="n">setup</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">py2exe</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">setup</span><span class="p">(</span><span class="n">console</span><span class="o">=</span><span class="p">[</span><span class="o">&amp;</span><span class="n">lsquo</span><span class="p">;</span><span class="n">lesson</span><span class="o">.</span><span class="n">py</span><span class="o">&amp;</span><span class="n">rsquo</span><span class="p">;])</span>
+</span></code></pre></td></tr></table></div></figure>
+3. 在命令行下执行python setup.py py2exe
+4. 程序正确执行后会生成dist目录和<strong>pycache</strong>目录，前者包含了发布的exe程序，后者可以删除</p>
+
+<h2>NumPy库</h2>
+
+<ol>
+<li>NumPy系统是Python的一种开源的数值计算扩展，能够存储和处理大型矩阵
+
+<ol>
+<li>N维数组对象Array</li>
+<li>函数库</li>
+<li>实用的线性代数、傅里叶变换和随机数生成函数</li>
+</ol>
+</li>
+<li>NumPy提供了许多高级的数值编程工具
+
+<ol>
+<li>矩阵数据类型</li>
+<li>矢量处理</li>
+<li>运算库</li>
+</ol>
+</li>
+<li>NumPy的主要对象是同种元素的多维数组
+
+<ol>
+<li>维度叫做轴</li>
+<li>轴的个数叫做秩</li>
+</ol>
+</li>
+<li>NumPy的数组类被称为ndarray，通常被称作数组
+<img src="http://i.imgur.com/u1hf8bi.png" alt="ndarray主要属性" />
+
+<ol>
+<li>创建数组
+
+<ol>
+<li>使用array函数，利用常规的Python列表和元祖创造数组，所创建的数组类型由原序列中的元素类型决定，例如：a=array([[1,2],[3,4]],dtype=complex)</li>
+<li>使用占位符创建数组，例如函数zeros创建一个全是0的数组，函数ones创建一个全是1的数组，函数empty创建一个内容随机并且依赖于内存状态的数组</li>
+<li>利用arrange创建数组：arrange(10,30,5),从10开始，每次加5，直到30(不包括)</li>
+</ol>
+</li>
+<li>打印数组，类似于嵌套列表</li>
+<li>数组的算数运算按元素进行，NumPy中的乘法运算符*指示按元素计算</li>
+<li>矩阵乘法可以使用dot函数或创建矩阵对象实现</li>
+<li>NumPy提供常见的数学函数如sin、cos和exp</li>
+<li>NumPy对于多维数组的运算，缺省情况下并不使用矩阵运算，对数组进行矩阵运算，可调用相应的函数</li>
+<li>NumPy库提供了matrix类，使用matrix类创建的是矩阵对象，他们的加减乘除运算采用矩阵方式计算</li>
+<li>创建等比数列：numpy.logspace(1,10,3)表示在1到10中生成3个等比数列</li>
+<li>创建结构数组：
+
+<ol>
+<li>声明结构数组类型：person=np.dtype({&lsquo;names&rsquo;:[&lsquo;name&rsquo;,&lsquo;age&rsquo;],&lsquo;formats&rsquo;:[&lsquo;S32&rsquo;,&lsquo;i&rsquo;]})</li>
+<li>创建结构数组：a = np.array([(&lsquo;zhang&rsquo;,12)],dtype=person)</li>
+<li>访问结构数组的成员：<code>a[0]['name']</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>更高级的运算：NumPy线型代数子库linalg
+
+<ol>
+<li>inv函数：计算逆矩阵</li>
+<li>solve函数：求解多元一次方程组</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Matplotlib库</h2>
+
+<ol>
+<li>Matplotlib是一个数据可视化函数库</li>
+<li>pyplot子库提供了2D图表制作的基本函数</li>
+<li>matplotlib提供的直方图绘制函数为hist()</li>
+<li>matplotlib的image子库可用来对图像进行操作
+
+<ol>
+<li>imread()函数将图像的各像素点的RGB值存入数组</li>
+<li>imshow()函数将存有RGB值的图像数组以图像的方式显示出来</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>使用Matplotlib库绘制曲线</h2>
+
+<pre><code class="python">from matplotlib.pyplot import *
+import numpy as np
+
+X = np.linspace(-np.pi, np.pi, 256, endpoint=True)
+C, s = np.cos(X * X), np.sin(X)
+plot(X, C, "ro", label="$cos(X^2)$")
+plot(X, s, label="$sin(x)$")
+
+xlabel("xlabel")
+ylabel("ylabel")
+legend()
+title("This is Title")
+show()
+</code></pre>
+
+<h2>使用Matplotlib子图的功能</h2>
+
+<pre><code class="python">import numpy as np
+import matplotlib.pyplot as plt
+
+
+def f(t):
+    return np.exp(-t) * np.cos(2 * np.pi * t)
+
+
+t1 = np.arange(0.0, 5.0, 0.1)
+t2 = np.arange(0.0, 5.0, 0.02)
+
+plt.subplot(211)
+plt.plot(t1, f(t1), 'bo', t2, f(t2), 'k')
+plt.subplot(212)
+plt.plot(t2, np.cos(2 * np.pi * t2), 'r--')
+plt.show()
+</code></pre>
+
+<h2>wxPython</h2>
+
+<ol>
+<li>wxPython是wxWidgets在python语言下的封装，wxWidgets是一个跨平台的GUI应用程序接口，使用C++编写</li>
+<li><a href="http://wxpython.org/Phoenix/snapshot-builds/">对于Python3，wxPython的下载地址</a>,注意选择对应的python版本号以及电脑的位数</li>
+<li>控件的事件
+
+<ol>
+<li>按钮点击</li>
+<li>文本域内容的改变</li>
+<li>鼠标滑过</li>
+<li>鼠标双击</li>
+<li>键盘按下</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>使用wxPython的绝对布局</h2>
+
+<pre><code class="python"># -*-coding:utf8-*-
+import wx
+
+'''堆砌各个控件，基于坐标位置的控件绝对布局'''
+
+
+class Lesson(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, parent=None, id=-1, title=u'极客学院', size=(600, 600))
+        panel = wx.Panel(self, -1)
+        self.Centre()
+
+        button = wx.Button(panel, label=u'我是按钮', pos=(20, 0), size=(100, 100))
+        statictext = wx.StaticText(panel, -1, u'我是不能编辑的文本框', pos=(20, 100))
+        text = wx.TextCtrl(panel, -1, u'请在这里输入内容', pos=(200, 210))
+        password = wx.TextCtrl(panel, -1, u'请在这里输入内容', style=wx.TE_PASSWORD, pos=(200, 250))
+        mutiText = wx.TextCtrl(panel, -1, u'我是多行\n文本框', style=wx.TE_MULTILINE, pos=(100, 300))
+        checkBox1 = wx.CheckBox(panel, -1, u"我是复选框1", pos=(150, 20))
+        checkBox2 = wx.CheckBox(panel, -1, u"我是复选框2", pos=(150, 40))
+
+        radio1 = wx.RadioButton(panel, -1, u"我是单选按钮1", pos=(150, 60), style=wx.RB_GROUP)
+        radio2 = wx.RadioButton(panel, -1, u"我是单选按钮2", pos=(150, 80))
+        radio3 = wx.RadioButton(panel, -1, u"我是单选按钮3", pos=(150, 100))
+
+        radioList = [u'一组单选按钮之1', u'一组单选按钮之2', u'一组单选按钮之3']
+        wx.RadioBox(panel, -1, u"一组单选按钮", (10, 120), wx.DefaultSize, radioList, 2, wx.RA_SPECIFY_ROWS)
+
+        jikexueyuan = [u'极', u'客', u'学', u'院', '1', '2', '3', '4', '5', '6']
+        listBox = wx.ListBox(panel, -1, pos=(300, 20), size=(100, 100), choices=jikexueyuan, style=wx.LB_MULTIPLE)
+
+        img = wx.Image(r'python.gif', wx.BITMAP_TYPE_ANY).Scale(100, 200)
+        sb1 = wx.StaticBitmap(panel, -1, wx.BitmapFromImage(img), pos=(300, 300))
+
+
+if __name__ == "__main__":
+    app = wx.App()
+    frame = Lesson()
+    frame.Show()
+    app.MainLoop()
+</code></pre>
+
+<h2>使用wxPython的相对布局</h2>
+
+<pre><code class="python"># -*-coding:utf8-*-
+
+import wx
+
+'''基于Sizer的控件相对布局'''
+
+
+class Lesson(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, parent=None, id=-1, title=u'极客学院', size=(600, 600))
+        self.panel = wx.Panel(self, -1)
+        self.Centre()
+
+        # 定义我们需要的各个控件
+
+        commandStatic = wx.StaticText(self.panel, -1, u'输命令:')
+        writePyStatic = wx.StaticText(self.panel, -1, u'写代码:')
+
+        commandText = wx.TextCtrl(self.panel, -1, u'')
+        writePyText = wx.TextCtrl(self.panel, -1, u'''#-*-coding:utf-8-*-\n#在这写Python代码''',
+                                  style=wx.TE_MULTILINE, size=(300, 200))
+
+        send = wx.Button(self.panel, label=u'发送命令')
+        clear = wx.Button(self.panel, label=u'清空命令')
+        screen = wx.Button(self.panel, label=u'查看屏幕')
+
+        serverList = ['192.168.0.4', '10.19.2.1', '192.168.0.111', '172.26.123.5', '192.168.6.11', '192.99.8.8']
+        server = wx.ListBox(self.panel, -1, size=(120, 100), choices=serverList, style=wx.LB_SINGLE)
+
+        img = wx.Image(r'python_logo.gif', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        screenBox = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(img))
+
+        # 基于BoxSizer布局
+        # hBoxAll = wx.BoxSizer(wx.HORIZONTAL)
+        # vBoxControl = wx.BoxSizer(wx.VERTICAL)
+        # hBoxCommand = wx.BoxSizer(wx.HORIZONTAL)
+        # vBoxWrite = wx.BoxSizer(wx.VERTICAL)
+        # hBoxButton = wx.BoxSizer(wx.HORIZONTAL)
+        #
+        # hBoxCommand.Add(commandStatic, proportion=1, flag=wx.ALL | wx.EXPAND, border=5)
+        # hBoxCommand.Add(commandText, proportion=2, flag=wx.ALL | wx.EXPAND, border=5)
+        #
+        # vBoxWrite.Add(writePyStatic, proportion=0, flag=wx.ALL | wx.EXPAND, border=5)
+        # vBoxWrite.Add(writePyText, proportion=0, flag=wx.ALL | wx.EXPAND, border=5)
+        #
+        # vBoxControl.Add(hBoxCommand, proportion=0, flag=wx.ALL, border=5)
+        # vBoxControl.Add(vBoxWrite, proportion=0, flag=wx.ALL, border=5)
+        #
+        # hBoxButton.Add(send, proportion=0, flag=wx.ALL, border=5)
+        # hBoxButton.Add(clear, proportion=0, flag=wx.ALL, border=5)
+        # hBoxButton.Add(screen, proportion=0, flag=wx.ALL, border=5)
+        #
+        # vBoxControl.Add(hBoxButton, proportion=0, flag=wx.ALL, border=5)
+        #
+        # hBoxAll.Add(server, proportion=1, flag=wx.ALL | wx.EXPAND, border=5)
+        # hBoxAll.Add(vBoxControl, proportion=2, flag=wx.ALL | wx.EXPAND, border=5)
+        # hBoxAll.Add(screenBox, proportion=3, flag=wx.ALL | wx.EXPAND, border=5)
+        #
+        # self.panel.SetSizer(hBoxAll)
+        # hBoxAll.Fit(self)
+
+        # 基于GridSizer布局
+        # gridSizerAll= wx.GridSizer(rows=3, cols=3, hgap=5, vgap=5)
+        # gridSizerAll.AddMany([(server, 0, wx.EXPAND), (commandStatic, 0, wx.EXPAND), (commandText, 0, wx.EXPAND),
+        # (writePyStatic, 0, wx.EXPAND), (send, 0, wx.EXPAND), (clear, 0, wx.EXPAND),
+        #                      (writePyText, 0, wx.EXPAND), (screen, 0, wx.EXPAND), (screenBox, 0, wx.EXPAND)])
+        # self.panel.SetSizer(gridSizerAll)
+        # gridSizerAll.Fit(self)
+
+        #基于FlexGridSizer布局
+        # flexGridSizerAll = wx.FlexGridSizer(rows=3, cols=3, hgap=5, vgap=5)
+        # flexGridSizerAll.AddMany([(server, 0, wx.EXPAND), (commandStatic, 0, wx.EXPAND), (commandText, 0, wx.EXPAND),
+        #                           (writePyStatic, 0, wx.EXPAND), (send, 0, wx.EXPAND), (clear, 0, wx.EXPAND),
+        #                           (writePyText, 0, wx.EXPAND), (screen, 0, wx.EXPAND), (screenBox, 0, wx.EXPAND)])
+        # self.panel.SetSizer(flexGridSizerAll)
+        #
+        # flexGridSizerAll.AddGrowableCol(2, 1)
+        # flexGridSizerAll.AddGrowableRow(2, 1)
+        #
+        # flexGridSizerAll.Fit(self)
+
+        #基于GirdBagSizer布局
+        gridBagSizerAll = wx.GridBagSizer(hgap=5, vgap=5)
+        gridBagSizerAll.Add(server, pos=(0, 0),
+                            flag=wx.ALL | wx.EXPAND,
+                            span=(7, 2), border=5)
+
+        gridBagSizerAll.Add(commandStatic, pos=(0, 2),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            border=5)
+        gridBagSizerAll.Add(commandText, pos=(0, 3),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(1, 2), border=5)
+
+        gridBagSizerAll.Add(writePyStatic, pos=(1, 2),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(1, 3), border=5)
+        gridBagSizerAll.Add(writePyText, pos=(2, 2),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(4, 3), border=5)
+        gridBagSizerAll.Add(send, pos=(6, 2),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(1, 1), border=5)
+        gridBagSizerAll.Add(clear, pos=(6, 3),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(1, 1), border=5)
+        gridBagSizerAll.Add(screen, pos=(6, 4),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(1, 1), border=5)
+
+        gridBagSizerAll.Add(screenBox, pos=(0, 5),
+                            flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                            span=(7, 2), border=5)
+
+        self.panel.SetSizer(gridBagSizerAll)
+
+        self.SetSizeHints(250, 200, 700, 400)  # 设定窗口的最大最小值
+        # gridBagSizerAll.AddGrowableCol(0, 1)
+        # gridBagSizerAll.AddGrowableCol(1, 1)
+        # gridBagSizerAll.AddGrowableCol(2, 1)
+        # gridBagSizerAll.AddGrowableCol(3, 1)
+        # gridBagSizerAll.AddGrowableCol(4, 1)
+        # gridBagSizerAll.AddGrowableCol(5, 1)
+        # gridBagSizerAll.AddGrowableCol(6, 1)
+        #
+        # gridBagSizerAll.AddGrowableRow(0, 1)
+        # gridBagSizerAll.AddGrowableRow(1, 1)
+        # gridBagSizerAll.AddGrowableRow(2, 1)
+        # gridBagSizerAll.AddGrowableRow(3, 1)
+        # gridBagSizerAll.AddGrowableRow(4, 1)
+        # gridBagSizerAll.AddGrowableRow(5, 1)
+        # gridBagSizerAll.AddGrowableRow(6, 1)
+        gridBagSizerAll.Fit(self)
+
+
+if __name__ == "__main__":
+    app = wx.App()
+    frame = Lesson()
+    frame.Show()
+    app.MainLoop()
+</code></pre>
+
+<h2>wxPython事件编程</h2>
+
+<pre><code class="python"># -*-coding:utf8-*-
+
+import time
+
+import wx
+
+'''基于Sizer的控件相对布局'''
+
+
+class Example3(wx.Frame):
+    def __init__(self):
+        wx.Frame.__init__(self, parent=None, id=-1, title=u'极客学院', size=(600, 600))
+        self.panel = wx.Panel(self, -1)
+        self.Centre()
+
+        # 定义我们需要的各个控件
+
+        commandStatic = wx.StaticText(self.panel, -1, u'输命令:')
+        writePyStatic = wx.StaticText(self.panel, -1, u'写代码:')
+
+        self.commandText = wx.TextCtrl(self.panel, -1, u'')
+        self.writePyText = wx.TextCtrl(self.panel, -1, u'''#-*-coding:utf-8-*-\n#在这写Python代码''',
+                                       style=wx.TE_MULTILINE, size=(300, 200))
+
+        self.send = wx.Button(self.panel, label=u'发送命令')
+        self.clear = wx.Button(self.panel, label=u'清空命令')
+        self.screen = wx.Button(self.panel, label=u'查看屏幕')
+
+        self.serverList = ['192.168.0.4', '10.19.2.1', '192.168.0.111', '172.26.123.5', '192.168.6.11', '192.99.8.8']
+        self.server = wx.ListBox(self.panel, -1, size=(120, 100), choices=self.serverList, style=wx.LB_SINGLE)
+
+        img = wx.Image(r'python_logo.gif', wx.BITMAP_TYPE_ANY).Scale(200, 200)
+        self.screenBox = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(img))
+
+        self.Bind(wx.EVT_BUTTON, self.onSend, self.send)
+        self.Bind(wx.EVT_BUTTON, self.onClear, self.clear)
+        self.Bind(wx.EVT_BUTTON, self.onScreen, self.screen)
+
+        # 基于GirdBagSizer布局
+        self.gridBagSizerAll = wx.GridBagSizer(hgap=5, vgap=5)
+        self.gridBagSizerAll.Add(self.server, pos=(0, 0),
+                                 flag=wx.ALL | wx.EXPAND,
+                                 span=(7, 2), border=5)
+
+        self.gridBagSizerAll.Add(commandStatic, pos=(0, 2),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 border=5)
+        self.gridBagSizerAll.Add(self.commandText, pos=(0, 3),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(1, 2), border=5)
+
+        self.gridBagSizerAll.Add(writePyStatic, pos=(1, 2),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(1, 3), border=5)
+        self.gridBagSizerAll.Add(self.writePyText, pos=(2, 2),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(4, 3), border=5)
+        self.gridBagSizerAll.Add(self.send, pos=(6, 2),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(1, 1), border=5)
+        self.gridBagSizerAll.Add(self.clear, pos=(6, 3),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(1, 1), border=5)
+        self.gridBagSizerAll.Add(self.screen, pos=(6, 4),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(1, 1), border=5)
+
+        self.gridBagSizerAll.Add(self.screenBox, pos=(0, 5),
+                                 flag=wx.ALL | wx.ALIGN_CENTER_VERTICAL,
+                                 span=(7, 2), border=5)
+
+        self.panel.SetSizer(self.gridBagSizerAll)
+
+        # self.SetSizeHints(250, 200, 700, 400) #设定窗口的最大最小值
+        self.gridBagSizerAll.AddGrowableCol(0, 1)
+        self.gridBagSizerAll.AddGrowableCol(1, 1)
+        self.gridBagSizerAll.AddGrowableCol(2, 1)
+        self.gridBagSizerAll.AddGrowableCol(3, 1)
+        self.gridBagSizerAll.AddGrowableCol(4, 1)
+        self.gridBagSizerAll.AddGrowableCol(5, 1)
+        self.gridBagSizerAll.AddGrowableCol(6, 1)
+
+        self.gridBagSizerAll.AddGrowableRow(0, 1)
+        self.gridBagSizerAll.AddGrowableRow(1, 1)
+        self.gridBagSizerAll.AddGrowableRow(2, 1)
+        self.gridBagSizerAll.AddGrowableRow(3, 1)
+        self.gridBagSizerAll.AddGrowableRow(4, 1)
+        self.gridBagSizerAll.AddGrowableRow(5, 1)
+        self.gridBagSizerAll.AddGrowableRow(6, 1)
+        self.gridBagSizerAll.Fit(self)
+
+    def onSend(self, event):
+        time.sleep(0.5)
+        if self.server.GetSelection() != -1:
+            server = self.serverList[self.server.GetSelection()]
+        else:
+            server = u'未选择服务器'
+        command = self.commandText.GetValue()
+        writePy = self.writePyText.GetValue()
+        print(u'选中的服务器是： %s' % server)
+        print(u'执行的内置命令是： %s' % command)
+        print(u'写入的Python代码是:\n%s' % writePy)
+
+    def onClear(self, event):
+        self.commandText.Clear()
+        self.writePyText.Clear()
+        self.writePyText.AppendText(u'''#-*-coding:utf-8-*-\n#在这些Python代码''')
+
+    def onScreen(self, event):
+        img = wx.Image(r'python.gif', wx.BITMAP_TYPE_ANY).Scale(300, 200)
+        self.screenBox.SetBitmap(wx.BitmapFromImage(img))
+        self.gridBagSizerAll.Fit(self)
+
+
+if __name__ == "__main__":
+    app = wx.App()
+    frame = Example3()
+    frame.Show()
+    app.MainLoop()
+</code></pre>
+
+<h2>Python中的多线程编程</h2>
+
+<ol>
+<li>thread.start_new_thread(函数名，（参数1，参数2，···）)</li>
+<li>或者使用Threading模块创建线程</li>
+</ol>
+
+
+<h2>scipy库</h2>
+
+<ol>
+<li>解非线性方程组
+
+<ol>
+<li>scipy.optimize子库中的fsolve函数：fsolve(函数, 初始解, 雅可比矩阵)
+<figure class='code'><figcaption><span>求解非线性方程组</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sin</span><span class="p">,</span> <span class="n">cos</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">ol</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fsolve</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>        <span class="mi">5</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span>
+</span><span class='line'>        <span class="mi">4</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">),</span>
+</span><span class='line'>        <span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">-</span> <span class="mf">1.5</span>
+</span><span class='line'>    <span class="p">]</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">j</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">[</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">8</span> <span class="o">*</span> <span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">),</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x1</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">x1</span> <span class="o">*</span> <span class="n">x2</span><span class="p">)],</span>
+</span><span class='line'>        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">]</span>
+</span><span class='line'>    <span class="p">]</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">r</span> <span class="o">=</span> <span class="n">fsolve</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">fprime</span><span class="o">=</span><span class="n">j</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="o">&amp;</span><span class="n">reg</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span>
+</span><span class='line'><span class="mf">2.</span> <span class="err">数值积分</span>
+</span><span class='line'>    <span class="mf">1.</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="err">子库中的</span><span class="n">quad</span><span class="err">函数：</span>
+</span><span class='line'>    <span class="mf">2.</span> <span class="err">一重积分：</span><span class="n">quad</span><span class="p">(</span><span class="err">函数，定积分下限，定积分上限</span><span class="p">)</span>
+</span><span class='line'>    <span class="mf">3.</span> <span class="err">双重积分：</span><span class="n">dblquad</span>
+</span><span class='line'>    <span class="mf">4.</span> <span class="err">三重积分：</span><span class="n">tplquad</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span><span class="n">python</span> <span class="err">求解一重积分</span>
+</span><span class='line'><span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">quad</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">p</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span><span class='line'><span class="k">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">p</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></p>
 ]]></content>
   </entry>
   
