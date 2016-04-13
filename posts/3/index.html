@@ -88,6 +88,91 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/11/04/ov7670/">
+		
+			CMOS图像传感器OV7670</a>
+	</h2>
+	<div class="entry-content">
+		<h2>OV7670简介</h2>
+
+<ol>
+<li>通过SCCB总线控制，可以输出整帧、子采样、取窗口等方式及各种分辨率的8位影响数据。VGA图像最高达到30帧/秒。用户可以完全控制图像质量、数据格式和传输方式</li>
+<li>具有自动曝光控制、自动增益控制、自动白平衡，自动消除灯光条纹、自动黑电平校准等自动影像控制功能</li>
+<li>支持VGA、GIF和从CIF到40X30的各种尺寸。</li>
+<li>所有图像处理功能过程包括伽马曲线、白平衡、饱和度、色度等都可以通过SCCB接口编程。</li>
+<li>OV7670 CMOS图像传感器通过减少或消除光学或电子缺陷（如固定图案噪声、拖尾、浮散等），提高图像质量，得到清晰的稳定的彩色图像</li>
+<li>OV7670芯片内部有：感光阵列、模拟信号处理模块（包括自动增益和自动白平衡）、10位的ADC、测试图案发生器（八色彩条图案渐变至黑白色条图案）、数字信号处理器（控制由原始信号差值到RGB信号的过程，并控制边缘锐化、颜色空间转换等图像质量处理）、图像缩放模块（按照预先设置的要求输出数据格式）、时许发生模块（产生阵列控制和帧率、帧率的时序、自动曝光控制、输出外部时序）、数字视频端口、SCCB接口、LED和闪光灯输出控制电路等</li>
+</ol>
+
+
+<h2>OV7670参数</h2>
+
+<ol>
+<li>感光阵列：640*480</li>
+<li>稳定工作温度0~50℃</li>
+<li>输出格式：
+
+<ol>
+<li>YUV/YCbCr4:2:2</li>
+<li>RGB565/555/444</li>
+<li>GRB4:2:2</li>
+<li>Raw RGB Data</li>
+</ol>
+</li>
+<li>光学尺寸：1/6″</li>
+<li>视场角：25°</li>
+<li>最大帧率：VGA30 f/s</li>
+</ol>
+
+
+<h2>视频帧存储器AL422B简介</h2>
+
+<ol>
+<li>AL422B是一个存储容量为3Mb的视频帧存储器，能够配置为384KB（393，216）X8b FIFO，支持VGA、CCIR、NTSC、PAL和HDTV分辨率</li>
+<li>具有独立的读写操作能力，读/写周期时间为20ns，访问时间为15ns，具有高速异步串行存取、输出使能控制、自行刷新数据等功能。</li>
+<li>目前1帧图像信息通常包含640X480或者720X480字节。</li>
+<li>操作过程：
+
+<ol>
+<li>初始化。上电后，分别给nWRST和nRRST各0.1ms的初始化脉冲，使AL422B初始化。</li>
+<li>复位操作。通常，复位信号可在任何时候给出而不考虑nWE，nRE以及nOE的状态，但是它们仍然要参照时钟信号的输入情况，使它们满足建立时间和保持时间的要求。如果在禁止时钟周期内给给出复位信号，必须等到允许周期到来后才会执行复位操作。当nWRST和nRRST均为低电平时，数据的输入和输出均从地址0开始</li>
+<li>写操作。当写使能信号nWE为低电平时，在WCK信号的上升沿，数据通过DI7~DI0写入寄存器，参照WCK的输入周期，写入的数据必须满足建立时间和保持时间的要求。当nWE为高电平时，写操作被禁止，写地址指针停在当前位置上；当nWE再次变为低电平时，写地址指针从当前位置继续开始</li>
+<li>读操作。当读使能nRE和数据输出使能nOE均为低电平时，在RCK信号的上升沿，数据由DO7~DO0输出。当nRE为高电平时，读地址指针停在当前位置上；当nRE再次变为低电平时，读地址指针从当前位置开始。执行读操作时，nOE须为低电平，如nOE为高电平，则数据输出端均为高阻态，且读地址指针任然同步加1.nRE和nOE须参照RCK的输入周期，满足建立时间和保持时间的要求。</li>
+</ol>
+</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-11-04T20:19:43+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/10/30/sd-card-driver/">
 		
 			SD卡与文件系统</a>
@@ -3955,7 +4040,7 @@
 		
 		<a href="/blog/2015/10/04/wizwiki-w7500/">
 		
-			Wizwiki_W7500</a>
+			Wizwiki_W7500/W7500P</a>
 	</h2>
 	<div class="entry-content">
 		<h2>WIZwiki-W7500平台介绍</h2>
@@ -4013,7 +4098,7 @@
 <li>CRS/COL：监听介质是否空闲/监听是否有冲突发生。这两根线都是由PHY驱动，并且只在半双工模式下有效</li>
 </ol>
 </li>
-<li>MII接口：MDC和MDIO。通过它，控制芯片可以访问PHY的寄存器(100M物理层芯片中介绍的寄存器组，但不仅限于100M物理层芯片，10M物理层芯片也可以拥有这些寄存器)，并通过这些寄存器来对物理层芯片进行控制和管理
+<li>MII控制接口：MDC和MDIO。通过它，控制芯片可以访问PHY的寄存器(100M物理层芯片中介绍的寄存器组，但不仅限于100M物理层芯片，10M物理层芯片也可以拥有这些寄存器)，并通过这些寄存器来对物理层芯片进行控制和管理
 
 <ol>
 <li>MDC：管理接口时钟。它是由控制器驱动，与TX_CLK和RX_CLK无任何关系</li>
@@ -4312,6 +4397,39 @@
 </ol>
 
 
+<h2>W7500P芯片介绍</h2>
+
+<ol>
+<li>IOP4IoT（Internet Offload Processor for Internet of Things）芯片，集成ARM Cortex-M0，128KB Flash，硬件TCP/IP内核，10/100M 以太网MAC与PHY，PHY符合IEEE802.3u标准，硬件TCP/IP核支持TCP、UDP、IPv4、ICMP、ARP、IGMP和PPPoE</li>
+<li>CPU最大支持48MHz的工作频率</li>
+<li>硬件TCP/IP核支持8个套接字，总共可以使用32KB的专用内存，物理层与数据链路层的通信接口符合MII</li>
+<li>PHY实际上是内嵌了IC+（IP101G）芯片</li>
+<li>除了32KB的Socket专用内存外，还有16KB的通用内存</li>
+<li>有6KB的ROM存放boot代码</li>
+<li>内部8MHz的RC振荡器</li>
+<li>8路12位的ADC，采样速率1Msps</li>
+<li>6通道DMA控制器</li>
+<li>1路看门狗（32位的向下计数器），4路定时器（32位或者16位的下降计数器），8路PWM控制器（32位计数器，其中6位为可编程的预分频器）</li>
+<li>3路串口（其中两路带有FIFO与流控，另一个是简单串口），2路SPI，2路I2C（主从模式均可，最大支持400Kbps）</li>
+<li>1个伪随机数产生器</li>
+<li>程序内存，数据内存，寄存器和IO口统一被组织在4G的线型地址空间中，所有字节按照小端格式编写</li>
+<li>当上电时BOOT引脚和TEST引脚都为低电平时，系统进入正常工作模式；当BOOT引脚为高电平，TEST引脚为低电平，系统进入Boot模式（ISP下载）</li>
+<li>支持25路中断请求，1路非屏蔽中断，一路内部事件信号请求（当DMA传输结束后会触发）</li>
+<li>VDD电压范围：2.7V~5.5V，ADC的参考电压同VDD</li>
+<li>W7500P没有power-off模式，但是有Sleep和Deep Sleep模式,Sleep模式仅停止PCU工作，Deep Sleep模式还会切断所有外设的时钟
+<img src="http://wizwiki.net/wiki/lib/exe/fetch.php?media=products:w7500:overview:w7500_memory_map.png" alt="W7500P内存映射图" /></li>
+</ol>
+
+
+<h2>SYSCFG(System Configuration Controller)的主要功能</h2>
+
+<ol>
+<li>控制内存重映射</li>
+<li>可以使能系统锁死后自动复位</li>
+<li>保存着最近一次系统复位的原因信息</li>
+</ol>
+
+
 		
 		
 	</div>
@@ -4387,606 +4505,6 @@
 
 
 <time datetime="2015-10-02T12:06:42+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/09/28/javascript/">
-		
-			JavaScript知识清单</a>
-	</h2>
-	<div class="entry-content">
-		<h2>==与===的区别</h2>
-
-<ol>
-<li>对于string,number等基础类型，==和===是有区别的
-
-<ol>
-<li>不同类型间比较，==之比较“转化成同一类型后的值”看“值”是否相等，===如果类型不同，其结果就是不等</li>
-<li>同类型比较，直接进行“值”比较，两者结果一样</li>
-</ol>
-</li>
-<li>对于Array,Object等高级类型，==和===是没有区别的
-
-<ul>
-<li>进行“指针地址”比较</li>
-</ul>
-</li>
-<li>基础类型与高级类型，==和===是有区别的
-
-<ol>
-<li>对于==，将高级转化为基础类型，进行“值”比较</li>
-<li>因为类型不同，===结果为false</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>事件</h2>
-
-<ol>
-<li>常用事件
-
-<ul>
-<li>onClick单击事件</li>
-<li>onMouseOver鼠标经过事件</li>
-<li>onMouseOut鼠标移出事件</li>
-<li>onChange文本内容改变事件</li>
-<li>onSelect文本框选中事件</li>
-<li>onFocus光标聚集事件</li>
-<li>onBlur移开光标事件</li>
-<li>onLoad网页加载事件</li>
-<li>onUnload关闭网页事件</li>
-</ul>
-</li>
-<li>事件冒泡
-
-<ul>
-<li>由最具体的元素接收，然后逐级向上传播至最不具体的元素的节点(文档)</li>
-</ul>
-</li>
-<li>事件捕获
-
-<ul>
-<li>最不具体的节点先接收事件，而最具体的节点应该是最后接收事件</li>
-</ul>
-</li>
-<li>事件处理
-
-<ol>
-<li>HTML事件处理
-
-<ul>
-<li>直接添加到HTML结构中</li>
-</ul>
-</li>
-<li>DOM0级事件处理
-
-<ul>
-<li>把一个函数赋值给一个事件处理程序</li>
-<li>同一个元素多个事件会被覆盖，只有最后一个事件起作用</li>
-</ul>
-</li>
-<li>DOM2级事件处理
-
-<ul>
-<li>addEventListener(“事件名”，“事件处理函数”，“布尔值”)；</li>
-<li>true：事件捕获</li>
-<li>false：事件冒泡</li>
-<li>removeEventListen();</li>
-</ul>
-</li>
-<li>IE事件处理程序(IE8及以下)
-
-<ul>
-<li>attachEvent</li>
-<li>detachEvent</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>事件对象
-
-<ol>
-<li>在触发DOM事件的时候都会产生一个对象</li>
-<li>事件对象event
-
-<ol>
-<li>type：获取事件类型</li>
-<li>target：获取事件目标</li>
-<li>stopPropagation()；阻止事件冒泡</li>
-<li>preventDefault()；阻止事件默认行为(比如超链接)</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>DOM对象</h2>
-
-<ol>
-<li>当网页被加载时，浏览器会创建页面的文档对象模型(Document Object Model)
-<img src="http://i.imgur.com/EwSndVS.png" alt="DOM对象模型" /></li>
-<li>DOM操作HTML
-
-<ol>
-<li>改变HTML输出流：
-
-<ul>
-<li>注意，绝对不要在文档加载完成后使用document.write(),这会覆盖该文档</li>
-</ul>
-</li>
-<li>寻找元素：
-
-<ul>
-<li>通过id找到HTML元素,document.getElementById();</li>
-<li>通过标签名找到HTML元素,document.getElementByTagName();</li>
-</ul>
-</li>
-<li>改变HTML内容
-
-<ul>
-<li>使用属性：innerHTML</li>
-</ul>
-</li>
-<li>改变HTML属性
-
-<ul>
-<li>使用属性：attribute，例如：<code>document.getElementById("aid").href="http://www.baid.com";</code></li>
-</ul>
-</li>
-<li>常用方法：
-
-<ol>
-<li>getElementsByName();获取name</li>
-<li>getElementsByTagName();获取元素</li>
-<li>getAttribute();获取元素属性</li>
-<li>setAttribute();设置元素属性</li>
-<li>childNodes();访问子节点</li>
-<li>parentNode();访问父节点</li>
-<li>createElement();创建元素节点</li>
-<li>createTextNode();创建文本节点</li>
-<li>insertBefore();插入节点</li>
-<li>removeChild();删除节点</li>
-<li>offsetHeight;网页尺寸,例如：<code>var width=document.body.offsetWidth;</code></li>
-<li>crollHeight;网页尺寸</li>
-</ol>
-</li>
-<li>创建节点示例
- <code>var body=document.body;var input=document.creatElement("input");input.type="button";input.value="按钮"；body.appendChild(input);</code></li>
-</ol>
-</li>
-<li>DOM操作CSS
-
-<ol>
-<li>基本语法：<code>document.getElementById(id).style.property=new style;</code></li>
-</ol>
-</li>
-<li>DOM操作事件句柄
-
-<ol>
-<li>addEventListener();向指定元素添加事件句柄</li>
-<li>removeEventListener();移出方法添加的事件句柄</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>内置对象</h2>
-
-<ol>
-<li>String对象
-
-<ol>
-<li>字符串可以使用使用单引号或者双引号</li>
-<li>获取字符串长度：length属性</li>
-<li>在字符串中查找字符串的方法：indexOf(),成功返回位置，失败返回-1</li>
-<li>内容匹配的方法：match(),成功返回匹配成功的字符串，失败返回空</li>
-<li>替换内容的方法：replace()</li>
-<li>字符串大小写转换：toUpperCase()/toLowerCase()</li>
-<li>字符串转为数组：split</li>
-</ol>
-</li>
-<li>Date对象
-
-<ol>
-<li>常用方法：
-
-<ol>
-<li>getFullYear():获取年份</li>
-<li>getTime():获取毫秒</li>
-<li>setFullYear():设置具体的日期</li>
-<li>getDay():获取星期</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>Array数组对象
-
-<ol>
-<li>数组的创建
-
-<ul>
-<li><code>var myArray=["Hello","iwen","ime"];</code></li>
-</ul>
-</li>
-<li>数组的访问
-
-<ul>
-<li>通过指定数组名以及索引号码(下标从0开始)，可以访问某个特定的元素</li>
-</ul>
-</li>
-<li>常用方法
-
-<ul>
-<li>concat();合并数组</li>
-<li>sort();排序</li>
-<li>push();末尾追加元素</li>
-<li>reverse();数组元素翻转</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>Math对象
-
-<ol>
-<li>常用方法
-
-<ul>
-<li>round():四舍五入;例如Math.round(2.5)等于3</li>
-<li>random();返回0~1之间的随机数;例如parseInt(Math.random()*10);</li>
-<li>max();返回最高值</li>
-<li>min();返回最低值</li>
-<li>abs();返回绝对值</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>浏览器对象</h2>
-
-<ol>
-<li>Window对象
-
-<ul>
-<li>window对象时BOM的核心，window对象指当前的浏览器窗口。所有JavaScript全局对象，函数以及变量均自动成为window对象的成员；全局变量是window对象的属性，全局函数是window对象的方法，甚至HTML DOM的document也是window对象的属性之一</li>
-<li>window.innerHeight:浏览器窗口的内部高度</li>
-<li>window.innerWidth:浏览器窗口的内部宽度</li>
-<li>window.open(&ldquo;url"，“windowname”，“style”):打开新的网页</li>
-</ul>
-</li>
-<li>计时器
-
-<ol>
-<li>方法
-
-<ol>
-<li>setInterval();间隔指定的好描述不同的执行指定的代码</li>
-<li>clearInterval();停止setInterval()方法执行的函数代码</li>
-<li>setTimeout();暂停指定的毫秒数后执行指定的代码</li>
-<li>clearTimeout();停止之慈宁宫setTimeout()方法的函数代码</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>History对象
-
-<ol>
-<li>history.back()与在浏览器中点击后退按钮相同</li>
-<li>history.forward()与在浏览器中点击向前按钮相同</li>
-<li>history.go()进入历史中的某个页面</li>
-</ol>
-</li>
-<li>Location对象
-
-<ol>
-<li>location对象用于获得当前页面的地址(URL)，并把浏览器重定向到新的页面</li>
-<li>属性与方法
-
-<ol>
-<li>location.hostname返回web主机的域名</li>
-<li>location.pathname返回当前页面的路径和文件名</li>
-<li>location.port返回web主机的端口</li>
-<li>location.protocol返回所使用的web协议(<a href="http://%E6%88%96https://">http://%E6%88%96https://</a>)</li>
-<li>location.href返回当前页面的URL</li>
-<li>location.assign()加载新的文档</li>
-</ol>
-</li>
-</ol>
-</li>
-<li>Screen对象
-
-<ol>
-<li>属性
-
-<ol>
-<li>screen.availWidth可用的屏幕宽度</li>
-<li>screen.availHeight可用的屏幕高度</li>
-<li>screen.Height屏幕高度</li>
-<li>screen.Width屏幕宽度</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>面向对象</h2>
-
-<figure class='code'><figcaption><span>使用闭包以及function来模拟类</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">People</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">People</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;People:Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">+</span> <span class="s2">&quot; years old&quot;</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">People</span> <span class="o">=</span> <span class="nx">People</span><span class="p">;</span>
-</span><span class='line'><span class="p">}());</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">Student</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">age</span><span class="p">,</span> <span class="nx">grade</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_grade</span> <span class="o">=</span> <span class="nx">grade</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
-</span><span class='line'>        <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">=</span> <span class="nx">age</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">People</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_name</span><span class="p">,</span><span class="k">this</span><span class="p">.</span><span class="nx">_age</span><span class="p">);</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">superSay</span> <span class="o">=</span> <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span><span class="p">;</span>
-</span><span class='line'>    <span class="nx">Student</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">say</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">superSay</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-</span><span class='line'>        <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Student:Hello &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_name</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_age</span> <span class="o">+</span> <span class="s2">&quot; years old&quot;</span> <span class="o">+</span> <span class="s2">&quot;,Grade: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_grade</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nb">window</span><span class="p">.</span><span class="nx">Student</span> <span class="o">=</span> <span class="nx">Student</span><span class="p">;</span>
-</span><span class='line'><span class="p">}());</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">var</span> <span class="nx">stu</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Student</span><span class="p">(</span><span class="s2">&quot;morris&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="s2">&quot;one&quot;</span><span class="p">);</span>
-</span><span class='line'><span class="nx">stu</span><span class="p">.</span><span class="nx">say</span><span class="p">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>AJAX</h2>
-
-<ol>
-<li>AJAX(Asynchronous Javascript And XML)</li>
-<li>编程模板
-
-<ol>
-<li>创建XMLHttpRequest对象</li>
-<li>open操作初始化请求信息</li>
-<li>监听事件处理响应结果</li>
-<li>send操作发出请求</li>
-</ol>
-</li>
-<li>创建各浏览器兼容的XMLHttpRequest对象</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='JS'><span class='line'><span class="kd">function</span> <span class="nx">creatXHR</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
-</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">ActiveXObject</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Msxml2.XMLHTTP&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s1">&#39;Microsoft.XMLHTTP&#39;</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="nx">xhr</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>发送请求信息
-
-<ol>
-<li>get方法
-
-<ul>
-<li><code>xhr.open("GET","http://test/keyword/hit?keyword=c",true);</code></li>
-<li><code>xhr.send();</code></li>
-</ul>
-</li>
-<li>post方法
-
-<ul>
-<li><code>xhr.open("POST","http://test/keyword/hit",true);</code></li>
-<li><code>xhr.send("keyword=c")</code>;</li>
-</ul>
-</li>
-</ol>
-</li>
-<li>设置请求头信息
-
-<ol>
-<li><code>xhr.setRequestHeader("Content-Type","application/json");</code></li>
-<li><code>xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");</code></li>
-</ol>
-</li>
-<li>响应的接收与请求</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='JS'><span class='line'><span class="nx">xhr</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
-</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span><span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">){</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">responseXML</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getAllResponseHeaders</span><span class="p">());</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">getResponseHeader</span><span class="p">(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">));</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
-</span><span class='line'>      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">xhr</span><span class="p">.</span><span class="nx">statusText</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>将Json字符串转换成Json对象：
-
-<ol>
-<li>JSON.parse(xhr.responseText);</li>
-<li>eval(xhr.responseText);</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>设计模式</h2>
-
-<ol>
-<li>设计原则
-
-<ol>
-<li>开闭原则：对扩展开放，对修改关闭</li>
-<li>里氏转换原则：子类继承父类，单独调用完全可以运行</li>
-<li>依赖倒转原则：引用一个对象，如果这个对象有底层类型，直接饮用底层</li>
-<li>接口隔离原则：每一个接口应该是一种角色</li>
-<li>合成/聚合复用原则：新的对象应使用一些已有的对象，使之成为新对象的一部分</li>
-<li>迪米特原则：一个对象应对其他对象有尽可能少的了解</li>
-</ol>
-</li>
-<li>单例模式</li>
-</ol>
-
-
-<h2>jQuery</h2>
-
-<ol>
-<li>jQuery库可以通过一行简单的标记被添加到网页中</li>
-<li>jQuery是一个JavaScript函数库</li>
-<li>jQuery库包含的功能:
-
-<ol>
-<li>HTML元素选取</li>
-<li>HTML元素操作</li>
-<li>CSS操作</li>
-<li>HTML事件函数</li>
-<li>JavaScript特效和动画</li>
-<li>HTML DOM遍历和修改</li>
-<li>AJAX</li>
-<li>Utilities</li>
-</ol>
-</li>
-<li>从CDN中载入jQuery，例如：<a href="http://libs.baidu.com/jquery/1.10.1/jquery.min.js">http://libs.baidu.com/jquery/1.10.1/jquery.min.js</a></li>
-<li>基础语法：
-
-<ol>
-<li>$(selector).action()
-
-<ul>
-<li>美元符号定义jQuery</li>
-<li>选择符selector“查询”和“查找”HTML元素</li>
-<li>jQuery的action()执行对元素的操作</li>
-<li>例如：
-
-<ul>
-<li>$(this).hide()隐藏当前元素</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-09-28T12:20:50+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

@@ -88,6 +88,70 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/12/10/eclipse-plus-cygwin/">
+		
+			Eclipse+cygwin</a>
+	</h2>
+	<div class="entry-content">
+		<h2>eclipse+cdt+cygwin配置c/c++开发环境</h2>
+
+<ol>
+<li><a href="https://cygwin.com/mirrors.html">下载cygwin</a>,默认情况下Cygwin没有选择C++开发所需要的包，在安装时需要选中：
+
+<ul>
+<li>gcc,gcc-core,gcc-g++,gcc-mingw-core,gcc-mingw-g++,make,gdb,bunutils</li>
+</ul>
+</li>
+<li>安装好后，需要把Cygwin加入到Windows环境变量</li>
+<li>下载安装CDT插件，或者直接下载安装带有CDT插件的eclipse软件</li>
+<li>配置路径映射，eclipse中调试时，由于GDB使用的是unix格式的路径，而eclipse使用的是windows路径，导致找不到匹配的代码，需要手工设置：
+
+<ol>
+<li>进入eclipse的preference，搜索“lookup path”</li>
+<li>进入后添加新的“Path Mapping”</li>
+<li>把linux的路径映射到windows的路径，比如/cygdrive/c 映射成C:/</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>cygwin技巧</h2>
+
+<ol>
+<li>清屏：ctrl+l</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-12-10T13:21:49+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/12/09/spansion-fm4/">
 		
 			Spansion-FM4</a>
@@ -1713,7 +1777,14 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 			Verilog基础知识</a>
 	</h2>
 	<div class="entry-content">
-		<h2>我的FPGA</h2>
+		<h2>数字电路基础</h2>
+
+<ol>
+<li>数字电路的五基元电路：反相器、与门、或门、三态门、D触发器</li>
+</ol>
+
+
+<h2>我的FPGA</h2>
 
 <ol>
 <li>FPGA芯片：EP4CE6F22C8N，逻辑资源6272LEs，乘法器15，RAM资源270Kbits</li>
@@ -5310,91 +5381,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 
 <time datetime="2015-11-05T10:19:01+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/04/ov7670/">
-		
-			CMOS图像传感器OV7670</a>
-	</h2>
-	<div class="entry-content">
-		<h2>OV7670简介</h2>
-
-<ol>
-<li>通过SCCB总线控制，可以输出整帧、子采样、取窗口等方式及各种分辨率的8位影响数据。VGA图像最高达到30帧/秒。用户可以完全控制图像质量、数据格式和传输方式</li>
-<li>具有自动曝光控制、自动增益控制、自动白平衡，自动消除灯光条纹、自动黑电平校准等自动影像控制功能</li>
-<li>支持VGA、GIF和从CIF到40X30的各种尺寸。</li>
-<li>所有图像处理功能过程包括伽马曲线、白平衡、饱和度、色度等都可以通过SCCB接口编程。</li>
-<li>OV7670 CMOS图像传感器通过减少或消除光学或电子缺陷（如固定图案噪声、拖尾、浮散等），提高图像质量，得到清晰的稳定的彩色图像</li>
-<li>OV7670芯片内部有：感光阵列、模拟信号处理模块（包括自动增益和自动白平衡）、10位的ADC、测试图案发生器（八色彩条图案渐变至黑白色条图案）、数字信号处理器（控制由原始信号差值到RGB信号的过程，并控制边缘锐化、颜色空间转换等图像质量处理）、图像缩放模块（按照预先设置的要求输出数据格式）、时许发生模块（产生阵列控制和帧率、帧率的时序、自动曝光控制、输出外部时序）、数字视频端口、SCCB接口、LED和闪光灯输出控制电路等</li>
-</ol>
-
-
-<h2>OV7670参数</h2>
-
-<ol>
-<li>感光阵列：640*480</li>
-<li>稳定工作温度0~50℃</li>
-<li>输出格式：
-
-<ol>
-<li>YUV/YCbCr4:2:2</li>
-<li>RGB565/555/444</li>
-<li>GRB4:2:2</li>
-<li>Raw RGB Data</li>
-</ol>
-</li>
-<li>光学尺寸：1/6″</li>
-<li>视场角：25°</li>
-<li>最大帧率：VGA30 f/s</li>
-</ol>
-
-
-<h2>视频帧存储器AL422B简介</h2>
-
-<ol>
-<li>AL422B是一个存储容量为3Mb的视频帧存储器，能够配置为384KB（393，216）X8b FIFO，支持VGA、CCIR、NTSC、PAL和HDTV分辨率</li>
-<li>具有独立的读写操作能力，读/写周期时间为20ns，访问时间为15ns，具有高速异步串行存取、输出使能控制、自行刷新数据等功能。</li>
-<li>目前1帧图像信息通常包含640X480或者720X480字节。</li>
-<li>操作过程：
-
-<ol>
-<li>初始化。上电后，分别给nWRST和nRRST各0.1ms的初始化脉冲，使AL422B初始化。</li>
-<li>复位操作。通常，复位信号可在任何时候给出而不考虑nWE，nRE以及nOE的状态，但是它们仍然要参照时钟信号的输入情况，使它们满足建立时间和保持时间的要求。如果在禁止时钟周期内给给出复位信号，必须等到允许周期到来后才会执行复位操作。当nWRST和nRRST均为低电平时，数据的输入和输出均从地址0开始</li>
-<li>写操作。当写使能信号nWE为低电平时，在WCK信号的上升沿，数据通过DI7~DI0写入寄存器，参照WCK的输入周期，写入的数据必须满足建立时间和保持时间的要求。当nWE为高电平时，写操作被禁止，写地址指针停在当前位置上；当nWE再次变为低电平时，写地址指针从当前位置继续开始</li>
-<li>读操作。当读使能nRE和数据输出使能nOE均为低电平时，在RCK信号的上升沿，数据由DO7~DO0输出。当nRE为高电平时，读地址指针停在当前位置上；当nRE再次变为低电平时，读地址指针从当前位置开始。执行读操作时，nOE须为低电平，如nOE为高电平，则数据输出端均为高阻态，且读地址指针任然同步加1.nRE和nOE须参照RCK的输入周期，满足建立时间和保持时间的要求。</li>
-</ol>
-</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-04T20:19:43+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

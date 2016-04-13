@@ -3,7 +3,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Wizwiki_W7500 - WenRis Blog</title>
+	<title>Wizwiki_W7500/W7500P - WenRis Blog</title>
 	<meta name="author" content="suda-morris">
 
 	
@@ -84,7 +84,7 @@
 	
 
 	<div id="content" class="inner"><article class="post">
-	<h2 class="title">Wizwiki_W7500</h2>
+	<h2 class="title">Wizwiki_W7500/W7500P</h2>
 	<div class="entry-content"><h2>WIZwiki-W7500平台介绍</h2>
 
 <ol>
@@ -140,7 +140,7 @@
 <li>CRS/COL：监听介质是否空闲/监听是否有冲突发生。这两根线都是由PHY驱动，并且只在半双工模式下有效</li>
 </ol>
 </li>
-<li>MII接口：MDC和MDIO。通过它，控制芯片可以访问PHY的寄存器(100M物理层芯片中介绍的寄存器组，但不仅限于100M物理层芯片，10M物理层芯片也可以拥有这些寄存器)，并通过这些寄存器来对物理层芯片进行控制和管理
+<li>MII控制接口：MDC和MDIO。通过它，控制芯片可以访问PHY的寄存器(100M物理层芯片中介绍的寄存器组，但不仅限于100M物理层芯片，10M物理层芯片也可以拥有这些寄存器)，并通过这些寄存器来对物理层芯片进行控制和管理
 
 <ol>
 <li>MDC：管理接口时钟。它是由控制器驱动，与TX_CLK和RX_CLK无任何关系</li>
@@ -438,6 +438,39 @@
 <li>每个字节之后都有一个应答位，应答位可以使接收者在成功接收到本字节之后，告诉发送者此数据已经被成功接收，可以发送下个字节。主机产生所有的时钟脉冲，包括应答位(第9位)的时钟脉冲</li>
 </ol>
 
+
+<h2>W7500P芯片介绍</h2>
+
+<ol>
+<li>IOP4IoT（Internet Offload Processor for Internet of Things）芯片，集成ARM Cortex-M0，128KB Flash，硬件TCP/IP内核，10/100M 以太网MAC与PHY，PHY符合IEEE802.3u标准，硬件TCP/IP核支持TCP、UDP、IPv4、ICMP、ARP、IGMP和PPPoE</li>
+<li>CPU最大支持48MHz的工作频率</li>
+<li>硬件TCP/IP核支持8个套接字，总共可以使用32KB的专用内存，物理层与数据链路层的通信接口符合MII</li>
+<li>PHY实际上是内嵌了IC+（IP101G）芯片</li>
+<li>除了32KB的Socket专用内存外，还有16KB的通用内存</li>
+<li>有6KB的ROM存放boot代码</li>
+<li>内部8MHz的RC振荡器</li>
+<li>8路12位的ADC，采样速率1Msps</li>
+<li>6通道DMA控制器</li>
+<li>1路看门狗（32位的向下计数器），4路定时器（32位或者16位的下降计数器），8路PWM控制器（32位计数器，其中6位为可编程的预分频器）</li>
+<li>3路串口（其中两路带有FIFO与流控，另一个是简单串口），2路SPI，2路I2C（主从模式均可，最大支持400Kbps）</li>
+<li>1个伪随机数产生器</li>
+<li>程序内存，数据内存，寄存器和IO口统一被组织在4G的线型地址空间中，所有字节按照小端格式编写</li>
+<li>当上电时BOOT引脚和TEST引脚都为低电平时，系统进入正常工作模式；当BOOT引脚为高电平，TEST引脚为低电平，系统进入Boot模式（ISP下载）</li>
+<li>支持25路中断请求，1路非屏蔽中断，一路内部事件信号请求（当DMA传输结束后会触发）</li>
+<li>VDD电压范围：2.7V~5.5V，ADC的参考电压同VDD</li>
+<li>W7500P没有power-off模式，但是有Sleep和Deep Sleep模式,Sleep模式仅停止PCU工作，Deep Sleep模式还会切断所有外设的时钟
+<img src="http://wizwiki.net/wiki/lib/exe/fetch.php?media=products:w7500:overview:w7500_memory_map.png" alt="W7500P内存映射图" /></li>
+</ol>
+
+
+<h2>SYSCFG(System Configuration Controller)的主要功能</h2>
+
+<ol>
+<li>控制内存重映射</li>
+<li>可以使能系统锁死后自动复位</li>
+<li>保存着最近一次系统复位的原因信息</li>
+</ol>
+
 </div>
 
 
@@ -495,7 +528,7 @@
 <section id="comment">
     <h2 class="title">Comments</h2>
     <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="/blog/2015/10/04/wizwiki-w7500" data-title="Wizwiki_W7500" data-url="http://suda-morris.github.io/blog/2015/10/04/wizwiki-w7500/"></div>
+	<div class="ds-thread" data-thread-key="/blog/2015/10/04/wizwiki-w7500" data-title="Wizwiki_W7500/W7500P" data-url="http://suda-morris.github.io/blog/2015/10/04/wizwiki-w7500/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

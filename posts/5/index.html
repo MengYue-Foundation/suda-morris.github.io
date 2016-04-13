@@ -88,6 +88,248 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/07/20/cpp-knowledges/">
+		
+			CPP-Knowledges</a>
+	</h2>
+	<div class="entry-content">
+		<h2>流</h2>
+
+<ol>
+<li>标准C++中，iostream中常见的操作算子(manipulator):flush,endl,oct(后面跟的数据解析成八进制)，hex(后面跟的数解析成十六进制)，dec(后面跟的数解析成十进制)，boolalpha(后面跟的数据解析成布尔类型，并用true和false来显示)，showpos(后面跟的数据显示正负号)，fixed(后面跟的数不要四舍五入),noshowpos(后面跟的数如果是正数就显示+号),showpoint(后面跟的数据显示小数点)，scientific(后面跟的数据以科学计数法的形式表示);在Qt中附加的一些操作算子：forcesign(后面的数据显示正负号),forcepoint(后面的数据显示小数点),noforcesign(后面的数据如果是正数就不显示+号)</li>
+<li>标准C++的iostream中，getline(cin,your_string)语句能够从标准输入流中提取一行字符串</li>
+<li>在Qt中很容易用与iostream对应的同一个名称定义QTextStream，由于控制台输入和输出主要用在调试过程，所以Qt提供了一个全局函数qDebug(),用它可以方便地将消息发送到控制台，且具有灵活的接口</li>
+<li>流被用来读取/写入文件、连接网络和处理字符串，它有一个有用的特性是易于从混合数据类型中得到字符串。</li>
+<li>STL中的字符串流：std::ostringstream,常用来定义一个string_buffer;</li>
+<li>STL中的文件流std::ofstream,用来定义一个文件流管道如ofstream outf后绑定一个文件：outf.open(&ldquo;file path&rdquo;)</li>
+<li>STL中的输入文件流std::ifstream,打开文件instream inf;inf.open(&ldquo;file path&rdquo;),判断是否读到了文件末尾inf.eof(),读取一行数据getline(inf,newstr)</li>
+<li>STL中的stringstream对应于Qt里面的QString，STL中的fstream对应于Qt里面的QFile，STL中的iostream对应于Qt中的QTextStream</li>
+</ol>
+
+
+<h2>运算符new和delete</h2>
+
+<ul>
+<li>new运算符从堆(heap)中分配内存空间，并且返回指向新分配的对象的指针，如果由于某种原因无法完成内存分配，就会抛出一个异常</li>
+<li>delete运算符的作用是释放动态分配的内存并将其返回给堆。delete操作只能用于由new运算符返回的指针或者空指针。</li>
+</ul>
+
+
+<h2>智能指针</h2>
+
+<ul>
+<li>智能指针是一个对象，它用来保存和管理指向堆对象的指针，其行为与常规的指针非常类似，只是它会在合适的时刻自动删除堆对象。这个类在Qt中对应的是QPointer，在标准库中是std::auto_ptr,在Boost中是shared_ptr</li>
+</ul>
+
+
+<h2>引用</h2>
+
+<ul>
+<li>在C++中，引用提供了一种给左值赋予一个别名的机制，对于避免费事或者不必要的复制引用是非常有用的，例如向函数传送一个非常大的对象作为参数。<strong>引用必须在声明时进行初始化且其初始化器也必须是一个左值</strong>,例如：<code>int n;int&amp; rn=n;</code>引用变量rn是实际变量n的别名</li>
+<li>一种好的编程实践是：对于不需要通过函数来进行变化的指针和引用参数，应使用const来保护它们。只读引用参数的能力在于：对按引用传递参数提供了高效性，而对按值传递参数提供了安全性</li>
+</ul>
+
+
+<h2>类的友元</h2>
+
+<ul>
+<li>友元机制允许非成员函数访问一个类的私有数据，关键字friend可以放在类的生命或者函数声明之前，友元声明位于类定义之内</li>
+<li>通常而言，为了达到下面两个目的才会使用友元函数：
+
+<ol>
+<li>为了使用工厂方法，此时需要对某个类强制实施某些创建规则</li>
+<li>为了使用全局运算符函数，比如operator&lt;&lt;()和operator>>()，此时不希望将运算符作为某个类的成员函数，或者没有写入类定义的权利</li>
+</ol>
+</li>
+</ul>
+
+
+<h2>运算符重载</h2>
+
+<ol>
+<li>C++使用关键字operator为运算符赋予新的含义</li>
+<li>例如重载&lt;&lt;运算符：friend ostream&amp; operator&lt;&lt;(ostream&amp; out,const Complex&amp; c);</li>
+</ol>
+
+
+<h2>define与inline的区别</h2>
+
+<blockquote><ol>
+<li>对#define宏的替换过程是由预处理器处理的，预处理器本质上是一个文本编辑器。对inline函数的替换过程是由编译器处理的，它会执行更智能的操作，进行正确的类型检查</li>
+<li>inline函数必须在调用之前<strong>定义</strong></li>
+<li>在一个源代码模块中只能有一次inline定义</li>
+</ol>
+</blockquote>
+
+<h2>带变长实参表的函数</h2>
+
+<blockquote><ol>
+<li>在C和C++中，可以定义其参数表以省略号结尾的函数。省略号使调用者能够制定参数的数量以及类型。</li>
+<li>为了定义使用省略号的函数，需要包含cstdarg库</li>
+</ol>
+</blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="kt">double</span> <span class="nf">mean</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">,</span> <span class="p">...){</span>
+</span><span class='line'>  <span class="kt">va_list</span> <span class="n">ap</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">double</span> <span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>  <span class="kt">int</span> <span class="n">count</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+</span><span class='line'>  <span class="n">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="n">n</span><span class="p">);</span>               <span class="cm">/*ap执行第一个未命名实参*/</span>
+</span><span class='line'>  <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">sum</span> <span class="o">+=</span> <span class="n">va_arg</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span><span class="kt">double</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="n">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span>                 <span class="cm">/*返回之前清除栈*/</span>
+</span><span class='line'>  <span class="k">return</span> <span class="n">sum</span><span class="o">/</span><span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>预处理宏主要应用场合</h2>
+
+<blockquote><ol>
+<li>使用#ifndef/#define/#endif将头文件包裹起来，以避免多次包含某个头文件</li>
+<li>使用#ifdef/#else/#endif对某些代码部分进行条件编译</li>
+<li><strong>FILE</strong>宏和<strong>LINE</strong>宏用于调试并给出框架信息</li>
+</ol>
+</blockquote>
+
+<h2>C++中的多态性</h2>
+
+<blockquote><ol>
+<li>C++源于C语言，它的编译器也试图在编译时绑定函数调用，这主要是基于性能方面的考虑。编译器无法仅凭集成关系和基类指针就确定它正在操作何种对象。如果没有运行时检查，就无法保证运行时调用正确的函数。C++要求使用一个特殊的关键字来允许运行时通过指针和引用进行函数调用的绑定，这个关键字就是virtual，它能够使得程序具有多态性。</li>
+<li>由于this是在执行它的构造函数时被初始化的，在执行它的析构函数的时候被销毁，因此不要指望在这两种条件下能够执行正确的运行时绑定。当在构造函数或者析构函数里面调用任何this方法时，将由编译时绑定决定应该调用哪一个方法，就好像不存在virtual关键字一样。</li>
+<li>一般而言，如果类中包含一个或者多个virtual函数，则也应包含一个虚析构函数。这是因为，当对对台对象集合进行操作时，通常是通过基类指针删除这些对象，这会导致对析构函数的间接调用，如果析构函数不为virtual类型，在编译时绑定将决定应该调用哪一个析构函数，从而可能导致派生对象的不完整析构</li>
+<li>静态成员函数不能使虚函数；内敛函数不能是虚函数；构造函数不能是虚函数</li>
+</ol>
+</blockquote>
+
+<h2>虚函数实现原理</h2>
+
+<blockquote><ol>
+<li>父类中如果有虚函数存在，编译器就会为该对象创建一个虚函数表，里面存放自己的虚函数的指针。</li>
+<li>子类继承父类，编译器也会为子类创建一个不同的虚函数表，存放子类自己的虚函数指针</li>
+<li>拥有虚函数表的类都会另外创建一个指向该表的指针</li>
+<li>所以当父类指针指向子类对象，调用虚函数的时候就会根据子类对象的虚函数表调用得到子类的虚函数，而不是父类的虚函数</li>
+<li>如果没有在子类中定义与父类同名的虚函数，那么就会在子类的虚函数表中就会写上父类的相应的虚函数的函数入口地址；如果在子类中也定义了同名的虚函数，那么在虚函数表中用子类的虚函数的函数地址覆盖掉父类的相应的虚函数的函数地址</li>
+<li>每个类只有一份虚函数表，所有该类的对象共用同一张虚函数表</li>
+<li>只有函数声明没有函数定义的虚函数也是纯虚函数</li>
+</ol>
+</blockquote>
+
+<h2>纯virtual函数的声明</h2>
+
+<blockquote><ol>
+<li>virtual returnType functionName(parameterList)=0;</li>
+<li>抽象基类中至少要有一个virtual函数</li>
+<li>抽象基类中不能有public的构造函数</li>
+<li>抽象基类的任何具体派生类都必须重写并定义全部的纯virtual基类函数，话句话说，任何没有重写并定义全部纯virtual基类函数的派生类都是抽象类</li>
+</ol>
+</blockquote>
+
+<h2>重载，隐藏与重写</h2>
+
+<blockquote><ol>
+<li>当函数foo在同一个作用域内存在两个或者多个版本(具有不同的签名)时，就称foo函数被<strong>重载</strong>了</li>
+<li>当基类中的一个virtual函数在培生累中也存在，并且他们具有相同的签名和返回类型时，就称派生类中的版本“重写”了基类中的版本</li>
+<li>派生类中的成员函数，会隐藏基类中与之同名的全部函数，如果出现这种情况，则：
+
+<ul>
+<li>只有派生类函数可以被直接调用</li>
+<li>类作用域解析运算符::西部用来显式地调用基类函数</li>
+</ul>
+</li>
+</ol>
+</blockquote>
+
+<h2>有三种特殊的成员函数从来不会被继承，编译器会为没有定义它们的类自动生成这三种函数</h2>
+
+<ol>
+<li>拷贝构造函数：类名（const 类名&amp; 变量名）</li>
+<li>复制赋值运算符</li>
+<li>析构函数</li>
+</ol>
+
+
+<h2>构造函数</h2>
+
+<blockquote><p>如果一个类没有构造函数，那么编译器就会自动产生一个默认的public构造函数，而这个构造函数会调用它的每一个基类的默认构造函数。如果某个类有一些构造函数但是没有默认构造函数，那么它就不会进行默认的初始化工作，这种情况下，任何派生类构造函数都必须在其初始化列表中明确地指名应该调用哪一个基类构造函数</p></blockquote>
+
+<h2>类的前置声明</h2>
+
+<blockquote><ol>
+<li>类的前置声明将它的名称声明成一个有效的类名称，但不给出类的定义。这会使得类名称能够被用作<strong>指针</strong>和<strong>引用</strong>的类型，在遇到类的定义之前，不会将这些指针和引用进行解引操作。</li>
+<li><strong>如果可以使用前置声明，就不要使用#include指令</strong></li>
+</ol>
+</blockquote>
+
+<h2>范型与模板</h2>
+
+<blockquote><p>1.模板为C++编译器提供了一个途径，能够为带有参数化类型和相同行为的类和函数生成多个版本。模板使用关键字template以及用尖括号&lt;>包围的模板参数进行区分。与函数参数不同，模板参数不仅可以传递变量和值，还可以传递类型表达式。例如：template <class T,int max> Buffer{T v[max];}
+2. 每当编译器看到一个特定参数类型的组合首次用于一个模板函数时，就称此模板进行了实例化。
+3. 类模板主要用来生成数据的通用容器，其参数能够指名容器中的内容。所有的Qt容器类以及标准模板库(STL)中的所有容器类都是参数化的。
+4. 所有模板的定义(类和函数)都必须出现在头文件中，这是因为编译器需要用这些定义来根据模板声明生成代码</p></blockquote>
+
+<h2>其他</h2>
+
+<ul>
+<li>C++中使用struct的大多数情形是需要将数据项分组在一起，但是不需要成员函数</li>
+<li>const成员函数中不允许对数据成员进行修改，如果修改，编译器将报错，任何不会修改数据成员的函数都应该声明为const类型。如果在编写const成员函数时，不慎修改了数据成员，或者调用了其它非const成员函数，编译器将指出错误。注意可以在const成员函数里面更改可变成员(mutable member)的值，而常规的数据成员的值不能改变</li>
+<li>类内定义的成员函数编译器会优先编译成内联(inline)函数</li>
+<li>初始化列表优先于构造函数执行.初始化列表只能用于构造函数,初始化列表可以同时初始化多个数据成员</li>
+<li>const数据成员的初始化必须写在初始化列表中</li>
+<li>M_PI来自于&lt;math.h>,它位于cstdlib库中</li>
+<li>foreach()宏需要赋值它所遍历的容器，这就要求使用foreach必须要有拷贝构造函数</li>
+<li>C++类型可以分成两类：值类型和对象类型，值类型的有Anything*，int，char，QString，QDate和QVariant。带有共有默认构造函数、拷贝构造函数和复制赋值运算符的任何类型都是值类型</li>
+<li>C++对于没有数据成员的类在实例化的时候会分配1个内存单元(1Byte)，用于标记该对象的存在</li>
+<li>含有纯虚函数的类叫做抽象类,抽象类无法实例化对象</li>
+<li></li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-20T09:42:10+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/c-plus-plus/'>c++</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/07/19/qt4-knowldegs/">
 		
 			QT4知识点</a>
@@ -5822,722 +6064,6 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 <time datetime="2015-06-19T17:28:03+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/18/lowlevel-init-dot-s/">
-		
-			lowlevel_init.S</a>
-	</h2>
-	<div class="entry-content">
-		<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-<span class='line-number'>98</span>
-<span class='line-number'>99</span>
-<span class='line-number'>100</span>
-<span class='line-number'>101</span>
-<span class='line-number'>102</span>
-<span class='line-number'>103</span>
-<span class='line-number'>104</span>
-<span class='line-number'>105</span>
-<span class='line-number'>106</span>
-<span class='line-number'>107</span>
-<span class='line-number'>108</span>
-<span class='line-number'>109</span>
-<span class='line-number'>110</span>
-<span class='line-number'>111</span>
-<span class='line-number'>112</span>
-<span class='line-number'>113</span>
-<span class='line-number'>114</span>
-<span class='line-number'>115</span>
-<span class='line-number'>116</span>
-<span class='line-number'>117</span>
-<span class='line-number'>118</span>
-<span class='line-number'>119</span>
-<span class='line-number'>120</span>
-<span class='line-number'>121</span>
-<span class='line-number'>122</span>
-<span class='line-number'>123</span>
-<span class='line-number'>124</span>
-<span class='line-number'>125</span>
-<span class='line-number'>126</span>
-<span class='line-number'>127</span>
-<span class='line-number'>128</span>
-<span class='line-number'>129</span>
-<span class='line-number'>130</span>
-<span class='line-number'>131</span>
-<span class='line-number'>132</span>
-<span class='line-number'>133</span>
-<span class='line-number'>134</span>
-<span class='line-number'>135</span>
-<span class='line-number'>136</span>
-<span class='line-number'>137</span>
-<span class='line-number'>138</span>
-<span class='line-number'>139</span>
-<span class='line-number'>140</span>
-<span class='line-number'>141</span>
-<span class='line-number'>142</span>
-<span class='line-number'>143</span>
-<span class='line-number'>144</span>
-<span class='line-number'>145</span>
-<span class='line-number'>146</span>
-<span class='line-number'>147</span>
-<span class='line-number'>148</span>
-<span class='line-number'>149</span>
-<span class='line-number'>150</span>
-<span class='line-number'>151</span>
-<span class='line-number'>152</span>
-<span class='line-number'>153</span>
-<span class='line-number'>154</span>
-<span class='line-number'>155</span>
-<span class='line-number'>156</span>
-<span class='line-number'>157</span>
-<span class='line-number'>158</span>
-<span class='line-number'>159</span>
-<span class='line-number'>160</span>
-<span class='line-number'>161</span>
-<span class='line-number'>162</span>
-<span class='line-number'>163</span>
-<span class='line-number'>164</span>
-<span class='line-number'>165</span>
-<span class='line-number'>166</span>
-<span class='line-number'>167</span>
-<span class='line-number'>168</span>
-<span class='line-number'>169</span>
-<span class='line-number'>170</span>
-<span class='line-number'>171</span>
-<span class='line-number'>172</span>
-<span class='line-number'>173</span>
-<span class='line-number'>174</span>
-<span class='line-number'>175</span>
-<span class='line-number'>176</span>
-<span class='line-number'>177</span>
-<span class='line-number'>178</span>
-<span class='line-number'>179</span>
-<span class='line-number'>180</span>
-<span class='line-number'>181</span>
-<span class='line-number'>182</span>
-<span class='line-number'>183</span>
-<span class='line-number'>184</span>
-<span class='line-number'>185</span>
-<span class='line-number'>186</span>
-<span class='line-number'>187</span>
-<span class='line-number'>188</span>
-<span class='line-number'>189</span>
-<span class='line-number'>190</span>
-<span class='line-number'>191</span>
-<span class='line-number'>192</span>
-<span class='line-number'>193</span>
-<span class='line-number'>194</span>
-<span class='line-number'>195</span>
-<span class='line-number'>196</span>
-<span class='line-number'>197</span>
-<span class='line-number'>198</span>
-<span class='line-number'>199</span>
-<span class='line-number'>200</span>
-<span class='line-number'>201</span>
-<span class='line-number'>202</span>
-<span class='line-number'>203</span>
-<span class='line-number'>204</span>
-<span class='line-number'>205</span>
-<span class='line-number'>206</span>
-<span class='line-number'>207</span>
-<span class='line-number'>208</span>
-<span class='line-number'>209</span>
-<span class='line-number'>210</span>
-<span class='line-number'>211</span>
-<span class='line-number'>212</span>
-<span class='line-number'>213</span>
-<span class='line-number'>214</span>
-<span class='line-number'>215</span>
-<span class='line-number'>216</span>
-<span class='line-number'>217</span>
-<span class='line-number'>218</span>
-<span class='line-number'>219</span>
-<span class='line-number'>220</span>
-<span class='line-number'>221</span>
-<span class='line-number'>222</span>
-<span class='line-number'>223</span>
-<span class='line-number'>224</span>
-<span class='line-number'>225</span>
-<span class='line-number'>226</span>
-<span class='line-number'>227</span>
-<span class='line-number'>228</span>
-<span class='line-number'>229</span>
-<span class='line-number'>230</span>
-<span class='line-number'>231</span>
-<span class='line-number'>232</span>
-<span class='line-number'>233</span>
-<span class='line-number'>234</span>
-<span class='line-number'>235</span>
-<span class='line-number'>236</span>
-<span class='line-number'>237</span>
-<span class='line-number'>238</span>
-<span class='line-number'>239</span>
-<span class='line-number'>240</span>
-<span class='line-number'>241</span>
-<span class='line-number'>242</span>
-<span class='line-number'>243</span>
-<span class='line-number'>244</span>
-<span class='line-number'>245</span>
-<span class='line-number'>246</span>
-<span class='line-number'>247</span>
-<span class='line-number'>248</span>
-<span class='line-number'>249</span>
-<span class='line-number'>250</span>
-<span class='line-number'>251</span>
-<span class='line-number'>252</span>
-<span class='line-number'>253</span>
-<span class='line-number'>254</span>
-<span class='line-number'>255</span>
-<span class='line-number'>256</span>
-<span class='line-number'>257</span>
-<span class='line-number'>258</span>
-<span class='line-number'>259</span>
-<span class='line-number'>260</span>
-<span class='line-number'>261</span>
-<span class='line-number'>262</span>
-<span class='line-number'>263</span>
-<span class='line-number'>264</span>
-<span class='line-number'>265</span>
-<span class='line-number'>266</span>
-<span class='line-number'>267</span>
-<span class='line-number'>268</span>
-<span class='line-number'>269</span>
-<span class='line-number'>270</span>
-<span class='line-number'>271</span>
-<span class='line-number'>272</span>
-<span class='line-number'>273</span>
-<span class='line-number'>274</span>
-<span class='line-number'>275</span>
-<span class='line-number'>276</span>
-<span class='line-number'>277</span>
-<span class='line-number'>278</span>
-<span class='line-number'>279</span>
-<span class='line-number'>280</span>
-<span class='line-number'>281</span>
-<span class='line-number'>282</span>
-<span class='line-number'>283</span>
-<span class='line-number'>284</span>
-<span class='line-number'>285</span>
-<span class='line-number'>286</span>
-<span class='line-number'>287</span>
-<span class='line-number'>288</span>
-<span class='line-number'>289</span>
-<span class='line-number'>290</span>
-<span class='line-number'>291</span>
-<span class='line-number'>292</span>
-<span class='line-number'>293</span>
-<span class='line-number'>294</span>
-<span class='line-number'>295</span>
-<span class='line-number'>296</span>
-<span class='line-number'>297</span>
-<span class='line-number'>298</span>
-<span class='line-number'>299</span>
-<span class='line-number'>300</span>
-<span class='line-number'>301</span>
-<span class='line-number'>302</span>
-<span class='line-number'>303</span>
-<span class='line-number'>304</span>
-<span class='line-number'>305</span>
-<span class='line-number'>306</span>
-<span class='line-number'>307</span>
-<span class='line-number'>308</span>
-<span class='line-number'>309</span>
-<span class='line-number'>310</span>
-<span class='line-number'>311</span>
-<span class='line-number'>312</span>
-<span class='line-number'>313</span>
-<span class='line-number'>314</span>
-<span class='line-number'>315</span>
-<span class='line-number'>316</span>
-<span class='line-number'>317</span>
-<span class='line-number'>318</span>
-<span class='line-number'>319</span>
-<span class='line-number'>320</span>
-<span class='line-number'>321</span>
-<span class='line-number'>322</span>
-<span class='line-number'>323</span>
-<span class='line-number'>324</span>
-<span class='line-number'>325</span>
-<span class='line-number'>326</span>
-<span class='line-number'>327</span>
-<span class='line-number'>328</span>
-<span class='line-number'>329</span>
-<span class='line-number'>330</span>
-<span class='line-number'>331</span>
-<span class='line-number'>332</span>
-<span class='line-number'>333</span>
-<span class='line-number'>334</span>
-<span class='line-number'>335</span>
-<span class='line-number'>336</span>
-<span class='line-number'>337</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#include &lt;config.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;version.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;s3c6410.h&gt;</span>
-</span><span class='line'><span class="cp">#include &quot;mini6410_val.h&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">_TEXT_BASE</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="n">TEXT_BASE</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">lowlevel_init</span>
-</span><span class='line'><span class="nl">lowlevel_init</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r12</span><span class="p">,</span> <span class="n">lr</span>                        <span class="cm">/*bl指令会把下一条指令的地址赋给lr，在这里保存lr是为了最后能够成功地函数返回*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/* LED on only #8 */</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>        <span class="cm">/*Regs.h中的宏定义，就是s3c6410.h中的宏定义*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55540000</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN15~GPN9均是输出(01),GPN0~GPN8均是输入(00)*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55555555</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNPUD_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN0~GPN15均是下拉使能*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xf000</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPN15~GPN12输出高电平，GPN10~11输出低电平*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPECON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0设置为输出，GPE1~GPE15设置为输入*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPEDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPE0输出低电平,LCD_BL_EN=0*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2A5AAAAA</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPP15设置为输入，GPP11~GPP10设置为输出，其余设置为片内外设功能*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPPDAT_OFFSET</span><span class="p">]</span>  <span class="cm">/*GPP11和GPP10输出低电平*/</span>
-</span><span class='line'>  
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x55555555</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MEM1DRVCON_OFFSET</span><span class="p">]</span>  <span class="cm">/*由于ddr芯片的工作电压在1.8V，所以驱动电流设置为7mA*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/* Disable Watchdog */</span>              <span class="cm">/*关闭片内看门狗*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7e000000</span>        <span class="err">@</span><span class="mh">0x7e004000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r0</span><span class="p">,</span> <span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x4000</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span> <span class="n">External</span> <span class="n">interrupt</span> <span class="n">pending</span> <span class="n">clear</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_GPIO_BASE</span><span class="o">+</span><span class="n">EINTPEND_OFFSET</span><span class="p">)</span>  <span class="cm">/*EINTPEND*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                     <span class="cm">/*读一次外部中断就能清楚外部中断信号*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_VIC0_BASE_ADDR</span>   <span class="err">@</span><span class="mh">0x71200000</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_VIC1_BASE_ADDR</span>   <span class="err">@</span><span class="mh">0x71300000</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span> <span class="n">Disable</span> <span class="n">all</span> <span class="n">interrupts</span> <span class="p">(</span><span class="n">VIC0</span> <span class="n">and</span> <span class="n">VIC1</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">mvn</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>                     <span class="cm">/*0取反为全1*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMSK</span><span class="p">]</span>                <span class="cm">/*禁用所有中断*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMSK</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span> <span class="n">Set</span> <span class="n">all</span> <span class="n">interrupts</span> <span class="n">as</span> <span class="n">IRQ</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMOD</span><span class="p">]</span>                <span class="cm">/*将所有中断设置为IRQ中断*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oINTMOD</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="err">@</span> <span class="n">Pending</span> <span class="n">Interrupt</span> <span class="n">Clear</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r3</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>                     <span class="cm">/*清除所有当前激活的中断服务程序的地址*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">oVECTADDR</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r3</span><span class="p">,</span> <span class="p">[</span><span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="n">oVECTADDR</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/* init system clock */</span>
-</span><span class='line'>  <span class="n">bl</span> <span class="n">system_clock_init</span>              <span class="cm">/*初始化系统时钟*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/* for UART */</span>
-</span><span class='line'>  <span class="n">bl</span> <span class="n">uart_asm_init</span>                  <span class="cm">/*初始化串口*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_NAND)</span>
-</span><span class='line'>  <span class="cm">/* simple init for NAND */</span>
-</span><span class='line'>  <span class="n">bl</span> <span class="n">nand_asm_init</span>                  <span class="cm">/*nand flash初始化*/</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">bl</span>   <span class="n">mem_ctrl_asm_init</span>                <span class="cm">/*内存控制器初始化,函数位于/CPU/s3c6410/CPU_init.S*/</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">RST_STAT_OFFSET</span><span class="p">)</span>      <span class="cm">/*7e00_f904-&gt;RST_STAT*/</span>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>    <span class="n">bic</span>     <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xfffffff7</span>
-</span><span class='line'>    <span class="n">cmp</span>     <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x8</span>                    <span class="cm">/*bit[3]=1,表明从SLEEP状态中唤醒*/</span>
-</span><span class='line'>    <span class="n">beq</span>     <span class="n">wakeup_reset</span>
-</span><span class='line'>
-</span><span class='line'><span class="mi">1</span><span class="o">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4b4b4b4b</span>                    <span class="cm">/*通过串口发送字母“K”*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">lr</span><span class="p">,</span> <span class="n">r12</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                         <span class="cm">/*lowlevel_init结束，返回*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">wakeup_reset</span><span class="p">:</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">WAKEUP_STAT_OFFSET</span><span class="p">)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                     <span class="cm">/*Clear wakeup status register*/</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/*LED test*/</span>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>    <span class="n">ldr</span>     <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3000</span>
-</span><span class='line'>    <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPNDAT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="cm">/*Load return address and jump to kernel*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="p">(</span><span class="n">ELFIN_CLOCK_POWER_BASE</span><span class="o">+</span><span class="n">INF_REG0_OFFSET</span><span class="p">)</span>       <span class="cm">/*0x4c00_0a00-&gt;INFORM0*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">]</span>                                         <span class="cm">/* r1 = physical address of s3c6400_cpu_resume function*/</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">r1</span>                                             <span class="cm">/*Jump to kernel (sleep-s3c6400.S)*/</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * system_clock_init: Initialize core clock and bus clock.</span>
-</span><span class='line'><span class="cm"> * void system_clock_init(void)</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="nl">system_clock_init</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_CLOCK_POWER_BASE</span> <span class="err">@</span><span class="mh">0x7e00f000</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef   CONFIG_SYNC_MODE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r2</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>              
-</span><span class='line'>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x80</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>          <span class="cm">/*bit[6],bit[7]都置1，设置成同步模式*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="nl">check_syncack</span><span class="p">:</span>                             <span class="cm">/*等待时钟完成同步*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xf00</span>
-</span><span class='line'>  <span class="n">and</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                           <span class="cm">/*只查看bit[8]~bit[11]，这几位是SYNC mode相应位，只读,只有在AYNC模式才能读1*/</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xf00</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">check_syncack</span>
-</span><span class='line'><span class="cp">#else                                        </span><span class="cm">/* 否则配置成异步时钟模式 */</span><span class="cp"></span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>  <span class="n">nop</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xC0</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>                      <span class="cm">/*bit[6]置1，bit[7]清0*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>          
-</span><span class='line'>
-</span><span class='line'><span class="nl">wait_for_async</span><span class="p">:</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">and</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xf00</span>
-</span><span class='line'>  <span class="n">cmp</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="n">wait_for_async</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x40</span>                      <span class="cm">/*bit[6]清0*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff00</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff</span>                      <span class="cm">/*设置各PLL的LOCK_TIME,使用最大值*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">APLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*APLL_LOCK，供cpu使用*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MPLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*MPLL_LOCK，供AHB(存储/中断/lcd等控制器)/APB(看门狗，定时器，SD等)总线上的设备使用*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_LOCK_OFFSET</span><span class="p">]</span>           <span class="cm">/*EPLL_LOCK，供UART,IIS,IIC使用*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
-</span><span class='line'>  <span class="n">ldr</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV2_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x70000</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>                   <span class="cm">/*CLK_DIV2的bit[16]~bit[19]即UART_RATIO,设置为3,CLKUART(66.5Mhz)=CLKUART_input(532/2=266Mhz)/(UART_RATIO(3)+1)*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV2_OFFSET</span><span class="p">]</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV0_OFFSET</span><span class="p">]</span>        <span class="cm">/*Set Clock Divider*/</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x30000</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff00</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0xff</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="n">CLK_DIV_VAL</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_DIV0_OFFSET</span><span class="p">]</span>            <span class="cm">/*设置时钟的分频系数*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">APLL_VAL</span>                       <span class="cm">/*设置APLL_MDIV=266,APLL_PDIV=3,APLL_SDIV=1*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">APLL_CON_OFFSET</span><span class="p">]</span>            <span class="cm">/*FOUT = MDIV X FIN / (PDIV X 2^SDIV) = 266*12/(3*2^1) = 532MHz*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="n">MPLL_VAL</span>                       <span class="cm">/*设置MPLL_MDIV=266,MPLL_PDIV=3,MPLL_SDIV=1*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">MPLL_CON_OFFSET</span><span class="p">]</span>            <span class="cm">/*FOUT = MDIV X FIN / (PDIV X 2^SDIV) = 266*12/(3*2^1) = 532MHz*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x80200102</span>                        <span class="cm">/*设置EPLL_MDIV=32,EPLL_PDIV=1,EPLL_SDIV=2*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_CON0_OFFSET</span><span class="p">]</span>           <span class="cm">/*FOUT = (MDIV+KDIV/2^16) X FIN / (PDIV X 2^SDIV) = (32+0)*12/(1*2^2) = 96MHz*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0</span>                           <span class="cm">/*设置EPLL_KDIV=0*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">EPLL_CON1_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_SRC_OFFSET</span><span class="p">]</span>         <span class="cm">/*读取CLK_SRC寄存器的值*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2007</span>                                    
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r2</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x7</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span>                           <span class="cm">/*APLL,MPLL,EPLL的时钟源选择各自的Fout；UART的时钟源选择DOUT_MPLL*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">CLK_SRC_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x10000</span>                     <span class="cm">/*等待所有时钟稳定，至少200us*/</span>
-</span><span class='line'><span class="mi">1</span><span class="o">:</span> <span class="n">subs</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mi">1</span>                     <span class="cm">/*非0则跳转*/</span>
-</span><span class='line'>  <span class="n">bne</span>  <span class="mi">1</span><span class="n">b</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_SYNC_MODE                      </span><span class="cm">/* Synchronization for VIC port */</span><span class="cp"></span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x20</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">bic</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x20</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">OTHERS_OFFSET</span><span class="p">]</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*系统时钟初始化完成，返回*/</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * uart_asm_init: Initialize UART in asm mode, 115200bps fixed.</span>
-</span><span class='line'><span class="cm"> * void uart_asm_init(void)</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="nl">uart_asm_init</span><span class="p">:</span>
-</span><span class='line'>  <span class="cm">/*配置GPIO的功能为串口UART*/</span>
-</span><span class='line'>  <span class="cm">/*UART0_RXD=GPA0,UART0_TXD=GPA1,UART1_RXD=GPA4,UART1_TXD=GPA5*/</span>
-</span><span class='line'>  <span class="cm">/*UART2_RXD=GPB0,UART2_TXD=GPB1,UART3_RXD=GPB2,UART3_TXD=GPB3*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_GPIO_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x22222222</span>
-</span><span class='line'>  <span class="n">str</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPACON_OFFSET</span><span class="p">]</span>      <span class="cm">/*配置UART0和UART1使用的GPIO引脚,UART0和UART1具有流控功能(GPA0~GPA7)*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x2222</span>
-</span><span class='line'>  <span class="n">str</span>      <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">GPBCON_OFFSET</span><span class="p">]</span>      <span class="cm">/*配置UART2和UART3使用的GPIO引脚,UART2和UART3不具有流控功能(GPB0~GPB3)*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_UART_CONSOLE_BASE</span>        <span class="cm">/*ELFIN_UART_CONSOLE_BASE=0x7F005000,即UART0*/</span>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x0</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UFCON_OFFSET</span><span class="p">]</span>               <span class="cm">/*禁止使用FIFO*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UMCON_OFFSET</span><span class="p">]</span>               <span class="cm">/*禁止流控，调制解调功能*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x3</span>                         <span class="cm">/*配置UART0：数据位:8, 无校验, 停止位: 1, 8n1*/</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">ULCON_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*设置波特率 */</span>
-</span><span class='line'><span class="cm">/*DIV_VAL = (EXT_UCLK1 / (bps x 16 ) ) - 1 = (66500000/(115200x16))-1 = 35.08*/</span>
-</span><span class='line'><span class="cm">/*DIV_VAL = 35.08 = UBRDIVn + (num of 1’s in UDIVSLOTn)/16*/</span>
-</span><span class='line'><span class="cp">#if defined(CONFIG_CLKSRC_CLKUART)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0xe45</span>                         <span class="cm">/* UARTCLK_SRC=11 =&gt; EXT_UCLK1,EXT_UCLK1由MPLL或者EPLL分频得到,这里是66.5MHz。串口数据接收发送采用轮训或者中断的方式*/</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x245</span>                         <span class="cm">/* UARTCLK_SRC=x0 =&gt; PCLK */</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UCON_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_UART_50)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1A</span>
-</span><span class='line'><span class="cp">#elif defined(CONFIG_UART_66)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x23</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x1A</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UBRDIV_OFFSET</span><span class="p">]</span>          <span class="cm">/*UBRDIV0=35*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#if defined(CONFIG_UART_50)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3</span>
-</span><span class='line'><span class="cp">#elif defined(CONFIG_UART_66)</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x0080</span>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x3</span>
-</span><span class='line'><span class="cp">#endif</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UDIVSLOT_OFFSET</span><span class="p">]</span>            <span class="cm">/*UDIVSLOT0中有1个‘1’*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="o">=</span><span class="mh">0x4f4f4f4f</span>
-</span><span class='line'>  <span class="n">str</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">UTXH_OFFSET</span><span class="p">]</span>                <span class="cm">/*UART0串口发送字母‘O’*/</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*串口配置结束，返回*/</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm"> * Nand Interface Init for SMDK6410 </span>
-</span><span class='line'><span class="cm"> * /</span>
-</span><span class='line'><span class="cm">nand_asm_init:                               /*初始化NandFlash控制器*/</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r0</span><span class="p">,</span> <span class="o">=</span><span class="n">ELFIN_NAND_BASE</span>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONF_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x70</span>                      <span class="cm">/*TWRPH1=7*/</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x7700</span>                        <span class="cm">/*TWRPH0=7,TACLS=7*/</span>
-</span><span class='line'>  <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONF_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">ldr</span>  <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>  <span class="n">orr</span>  <span class="n">r1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="err">#</span><span class="mh">0x03</span>                      <span class="cm">/*使能NandFlash控制器*/</span>
-</span><span class='line'>  <span class="n">str</span>     <span class="n">r1</span><span class="p">,</span> <span class="p">[</span><span class="n">r0</span><span class="p">,</span> <span class="err">#</span><span class="n">NFCONT_OFFSET</span><span class="p">]</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">mov</span>  <span class="n">pc</span><span class="p">,</span> <span class="n">lr</span>                             <span class="cm">/*NandFlash控制器初始化完毕，返回*/</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#ifdef CONFIG_ENABLE_MMU</span>
-</span><span class='line'>                                          <span class="cm">/*为Uboot服务的MMU页表在这里创建*/</span>
-</span><span class='line'>                                          <span class="cm">/* form a first-level section entry */</span>
-</span><span class='line'><span class="cm">/*定义一个可以生成描述符的宏*/</span>
-</span><span class='line'><span class="cm">/*描述符的最低两位00为无效，01为二级页表方式（由高地址12位的一级页表(TTB的高18位指定的虚拟基地址)位置取出对应二级页表(coarse page table)的基地址，由中间地址8位的二级页表取出对应4KB页表（small page）的基地址，最后由低12为地址的页表取出最终的内存值），10为一级页表方式（如果bit18为0，则为section，bit18为1，则为supersection），11保留。*/</span>
-</span><span class='line'><span class="p">.</span><span class="n">macro</span> <span class="n">FL_SECTION_ENTRY</span> <span class="n">base</span><span class="p">,</span><span class="n">ap</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">b</span>     
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="p">(</span><span class="err">\</span><span class="n">base</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">ap</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="o">|</span> \
-</span><span class='line'>        <span class="p">(</span><span class="err">\</span><span class="n">d</span> <span class="o">&lt;&lt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="err">\</span><span class="n">b</span> <span class="o">&lt;&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'><span class="p">.</span><span class="n">endm</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/*按照section方式映射，每个section必须是1M，占20位地址，这里共256M物理内存，映射到整个4G地址空间，所以共有4096（0x1000）个描述符。虚拟地址的高12位（4096）作为描述符位置，低20位作为section里面的地址*/</span>
-</span><span class='line'><span class="p">.</span><span class="n">section</span> <span class="p">.</span><span class="n">mmudata</span><span class="p">,</span> <span class="s">&quot;a&quot;</span>                        <span class="cm">/*指名该段的名称是.mmudata,在u-boot.lds中会为该段分配具体的空间，.a表示这是一个需要鉴权的段*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">align</span> <span class="mi">14</span>                             <span class="cm">/*对齐到0x4000*/</span>
-</span><span class='line'>  <span class="c1">// the following alignment creates the mmu table at address 0x4000.</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">globl</span> <span class="n">mmu_table</span>                       <span class="cm">/*mmu页表地址需要在start.S中告诉CPU以启动MMU，因此需要声明为全局变量*/</span>
-</span><span class='line'><span class="nl">mmu_table</span><span class="p">:</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="mi">0</span>
-</span><span class='line'>  <span class="c1">// 1:1 mapping for debugging</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xA00</span>                               <span class="cm">/*共2048个描述符*/</span>
-</span><span class='line'>  <span class="n">FL_SECTION_ENTRY</span> <span class="n">__base</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span>           <span class="cm">/*ap为3表示读允许,d为0表示这些描述符都属于domain0，domain用来做权限控制,c和b为0表示共享，互斥读写*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="n">__base</span><span class="o">+</span><span class="mi">1</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// access is not allowed.</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xC00</span> <span class="o">-</span> <span class="mh">0xA00</span>                        <span class="cm">/*共512个描述符*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x00000000</span>                      <span class="cm">/*ap为0表示不允许访问*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// 128MB for SDRAM 0xC0000000 -&gt; 0x50000000</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span> <span class="mh">0x500</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0xC80</span> <span class="o">-</span> <span class="mh">0xC00</span>                        <span class="cm">/*共128个描述符*/</span>
-</span><span class='line'>  <span class="n">FL_SECTION_ENTRY</span> <span class="n">__base</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span>           <span class="cm">/*ap为3表示读允许,d为0表示这些描述符都属于domain0，domain用来做权限控制,c和b为1表示内存输入输出都为回写模式*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">set</span> <span class="n">__base</span><span class="p">,</span><span class="n">__base</span><span class="o">+</span><span class="mi">1</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// access is not allowed.</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">rept</span> <span class="mh">0x1000</span> <span class="o">-</span> <span class="mh">0xc80</span>                       <span class="cm">/*共896个描述符*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">word</span> <span class="mh">0x00000000</span>                      <span class="cm">/*ap为0表示不允许访问*/</span>
-</span><span class='line'>  <span class="p">.</span><span class="n">endr</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-18T15:38:36+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 
