@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-04-13T23:37:50+08:00</updated>
+  <updated>2016-04-25T11:24:33+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,153 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[communication-principle]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/04/18/communication-principle/"/>
+    <updated>2016-04-18T16:40:31+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/04/18/communication-principle</id>
+    <content type="html"><![CDATA[<h2>消息</h2>
+
+<ol>
+<li>语音信号的带宽大约4KHz，图像信号的带宽大约是6MHz，音乐信号的带宽大约20KHz</li>
+</ol>
+
+
+<h2>信道</h2>
+
+<ol>
+<li>两个基本问题：
+
+<ol>
+<li>信号衰减：导线的电阻与长度成正比；无线电波扩散本身减弱，且被阻挡物吸收</li>
+<li>加性噪声：沿途的电阻、固态器件等(包括发送器和接收器中的处理电路)引入固有的随机噪声，最基本的是热噪声</li>
+</ol>
+</li>
+<li>其他问题：
+
+<ol>
+<li>外来干扰：其他电磁波、窜线的电信号</li>
+<li>信号畸变：信道特性不理想。比如电话线中的寄生电容会使高频信号损失</li>
+</ol>
+</li>
+<li>白高斯噪声（White Gassian Noise）：
+
+<ol>
+<li>时域上，随机性服从高斯分布</li>
+<li>频域上，噪声均匀分布在所有频率上</li>
+<li>功率谱密度值N0/2（物理意义：每Hz内有多少噪声）</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>电磁波</h2>
+
+<ol>
+<li>电波传播主要由其频率值的大小决定。空中传播时主要有三种模式：
+
+<ol>
+<li>地波（Ground-Wave）模式：1~2MHz以下的电磁波主要按照这种模式传播，大致可以传输几十公里，主要用于调幅广播</li>
+<li>天波（Sky-Wave）模式：3~30MHz的电波反射可以达到几百~1000Km远，主要用于长距离通信，大多数用于军事上</li>
+<li>视线（Line-Of-Sight）模式：像广播那样作直线传播，高于30MHz，向上传播时会穿透电离层被反射回来；地面传播时，如遇到遮挡，信号会被阻断会显著衰减，用于电视广播。</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>频分技术的例子：</h2>
+
+<ol>
+<li>频分复用：有线通信中多个话音“错开频率”，共用一条电线传输</li>
+<li>频分多址：多个无线用户使用各自的频率，同时接入通信系统</li>
+<li>频分双工：每个用户采用不同频率接收和发送，两个方向同时传输</li>
+</ol>
+
+
+<h2>基带与频带传输</h2>
+
+<ol>
+<li>基带信号：频谱位于零频率附近的信号</li>
+<li>基带传输：保持基带形式，直接传送消息信号</li>
+<li>频带信号：频谱位于某高频附近</li>
+<li>频带传输：把基带的消息信号转换为频带消息来传输</li>
+</ol>
+
+
+<h2>模拟通信系统</h2>
+
+<ol>
+<li>调制：将基带信号变换为适当的频带信号的过程，通常用正弦波携带消息</li>
+<li>解调：调制的逆过程</li>
+</ol>
+
+
+<h2>数字通信系统</h2>
+
+<p><img src="http://i.imgur.com/LjU8Kz6.png" alt="数字通信系统" />
+1. 格式化：规范化的数字符号序列，必要时，包括模数变化
+2. 基带调制：形成合适的电信号，基带信号通常是用脉冲生成
+3. 频带调制：转换为频带信号
+4. 发射机：将信号送入信道
+5. 同步：提供各种定时时钟，使各单元能够正确、有序地工作
+6. 信源编码：实现压缩编码，把原始数字消息里面的冗余压缩掉
+7. 加密：提供保密性
+8. 信道编码：故意加入特殊数据位（如奇偶校验位等），仪表接收端发现和纠正错误
+9. 复用：多种消息信号合并在一起
+10. 多址接入：多个用户进入与公用系统
+11. 频谱扩展：展宽信号频谱可增加抗干扰与保密性，也可以多址接入</p>
+
+<h2>数字技术vs模拟技术</h2>
+
+<ol>
+<li>天生的抗噪性</li>
+<li>潜在的标准性</li>
+<li>便利的实现性</li>
+</ol>
+
+
+<h2>幅度调制&ndash;用消息去控制正弦载波的幅度变化</h2>
+
+<p><img src="http://i.imgur.com/oWMUlEV.png" alt="常规调幅" />
+1. 常规调幅（Conv.AM）
+    1. m(t)是调制信号
+    2. 波形特点：消息凸显在载波包络上
+2. 移植载波双边带调幅（DSB-SC）
+3. 单边带调幅（SSB）
+4. 残留边带调幅（VSB）</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[DE0-Nano]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/04/18/de0-nano/"/>
+    <updated>2016-04-18T10:26:16+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/04/18/de0-nano</id>
+    <content type="html"><![CDATA[<h2>DE0-Nano开发板简介</h2>
+
+<p><img src="http://i.imgur.com/Gct0bL1.jpg" alt="开发板外观图" /></p>
+
+<ol>
+<li>Cyclone IV EP4CE22F17C6N FPGA
+
+<ol>
+<li>22320个逻辑资源(LEs)</li>
+<li>594Kbits嵌入式内存</li>
+<li>66个18X18的嵌入式乘法器</li>
+<li>4个通用锁相环PLL</li>
+<li>最多153个IO引脚</li>
+</ol>
+</li>
+<li>板载烧写器与串行配置器件（EPCS）</li>
+<li>板载32MB的SDRAM与2Kb的I2C EEPROM</li>
+<li>板载ADI的3轴加速度传感器ADXL345，精度达到13位</li>
+<li>板载12位ADC芯片：ADC128S022，采样速率：50ksps~200ksps</li>
+<li></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[IEEE-1588]]></title>
@@ -2978,10 +3125,25 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
     <link href="http://suda-morris.github.io/blog/2015/11/22/verilog/"/>
     <updated>2015-11-22T19:53:49+08:00</updated>
     <id>http://suda-morris.github.io/blog/2015/11/22/verilog</id>
-    <content type="html"><![CDATA[<h2>数字电路基础</h2>
+    <content type="html"><![CDATA[<h2>verilog与数字电路基础</h2>
 
 <ol>
 <li>数字电路的五基元电路：反相器、与门、或门、三态门、D触发器</li>
+<li>常用三种描述方式：
+
+<ol>
+<li>数据流描述(assign)->组合逻辑电路</li>
+<li>行为级描述(always)->时序逻辑电路</li>
+<li>门级电路(and/or/not/buf)->基本门电路的调用</li>
+</ol>
+</li>
+<li>常用关键字：always,assign,begin,case(xz),default,defparam,else,end,for,function,if,input,input,integer,module,negedge,output,parameter,posedge,primitive,reg,table,task,wire
+
+<ol>
+<li>自定义模块(一般由FPGA厂商制作):primitive&hellip;endprimitive;table&hellip;endtable;</li>
+</ol>
+</li>
+<li></li>
 </ol>
 
 
@@ -3005,6 +3167,24 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 <li>现在的很多PCB工具和FPGA开发软件都有附带的接口，可以相互转换。将PCB设计软件中的管脚转换成FPGA的约束文件（TCL或者CSV格式），或者在FPGA调整之后再次导入PCB</li>
 <li>真的时钟是不能赋值给线网或者寄存器的。由于FPGA里时钟属于单独的时钟树，CLK是无法直接赋值给一个寄存器变量的，因为他们只能从时钟树分配到寄存器的CLK端。因为时钟树总是和寄存器的clk端相连，他们和触发器的D端实际是不连接的，需要通过特殊处理。</li>
 <li>在基本组成元素中非时序组合逻辑在FPGA内部使用查找表资源实现（LUT）。而时序则由寄存器实现。</li>
+<li>三段式有限状态机：
+
+<ol>
+<li>现态</li>
+<li>次态</li>
+<li>逻辑输出</li>
+</ol>
+</li>
+<li>状态机编码：
+
+<ol>
+<li>顺序编码</li>
+<li>格雷编码</li>
+<li>一位热码</li>
+<li>约翰逊编码</li>
+</ol>
+</li>
+<li></li>
 </ol>
 
 
@@ -3671,7 +3851,188 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>共阴数码管</h2>
+<h2>8位共阳数码管</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="c1">//8位共阳数码管</span>
+</span><span class='line'><span class="k">module</span> <span class="no">HEX8</span><span class="p">(</span><span class="n">Clk</span><span class="p">,</span><span class="n">Rst_n</span><span class="p">,</span><span class="n">En</span><span class="p">,</span><span class="n">disp_data</span><span class="p">,</span><span class="n">sel</span><span class="p">,</span><span class="n">seg</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Clk</span><span class="p">;</span><span class="c1">//输入50M外部时钟</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Rst_n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">En</span><span class="p">;</span><span class="c1">//使能引脚，低功耗考虑</span>
+</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">disp_data</span><span class="p">;</span><span class="c1">//数码管总共有8位，每位显示0~F(4位表示)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">output</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">sel</span><span class="p">;</span><span class="c1">//数码管位选(选择当前要显示的数码管)</span>
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">seg</span><span class="p">;</span><span class="c1">//数码管段选(当前要显示的内容)</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">14</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">divider_cnt</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">localparam</span> <span class="no">DELAY_ONE_MS</span> <span class="o">=</span> <span class="mh">25</span><span class="n">_000</span><span class="p">;</span><span class="c1">//500us/20ns=25000</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">clk_1k</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">sel_r</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">data_tmp</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//分频计数器计数模块</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">divider_cnt</span> <span class="o">&lt;=</span> <span class="mh">15</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">En</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">divider_cnt</span> <span class="o">&lt;=</span> <span class="mh">15</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">divider_cnt</span> <span class="o">==</span> <span class="no">DELAY_ONE_MS</span> <span class="o">-</span><span class="mh">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">divider_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">divider_cnt</span> <span class="o">&lt;=</span> <span class="n">divider_cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//1KHz扫描时钟生成模块</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">clk_1k</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">divider_cnt</span> <span class="o">==</span> <span class="no">DELAY_ONE_MS</span> <span class="o">-</span><span class="mh">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">clk_1k</span> <span class="o">&lt;=</span> <span class="o">~</span><span class="n">clk_1k</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">clk_1k</span> <span class="o">&lt;=</span> <span class="n">clk_1k</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//8位循环移位寄存器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">clk_1k</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">sel_r</span> <span class="o">&lt;=</span> <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="n">_0001</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">sel_r</span> <span class="o">==</span> <span class="mh">8</span><span class="mb">&#39;b1000</span><span class="n">_0000</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">sel_r</span> <span class="o">&lt;=</span> <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="n">_0001</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">sel_r</span> <span class="o">&lt;=</span> <span class="n">sel_r</span> <span class="o">&lt;&lt;</span> <span class="mh">1</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//8选1多路选择器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">sel_r</span><span class="p">)</span>
+</span><span class='line'>          
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="nl">_0001:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="nl">_0010:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">4</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="nl">_0100:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">11</span><span class="o">:</span><span class="mh">8</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0000</span><span class="nl">_1000:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">12</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0001</span><span class="nl">_0000:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">19</span><span class="o">:</span><span class="mh">16</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0010</span><span class="nl">_0000:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">23</span><span class="o">:</span><span class="mh">20</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b0100</span><span class="nl">_0000:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">27</span><span class="o">:</span><span class="mh">24</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">8</span><span class="mb">&#39;b1000</span><span class="nl">_0000:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="n">disp_data</span><span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">28</span><span class="p">];</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span><span class="n">data_tmp</span> <span class="o">=</span> <span class="mh">4</span><span class="mb">&#39;b0000</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="o">*</span><span class="p">)</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">data_tmp</span><span class="p">)</span>
+</span><span class='line'>          <span class="mh">4&#39;h0</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;hc0</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h1</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;hf9</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h2</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;ha4</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h3</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;hb0</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h4</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h99</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h5</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h92</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h6</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h82</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h7</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;hf8</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h8</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h80</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;h9</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h90</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;ha</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h88</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;hb</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h83</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;hc</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;hc6</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;hd</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;ha1</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;he</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h86</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4&#39;hf</span><span class="o">:</span><span class="n">seg</span> <span class="o">=</span> <span class="mh">8&#39;h8e</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="k">assign</span> <span class="n">sel</span> <span class="o">=</span> <span class="p">((</span><span class="n">En</span><span class="o">==</span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">)</span> <span class="o">?</span> <span class="nl">sel_r:</span><span class="mh">8</span><span class="mb">&#39;b0000</span><span class="n">_0000</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">endmodule</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>按键消抖</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -3799,136 +4160,186 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 <span class='line-number'>124</span>
 <span class='line-number'>125</span>
 <span class='line-number'>126</span>
-</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="k">module</span> <span class="n">dt_module</span><span class="p">(</span>
-</span><span class='line'>  <span class="k">input</span> <span class="n">clk</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">num1</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">num2</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">num3</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">num4</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">ds_en</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">ds_reg</span>
-</span><span class='line'><span class="p">);</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="k">module</span> <span class="n">key_filter</span><span class="p">(</span><span class="n">Clk</span><span class="p">,</span><span class="n">Rst_n</span><span class="p">,</span><span class="n">key_in</span><span class="p">,</span><span class="n">key_flag</span><span class="p">,</span><span class="n">key_status</span><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_0</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b0111111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_1</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b0000110</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_2</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1011011</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_3</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1001111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_4</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1100110</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_5</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1101101</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_6</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1111101</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_7</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b0000111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_8</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1111111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_9</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1101111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_A</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1110111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_B</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1111100</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_C</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1011000</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_D</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1011110</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_E</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1111001</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_F</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b1110001</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">6</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">NUM_BLK</span><span class="o">=</span><span class="mh">7</span><span class="mb">&#39;b0000000</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">EN_1</span><span class="o">=</span><span class="mh">4</span><span class="mb">&#39;b1110</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">EN_2</span><span class="o">=</span><span class="mh">4</span><span class="mb">&#39;b1101</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">EN_3</span><span class="o">=</span><span class="mh">4</span><span class="mb">&#39;b1011</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">EN_4</span><span class="o">=</span><span class="mh">4</span><span class="mb">&#39;b0111</span><span class="p">;</span>
-</span><span class='line'><span class="k">parameter</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">EN_A</span><span class="o">=</span><span class="mh">4</span><span class="mb">&#39;b0000</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">cnt</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">begin</span>
-</span><span class='line'>      <span class="n">cnt</span> <span class="o">=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Clk</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Rst_n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">key_in</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">key_flag</span><span class="p">;</span><span class="c1">//按键按下或者弹起便产生一个脉冲</span>
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">key_status</span><span class="p">;</span><span class="c1">//按键当前的状态，0表示按下</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">state</span><span class="p">;</span><span class="c1">//状态机变量</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">localparam</span>
+</span><span class='line'>      <span class="no">IDEL</span>        <span class="o">=</span> <span class="mh">4</span><span class="mb">&#39;b0001</span><span class="p">,</span><span class="c1">//空闲</span>
+</span><span class='line'>      <span class="no">FILTER0</span>     <span class="o">=</span> <span class="mh">4</span><span class="mb">&#39;b0010</span><span class="p">,</span><span class="c1">//按下消抖</span>
+</span><span class='line'>      <span class="no">DOWN</span>        <span class="o">=</span> <span class="mh">4</span><span class="mb">&#39;b0100</span><span class="p">,</span><span class="c1">//按下且稳定</span>
+</span><span class='line'>      <span class="no">FILTER1</span>     <span class="o">=</span> <span class="mh">4</span><span class="mb">&#39;b1000</span><span class="p">;</span><span class="c1">//松开消抖</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">19</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">cnt</span><span class="p">;</span><span class="c1">//用于20ms延迟的计数器</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">en_cnt</span><span class="p">;</span><span class="c1">//计数器使能信号</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">cnt_full</span><span class="p">;</span><span class="c1">//计数器满标志信号</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">key_in_s0</span><span class="p">,</span><span class="n">key_in_s1</span><span class="p">;</span><span class="c1">//同步按键输入(按键输入为异步信号)用的两级寄存器</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">key_tmp0</span><span class="p">,</span><span class="n">key_tmp1</span><span class="p">;</span><span class="c1">//边沿检测用的两级寄存器</span>
+</span><span class='line'>  <span class="kt">wire</span> <span class="n">pedge</span><span class="p">,</span><span class="n">nedge</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//50_000_000-&gt;20ns,20ms/20ns=1_000_000</span>
+</span><span class='line'>  <span class="k">parameter</span> <span class="n">twenty_ms</span> <span class="o">=</span> <span class="mh">1</span><span class="n">_000_000</span><span class="p">;</span><span class="c1">//消抖时间一般为20ms</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//对异步信号进行同步处理    </span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@</span> <span class="p">(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">key_in_s0</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">key_in_s1</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="n">key_in_s0</span> <span class="o">&lt;=</span> <span class="n">key_in</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">key_in_s1</span> <span class="o">&lt;=</span> <span class="n">key_in_s0</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>  
-</span><span class='line'><span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">begin</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="p">[</span><span class="mh">16</span><span class="o">:</span><span class="mh">15</span><span class="p">]</span> <span class="o">==</span> <span class="mh">2</span><span class="mb">&#39;b00</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">case</span> <span class="p">(</span><span class="n">num1</span><span class="p">)</span>
-</span><span class='line'>          <span class="mh">4&#39;h0</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_0</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h1</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_1</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h2</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_2</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h3</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_3</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h4</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_4</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h5</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_5</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h6</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_6</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h7</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_7</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h8</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_8</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h9</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_9</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;ha</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_A</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hb</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_B</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hc</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_C</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hd</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_D</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;he</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_E</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hf</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_F</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">default</span><span class="o">:</span>  <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_BLK</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_1</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">endcase</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="p">[</span><span class="mh">16</span><span class="o">:</span><span class="mh">15</span><span class="p">]</span> <span class="o">==</span> <span class="mh">2</span><span class="mb">&#39;b01</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">case</span> <span class="p">(</span><span class="n">num2</span><span class="p">)</span>
-</span><span class='line'>          <span class="mh">4&#39;h0</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_0</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h1</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_1</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h2</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_2</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h3</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_3</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h4</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_4</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h5</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_5</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h6</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_6</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h7</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_7</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h8</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_8</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h9</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_9</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;ha</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_A</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hb</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_B</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hc</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_C</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hd</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_D</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;he</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_E</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hf</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_F</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">default</span><span class="o">:</span>  <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_BLK</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_2</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">endcase</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="p">[</span><span class="mh">16</span><span class="o">:</span><span class="mh">15</span><span class="p">]</span> <span class="o">==</span> <span class="mh">2</span><span class="mb">&#39;b10</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">case</span> <span class="p">(</span><span class="n">num3</span><span class="p">)</span>
-</span><span class='line'>          <span class="mh">4&#39;h0</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_0</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h1</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_1</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h2</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_2</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h3</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_3</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h4</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_4</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h5</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_5</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h6</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_6</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h7</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_7</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h8</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_8</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h9</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_9</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;ha</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_A</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hb</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_B</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hc</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_C</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hd</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_D</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;he</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_E</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hf</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_F</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">default</span><span class="o">:</span>  <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_BLK</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_3</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">endcase</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">cnt</span><span class="p">[</span><span class="mh">16</span><span class="o">:</span><span class="mh">15</span><span class="p">]</span> <span class="o">==</span> <span class="mh">2</span><span class="mb">&#39;b11</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">case</span> <span class="p">(</span><span class="n">num4</span><span class="p">)</span>
-</span><span class='line'>          <span class="mh">4&#39;h0</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_0</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h1</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_1</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h2</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_2</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h3</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_3</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h4</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_4</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h5</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_5</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h6</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_6</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h7</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_7</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h8</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_8</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;h9</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_9</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;ha</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_A</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hb</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_B</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hc</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_C</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hd</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_D</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;he</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_E</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="mh">4&#39;hf</span><span class="o">:</span> <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_F</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">default</span><span class="o">:</span>  <span class="k">begin</span> <span class="n">ds_reg</span> <span class="o">=</span> <span class="no">NUM_BLK</span><span class="p">;</span> <span class="n">ds_en</span> <span class="o">=</span> <span class="no">EN_4</span><span class="p">;</span> <span class="k">end</span>
-</span><span class='line'>          <span class="k">endcase</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//按键边沿检测</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@</span> <span class="p">(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">key_tmp0</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">key_tmp1</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
 </span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="n">key_tmp0</span> <span class="o">&lt;=</span> <span class="n">key_in_s1</span><span class="p">;</span><span class="c1">//key_in_s1为同步后的按键输入信号</span>
+</span><span class='line'>      <span class="n">key_tmp1</span> <span class="o">&lt;=</span> <span class="n">key_tmp0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//边沿检测组合逻辑电路</span>
+</span><span class='line'>  <span class="k">assign</span> <span class="n">nedge</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_tmp0</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span> <span class="o">&amp;&amp;</span> <span class="n">key_tmp1</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">assign</span> <span class="n">pedge</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_tmp0</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b1</span> <span class="o">&amp;&amp;</span> <span class="n">key_tmp1</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//一段式状态机主程序</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@</span> <span class="p">(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">IDEL</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">key_status</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</span><span class='line'>      
+</span><span class='line'>          <span class="nl">IDEL:</span>
+</span><span class='line'>              <span class="k">begin</span>
+</span><span class='line'>                  <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="k">if</span><span class="p">(</span><span class="n">nedge</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                      <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">FILTER0</span><span class="p">;</span>
+</span><span class='line'>                      <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>                  <span class="k">end</span>
+</span><span class='line'>                  <span class="k">else</span> 
+</span><span class='line'>                      <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">IDEL</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>                  
+</span><span class='line'>          <span class="nl">FILTER0:</span>
+</span><span class='line'>              <span class="k">if</span><span class="p">(</span><span class="n">cnt_full</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                  <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">DOWN</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_status</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>              <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">pedge</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                  <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">IDEL</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>              <span class="k">else</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">FILTER0</span><span class="p">;</span>
+</span><span class='line'>                  
+</span><span class='line'>          <span class="nl">DOWN:</span>
+</span><span class='line'>              <span class="k">begin</span>
+</span><span class='line'>                  <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="k">if</span><span class="p">(</span><span class="n">pedge</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                      <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">FILTER1</span><span class="p">;</span>
+</span><span class='line'>                      <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>                  <span class="k">end</span>
+</span><span class='line'>                  <span class="k">else</span>
+</span><span class='line'>                      <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">DOWN</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>              
+</span><span class='line'>          <span class="nl">FILTER1:</span>
+</span><span class='line'>              <span class="k">if</span><span class="p">(</span><span class="n">cnt_full</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">IDEL</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_status</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>              <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">nedge</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>                  <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">DOWN</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>              <span class="k">else</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">FILTER1</span><span class="p">;</span>
+</span><span class='line'>          
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>              <span class="k">begin</span>
+</span><span class='line'>                  <span class="n">state</span> <span class="o">&lt;=</span> <span class="no">IDEL</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">en_cnt</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_flag</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">key_status</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>          
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">//计数器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="mh">20</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">en_cnt</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="n">cnt</span> <span class="o">+</span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="mh">20</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//判断是否计数满20ms</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">cnt_full</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="n">twenty_ms</span><span class="o">-</span><span class="mh">1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">cnt_full</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">cnt_full</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
 </span><span class='line'>  
 </span><span class='line'><span class="k">endmodule</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h2>按键</h2>
+<h2>串口通信</h2>
+
+<ol>
+<li>起始位：低电平，停止位：高电平</li>
+<li>串口发送模块包含两个主要组件：
+
+<ol>
+<li>发送波特率生成模块</li>
+<li>数据发送模块</li>
+</ol>
+</li>
+</ol>
+
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -3967,43 +4378,640 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='Verilog'><span class='line'> <span class="k">module</span> <span class="n">key_module</span><span class="p">(</span>
-</span><span class='line'>  <span class="k">input</span> <span class="n">clk</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key</span><span class="p">,</span>
-</span><span class='line'>  <span class="k">output</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key_flag</span>
-</span><span class='line'> <span class="p">);</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="c1">//串口发送模块</span>
+</span><span class='line'><span class="k">module</span> <span class="n">uart_byte_tx</span><span class="p">(</span>
+</span><span class='line'>  <span class="n">Clk</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Rst_n</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">data_byte</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">send_en</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">baud_set</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Rs232_Tx</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Tx_Done</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">uart_state</span>
+</span><span class='line'><span class="p">);</span>
 </span><span class='line'>
-</span><span class='line'> <span class="k">parameter</span> <span class="no">DIV_FACTOR</span> <span class="o">=</span> <span class="mh">32</span><span class="mi">&#39;d48</span><span class="n">_000</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'> <span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">cnt</span><span class="p">;</span>
-</span><span class='line'> <span class="kt">reg</span> <span class="n">clk_khz</span><span class="p">;</span>
-</span><span class='line'> <span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">cnt</span> <span class="o">==</span> <span class="no">DIV_FACTOR</span><span class="o">/</span><span class="mh">2</span><span class="p">)</span>
-</span><span class='line'>          <span class="k">begin</span>
-</span><span class='line'>              <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="mh">32</span><span class="mb">&#39;b0</span><span class="p">;</span>
-</span><span class='line'>              <span class="n">clk_khz</span> <span class="o">=</span> <span class="o">!</span><span class="n">clk_khz</span><span class="p">;</span>
-</span><span class='line'>          <span class="k">end</span>
-</span><span class='line'>      <span class="k">else</span> 
-</span><span class='line'>          <span class="n">cnt</span> <span class="o">&lt;=</span> <span class="n">cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
-</span><span class='line'>          
-</span><span class='line'> <span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key_reg0</span><span class="p">;</span>
-</span><span class='line'> <span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key_reg1</span><span class="p">;</span>
-</span><span class='line'> <span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key_reg2</span><span class="p">;</span>
-</span><span class='line'> <span class="kt">reg</span> <span class="p">[</span><span class="mh">31</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">key_reg3</span><span class="p">;</span>
-</span><span class='line'> <span class="k">always</span> <span class="p">@(</span><span class="k">posedge</span> <span class="n">clk_khz</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">begin</span>
-</span><span class='line'>      <span class="n">key_reg0</span> <span class="o">&lt;=</span> <span class="p">{</span><span class="n">key_reg0</span><span class="p">[</span><span class="mh">30</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="o">!</span><span class="n">key</span><span class="p">[</span><span class="mh">0</span><span class="p">]};</span>
-</span><span class='line'>      <span class="n">key_reg1</span> <span class="o">&lt;=</span> <span class="p">{</span><span class="n">key_reg1</span><span class="p">[</span><span class="mh">30</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="o">!</span><span class="n">key</span><span class="p">[</span><span class="mh">1</span><span class="p">]};</span>
-</span><span class='line'>      <span class="n">key_reg2</span> <span class="o">&lt;=</span> <span class="p">{</span><span class="n">key_reg2</span><span class="p">[</span><span class="mh">30</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="o">!</span><span class="n">key</span><span class="p">[</span><span class="mh">2</span><span class="p">]};</span>
-</span><span class='line'>      <span class="n">key_reg3</span> <span class="o">&lt;=</span> <span class="p">{</span><span class="n">key_reg3</span><span class="p">[</span><span class="mh">30</span><span class="o">:</span><span class="mh">0</span><span class="p">],</span><span class="o">!</span><span class="n">key</span><span class="p">[</span><span class="mh">3</span><span class="p">]};</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Clk</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Rst_n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">data_byte</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">send_en</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">baud_set</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">Rs232_Tx</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">Tx_Done</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">uart_state</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">bps_clk</span><span class="p">;</span><span class="c1">//波特率时钟</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">bps_DR</span><span class="p">;</span><span class="c1">//分频计数最大值</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">div_cnt</span><span class="p">;</span><span class="c1">//分频计数器</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">bps_cnt</span><span class="p">;</span><span class="c1">//波特率计数时钟</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">r_data_byte</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">localparam</span>
+</span><span class='line'>      <span class="no">START_BIT</span> <span class="o">=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">,</span>
+</span><span class='line'>      <span class="no">STOP_BIT</span> <span class="o">=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//外部数据寄存，保持数据稳定</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">r_data_byte</span> <span class="o">=</span> <span class="mh">8</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">send_en</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">r_data_byte</span> <span class="o">&lt;=</span> <span class="n">data_byte</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">r_data_byte</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//uart_state</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">send_en</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">4</span><span class="mi">&#39;d11</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="n">uart_state</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//波特率分频系数查找表</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d5207</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">baud_set</span><span class="p">)</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d0</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d5207</span><span class="p">;</span><span class="c1">//9600Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d1</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d2603</span><span class="p">;</span><span class="c1">//19200Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d2</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d1301</span><span class="p">;</span><span class="c1">//38400Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d3</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d867</span><span class="p">;</span><span class="c1">//57600Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d4</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d433</span><span class="p">;</span><span class="c1">//115200Hz</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d433</span><span class="p">;</span><span class="c1">//115200Hz</span>
+</span><span class='line'>      <span class="k">endcase</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>  
-</span><span class='line'> <span class="k">assign</span> <span class="n">key_flag</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_reg0</span> <span class="o">==</span> <span class="mh">32&#39;hffffffff</span><span class="p">);</span>
-</span><span class='line'> <span class="k">assign</span> <span class="n">key_flag</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_reg1</span> <span class="o">==</span> <span class="mh">32&#39;hffffffff</span><span class="p">);</span>
-</span><span class='line'> <span class="k">assign</span> <span class="n">key_flag</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_reg2</span> <span class="o">==</span> <span class="mh">32&#39;hffffffff</span><span class="p">);</span>
-</span><span class='line'> <span class="k">assign</span> <span class="n">key_flag</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">key_reg3</span> <span class="o">==</span> <span class="mh">32&#39;hffffffff</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">//波特率计数器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">uart_state</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">div_cnt</span> <span class="o">==</span> <span class="n">bps_DR</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="n">div_cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> 
+</span><span class='line'>      <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//产生波特率时钟</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">div_cnt</span> <span class="o">==</span> <span class="mh">16</span><span class="mi">&#39;d1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//bps counter</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="mh">4</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">4</span><span class="mi">&#39;d11</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="mh">4</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_clk</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="n">bps_cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="n">bps_cnt</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//Tx_Done</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Tx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">4</span><span class="mi">&#39;d11</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Tx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">Tx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//串口发送逻辑</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">bps_cnt</span><span class="p">)</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d0</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d1</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="no">START_BIT</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d2</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d3</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d4</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d5</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d6</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d7</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d8</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d9</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">];</span>
+</span><span class='line'>          <span class="mh">4</span><span class="mi">&#39;d10</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="no">STOP_BIT</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span><span class="n">Rs232_Tx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'> <span class="k">endmodule</span>
+</span><span class='line'><span class="k">endmodule</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>串口接收模块
+
+<ol>
+<li>对于接收数据中的每一位进行采样，一般情况下每一位数据的中间点是最稳定的，因此在一般应用中，采集中间时刻的数据即可，但是在工业应用中，往往有非常强的电磁干扰，只采样一次就作为该数据的电平判定，是不保险的，有可能恰好采集到被干扰的信号而导致结果出错，因此需要使用多次采样求概率的方式进行</li>
+</ol>
+</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+<span class='line-number'>82</span>
+<span class='line-number'>83</span>
+<span class='line-number'>84</span>
+<span class='line-number'>85</span>
+<span class='line-number'>86</span>
+<span class='line-number'>87</span>
+<span class='line-number'>88</span>
+<span class='line-number'>89</span>
+<span class='line-number'>90</span>
+<span class='line-number'>91</span>
+<span class='line-number'>92</span>
+<span class='line-number'>93</span>
+<span class='line-number'>94</span>
+<span class='line-number'>95</span>
+<span class='line-number'>96</span>
+<span class='line-number'>97</span>
+<span class='line-number'>98</span>
+<span class='line-number'>99</span>
+<span class='line-number'>100</span>
+<span class='line-number'>101</span>
+<span class='line-number'>102</span>
+<span class='line-number'>103</span>
+<span class='line-number'>104</span>
+<span class='line-number'>105</span>
+<span class='line-number'>106</span>
+<span class='line-number'>107</span>
+<span class='line-number'>108</span>
+<span class='line-number'>109</span>
+<span class='line-number'>110</span>
+<span class='line-number'>111</span>
+<span class='line-number'>112</span>
+<span class='line-number'>113</span>
+<span class='line-number'>114</span>
+<span class='line-number'>115</span>
+<span class='line-number'>116</span>
+<span class='line-number'>117</span>
+<span class='line-number'>118</span>
+<span class='line-number'>119</span>
+<span class='line-number'>120</span>
+<span class='line-number'>121</span>
+<span class='line-number'>122</span>
+<span class='line-number'>123</span>
+<span class='line-number'>124</span>
+<span class='line-number'>125</span>
+<span class='line-number'>126</span>
+<span class='line-number'>127</span>
+<span class='line-number'>128</span>
+<span class='line-number'>129</span>
+<span class='line-number'>130</span>
+<span class='line-number'>131</span>
+<span class='line-number'>132</span>
+<span class='line-number'>133</span>
+<span class='line-number'>134</span>
+<span class='line-number'>135</span>
+<span class='line-number'>136</span>
+<span class='line-number'>137</span>
+<span class='line-number'>138</span>
+<span class='line-number'>139</span>
+<span class='line-number'>140</span>
+<span class='line-number'>141</span>
+<span class='line-number'>142</span>
+<span class='line-number'>143</span>
+<span class='line-number'>144</span>
+<span class='line-number'>145</span>
+<span class='line-number'>146</span>
+<span class='line-number'>147</span>
+<span class='line-number'>148</span>
+<span class='line-number'>149</span>
+<span class='line-number'>150</span>
+<span class='line-number'>151</span>
+<span class='line-number'>152</span>
+<span class='line-number'>153</span>
+<span class='line-number'>154</span>
+<span class='line-number'>155</span>
+<span class='line-number'>156</span>
+<span class='line-number'>157</span>
+<span class='line-number'>158</span>
+<span class='line-number'>159</span>
+<span class='line-number'>160</span>
+<span class='line-number'>161</span>
+<span class='line-number'>162</span>
+<span class='line-number'>163</span>
+<span class='line-number'>164</span>
+<span class='line-number'>165</span>
+<span class='line-number'>166</span>
+<span class='line-number'>167</span>
+<span class='line-number'>168</span>
+<span class='line-number'>169</span>
+<span class='line-number'>170</span>
+<span class='line-number'>171</span>
+<span class='line-number'>172</span>
+<span class='line-number'>173</span>
+<span class='line-number'>174</span>
+<span class='line-number'>175</span>
+<span class='line-number'>176</span>
+<span class='line-number'>177</span>
+<span class='line-number'>178</span>
+<span class='line-number'>179</span>
+<span class='line-number'>180</span>
+<span class='line-number'>181</span>
+<span class='line-number'>182</span>
+<span class='line-number'>183</span>
+<span class='line-number'>184</span>
+<span class='line-number'>185</span>
+<span class='line-number'>186</span>
+<span class='line-number'>187</span>
+<span class='line-number'>188</span>
+<span class='line-number'>189</span>
+<span class='line-number'>190</span>
+<span class='line-number'>191</span>
+<span class='line-number'>192</span>
+<span class='line-number'>193</span>
+<span class='line-number'>194</span>
+</pre></td><td class='code'><pre><code class='Verilog'><span class='line'><span class="c1">//串口接收模块,采用过采样的方案，将有效时间分成5-6-5三段，检查中间6端的数据，有效降低工业环境的干扰</span>
+</span><span class='line'><span class="k">module</span> <span class="n">uart_byte_rx</span><span class="p">(</span>
+</span><span class='line'>  <span class="n">Clk</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Rst_n</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">baud_set</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Rs232_Rx</span><span class="p">,</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">data_byte</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">Rx_Done</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Clk</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Rst_n</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">baud_set</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">input</span> <span class="n">Rs232_Rx</span><span class="p">;</span><span class="c1">//Rx输入引脚</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">data_byte</span><span class="p">;</span><span class="c1">//接收到的数据</span>
+</span><span class='line'>  <span class="k">output</span> <span class="kt">reg</span> <span class="n">Rx_Done</span><span class="p">;</span><span class="c1">//接收完毕信号</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">s0_Rs232_Rx</span><span class="p">,</span><span class="n">s1_Rs232_Rx</span><span class="p">;</span><span class="c1">//同步寄存器，消除亚稳态</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">tmp0_Rs232_Rx</span><span class="p">,</span><span class="n">tmp1_Rs232_Rx</span><span class="p">;</span><span class="c1">//数据寄存器,用于边沿检测</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">wire</span> <span class="n">nedge</span><span class="p">;</span><span class="c1">//下降沿标志</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">bps_DR</span><span class="p">;</span><span class="c1">//分频计数最大值</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">15</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">div_cnt</span><span class="p">;</span><span class="c1">//分频计数器</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">uart_state</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="n">bps_clk</span><span class="p">;</span><span class="c1">//波特率时钟</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">bps_cnt</span><span class="p">;</span><span class="c1">//波特率计数时钟</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="n">r_data_byte</span> <span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">0</span><span class="p">];</span>
+</span><span class='line'>  <span class="kt">reg</span> <span class="p">[</span><span class="mh">2</span><span class="o">:</span><span class="mh">0</span><span class="p">]</span><span class="no">START_BIT</span><span class="p">,</span><span class="no">STOP_BIT</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//同步寄存器，消除亚稳态,s1_Rs232_Rx为最终稳定的输入数据</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">s0_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">s1_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="n">s0_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="n">Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">s1_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="n">s0_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//数据寄存器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">tmp0_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">tmp1_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="n">tmp0_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">tmp1_Rs232_Rx</span> <span class="o">&lt;=</span> <span class="n">tmp0_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">assign</span> <span class="n">nedge</span> <span class="o">=</span> <span class="p">(</span><span class="n">tmp0_Rs232_Rx</span><span class="o">==</span><span class="mh">1</span><span class="mb">&#39;b0</span> <span class="o">&amp;&amp;</span> <span class="n">tmp1_Rs232_Rx</span><span class="o">==</span><span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">);</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//波特率分频系数查找表</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d324</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">baud_set</span><span class="p">)</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d0</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d324</span><span class="p">;</span><span class="c1">//9600Hz,50000000/9600/16=325</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d1</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d162</span><span class="p">;</span><span class="c1">//19200Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d2</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d80</span><span class="p">;</span><span class="c1">//38400Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d3</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d53</span><span class="p">;</span><span class="c1">//57600Hz</span>
+</span><span class='line'>          <span class="mh">3</span><span class="mi">&#39;d4</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d26</span><span class="p">;</span><span class="c1">//115200Hz</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span><span class="n">bps_DR</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d26</span><span class="p">;</span><span class="c1">//115200Hz</span>
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//波特率计数器</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">uart_state</span><span class="p">)</span><span class="k">begin</span><span class="c1">//检测到有效信号才开始计数，随之产生波特率</span>
+</span><span class='line'>      <span class="k">if</span><span class="p">(</span><span class="n">div_cnt</span> <span class="o">==</span> <span class="n">bps_DR</span><span class="p">)</span>
+</span><span class='line'>          <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="k">else</span>
+</span><span class='line'>          <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="n">div_cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> 
+</span><span class='line'>      <span class="n">div_cnt</span> <span class="o">&lt;=</span> <span class="mh">16</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//产生波特率时钟</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">div_cnt</span> <span class="o">==</span> <span class="mh">16</span><span class="mi">&#39;d1</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">bps_clk</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//bps counter,159=16*10-1</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="mh">8</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">8</span><span class="mi">&#39;d159</span> <span class="o">|</span> <span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">8</span><span class="mi">&#39;d12</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="no">START_BIT</span> <span class="o">&gt;</span> <span class="mh">2</span><span class="p">)))</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="mh">8</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_clk</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="n">bps_cnt</span> <span class="o">+</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">bps_cnt</span> <span class="o">&lt;=</span> <span class="n">bps_cnt</span><span class="p">;</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//Rx_Done</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Rx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">8</span><span class="mi">&#39;d159</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">Rx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>      <span class="n">Rx_Done</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="c1">//data_byte    </span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">data_byte</span> <span class="o">&lt;=</span> <span class="mh">8</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">8</span><span class="mi">&#39;d159</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span><span class="c1">//100开始表示收到1的概率大，数据判定为1</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>      <span class="n">data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">][</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>      
+</span><span class='line'>  <span class="c1">//串口接收逻辑</span>
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span> <span class="k">begin</span>
+</span><span class='line'>      <span class="no">START_BIT</span> <span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>      <span class="no">STOP_BIT</span> <span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">bps_clk</span><span class="p">)</span><span class="k">begin</span>
+</span><span class='line'>      <span class="k">case</span><span class="p">(</span><span class="n">bps_cnt</span><span class="p">)</span>
+</span><span class='line'>          <span class="mh">0</span><span class="o">:</span><span class="k">begin</span>
+</span><span class='line'>              <span class="no">START_BIT</span> <span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span><span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>              <span class="no">STOP_BIT</span> <span class="o">&lt;=</span> <span class="mh">3</span><span class="mi">&#39;d0</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">end</span>
+</span><span class='line'>          <span class="mh">6</span><span class="p">,</span><span class="mh">7</span><span class="p">,</span><span class="mh">8</span><span class="p">,</span><span class="mh">9</span><span class="p">,</span><span class="mh">10</span><span class="p">,</span><span class="mh">11</span><span class="o">:</span><span class="no">START_BIT</span> <span class="o">&lt;=</span> <span class="no">START_BIT</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">22</span><span class="p">,</span><span class="mh">23</span><span class="p">,</span><span class="mh">24</span><span class="p">,</span><span class="mh">25</span><span class="p">,</span><span class="mh">26</span><span class="p">,</span><span class="mh">27</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">38</span><span class="p">,</span><span class="mh">39</span><span class="p">,</span><span class="mh">40</span><span class="p">,</span><span class="mh">41</span><span class="p">,</span><span class="mh">42</span><span class="p">,</span><span class="mh">43</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">54</span><span class="p">,</span><span class="mh">55</span><span class="p">,</span><span class="mh">56</span><span class="p">,</span><span class="mh">57</span><span class="p">,</span><span class="mh">58</span><span class="p">,</span><span class="mh">59</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">70</span><span class="p">,</span><span class="mh">71</span><span class="p">,</span><span class="mh">72</span><span class="p">,</span><span class="mh">73</span><span class="p">,</span><span class="mh">74</span><span class="p">,</span><span class="mh">75</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">86</span><span class="p">,</span><span class="mh">87</span><span class="p">,</span><span class="mh">88</span><span class="p">,</span><span class="mh">89</span><span class="p">,</span><span class="mh">90</span><span class="p">,</span><span class="mh">91</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">102</span><span class="p">,</span><span class="mh">103</span><span class="p">,</span><span class="mh">104</span><span class="p">,</span><span class="mh">105</span><span class="p">,</span><span class="mh">106</span><span class="p">,</span><span class="mh">107</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">118</span><span class="p">,</span><span class="mh">119</span><span class="p">,</span><span class="mh">120</span><span class="p">,</span><span class="mh">121</span><span class="p">,</span><span class="mh">122</span><span class="p">,</span><span class="mh">123</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">134</span><span class="p">,</span><span class="mh">135</span><span class="p">,</span><span class="mh">136</span><span class="p">,</span><span class="mh">137</span><span class="p">,</span><span class="mh">138</span><span class="p">,</span><span class="mh">139</span><span class="o">:</span><span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="mh">150</span><span class="p">,</span><span class="mh">151</span><span class="p">,</span><span class="mh">152</span><span class="p">,</span><span class="mh">153</span><span class="p">,</span><span class="mh">154</span><span class="p">,</span><span class="mh">155</span><span class="o">:</span><span class="no">STOP_BIT</span> <span class="o">&lt;=</span> <span class="no">STOP_BIT</span> <span class="o">+</span> <span class="n">s1_Rs232_Rx</span><span class="p">;</span>
+</span><span class='line'>          <span class="k">default</span><span class="o">:</span>
+</span><span class='line'>              <span class="k">begin</span>
+</span><span class='line'>                  <span class="no">START_BIT</span> <span class="o">=</span> <span class="no">START_BIT</span><span class="p">;</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">0</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">1</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">2</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">3</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">4</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">5</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">6</span><span class="p">];</span>
+</span><span class='line'>                  <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">r_data_byte</span><span class="p">[</span><span class="mh">7</span><span class="p">];</span>
+</span><span class='line'>                  <span class="no">STOP_BIT</span> <span class="o">=</span> <span class="no">STOP_BIT</span><span class="p">;</span>                      
+</span><span class='line'>              <span class="k">end</span>
+</span><span class='line'>      <span class="k">endcase</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="k">always</span><span class="p">@(</span><span class="k">posedge</span> <span class="n">Clk</span> <span class="k">or</span> <span class="k">negedge</span> <span class="n">Rst_n</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">if</span><span class="p">(</span><span class="n">Rst_n</span> <span class="o">==</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">nedge</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b1</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">Rx_Done</span> <span class="o">||</span> <span class="p">(</span><span class="n">bps_cnt</span> <span class="o">==</span> <span class="mh">8</span><span class="mi">&#39;d12</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="no">START_BIT</span> <span class="o">&gt;</span> <span class="mh">2</span><span class="p">)))</span><span class="c1">//接收结束或者接收到错误的开始位</span>
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="mh">1</span><span class="mb">&#39;b0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">else</span> 
+</span><span class='line'>      <span class="n">uart_state</span> <span class="o">&lt;=</span> <span class="n">uart_state</span><span class="p">;</span>
+</span><span class='line'>  
+</span><span class='line'><span class="k">endmodule</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -4015,6 +5023,19 @@ PWM驱动接口不能跟hw_timer的接口同时使用，因为二者共用了同
 <img src="http://i.imgur.com/xTENNYJ.png" alt="VGA时序" /></li>
 <li>各种分辨率的行场同步时序如图
 <img src="http://i.imgur.com/VTCZg6j.png" alt="VGA参考时序数据表" /></li>
+</ol>
+
+
+<h2>经验之谈</h2>
+
+<ol>
+<li>异步信号的同步处理
+
+<ol>
+<li>对于异步信号输入，为了避免时钟沿采到的数据处于亚稳态引起电路振荡，一般在异步信号输入后面加入两级D触发器</li>
+</ol>
+</li>
+<li>分频后的时钟信号不能直接去驱动D触发器</li>
 </ol>
 
 ]]></content>
@@ -6288,110 +7309,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 <ol>
 <li>打开软件，，help->Enter License,随便输入用户名密码即可破解成功</li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Review C++]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/11/09/c++Primer/"/>
-    <updated>2015-11-09T18:08:50+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/11/09/c++Primer</id>
-    <content type="html"><![CDATA[<h2>补码的好处</h2>
-
-<ol>
-<li>0的表示唯一</li>
-<li>符号位可以直接参与运算</li>
-</ol>
-
-
-<h2>常用的I/O流类库操纵符</h2>
-
-<ol>
-<li>dec：数值数据采用十进制表示</li>
-<li>hex：数值数据采用十六进制表示</li>
-<li>oct： 数值数据采用八进制表示</li>
-<li>ws：  提取空白符</li>
-<li>endl：插入换行符，并刷新流</li>
-<li>ends： 插入空字符</li>
-<li>setsprecision(int)： 设置浮点数的小数位数（包括小数点）</li>
-<li>setw(int)： 设置域宽</li>
-</ol>
-
-
-<h2>类型别名</h2>
-
-<ol>
-<li>typedef 已有类型名 新类型名</li>
-<li>using 新类型名 = 已有类型名</li>
-</ol>
-
-
-<h2>auto类型与decltype类型</h2>
-
-<ol>
-<li>auto：编译器通过初始值自动推断变量的类型</li>
-<li>decltype：定义一个变量与某一表达式的类型相同，但并不用该表达式初始化变量
-
-<ol>
-<li>decltype（i） j=2,表示j以2作为初始值，类型与i一致</li>
-</ol>
-</li>
-</ol>
-
-
-<h2>引用类型</h2>
-
-<ol>
-<li>引用（&amp;）是标识符的别名
-
-<ol>
-<li>int i；int &amp;ri = i；</li>
-</ol>
-</li>
-<li>定义一个引用时，必须同时对它初始化，使它指向一个已存在的对象</li>
-<li>一旦一个引用被初始化后，就不能改为指向其它对象</li>
-</ol>
-
-
-<h2>泛型编程</h2>
-
-<ol>
-<li>泛型编程是C++支持的另一种编程模式，指的是创建独立于类型的代码</li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[LCD]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/11/05/lcd/"/>
-    <updated>2015-11-05T10:19:01+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/11/05/lcd</id>
-    <content type="html"><![CDATA[<h2>TFTLCD驱动芯片</h2>
-
-<ul>
-<li>ILI9341、ILI9325、RM68042、RM68021、ILI9320、ILI9328、LGDP4531、SSD1289等</li>
-</ul>
-
-
-<h2>ILI9341</h2>
-
-<ol>
-<li>自带显存，其显存总大小为172800（240X320X18/8），即18位模式下（26万色）的显存量。在16位模式下，ILI9341采用RGB565格式存储颜色数据</li>
-<li>ILI9341所有的指令都是8位的，高8位无效，且参数除了读写GRAM的时候是16位，其他操作参数都是8位的。这个和ILI9320等驱动器不一样</li>
-<li>命令
-
-<ol>
-<li>0xD3，这个是读ID4指令，用于读取LCD控制器的ID，这可以用来判断所用的LCD驱动器是什么型号，这样就可以根据控制器的型号去执行对应驱动IC的初始化代码。0xD3指令后跟了4个参数，最后2个参数读出来是0x93和0x41</li>
-<li>0x36，这个是存储访问控制指令，可以控制ILI9341存储器的读写方向。简单说木九十在连续写GRAM的时候，可以控制GRAM指针增长的方向，从而控制显示方式。0x36指令后面紧跟一个参数，用来设置GRAM自增方式</li>
-<li>0x2A，这是列地址设置指令，在从左到右、从上到下的扫描方式（默认）下面，该指令用于设置横坐标（x坐标）。该指令带有4个参数，实际上是2个坐标值：SC和EC，即列地址的起始值和结束值，SC必须小于等于EC。一般在设置x坐标的时候，我们只需要带2个参数即可，也就是设置SC即可，因为EC没有变化，我们只需要设置一次即可（在初始化ILI9341的时候设置）</li>
-<li>0x2B，是页地址设置指令，在从左到右、从上到下的扫描方式（默认）下面，该指令用于设置纵坐标（y坐标）</li>
-<li>0x2C，该指令是写GRAM指令，在发送该指令之后，我们便可以网LCD的GRAM里面写入颜色数据了。该指令支持连续写。ILI9341在收到0x2C指令之后，数据有效位宽变为16位，我们可以连续写入LCD GRAM值，而GRAM的地址将根据MY/MX/MV设置的扫描方式进行自增。</li>
-<li>0x2E，该指令是读GRAM指令，用于读取ILI9341的显存GRAM。ILI9341在收到该指令后，第一次输出的是dummy数据，也就是无效的数据，第二次开始读取到的才是有效的GRAM数据（从坐标SC、SP开始），输出规律为：每个颜色分量占8位，一次输出2个颜色分量。比如第一次输出的是R1G1，随后的规律为B1R2->G2B2->R3G3->B3R4->G4B4->R5G5&hellip;以此类推。</li>
-</ol>
-</li>
 </ol>
 
 ]]></content>

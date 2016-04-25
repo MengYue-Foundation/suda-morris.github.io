@@ -1,0 +1,292 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>communication-principle - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="消息 语音信号的带宽大约4KHz，图像信号的带宽大约是6MHz，音乐信号的带宽大约20KHz 信道 两个基本问题： 信号衰减：导线的电阻与长度成正比；无线电波扩散本身减弱，且被阻挡物吸收
+加性噪声：沿途的电阻、固态器件等(包括发送器和接收器中的处理电路)引入固有的随机噪声，最基本的是热噪声 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Communication-principle</h2>
+	<div class="entry-content"><h2>消息</h2>
+
+<ol>
+<li>语音信号的带宽大约4KHz，图像信号的带宽大约是6MHz，音乐信号的带宽大约20KHz</li>
+</ol>
+
+
+<h2>信道</h2>
+
+<ol>
+<li>两个基本问题：
+
+<ol>
+<li>信号衰减：导线的电阻与长度成正比；无线电波扩散本身减弱，且被阻挡物吸收</li>
+<li>加性噪声：沿途的电阻、固态器件等(包括发送器和接收器中的处理电路)引入固有的随机噪声，最基本的是热噪声</li>
+</ol>
+</li>
+<li>其他问题：
+
+<ol>
+<li>外来干扰：其他电磁波、窜线的电信号</li>
+<li>信号畸变：信道特性不理想。比如电话线中的寄生电容会使高频信号损失</li>
+</ol>
+</li>
+<li>白高斯噪声（White Gassian Noise）：
+
+<ol>
+<li>时域上，随机性服从高斯分布</li>
+<li>频域上，噪声均匀分布在所有频率上</li>
+<li>功率谱密度值N0/2（物理意义：每Hz内有多少噪声）</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>电磁波</h2>
+
+<ol>
+<li>电波传播主要由其频率值的大小决定。空中传播时主要有三种模式：
+
+<ol>
+<li>地波（Ground-Wave）模式：1~2MHz以下的电磁波主要按照这种模式传播，大致可以传输几十公里，主要用于调幅广播</li>
+<li>天波（Sky-Wave）模式：3~30MHz的电波反射可以达到几百~1000Km远，主要用于长距离通信，大多数用于军事上</li>
+<li>视线（Line-Of-Sight）模式：像广播那样作直线传播，高于30MHz，向上传播时会穿透电离层被反射回来；地面传播时，如遇到遮挡，信号会被阻断会显著衰减，用于电视广播。</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>频分技术的例子：</h2>
+
+<ol>
+<li>频分复用：有线通信中多个话音“错开频率”，共用一条电线传输</li>
+<li>频分多址：多个无线用户使用各自的频率，同时接入通信系统</li>
+<li>频分双工：每个用户采用不同频率接收和发送，两个方向同时传输</li>
+</ol>
+
+
+<h2>基带与频带传输</h2>
+
+<ol>
+<li>基带信号：频谱位于零频率附近的信号</li>
+<li>基带传输：保持基带形式，直接传送消息信号</li>
+<li>频带信号：频谱位于某高频附近</li>
+<li>频带传输：把基带的消息信号转换为频带消息来传输</li>
+</ol>
+
+
+<h2>模拟通信系统</h2>
+
+<ol>
+<li>调制：将基带信号变换为适当的频带信号的过程，通常用正弦波携带消息</li>
+<li>解调：调制的逆过程</li>
+</ol>
+
+
+<h2>数字通信系统</h2>
+
+<p><img src="http://i.imgur.com/LjU8Kz6.png" alt="数字通信系统" />
+1. 格式化：规范化的数字符号序列，必要时，包括模数变化
+2. 基带调制：形成合适的电信号，基带信号通常是用脉冲生成
+3. 频带调制：转换为频带信号
+4. 发射机：将信号送入信道
+5. 同步：提供各种定时时钟，使各单元能够正确、有序地工作
+6. 信源编码：实现压缩编码，把原始数字消息里面的冗余压缩掉
+7. 加密：提供保密性
+8. 信道编码：故意加入特殊数据位（如奇偶校验位等），仪表接收端发现和纠正错误
+9. 复用：多种消息信号合并在一起
+10. 多址接入：多个用户进入与公用系统
+11. 频谱扩展：展宽信号频谱可增加抗干扰与保密性，也可以多址接入</p>
+
+<h2>数字技术vs模拟技术</h2>
+
+<ol>
+<li>天生的抗噪性</li>
+<li>潜在的标准性</li>
+<li>便利的实现性</li>
+</ol>
+
+
+<h2>幅度调制&ndash;用消息去控制正弦载波的幅度变化</h2>
+
+<p><img src="http://i.imgur.com/oWMUlEV.png" alt="常规调幅" />
+1. 常规调幅（Conv.AM）
+    1. m(t)是调制信号
+    2. 波形特点：消息凸显在载波包络上
+2. 移植载波双边带调幅（DSB-SC）
+3. 单边带调幅（SSB）
+4. 残留边带调幅（VSB）</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-18T16:40:31+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2016/04/18/communication-principle" data-title="communication-principle" data-url="http://suda-morris.github.io/blog/2016/04/18/communication-principle/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2016
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

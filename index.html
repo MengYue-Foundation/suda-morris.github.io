@@ -88,6 +88,209 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2016/04/18/communication-principle/">
+		
+			Communication-principle</a>
+	</h2>
+	<div class="entry-content">
+		<h2>消息</h2>
+
+<ol>
+<li>语音信号的带宽大约4KHz，图像信号的带宽大约是6MHz，音乐信号的带宽大约20KHz</li>
+</ol>
+
+
+<h2>信道</h2>
+
+<ol>
+<li>两个基本问题：
+
+<ol>
+<li>信号衰减：导线的电阻与长度成正比；无线电波扩散本身减弱，且被阻挡物吸收</li>
+<li>加性噪声：沿途的电阻、固态器件等(包括发送器和接收器中的处理电路)引入固有的随机噪声，最基本的是热噪声</li>
+</ol>
+</li>
+<li>其他问题：
+
+<ol>
+<li>外来干扰：其他电磁波、窜线的电信号</li>
+<li>信号畸变：信道特性不理想。比如电话线中的寄生电容会使高频信号损失</li>
+</ol>
+</li>
+<li>白高斯噪声（White Gassian Noise）：
+
+<ol>
+<li>时域上，随机性服从高斯分布</li>
+<li>频域上，噪声均匀分布在所有频率上</li>
+<li>功率谱密度值N0/2（物理意义：每Hz内有多少噪声）</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>电磁波</h2>
+
+<ol>
+<li>电波传播主要由其频率值的大小决定。空中传播时主要有三种模式：
+
+<ol>
+<li>地波（Ground-Wave）模式：1~2MHz以下的电磁波主要按照这种模式传播，大致可以传输几十公里，主要用于调幅广播</li>
+<li>天波（Sky-Wave）模式：3~30MHz的电波反射可以达到几百~1000Km远，主要用于长距离通信，大多数用于军事上</li>
+<li>视线（Line-Of-Sight）模式：像广播那样作直线传播，高于30MHz，向上传播时会穿透电离层被反射回来；地面传播时，如遇到遮挡，信号会被阻断会显著衰减，用于电视广播。</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>频分技术的例子：</h2>
+
+<ol>
+<li>频分复用：有线通信中多个话音“错开频率”，共用一条电线传输</li>
+<li>频分多址：多个无线用户使用各自的频率，同时接入通信系统</li>
+<li>频分双工：每个用户采用不同频率接收和发送，两个方向同时传输</li>
+</ol>
+
+
+<h2>基带与频带传输</h2>
+
+<ol>
+<li>基带信号：频谱位于零频率附近的信号</li>
+<li>基带传输：保持基带形式，直接传送消息信号</li>
+<li>频带信号：频谱位于某高频附近</li>
+<li>频带传输：把基带的消息信号转换为频带消息来传输</li>
+</ol>
+
+
+<h2>模拟通信系统</h2>
+
+<ol>
+<li>调制：将基带信号变换为适当的频带信号的过程，通常用正弦波携带消息</li>
+<li>解调：调制的逆过程</li>
+</ol>
+
+
+<h2>数字通信系统</h2>
+
+<p><img src="http://i.imgur.com/LjU8Kz6.png" alt="数字通信系统" />
+1. 格式化：规范化的数字符号序列，必要时，包括模数变化
+2. 基带调制：形成合适的电信号，基带信号通常是用脉冲生成
+3. 频带调制：转换为频带信号
+4. 发射机：将信号送入信道
+5. 同步：提供各种定时时钟，使各单元能够正确、有序地工作
+6. 信源编码：实现压缩编码，把原始数字消息里面的冗余压缩掉
+7. 加密：提供保密性
+8. 信道编码：故意加入特殊数据位（如奇偶校验位等），仪表接收端发现和纠正错误
+9. 复用：多种消息信号合并在一起
+10. 多址接入：多个用户进入与公用系统
+11. 频谱扩展：展宽信号频谱可增加抗干扰与保密性，也可以多址接入</p>
+
+<h2>数字技术vs模拟技术</h2>
+
+<ol>
+<li>天生的抗噪性</li>
+<li>潜在的标准性</li>
+<li>便利的实现性</li>
+</ol>
+
+
+<h2>幅度调制&ndash;用消息去控制正弦载波的幅度变化</h2>
+
+<p><img src="http://i.imgur.com/oWMUlEV.png" alt="常规调幅" />
+1. 常规调幅（Conv.AM）
+    1. m(t)是调制信号
+    2. 波形特点：消息凸显在载波包络上
+2. 移植载波双边带调幅（DSB-SC）
+3. 单边带调幅（SSB）
+4. 残留边带调幅（VSB）</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-18T16:40:31+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2016/04/18/de0-nano/">
+		
+			DE0-Nano</a>
+	</h2>
+	<div class="entry-content">
+		<h2>DE0-Nano开发板简介</h2>
+
+<p><img src="http://i.imgur.com/Gct0bL1.jpg" alt="开发板外观图" /></p>
+
+<ol>
+<li>Cyclone IV EP4CE22F17C6N FPGA
+
+<ol>
+<li>22320个逻辑资源(LEs)</li>
+<li>594Kbits嵌入式内存</li>
+<li>66个18X18的嵌入式乘法器</li>
+<li>4个通用锁相环PLL</li>
+<li>最多153个IO引脚</li>
+</ol>
+</li>
+<li>板载烧写器与串行配置器件（EPCS）</li>
+<li>板载32MB的SDRAM与2Kb的I2C EEPROM</li>
+<li>板载ADI的3轴加速度传感器ADXL345，精度达到13位</li>
+<li>板载12位ADC芯片：ADC128S022，采样速率：50ksps~200ksps</li>
+<li></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-04-18T10:26:16+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2016/04/13/ieee-1588/">
 		
 			IEEE-1588</a>
@@ -1615,120 +1818,6 @@
 
 
 <time datetime="2016-01-11T11:41:13+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2016/01/05/free-rtos/">
-		
-			Free-RTOS</a>
-	</h2>
-	<div class="entry-content">
-		<h2>如何在FreeRTOS下实现低功耗</h2>
-
-<ol>
-<li>可以在空任务或者空任务钩子函数中进入低功耗模式，在系统滴答时钟中断服务函数中重新回到正常工作模式，</li>
-<li>多数操作系统都包含一个空任务，空任务优先级最低且一直保持就绪状态，空任务可以用于统计CPU的使用率，或者让MCU进入低功耗状态。如果不想修改空任务，还可以通过空任务的钩子函数插入实现低功耗的代码。</li>
-<li>在FreeRTOS中，若需打开空任务钩子函数，需要在FreeRTOSConfig.h中定义#define configUSE_IDLE_HOOK 1</li>
-<li>然后在钩子函数中实现低功耗的代码，比如430中：</li>
-</ol>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>void vApplicationIdleHook( void )
-</span><span class='line'>{
-</span><span class='line'>    /* Called on each iteration of the idle task.  In this case the idle task
-</span><span class='line'>    just enters a low power mode. */
-</span><span class='line'>    __bis_SR_register( LPM3_bits + GIE );
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>在大多数嵌入式操作系统中可以在系统滴答中断函数中退出低功耗模式</li>
-</ol>
-
-
-<h2>任务间使用队列同步数据</h2>
-
-<ol>
-<li>在嵌入式操作系统中，队列是人物间数据交换的常用手段，队列是生产者消费之模型的重要组成部分。</li>
-<li>xQueueHandle MsgQueue;声明一个队列句柄，队列句柄可以理解成一个队列的标记，不同的队列具有不同的标记。</li>
-<li>MsgQueue = xQueueCreate( 5 , sizeof( int16_t ) );创建队列，即在内存中开辟固定大小的区域。FreeRTOS中需要指定队列的深度和每个元素的字节长度</li>
-<li>xQueueSend( MsgQueue, ( void* )&amp;SendNum, 0 );向队列中填充内容，第二参数需要取出地址并进行类型转换，第三参数设置等待时间，在队列满的情况下再往队列中填充内容会阻塞任务，知道等待时间溢出；若此处填充的内容为0的话，则立即返回插入队列结果</li>
-<li>xQueueReceive( MsgQueue, &amp;ReceiveNum, 100/portTICK_RATE_MS )；从队列中取出内容，第二参数需要取出地址，第三参数为等待最大时间，若在等待的时间内队列中没有数据则返回阻塞任务。</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2016-01-05T20:58:43+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/12/24/makefile/">
-		
-			Makefile</a>
-	</h2>
-	<div class="entry-content">
-		<h2>wildcard(扩展通配符)用法</h2>
-
-<h2>patsubst(替换通配符)用法</h2>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-12-24T23:31:10+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>
