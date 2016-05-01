@@ -105,7 +105,6 @@
 <li>自定义模块(一般由FPGA厂商制作):primitive&hellip;endprimitive;table&hellip;endtable;</li>
 </ol>
 </li>
-<li></li>
 </ol>
 
 
@@ -1987,6 +1986,14 @@
 <img src="http://i.imgur.com/VTCZg6j.png" alt="VGA参考时序数据表" /></li>
 </ol>
 
+
+<h2>基于NIOS II的SOPC技术</h2>
+
+<p><img src="http://i.imgur.com/6h2MCPM.png" alt="Nios II处理器" />
+<img src="http://i.imgur.com/KMXyhNc.png" alt="典型系统架构" />
+1. 可二次开发的32位RISC软核处理器，基于哈佛结构，免版税
+2. 32个通用寄存器，3种指令格式，32位指令，32位数据总线，平面寄存器文件，高速缓冲Cache(指令缓存和数据缓存分开)，分支预测，紧耦合型存储器选项，32级中断支持
+3. 凡是需要存储程序代码的外设都需要连接到nios的指令总线上</p>
 
 <h2>经验之谈</h2>
 
