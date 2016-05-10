@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-05-01T20:27:55+08:00</updated>
+  <updated>2016-05-10T23:04:23+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -12,6 +12,79 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CMSIS-DAP]]></title>
+    <link href="http://suda-morris.github.io/blog/2016/05/05/cmsis-dap/"/>
+    <updated>2016-05-05T14:02:05+08:00</updated>
+    <id>http://suda-morris.github.io/blog/2016/05/05/cmsis-dap</id>
+    <content type="html"><![CDATA[<h2>OpenOCD使用方法</h2>
+
+<ol>
+<li>创建Openocd.cfg，输入：</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>$_TARGETNAME configure -event gdb-attach {
+</span><span class='line'>   echo "Halting target"
+</span><span class='line'>   halt
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>启动OpenOCD服务器来调试LPC11U35芯片</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo openocd -f interface/jlink.cfg -c "transport select swd" -f target/lpc11xx.cfg -f openocd.cfg </span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>烧写需要仿真的固件</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>telnet localhost 4444
+</span><span class='line'>reset halt
+</span><span class='line'>flash probe 0
+</span><span class='line'>flash write_image erase /home/yliu/projects/ib51822/IBDAP-FW/Firmware/IBDAP/Debug/IBDAP.bin 0x0
+</span><span class='line'>reset
+</span><span class='line'>exit</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>使用如下命令进行调试</li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>target remote localhost:3333
+</span><span class='line'>break IBDAP.c:103
+</span><span class='line'>monitor reset halt
+</span><span class='line'>monitor reset init
+</span><span class='line'>continue</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>使用OpenOCD烧写nRF51822</h2>
+
+<p><img src="http://i.imgur.com/3BaquhS.png" alt="OpenOCD使用实例" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[communication-principle]]></title>
@@ -225,7 +298,100 @@
 <li>以太网在物理层与SDH一样采用串行码流方式进行传送，因此响应的接收端必须提供时钟恢复业务，否则仍然会出现滑码现象。所以，以太网本身具备了传递时钟信息的功能。</li>
 </ol>
 </li>
-<li>包时钟技术</li>
+<li>包时钟技术
+
+<ol>
+<li>包时钟ToP（Time over Packet），就是利用分组网络来传递时间信息。时间报文的格式可以多种多样，比如RTP、NTP、IEEE 1588，只要报文中懈怠了时间信息就可以了。</li>
+<li>IEEE 1588标准又称作PTP协议，主要用于工业以太网，具有亚微秒级的时间精度，可以同时传递频率信息和相位信息</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>IEEE 1588标准介绍</h2>
+
+<ol>
+<li>IEEE 1588标准的全称是《网络测量和控制系统的精确时钟同步协议》（Precision Clock Synchronization for Networked Measurement and Control Systems）,也被称作PTP协议，它在各种同步协议中的同步精度是最高的</li>
+<li>IEEE 1588:2008也称为IEEE 1588第二版，其主要基于以下几个要求
+
+<ol>
+<li>实现亚微秒级的时间同步，用于均是和实际的测试与测量中</li>
+<li>缩短时间报文使其等长，来满足通信网中的应用，登场保温传递时的延时变化较小</li>
+<li>提供容错特性，来从网络重建和祖母时钟崩溃中快速恢复</li>
+<li>能把协议映射到一些非以太网的网络中</li>
+</ol>
+</li>
+<li>与第一版相比，第二版的改进：
+
+<ol>
+<li>报文格式。为了缩短报文长度，同步报文被分隔成Announce（声明报文）和Sync（同步报文），分别实现最佳主时钟算法和时间同步。</li>
+<li>端到端透明时钟。</li>
+<li>第一版中所有报文都是通过多播传递的，第二版提供了一种机制使得从时钟可与主时钟协商后在一定时间间隔内使用单播传输，这种特性广泛应用于通信中。</li>
+</ol>
+</li>
+<li>IEEE 1588系统构成
+<img src="http://i.imgur.com/yGeFBPc.png" alt="典型的PTP系统模型" /></li>
+<li>IEEE 1588协议是一种说明系统中的实时PTP时钟如何相互同步的分布式协议，普通时钟和边界时钟被组织在一个主从同步层次中。PTP协议中的报文分为两类，即事件（Event）报文和一般（General）报文。
+
+<ol>
+<li>Event Messages：同步报文，延时请求，P2P延时请求，P2P延时响应。属于定时消息，发送或者接收的时刻需要打时间戳</li>
+<li>General Messages：管理报文，声明报文，信令报文，跟随报文，延时响应，点延时相应跟随。不属于定时消息，不需要打时间戳</li>
+</ol>
+</li>
+<li>PTP协议中，节点是一个包含实时时钟的设备，这个时钟可能会有多种用途，例如产生PTP报文的时间戳，或者触发由该节点管理的事件。</li>
+<li>PTP协议包括两个方面：时钟同步功能和管理功能。所有的普通时钟在这两个方面的表现都相同，边界时钟的每一个端口相当于一个普通时钟。管理节点不需要实现时钟同步功能而只需要实现管理功能，除非它本身也是一个时钟节点。</li>
+<li>IEEE 1588的所有时钟都是向224.0.1.129这个组播地址不停的发送网络报文的。</li>
+</ol>
+
+
+<h2>IEEE 1588工作机制</h2>
+
+<ol>
+<li>建立主从秩序。网络中的各个节点通过最佳主时钟算法，选举出祖母时钟、主时钟和从时钟。祖母时钟精度最高，主时钟次之，从时钟最低。</li>
+<li>低等级的时钟向高等级的时钟进行同步。网络中的主从时钟通过握手机制进行同步报文的交换。</li>
+</ol>
+
+
+<h2>GPS</h2>
+
+<ol>
+<li>通过串口解析出来的GPS时间信息是UTC时间，UTC时间是以原子时秒长为基础，在时刻上尽量接近于世界时的一种时间计量系统。UTC时间起点是1970年1月1日0时整。在IEEE1588 v2协议中，时间值的存储是以48位秒值和32位纳秒值两种形式构成的。</li>
+</ol>
+
+
+<h2>DP83640</h2>
+
+<p><img src="http://i.imgur.com/DdVpWWZ.png" alt="DP83640功能框图" /></p>
+
+<ol>
+<li>全面支持IEEE 1588协议的物理层芯片，不但提供了完整的MII，还设计了12个GPIO引脚实现实时动作处理功能，其特点如下
+
+<ol>
+<li>支持IEEE 1588 v1和v2</li>
+<li>支持以太网UDP/IP第四版，UDP/IP第六版和Layer2协议</li>
+<li>支持高精度IEEE 1588时钟同步，时间戳最大分辨率可达8ns</li>
+<li>提供12个可配置GPIO</li>
+<li>频率可配置的同步时钟输出</li>
+</ol>
+</li>
+<li>DP83640对IEEE 1588协议中对实时性要求极高的部分提供了完整的硬件支持，分别是
+
+<ol>
+<li>IEEE 1588同步时钟的产生</li>
+<li>时钟同步报文的硬件标记</li>
+<li>事件触发和事件捕获的时间戳标记</li>
+</ol>
+</li>
+<li>DP83640的功能
+
+<ol>
+<li>IEEE 1588时钟输出。DP 83640可以向外部设备提供频率可调的同步时钟信号，其标称频率为250/nMHz，其中n为2~255之间的任意整数，即980.4kHz~125MHz之间的离散值</li>
+<li>IEEE 1588事件触发。DP 83640可以在GPIO引脚上产生一个基于IEEE 1588时钟的触发信号，这个信号可以是一次性上升或下降沿，脉宽可调的单脉冲或者周期信号。DP 83640可以为每一个触发器指定相应的GPIO输出引脚以及触发时刻。当内部IEEE 1588时钟走时到达此值时，事件被触发。芯片最多可支持在任意GPIO引脚上发送八个触发信号。可支持在单引脚上发送多重触发信号，支持产生复杂的信号波形。此时，个触发信号通过逻辑或组合在一起产生一个联合信号。使用DP83640提供的触发功能，还可以让芯片输出一个秒脉冲信号</li>
+<li>IEEE 1588时间戳标记。DP 83640可以为发生的外部事件标记时间戳。事件的监测可通过外部脉冲的上升沿或下降沿。事件时间戳标记单元可最多监测任意GPIO引脚上发生的八个外部事件。事件时间戳以单一序列的方式保存，此序列可最多保存八个时间戳信息。需要对事件时间戳做出35ns（频率125MHz的IEEE1588参考时钟的周期X3+11ns）的调整，来消除由于输入延迟和同步延迟带来的影响。</li>
+<li>IEEE 1588同步报文检测。DP 83640的发送报文解析器和接收报文解析器可以自动检测节点发送和接收的符合IEEE 1588第一版和第二版所定义的同步报文，并将其时间戳信息提供给软件。</li>
+</ol>
+</li>
+<li>所有的配置引脚（strap pin）内部都有微弱的上拉电阻或者下拉电阻，如果要改变默认配置，那么需要在该引脚外面上拉或者下拉2.2K的电阻。</li>
 </ol>
 
 ]]></content>
@@ -7190,196 +7356,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 <h2>MATLAB程序</h2>
 
 <p><img src="http://i.imgur.com/xWXusd3.png" alt="MATLAB程序基本组成结构" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UML-Knowledges]]></title>
-    <link href="http://suda-morris.github.io/blog/2015/11/10/uml-knowledges/"/>
-    <updated>2015-11-10T15:44:29+08:00</updated>
-    <id>http://suda-morris.github.io/blog/2015/11/10/uml-knowledges</id>
-    <content type="html"><![CDATA[<h2>StarUML 软件破解</h2>
-
-<ol>
-<li><a href="http://staruml.io">官网地址</a></li>
-<li>该软件为跨平台的UML建模工具，采用NodeJs编写</li>
-<li>破解：安装目录/www/license/node/LicenseManagerDomain.js文件修改为如下：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>LicenseManagerDomain.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">NodeRSA</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-rsa&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">product</span><span class="p">,</span> <span class="nx">licenseKey</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kd">var</span> <span class="nx">pk</span><span class="p">,</span> <span class="nx">decrypted</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;morris&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">product</span><span class="o">:</span> <span class="s2">&quot;StarUML&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">licenseType</span><span class="o">:</span> <span class="s2">&quot;vip&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">quantity</span><span class="o">:</span> <span class="s2">&quot;suda_morris.github.io&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">licenseKey</span><span class="o">:</span> <span class="s2">&quot;later equals never!&quot;</span>
-</span><span class='line'>        <span class="p">};</span>
-</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">pk</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeRSA</span><span class="p">(</span><span class="nx">PK</span><span class="p">);</span>
-</span><span class='line'>            <span class="nx">decrypted</span> <span class="o">=</span> <span class="nx">pk</span><span class="p">.</span><span class="nx">decrypt</span><span class="p">(</span><span class="nx">licenseKey</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="kd">var</span> <span class="nx">terms</span> <span class="o">=</span> <span class="nx">decrypted</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">name</span> <span class="o">&amp;&amp;</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">name</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
-</span><span class='line'>                <span class="nx">product</span><span class="o">:</span> <span class="nx">product</span><span class="p">,</span>
-</span><span class='line'>                <span class="nx">licenseType</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-</span><span class='line'>                <span class="nx">quantity</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-</span><span class='line'>                <span class="nx">licenseKey</span><span class="o">:</span> <span class="nx">licenseKey</span>
-</span><span class='line'>            <span class="p">};</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * Initializes the domain with several commands.</span>
-</span><span class='line'><span class="cm">     * @param {DomainManager} domainManager The DomainManager for the server</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">init</span><span class="p">(</span><span class="nx">domainManager</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">domainManager</span><span class="p">.</span><span class="nx">hasDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">major</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">minor</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span>
-</span><span class='line'>            <span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="c1">// domain name</span>
-</span><span class='line'>            <span class="s2">&quot;validate&quot;</span><span class="p">,</span>       <span class="c1">// command name</span>
-</span><span class='line'>            <span class="nx">validate</span><span class="p">,</span>         <span class="c1">// command handler function</span>
-</span><span class='line'>            <span class="kc">false</span><span class="p">,</span>            <span class="c1">// this command is synchronous in Node (&quot;false&quot; means synchronous&quot;)</span>
-</span><span class='line'>            <span class="s2">&quot;Validate License&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="p">[</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;name of license owner&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;product name&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;licenseKey&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;license key&quot;</span>
-</span><span class='line'>                <span class="p">}</span>
-</span><span class='line'>            <span class="p">],</span>
-</span><span class='line'>            <span class="p">[</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="c1">// return values</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span>
-</span><span class='line'>                <span class="p">}</span>
-</span><span class='line'>            <span class="p">]</span>
-</span><span class='line'>        <span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">exports</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}());</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>打开软件，，help->Enter License,随便输入用户名密码即可破解成功</li>
-</ol>
-
 ]]></content>
   </entry>
   

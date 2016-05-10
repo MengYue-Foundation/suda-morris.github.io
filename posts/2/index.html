@@ -88,6 +88,203 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2016/01/11/nrf51822/">
+		
+			nRF51822</a>
+	</h2>
+	<div class="entry-content">
+		<h2>nRF51822介绍</h2>
+
+<p><img src="http://i.imgur.com/W7Ksvm4.jpg" alt="nRF51822引脚图" /></p>
+
+<ol>
+<li>通信距离30m（条件:空旷区域/1M速率）</li>
+<li>工作频段：2.4GHz</li>
+<li>工作电压：2.0V~3.6V</li>
+<li>nRF51822整合了Nordic一流的无线传送器，同时支持BLE和专用的2.4GHz蓝牙协议栈</li>
+<li>基本情况：
+
+<ol>
+<li>2.4GHz多协议无线射频</li>
+<li>32位ARM CortexM0 处理器</li>
+<li>128位AES硬件加密处理器</li>
+<li>256KB Flash，32KB RAM(最新的QF AC版本)</li>
+<li>可编程外设接口PPI</li>
+<li>全功能数字接口：SPI、I2C、UART</li>
+<li>10位ADC</li>
+<li>可编程的输出功率+4dBm到-20dBm</li>
+<li>应用开发和协议栈完全独立</li>
+<li>固定的系统时钟：16MHz</li>
+</ol>
+</li>
+<li>参考资料：
+
+<ol>
+<li><a href="http://infocenter.nordicsemi.com/index.jsp">参考文档</a></li>
+<li><a href="https://devzone.nordicsemi.com/questions/">官方论坛</a></li>
+<li><a href="http://www.qfv8.com/forum.php">青风电子社区</a></li>
+</ol>
+</li>
+<li>与新版芯片的各种版本搭配：
+
+<ol>
+<li>QFN48封装</li>
+<li>HWID=0084</li>
+<li>Rev：3</li>
+<li>nRF51 SDK:10.0.0</li>
+<li>software device:S130-1.0.0</li>
+<li>software device specification:S130-1.0</li>
+<li>Qualified Design ID（QD ID）=68915（for S130 v1.0.0）</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>工程配置</h2>
+
+<p><img src="http://i.imgur.com/tVItFZn.png" alt="工程配置-Target" />
+<img src="http://i.imgur.com/MTbnCdA.png" alt="工程配置-Linker" />
+<img src="http://i.imgur.com/HtCEJLi.png" alt="工程配置-Debug" />
+<img src="http://i.imgur.com/WPiTpWa.png" alt="工程配置-Download" /></p>
+
+<h2>Bluetooth</h2>
+
+<ol>
+<li>蓝牙4.0提出了“低功耗蓝牙”、“经典蓝牙”和“高速蓝牙”三种模式。其中，高速蓝牙主攻数据交换与传输；经典蓝牙则以信息沟通、设备连接为重点；蓝牙低功耗以不需占用太多带宽的设备连接为主。</li>
+<li>Bluetooth SmartReady与Bluetooth Smart
+
+<ol>
+<li>Bluetooth SmartReady设备包括智能电话、平板电脑、PC、智能电视这些在用户周边设备中充当中心并且要求Bluetooth v4.0 dual-mode通讯的智能设备</li>
+<li>Bluetooth Smart设备时传感器类型的设备，比如心率计、电子计步器这种以电池并用来收集特定信息的设备，通常他们只需要single-mode low energy Bluetooth v4.0通讯
+<img src="http://i.imgur.com/P9w7f76.png" alt="Bluetooth设备分类" /></li>
+</ol>
+</li>
+<li>Bluetooth4.0低功耗模式由双模和单模两种应用。双模应用中，蓝牙低功耗功能集成在现有的经典蓝牙控制器中，或在现有经典蓝牙技术的芯片上增加低功耗堆栈，整体架构基本不变，因此成本增加有限。单模应用面向高度集成、紧凑的设备，具备轻量级链路层，支持超低功耗的待机模式操作、简单设备恢复、可靠的点对点数据传输、安全的加密连接等；而链路层则适用于网络互连传感器，并确保在无线传输中，皆能通过蓝牙低功耗传输。单模式蓝牙低功耗设备与现有蓝牙设备不能兼容，无法向下兼容，仅能支持BLE技术；而双模式芯片可同时支持蓝牙低功耗和传统蓝牙技术。一般而言，手机和个人电脑等设备将会安装双模式芯片，以便于蓝牙低功耗设备已传统蓝牙进行互操作。</li>
+</ol>
+
+
+<h2>SoftDevice</h2>
+
+<ol>
+<li>S110和S120由于协议栈大小有区别，因此在内部ROM和RAM分配的空间是有区别的。如下图：
+<img src="http://i.imgur.com/JUv2wQy.png" alt="芯片内部资源分配" /></li>
+<li>应用程序的向量表地址，取决于芯片是否已下载了SoftDevice，SoftDevice的下载地址从0x0开始，应用程序的向量表必须紧跟在SoftDevice之后，应用程序可以使用除去SoftDevice空间之外的Flash空间。相应的，SoftDevice数据区从最低的RAM地址开始，应用程序的数据区要跟在SoftDevice的数据区域后面布置</li>
+<li>如果芯片烧写了SoftDevice，那么用户应用程序和SoftDevice共享同一个call stack（堆栈），应用程序必须保证call stack有足够的空间给自己和SoftDevice，SoftDevice的call stack空间需求跟不同的设备和不同的协议版本都有关系。用户应用程序应该把call stack的大小设置为它本身的需求加上SoftDevice的需求，然后设置堆栈指针（stack pointer）到应用程序的复位向量（Reset Vector）的首地址。</li>
+<li>为了保证SoftDevice的正确性，微处理器包含了一个MPU（Memory Protection Unit），它可以防止对特定区域的访问，debugger读取这些区域将会返回0x0000。被SoftDevice占用的空间将禁止write和erase，使能SoftDevice后，MPU将会对协议栈进行写保护。为了避免单步调式保护区域，请在SVC calls后面设置断点，然后直接运行到该断点，也可以使用“step over”方法跳过SVC calls。</li>
+</ol>
+
+
+<h2>GPIO</h2>
+
+<ol>
+<li>在使用GPIO的input功能之前，需要将input buffer连接上，不使用的时候可以断开，这样可以一定程度上省电</li>
+<li>GPIO pin的上下拉电阻使用标准的13KΩ的内部电阻</li>
+<li>GPIO pin的驱动强度，标准情况下是0.5mA，高驱动能力下为5mA</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cm">/*****************************************************/</span>
+</span><span class='line'><span class="cp">#define LED_PORT     NRF_GPIO_PORT_SELECT_PORT2</span>
+</span><span class='line'><span class="cp">#define LED_NUMBER       5</span>
+</span><span class='line'><span class="cp">#define LED_OFFSET       2</span>
+</span><span class='line'><span class="cp">#define LED_START        18</span>
+</span><span class='line'><span class="cp">#define LED0         18</span>
+</span><span class='line'><span class="cp">#define LED1         19</span>
+</span><span class='line'><span class="cp">#define LED2         20</span>
+</span><span class='line'><span class="cp">#define LED3         21</span>
+</span><span class='line'><span class="cp">#define LED4         22</span>
+</span><span class='line'><span class="cp">#define LED_END          22</span>
+</span><span class='line'><span class="k">extern</span> <span class="kt">void</span> <span class="nf">platform_led_init</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span class='line'><span class="cm">/****************************************************/</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">platform_led_init</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">nrf_gpio_range_cfg_output</span><span class="p">(</span><span class="n">LED_START</span><span class="p">,</span><span class="n">LED_END</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cm">/****************************************************/</span>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="n">SEGGER_RTT_printf</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;***Welcome to nRF51822***</span><span class="se">\r\n</span><span class="s">***System Clock=%dHz***</span><span class="se">\r\n</span><span class="s">Press </span><span class="se">\&#39;</span><span class="s">y</span><span class="se">\&#39;</span><span class="s"> to begin</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">SystemCoreClock</span><span class="p">);</span>
+</span><span class='line'>  <span class="k">while</span><span class="p">(</span><span class="sc">&#39;y&#39;</span> <span class="o">!=</span> <span class="n">SEGGER_RTT_WaitKey</span><span class="p">());</span>
+</span><span class='line'>  
+</span><span class='line'>  <span class="n">platform_led_init</span><span class="p">();</span>
+</span><span class='line'>  <span class="kt">uint8_t</span> <span class="n">led_status</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">){</span>
+</span><span class='line'>      <span class="n">nrf_gpio_port_write</span><span class="p">(</span><span class="n">LED_PORT</span><span class="p">,</span><span class="mi">1</span><span class="o">&lt;&lt;</span><span class="p">(</span><span class="n">led_status</span><span class="o">+</span><span class="n">LED_OFFSET</span><span class="p">));</span>
+</span><span class='line'>      <span class="n">led_status</span> <span class="o">=</span> <span class="p">(</span><span class="n">led_status</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">LED_NUMBER</span><span class="p">;</span>
+</span><span class='line'>      <span class="n">nrf_delay_ms</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Power</h2>
+
+<ol>
+<li>实际中如果供电电压在1.75-1.95的时候，可以旁路内部的DC/DC转换器，直接使用内部的LDO，此时电源电压不高，在LDO上产生的功耗比较小，不会对整机功耗产生多达影响。当实际产品的供电电压高于1.95V，需要使能DC/DC转换器，以期将电源的效率提高。DC/DC转换器工作的时候会消耗300uA的电流。DC/DC转换器工作与否通过配置寄存器DCDCEN来实现。</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-11T11:41:13+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2016/01/05/free-rtos/">
 		
 			Free-RTOS</a>
@@ -5998,224 +6195,6 @@ break；退出循环体，执行循环后的其他语句</p></blockquote>
 
 
 <time datetime="2015-11-11T22:45:49+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/11/10/uml-knowledges/">
-		
-			UML-Knowledges</a>
-	</h2>
-	<div class="entry-content">
-		<h2>StarUML 软件破解</h2>
-
-<ol>
-<li><a href="http://staruml.io">官网地址</a></li>
-<li>该软件为跨平台的UML建模工具，采用NodeJs编写</li>
-<li>破解：安装目录/www/license/node/LicenseManagerDomain.js文件修改为如下：</li>
-</ol>
-
-
-<figure class='code'><figcaption><span>LicenseManagerDomain.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="s2">&quot;use strict&quot;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">var</span> <span class="nx">NodeRSA</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;node-rsa&#39;</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">validate</span><span class="p">(</span><span class="nx">PK</span><span class="p">,</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">product</span><span class="p">,</span> <span class="nx">licenseKey</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kd">var</span> <span class="nx">pk</span><span class="p">,</span> <span class="nx">decrypted</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">return</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;morris&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">product</span><span class="o">:</span> <span class="s2">&quot;StarUML&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">licenseType</span><span class="o">:</span> <span class="s2">&quot;vip&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">quantity</span><span class="o">:</span> <span class="s2">&quot;suda_morris.github.io&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="nx">licenseKey</span><span class="o">:</span> <span class="s2">&quot;later equals never!&quot;</span>
-</span><span class='line'>        <span class="p">};</span>
-</span><span class='line'>        <span class="k">try</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">pk</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">NodeRSA</span><span class="p">(</span><span class="nx">PK</span><span class="p">);</span>
-</span><span class='line'>            <span class="nx">decrypted</span> <span class="o">=</span> <span class="nx">pk</span><span class="p">.</span><span class="nx">decrypt</span><span class="p">(</span><span class="nx">licenseKey</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="kd">var</span> <span class="nx">terms</span> <span class="o">=</span> <span class="nx">decrypted</span><span class="p">.</span><span class="nx">trim</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot;\n&quot;</span><span class="p">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="nx">name</span> <span class="o">&amp;&amp;</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">===</span> <span class="nx">product</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="p">{</span>
-</span><span class='line'>                <span class="nx">name</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
-</span><span class='line'>                <span class="nx">product</span><span class="o">:</span> <span class="nx">product</span><span class="p">,</span>
-</span><span class='line'>                <span class="nx">licenseType</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-</span><span class='line'>                <span class="nx">quantity</span><span class="o">:</span> <span class="nx">terms</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-</span><span class='line'>                <span class="nx">licenseKey</span><span class="o">:</span> <span class="nx">licenseKey</span>
-</span><span class='line'>            <span class="p">};</span>
-</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * Initializes the domain with several commands.</span>
-</span><span class='line'><span class="cm">     * @param {DomainManager} domainManager The DomainManager for the server</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="kd">function</span> <span class="nx">init</span><span class="p">(</span><span class="nx">domainManager</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">domainManager</span><span class="p">.</span><span class="nx">hasDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">))</span> <span class="p">{</span>
-</span><span class='line'>            <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerDomain</span><span class="p">(</span><span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="p">{</span><span class="nx">major</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">minor</span><span class="o">:</span> <span class="mi">1</span><span class="p">});</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>        <span class="nx">domainManager</span><span class="p">.</span><span class="nx">registerCommand</span><span class="p">(</span>
-</span><span class='line'>            <span class="s2">&quot;LicenseManager&quot;</span><span class="p">,</span> <span class="c1">// domain name</span>
-</span><span class='line'>            <span class="s2">&quot;validate&quot;</span><span class="p">,</span>       <span class="c1">// command name</span>
-</span><span class='line'>            <span class="nx">validate</span><span class="p">,</span>         <span class="c1">// command handler function</span>
-</span><span class='line'>            <span class="kc">false</span><span class="p">,</span>            <span class="c1">// this command is synchronous in Node (&quot;false&quot; means synchronous&quot;)</span>
-</span><span class='line'>            <span class="s2">&quot;Validate License&quot;</span><span class="p">,</span>
-</span><span class='line'>            <span class="p">[</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;PK&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;name of license owner&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;product&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;product name&quot;</span>
-</span><span class='line'>                <span class="p">},</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;licenseKey&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;license key&quot;</span>
-</span><span class='line'>                <span class="p">}</span>
-</span><span class='line'>            <span class="p">],</span>
-</span><span class='line'>            <span class="p">[</span>
-</span><span class='line'>                <span class="p">{</span>
-</span><span class='line'>                    <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span><span class="p">,</span> <span class="c1">// return values</span>
-</span><span class='line'>                    <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;object&quot;</span><span class="p">,</span>
-</span><span class='line'>                    <span class="nx">description</span><span class="o">:</span> <span class="s2">&quot;result&quot;</span>
-</span><span class='line'>                <span class="p">}</span>
-</span><span class='line'>            <span class="p">]</span>
-</span><span class='line'>        <span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nx">exports</span><span class="p">.</span><span class="nx">init</span> <span class="o">=</span> <span class="nx">init</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">}());</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>打开软件，，help->Enter License,随便输入用户名密码即可破解成功</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-11-10T15:44:29+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 </div>

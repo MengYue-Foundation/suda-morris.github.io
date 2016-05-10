@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://suda-morris.github.io/blog/2016/05/05/cmsis-dap/</loc>
+    <lastmod>2016-05-05T14:02:05+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://suda-morris.github.io/blog/2016/04/18/communication-principle/</loc>
     <lastmod>2016-04-18T16:40:31+08:00</lastmod>
   </url>
