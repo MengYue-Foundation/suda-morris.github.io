@@ -551,6 +551,72 @@
 </ol>
 </li>
 <li>所有的配置引脚（strap pin）内部都有微弱的上拉电阻或者下拉电阻，如果要改变默认配置，那么需要在该引脚外面上拉或者下拉2.2K的电阻。</li>
+<li>7号引脚默认情况下是作为power-down的输入引脚，低电平有效。这等效于将BMCR寄存器中的bit11置1.将MICR寄存器的INT_OE位置1将会使器件跳出Power Down状态。</li>
+<li>DP83640集成了系统诊断功能，能够评估连接的质量，检测潜在的错误</li>
+<li>内部寄存器
+
+<ol>
+<li>ANAR(Auto Negotiation Advertisement Register)@04H
+
+<ol>
+<li>自动协商的能力</li>
+</ol>
+</li>
+<li>BMCR(Basic Mode Control Register)@00H
+
+<ol>
+<li>使能、失能、重启自动协商</li>
+<li>提供状态，包括：自动协商是否完成，连接对方是否发生了错误，是否建立了稳定的连接，</li>
+<li>往Bit14写1开启loopback模式，开启loopback模式之前需要关闭自动协商</li>
+<li>将bit11置1将使器件进入低功耗模式</li>
+</ol>
+</li>
+<li>PHYSTS（PHY Status Register）@10H
+
+<ol>
+<li>Link Speed</li>
+<li>bit3可以检测到是否开启loopback模式</li>
+</ol>
+</li>
+<li>PHYCR（PHY Control Register）@19H
+
+<ol>
+<li>Auto-MDIX默认情况下是使能的，并能够通过该寄存器的【15：14】来重新配置</li>
+<li>【6：5】设置LED的工作模式</li>
+</ol>
+</li>
+<li>LEDCR @18H
+
+<ol>
+<li>设置LED闪烁频率</li>
+</ol>
+</li>
+<li>MICR @11H
+
+<ol>
+<li>bit0置1将配置7号引脚作为低电平有效的中断输出</li>
+<li>将INT_OE位置1，使器件退出低功耗模式</li>
+<li>将bit1置1将会使能中断输出</li>
+</ol>
+</li>
+<li>MISR @12H
+
+<ol>
+<li>低字节是各种中断的使能掩码</li>
+<li>高字节是各中断的状态掩码</li>
+<li>读MISR寄存器将会清除所有挂起的中断</li>
+</ol>
+</li>
+<li>EDCR（Energy Detect Control） @1DH
+
+<ol>
+<li>是否使能Energy Detect Mode</li>
+</ol>
+</li>
+<li>PAGESEL(Page Select Register) @13H</li>
+<li></li>
+</ol>
+</li>
 </ol>
 
 

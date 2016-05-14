@@ -2843,8 +2843,36 @@
  exit
  sudo apt-get install gcc-multilib
 </code></pre></li>
+<li>如何添加应用程序的快捷方式，以Eclipse软件为例
+
+<ol>
+<li>首先进入/usr/share/applications目录下，创建eclipse.desktop</li>
+<li>编辑eclipse.desktop，内容如下：</li>
+</ol>
+</li>
 </ol>
 
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="o">[</span>Desktop Entry<span class="o">]</span>
+</span><span class='line'><span class="nv">Type</span><span class="o">=</span>Application
+</span><span class='line'><span class="nv">Name</span><span class="o">=</span>Eclipse   --应用程序名
+</span><span class='line'><span class="nv">Comment</span><span class="o">=</span>Eclipse     --程序简介
+</span><span class='line'><span class="nv">Icon</span><span class="o">=</span>/home/lai/Software/eclipse/icon.xpm    --图标地址
+</span><span class='line'><span class="nv">Exec</span><span class="o">=</span>/home/lai/Software/eclipse/eclipse      --应用程序地址
+</span><span class='line'><span class="nv">Terminal</span><span class="o">=</span><span class="nb">false</span>
+</span><span class='line'><span class="nv">Categories</span><span class="o">=</span>Development<span class="p">;</span>IDE<span class="p">;</span>Java<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
 
 <p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
 
