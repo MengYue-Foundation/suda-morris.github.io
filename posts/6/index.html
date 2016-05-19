@@ -88,6 +88,87 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/24/php-knowledge/">
+		
+			PHP语法基础</a>
+	</h2>
+	<div class="entry-content">
+		<h3>变量</h3>
+
+<ul>
+<li>变量使用<strong>$+变量名</strong>来定义与使用，比如:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='PHP'><span class='line'><span class="nv">$a</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$b</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+</span><span class='line'><span class="k">echo</span> <span class="nv">$a</span><span class="o">+</span><span class="nv">$b</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>常量</h3>
+
+<ul>
+<li>使用关键字<strong>const</strong>：</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='PHP'><span class='line'><span class="k">const</span> <span class="no">THE_VALUE</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">THEVALUE</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>使用<strong>define</strong>函数：</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='PHP'><span class='line'><span class="nb">define</span><span class="p">(</span><span class="s1">&#39;THE_VALUE&#39;</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
+</span><span class='line'><span class="k">echo</span> <span class="nx">THE_VALUE</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-24T16:00:02+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/php/'>php</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/20/board-dot-c/">
 		
 			Uboot第二阶段代码分析</a>
@@ -8832,70 +8913,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 	<a class='category' href='/blog/categories/develop/'>develop</a>, <a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/08/gns3-install/">
-		
-			GNS3_Install</a>
-	</h2>
-	<div class="entry-content">
-		<h2>GNS3模拟器安装步骤</h2>
-
-<ol>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3</a>，并且安装</li>
-<li><a href="https://community.gns3.com/community/software/download/">下载GNS3 IOU VM虚拟机镜像</a></li>
-<li>下载路由器和交换机的IOS镜像文件(百度搜索并下载)
-
-<ul>
-<li>i86bi-linux-l2-ipbasek9-15.1g.bin(交换机)</li>
-<li>i86bi-linux-l3-adventerprisek9-15.4.1T.bin(路由器)</li>
-</ul>
-</li>
-<li>安装virtualbox</li>
-<li>导入步骤2中下载的GNS3虚拟机镜像，设置网卡为hostonly，并启动虚拟机</li>
-<li>GNS3是基于linux系统的，root用户登录，密码为cisco，然后查看网卡ip地址ifconfig</li>
-<li>在浏览器中输入刚才查找到的IP地址，并指名端口号8000下的upload，例如：<a href="http://192.168.172.101:8000/upload">http://192.168.172.101:8000/upload</a></li>
-<li>打开GNS3软件，在edit->Preference->Server中添加虚拟机的IP地址以及端口(ip地址来自步骤6)</li>
-<li>在edit->Preference->IOS on UNIX中，指名iourc.txt的路径</li>
-<li>在edit->Preference->IOU devices中，添加switch和router镜像路径(路径为上传到虚拟机中的具体路径，例如：/home/gns3/GNS3/images/IOU/i86bi-linux-l2-ipbasek9-15.1g.bin)</li>
-<li>启动设备</li>
-</ol>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-08T11:24:09+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/gns3/'>gns3</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

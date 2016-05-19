@@ -1,0 +1,386 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>S3C6410 - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="S3C6410处理器概述 S3C6410是一个32位的RISC微处理器，采用了32位内部总线架构，内部总线由AXI（先进的可扩展接口）、AHB和APB总线组成
+包括许多硬件外设，如一个相机接口，TFT24位真彩色液晶显示控制器，系统管理器（电源管理等），4通道UART，32通道DMA，4通道定时器 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">S3C6410</h2>
+	<div class="entry-content"><h2>S3C6410处理器概述</h2>
+
+<ol>
+<li>S3C6410是一个32位的RISC微处理器，采用了32位内部总线架构，内部总线由AXI（先进的可扩展接口）、AHB和APB总线组成</li>
+<li>包括许多硬件外设，如一个相机接口，TFT24位真彩色液晶显示控制器，系统管理器（电源管理等），4通道UART，32通道DMA，4通道定时器，通用的I/O端口，IIS总线接口，IIC总线接口，USB主设备，USB OTG，SD主设备</li>
+<li>矢量浮点型（VFP）协处理器支持</li>
+<li>ARM1176JZF-S核心时钟频率最高是667MHz</li>
+<li>包含3个片上PLL：APLL，MPLL和EPLL
+
+<ol>
+<li>APLL生成一个独立的ARM操作时钟</li>
+<li>MPLL生成系统参考时钟</li>
+<li>EPLL产生用作外设IP的时钟</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>ARM核心寄存器</h2>
+
+<ol>
+<li>ARM11有13个32位的通用寄存器R0~R12，另外有3个32位的寄存器分别是SP、LR和PC
+
+<ol>
+<li></li>
+</ol>
+</li>
+</ol>
+
+
+<h2>GPIO特性</h2>
+
+<ol>
+<li>提供内部去抖滤波器</li>
+<li>8通道复用ADC，最大500k采样/s和10位的分辨率</li>
+</ol>
+
+
+<h2>存储器映射</h2>
+
+<ol>
+<li>S3C6410支持32位物理地址域，并且这些地址域分成两部分，一部分用于存储，另一部分用于外设</li>
+<li>通过SPINE总线访问主存，主存的地址范围是从0x0000_0000~0x6FFF_FFFF。主存部分分成四个区域：引导镜像区、内部存储区、静态存储区和动态存储区
+
+<ol>
+<li>引导镜像区的地址范围是从0x0000_0000~0x07FF_FFFF，但是没有实际的映射内存。引导镜像区反映一个镜像，这个镜像指向内存的一部分区域或者静态存储区。引导镜像的开始地址是0x0000_0000</li>
+<li>内部存储区用于启动代码访问内部ROM和内部SRAM，也被称作steppingstone。每块内部存储器的起始地址是确定的，内部ROM的地址范围是0x0800_0000~0x0BFF_FFFF，但是实际存储仅32KB。该区域是只读的，并且当内部ROM启动被选择时，该区域能映射到引导镜像区。内部SRAM的地址范围是0x0C00_0000~0x0FFF_FFFF，但是实际存储仅4KB。当NAND闪存启动被选择时能映射到引导镜像区。</li>
+<li>静态存储区的地址范围是0x1000_0000~0x3FFF_FFFF，通过该地址区域能访问SROM、SRAM、NOR Flash、同步NOR接口设备和Steppingstone。每一块区域代表一个芯片选择。例如地址范围从0x1000_0000~0x17FF_FFFF代表Xm0CSn[0]。每个芯片选择的开始地址是固定的。NAND Flash和CF/ATAPI不能通过静态存储区访问，因此任何Xm0CSn[5:2]映射到NFCON或CFCON，相关地址区域应当被访问。一个例外，如果Xm0CSn[2]用于NAND Flash，Steppingstone映射到存储区从0x2000_0000~0x27FF_FFFF</li>
+<li>动态存储区域的地址范围是0x4000_0000~0x6FFF_FFFF。DMC0有权使用地址0x4000_0000~0x4FFF_FFFF，并且DMC1有权使用地址0x5000_0000~0x6FFF_FFFF。对于每一块芯片选择的起始地址是可以进行配置的</li>
+</ol>
+</li>
+<li>外设区域通过PERI总线被访问，它的地址范围是0x7000_0000~0x7FFF_FFFF。这个地址范围的所有的SFR能被访问。而且如果数据需要从NFCON或CFCON传输，这些数据需要通过PERI总线传输</li>
+</ol>
+
+
+<h2>bootloader的作用</h2>
+
+<ol>
+<li>boot的目的：跳到C语言中
+
+<ol>
+<li>关闭看门狗，中断，MMU，CACHE</li>
+<li>配置系统工作时钟</li>
+<li>配置SDRAM的控制器（行地址数、列地址数、多少块，周期性的充电）</li>
+<li>让sp指针指向可读可写的设备区间中，满足递减栈的规则
+
+<ol>
+<li>用哪些模式，就要初始化哪些模式下的sp</li>
+<li>每个模式的值不能覆盖其余模式</li>
+</ol>
+</li>
+<li>代码搬移
+
+<ol>
+<li>执行速度问题（Nor Flash比RAM的速度慢很多），把程序从nor-flash搬移到快速的内存</li>
+<li>只把存储器的一部分代码执行出来，把存储在其他位置上的代码搬移到内存上，所以要对相应存储器的控制器进行初始化</li>
+</ol>
+</li>
+<li>bl main</li>
+</ol>
+</li>
+<li>loader的目的
+
+<ol>
+<li>执行应用逻辑，点灯，uart，load linux kernel</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>链接脚本的构成要素</h2>
+
+<ol>
+<li>哪一个.o放到代码段的起始位置</li>
+<li>所有的.o放到哪个基地址上</li>
+<li>代码段、数据段等等是不连续的
+
+<ol>
+<li>.text代码段</li>
+<li>.rodata只读数据段</li>
+<li>.data初始化数据段</li>
+<li>.bss未初始化数据段</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>6410的启动步骤</h2>
+
+<p>上电后，6410会启动片内IROM中的程序(BL0，位于地址0x0800_0000~0x0BFF_FFFF，实际仅32KB)，这部分程序主要是初始化时钟，看门狗等外设，然后把SD卡或者NandFlash中的最开始4K字节的内容(BL1)加载到片内SRAM中(Stepping Stone区域，位于0x0C00_0000~0x0FFF_FFFF，实际仅用了4KB),这4K程序主要完成对SDRAM主存的配置，然后把bootloader全部的程序(BL1+BL2)加载到SDRAM中，并从Stepping Stone中跳转过去。BL2程序会把Nand Flash中的OS镜像加载到主存中，并跳转到OS的入口中运行。</p>
+
+<h2>异常向量的地址映射</h2>
+
+<p>根据ARM的手册，一般异常发生以后会被映射到0x0000_0000或者0xFFFF_0000，这可以使用CP15协处理器的SCTLR寄存器去配置（bit13等于0代表异常向量表位于0x0000_0000），</p>
+
+<h2>ARM流水线技术</h2>
+
+<ol>
+<li>在ARM中，PC指针并不是指向当前正在运行的指令，而是指向当前运行的指令的地址+8（8个字节正好是两条指令，即三级流水线：取址，译码，执行）</li>
+</ol>
+
+
+<h2>ARM的协处理器</h2>
+
+<ol>
+<li>CP15，涉及到CACHE，MMU，中断向量等的管理</li>
+<li>CP14，涉及到仿真功能，设计仿真器的时候可能需要</li>
+<li>CP12-13，保留为以后使用</li>
+<li>CP11一般用于双精度浮点数的计算</li>
+<li>CP10用于单精度浮点数的计算</li>
+<li>CP8-9，保留为以后使用</li>
+<li>CP0-7，ARM公司留个各生产厂家使用</li>
+</ol>
+
+
+<h2>冯诺依曼体系和哈佛体系</h2>
+
+<ol>
+<li>一般单片机如MSP430，Cortex-M3等会采用哈佛体系结构，内部集成了Flash和RAM，指令和数据总线分开，虽然总线很多，但是因为在芯片内部，无伤大雅</li>
+<li>ARM7，ARM11，Cortex-A8等应用处理器会采用冯诺依曼体系结构，指令和数据总线共用。冯诺依曼体系能够省去相当多的数据总线和地址总线，由于代码和数据共享一块内存，经常会造成数据冲突，速度上产生瓶颈。为了缓解这种情况，引入了CACHE的机制。</li>
+<li>ARM早期采用冯诺依曼结构，到了后来CPU主频越来越快，数据吞吐量很大，冯诺依曼已经无法满足。ARM更新了设计，芯片外部还是采用冯诺依曼体系，即一块RAM既存放代码又存放数据，但是芯片内部不采用单一的CACHE，而是采用哈佛体系结构，分成DCACHE和ICACHE两块。</li>
+<li>在bootloader期间，还没有严格区分代码段与数据段，代码段有可能会被缓存到DCACHE中，导致修改后的代码无法被缓存到ICACHE中，造成CACHE与主存的不一致，因此在bootloader中需要清DCACHE和ICACHE</li>
+</ol>
+
+
+<h2>Linux下查看二进制代码</h2>
+
+<ol>
+<li>hexdump -C file.bin | less，其中-C表示同时显示二进制和ASCII码</li>
+</ol>
+
+
+<h2>大端（Big Edian）与小端（Little Edian）</h2>
+
+<ol>
+<li>Intel阵营支持小端，摩托罗拉支持大端，早期的ARM公司大小端都支持，通过寄存器配置来选择</li>
+<li>摩托罗拉公司的衰落，导致小端格式直接成为市场主流，ARM也放弃了对大端格式的支持</li>
+<li>但是在网络协议中，一直保持着大端的数据格式，数据传输也是先传高位再传低位</li>
+</ol>
+
+
+<h2>u-boot/kernel中的死循环高级用法</h2>
+
+<p>见代码如下，其中b   1b表示跳转到之前一个标号“1”处，即back，b 1f表示跳转到后面一个标号“1”处，即forward</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>1:   
+</span><span class='line'>  b   1b
+</span><span class='line'>1:
+</span><span class='line'>  b   1f
+</span><span class='line'>1:
+</span><span class='line'>  b   1b</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>VIM中跨文件的赋值粘贴</h2>
+
+<ol>
+<li>打开A文件，光标停在要开始赋值的文字那行，在命令模式下输入："+单字母的变量名+要复制的行数+yy</li>
+<li>打开B文件，光标停在要粘贴的文字的那行，在命令模式下输入："+同上面的变量名+p</li>
+</ol>
+
+
+<h2>DDR内存基本原理</h2>
+
+<ol>
+<li>DDR SDRAM全称Double Data Rate Synchronize Dynamic Random Access Memory
+
+<ol>
+<li>RAM中的R表示随机，意思是访问任意地址上的数据所花费的时间是一样的，区别于硬盘这类顺序访问存储器</li>
+<li></li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-05-15T21:04:55+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2016/05/15/s3c6410" data-title="S3C6410" data-url="http://suda-morris.github.io/blog/2016/05/15/s3c6410/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2016
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
