@@ -88,6 +88,80 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/08/20/basic-analog-knowledge/">
+		
+			Basic-Analog-Knowledge</a>
+	</h2>
+	<div class="entry-content">
+		<h2>磁珠</h2>
+
+<ol>
+<li>全称：铁氧体磁珠滤波器。是一种抗干扰元件，滤除高频噪声效果显著</li>
+<li>磁珠有很高的电阻率和磁导率，等效于电阻和电感串联，但电阻值和电感值都随频率变化</li>
+<li>磁珠的单位是欧姆，不是亨特，120R~600R之间都很常用</li>
+<li>主要特性参数：
+
+<ol>
+<li>直流电阻(DCR):直流电流通过此磁珠时，此磁珠所呈现的电阻值</li>
+<li>额定电流(mA)</li>
+<li>阻抗[z]@100MHz(ohm):这里指的是交流阻抗</li>
+<li>阻抗频率特性</li>
+<li>电阻频率特性</li>
+<li>感抗频率特性</li>
+</ol>
+</li>
+<li>用途：
+
+<ol>
+<li>抑制信号线、电源线上的高频干扰和尖峰脉冲。它也具有吸收景点放点脉冲干扰的能力</li>
+<li>电感是储能元件，而磁珠时能量转换器件。电感多用于电源滤波回路，侧重于抑制传导性干扰；磁珠多用于信号回路，主要用于EMI(电磁兼容)方面。磁珠用来吸收超高频信号，例如在一些RF电路、PLL、振荡电路、含超高频存储器电路等，都需要在电源输入部分加磁珠</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>TVS二极管</h2>
+
+<ol>
+<li>TVS二极管和常见的文雅二极管工作原理相似，如果高于标志上的击穿电压，TVS二极管就会导通，与稳压二极管相比，TVS二极管具有更高的电流导通能力。TVS二极管的两极收到反向瞬态高能冲击时，以10e-12秒的量级的速度，将其两极间的高阻抗变为低阻抗，同时吸收高达数千瓦的浪涌功率，使得两极之间的电压钳位于一个安全值，有效地保护电子线路中的精密元器件免受浪涌脉冲的破坏</li>
+<li></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-20T12:22:41+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/analog/'>analog</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/08/17/w5500-introduce/">
 		
 			W5500-Introduce</a>
@@ -2920,172 +2994,6 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/27/c-language-review/">
-		
-			C语言知识点</a>
-	</h2>
-	<div class="entry-content">
-		<h2><code>#ifdef和#if defined的差别</code></h2>
-
-<p>注意两者都有个define的作用，区别在于使用方式上。前者的通常用法是:</p>
-
-<figure class='code'><figcaption><span>只能在两者中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#ifdef  XXX</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="p">....</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#else</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="p">....</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>对于后者，常用法是：</p>
-
-<figure class='code'><figcaption><span>可以在多个中选择是否有定义</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#if defined xxx1</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="p">....</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#elif defined xxx2</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="p">....</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#elif defined xxx3</span>
-</span><span class='line'>
-</span><span class='line'>   <span class="p">....</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>小细节</h2>
-
-<ol>
-<li>C++并不支持void*隐式转换为其他类型的指针，但是C语言允许</li>
-<li>变量命名，所有字符都使用小写，含义多的可以用<strong>_</strong>进行辅助</li>
-<li>全局变量能少用就少用，必须要用的情况下，可以考虑添加前缀<strong>g_</strong></li>
-<li>不要将<strong>_</strong>作为宏的开头或者结尾</li>
-<li>要使用<strong>#if</strong>而不是<strong>#ifdef</strong>，可以使用<strong>define（）</strong>来替代<strong>#ifdef</strong>的功能</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="cp">#if !define(USERS_DEFINE)</span>
-</span><span class='line'>      <span class="cp">#define USERS_DEFINE ...</span>
-</span><span class='line'> <span class="cp">#endif</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>volatile关键字</h2>
-
-<p>一旦使用了，就是告诉编译器，即使这个变量没有被使用或修改其他内存单元，它的值也可能发生变化。通俗地讲，告诉编译器，不要把你的那一套优化策略用在我的身上</p>
-
-<h2>两种不太常见的格式：%[]和%*</h2>
-
-<ol>
-<li>%[]用于限制读取类型，常见于字符串的过滤。</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">//假设输入：22 hello,string to me!</span>
-</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[a-z]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello</span>
-</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[^i]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello,str</span>
-</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%d %[^,]&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//22 hello</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li>%*是忽略第一个输入，也可以理解为文件宽度(域宽)</li>
-</ol>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="c1">//假设输入：22 33</span>
-</span><span class='line'><span class="n">scanf</span><span class="p">(</span><span class="s">&quot;%*d %d&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tmp</span><span class="p">);</span><span class="c1">//读到33</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'> <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;dir&quot;</span><span class="p">;</span>
-</span><span class='line'> <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%*s%s&quot;</span><span class="p">,</span><span class="mi">4</span> <span class="p">,</span><span class="s">&quot;&quot;</span> <span class="p">,</span> <span class="n">str</span><span class="p">);</span><span class="c1">//输出:    dir,前面有四个空白占位   </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>select机制</h2>
-
-<ol>
-<li>select()的机制中提供一fd_set的数据结构，实际上是一long类型的数组， 每一个数组元素都能与一打开的文件句柄（不管是Socket句柄，还是其他文件或命名管道或设备句柄）建立联系，建立联系的工作由程序员完成，当调用select()时，由内核根据IO状态修改fd_set的内容，由此来通知执行了select()的进程哪一Socket或文件可读或可写。</li>
-<li>程序去select的时候，如果没有数据输入，程序会一直等待，直到有数据为止，也就是程序中无需循环和sleep</li>
-<li>使用Select就可以完成非阻塞（所谓非阻塞方式non-block，就是进程或线程执行此函数时不必非要等待事件的发生，一旦执行肯定返回，以返回值的不同来反映函数的执行情况，如果事件发生则与阻塞方式相同，若事件没有发生，则返回一个代码来告知事件未发生，而进程或线程继续执行，所以效率较高）方式工作的程序，它能够监视我们需要监视的文件描述符的变化情况——读写或是异常。</li>
-<li>返回值：准备就绪的描述符数，若超时则返回0，若出错则返回-1。</li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-27T15:17:24+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/c/'>c</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>
