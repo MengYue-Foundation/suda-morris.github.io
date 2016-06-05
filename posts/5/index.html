@@ -88,6 +88,94 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/09/13/wechat-develop/">
+		
+			微信公众号开发</a>
+	</h2>
+	<div class="entry-content">
+		<h2>微信接口请求返回格式介绍</h2>
+
+<blockquote><p>微信接口是通过GET方式请求的，返回的数据格式是JSON</p></blockquote>
+
+<h2>常用接口功能</h2>
+
+<ol>
+<li>access_token获取接口
+
+<ul>
+<li>access_token是公众号的全局唯一票据，龚总好调用各接口时都需要使用access_token</li>
+<li>存储至少要保留512个字符空间，有效期目前为2个小时，重复获取将导致上次获取的access_token失效</li>
+</ul>
+</li>
+<li>获取微信服务器IP接口</li>
+<li>长链接转短链接接口</li>
+<li>获取用户列表</li>
+<li>获取用户基本信息(UnionID机制)</li>
+<li>网页授权接口
+
+<ul>
+<li>如果用户在微信客户端中访问第三方网页，公众号可以通过微信网页授权机制，来获取用户基本信息</li>
+<li>两种scope模式：
+
+<ol>
+<li>snsapi_base时只能获取到openid</li>
+<li>snsapi_userinfo时可获取到其他信息</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>素材管理接口</li>
+<li>高级群发接口
+
+<ul>
+<li>两个优点
+
+<ol>
+<li>可根据openid群发</li>
+<li>群发图文内容支持html</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>JSSDK接口</li>
+<li>模板消息接口</li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-09-13T21:31:02+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/wechat/'>wechat</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/08/20/basic-analog-knowledge/">
 		
 			Basic-Analog-Knowledge</a>
@@ -2924,76 +3012,6 @@ QVariant对象可以通过QMetaProperty::read()或者QObject::property()获得
 
 
 	<a class='category' href='/blog/categories/poe/'>poe</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/29/about-nginx/">
-		
-			初识Nginx</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Nginx简介</h2>
-
-<blockquote><ol>
-<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
-<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
-<li>优点：高并发，部署简单，内存消耗少，成本低</li>
-<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
-</ol>
-</blockquote>
-
-<h2>其它服务器</h2>
-
-<ol>
-<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
-<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
-<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
-</ol>
-
-
-<h2>Nginx环境的搭建</h2>
-
-<ol>
-<li><a href="http://nginx.org">进入官网下载最新版</a></li>
-<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
-<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
-<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
-<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
-<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
-</ol>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-29T10:21:37+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
 
 
 </div>

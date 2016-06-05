@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-05-23T20:00:20+08:00</updated>
+  <updated>2016-06-05T20:29:02+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -348,6 +348,33 @@
 <li>DRAM控制器可以直接收一个DRAM控制器本身的指令，通过写指令到直接指令寄存器，DRAM控制器可以发送像“Precharge all”,&ldquo;Autorefresh&rdquo;,&ldquo;NOP&rdquo;,&ldquo;MRS&rdquo;(&ldquo;EMRS&rdquo;)这样的指令到SDRAM</li>
 <li>在自动刷新计数器中，当刷新技术达到刷新周期的值时，控制器便会发出一个自动刷新指令对SDRAM进行周期性的刷新</li>
 <li>DRAM控制器最多只能支持两个同一类型的芯片，每个芯片可分配最多256MB的地址空间。</li>
+</ol>
+
+
+<h2>MMU</h2>
+
+<ol>
+<li>ARMv6的MMU由协处理器CP15控制，其功能是：地址映射（VA->PA），内存访问权限控制</li>
+<li>虚拟地址到物理地址的转换过程：Micro TLB->Main TLB->Page Table Walk</li>
+<li>ARMv6的MMU进行地址映射时设计到两种页表，一级页表(first level page table)和二级页表(coarse page table)</li>
+<li>关于映射方式有两种：段映射和页映射。段映射只用到一级页表，页映射用到一级页表和二级页表</li>
+<li>关于映射粒度：段映射的映射粒度有两种，1M section和16M supersection；页映射的映射粒度也有两种：4K small page和64K large page</li>
+<li>硬件在做地址转换时，如何知道当前是什么映射方式以及映射粒度是多少呢？这些信息可以从页表的入口描述符中获得</li>
+<li>一级页表总共包含4096个转换描述符，因为是通过虚拟地址的31：20位寻址的，12位能够表示的数最大是4096</li>
+<li>通过虚拟地址的高12位偏移，找到页表中的对应描述符，判断描述符的最后两位，确定是什么转换，10的话表示段转换，01表示粗页(64K)转换,11表示细页(4K)转换。如果判断是段转换，将描述符的高12位取出，这个就是物理的基地址，再和虚拟地址的后20位拼接，就得到对应的物理地址。</li>
+</ol>
+
+
+<h2>制作uImage</h2>
+
+<ol>
+<li>工具：mkimage，位于uboot的tools文件夹下</li>
+<li>命令使用：
+
+<ol>
+<li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x30008040 -d zImage uImage</h2></li>
+</ol>
+</li>
 </ol>
 
 ]]></content>

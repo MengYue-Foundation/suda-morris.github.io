@@ -88,6 +88,76 @@
     <article class="post">
 	<h2 class="title">
 		
+		<a href="/blog/2015/06/29/about-nginx/">
+		
+			初识Nginx</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Nginx简介</h2>
+
+<blockquote><ol>
+<li>Nginx是一种服务器软件，Nginx是一种高性能的HTTP和反向代理服务器，同时是一个代理邮件服务器，也就是Ngix上可以发布网站，也可以实现负载均衡，还可以作为邮件服务器实现收发邮件的功能</li>
+<li>所谓负载均衡，是指当同时有N多个用户访问我们服务器的时候，为了减小服务器压力，我们需要将用户分别引入各服务器，分担服务器压力</li>
+<li>优点：高并发，部署简单，内存消耗少，成本低</li>
+<li>缺点：rewrite功能不够强大，模块没有Apache多</li>
+</ol>
+</blockquote>
+
+<h2>其它服务器</h2>
+
+<ol>
+<li>IIS服务器只能在Windows上运行，Windows服务器性能不如Linux服务器</li>
+<li>Tomcat服务器面向的是Java语言，是一种重量级的服务器</li>
+<li>Apache服务器稳定，开源，跨平台，但是不支持高并发</li>
+</ol>
+
+
+<h2>Nginx环境的搭建</h2>
+
+<ol>
+<li><a href="http://nginx.org">进入官网下载最新版</a></li>
+<li>安装gcc:<code>yum -y install gcc gcc-c++ autoconf automake</code></li>
+<li>安装PCRE库文件：<code>yum -y install pcre pcre-devel</code></li>
+<li>安装zlib库文件：<code>yum -y install zlib zlib-devel</code></li>
+<li>解压缩Nginx压缩包，然后进入解压后文件夹，<code>./config --prefix=/software</code>,成功后执行<code>make $$ make install</code></li>
+<li>启动服务器：<code>/software/nginx/sbin/nginx -c /software/nginx/conf/nginx.conf</code></li>
+</ol>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-06-29T10:21:37+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/nginx/'>nginx</a>, <a class='category' href='/blog/categories/study/'>study</a>
+
+
+</div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
 		<a href="/blog/2015/06/27/c-language-review/">
 		
 			C语言知识点</a>
@@ -7669,118 +7739,6 @@ CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MO
 
 
 <time datetime="2015-06-13T23:15:44+08:00" pubdate data-updated="true"></time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/kdm/'>kdm</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/u-boot/'>u-boot</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2015/06/13/u-boot-dot-lds/">
-		
-			u-boot.lds</a>
-	</h2>
-	<div class="entry-content">
-		<figure class='code'><figcaption><span>u-boot.lds</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">OUTPUT_FORMAT</span><span class="p">(</span><span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">,</span> <span class="s">&quot;elf32-littlearm&quot;</span><span class="p">)</span>
-</span><span class='line'><span class="n">OUTPUT_ARCH</span><span class="p">(</span><span class="n">arm</span><span class="p">)</span>
-</span><span class='line'><span class="n">ENTRY</span><span class="p">(</span><span class="n">_start</span><span class="p">)</span>
-</span><span class='line'><span class="n">SECTIONS</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="mh">0x00000000</span><span class="p">;</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">text</span>      <span class="p">:</span>
-</span><span class='line'>  <span class="p">{</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">start</span><span class="p">.</span><span class="n">o</span>  <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">s3c6410</span><span class="o">/</span><span class="n">cpu_init</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">onenand_cp</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">nand_cp</span><span class="p">.</span><span class="n">o</span>    <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">board</span><span class="o">/</span><span class="n">samsung</span><span class="o">/</span><span class="n">mini6410</span><span class="o">/</span><span class="n">nand_6410</span><span class="p">.</span><span class="n">fo</span>
-</span><span class='line'>    <span class="n">cpu</span><span class="o">/</span><span class="n">s3c64xx</span><span class="o">/</span><span class="n">movi</span><span class="p">.</span><span class="n">o</span> <span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="o">*</span><span class="p">(.</span><span class="n">text</span><span class="p">)</span>
-</span><span class='line'>    <span class="n">lib_arm</span><span class="o">/</span><span class="n">div0</span><span class="p">.</span><span class="n">o</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">rodata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">rodata</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">data</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">data</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">got</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">got</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">__u_boot_cmd_start</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">u_boot_cmd</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">u_boot_cmd</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">__u_boot_cmd_end</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">mmudata</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">mmudata</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="p">.</span> <span class="o">=</span> <span class="n">ALIGN</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class='line'>  <span class="n">__bss_start</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'>  <span class="p">.</span><span class="nl">bss</span> <span class="p">:</span> <span class="p">{</span> <span class="o">*</span><span class="p">(.</span><span class="n">bss</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">_end</span> <span class="o">=</span> <span class="p">.;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="http://i.imgur.com/Nn7Krru.gif" alt="suda-morris" /></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-06-13T23:06:13+08:00" pubdate data-updated="true"></time></div>
 	<div class="tags">
 
 
