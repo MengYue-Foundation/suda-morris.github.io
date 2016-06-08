@@ -354,6 +354,26 @@
 </li>
 </ol>
 
+
+<h2>ALtium中绘制自定义焊盘</h2>
+
+<ol>
+<li>在Top Overlay层绘制自定义焊盘的轮廓
+<img src="http://i.imgur.com/Jjnolr0.png" alt="绘制自定义焊盘的轮廓" /></li>
+<li>选中轮廓，Tool->Convert->Create Region from Selected Primitives
+<img src="http://i.imgur.com/tF5WMEs.png" alt="创建Region" /></li>
+<li>将创建的Region放置在Top Layer上
+<img src="http://i.imgur.com/5uMSDDr.png" alt="将创建的Region放置在Top Layer上" /></li>
+<li>复制刚才得到的Region两次，分别放置在Top Paste和Top overlay层
+<img src="http://i.imgur.com/OXxOcYs.png" alt="Top Paste和Top overlay层" /></li>
+<li>将Top Lay和Top paste，Top overlay层的图形重叠在一起，摆放到合适位置后，双击Top Layer的Region，打开Mask选项
+<img src="http://i.imgur.com/UuPNroi.png" alt="打开Mask扩展选项" /></li>
+<li>在自定义Region中间防止一个小焊盘，标上正确的Designator
+<img src="http://i.imgur.com/GmmOFit.png" alt="放置焊盘" /></li>
+<li>将新创建的封装库放到PCB文件中会出现警告信息，比如短路，需要在PCB界面中，使用design->netlist->configure physical nets来对这些无网络的元素进行处理
+<img src="http://i.imgur.com/XuST9Vf.png" alt="处理无网络的元素" /></li>
+</ol>
+
 </div>
 
 

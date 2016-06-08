@@ -4,7 +4,7 @@
   <title><![CDATA[WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-06-05T20:29:02+08:00</updated>
+  <updated>2016-06-08T20:04:34+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -567,7 +567,7 @@
 <li>ARMv6的MMU由协处理器CP15控制，其功能是：地址映射（VA->PA），内存访问权限控制</li>
 <li>虚拟地址到物理地址的转换过程：Micro TLB->Main TLB->Page Table Walk</li>
 <li>ARMv6的MMU进行地址映射时设计到两种页表，一级页表(first level page table)和二级页表(coarse page table)</li>
-<li>关于映射方式有两种：段映射和页映射。段映射只用到一级页表，页映射用到一级页表和二级页表</li>
+<li>关于映射方式有两种：段映射和页映射。段映射只用到一级页表，页映射用到一级页表和二级页表s</li>
 <li>关于映射粒度：段映射的映射粒度有两种，1M section和16M supersection；页映射的映射粒度也有两种：4K small page和64K large page</li>
 <li>硬件在做地址转换时，如何知道当前是什么映射方式以及映射粒度是多少呢？这些信息可以从页表的入口描述符中获得</li>
 <li>一级页表总共包含4096个转换描述符，因为是通过虚拟地址的31：20位寻址的，12位能够表示的数最大是4096</li>
@@ -582,7 +582,7 @@
 <li>命令使用：
 
 <ol>
-<li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x30008040 -d zImage uImage</h2></li>
+<li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x50008040 -d zImage uImage</h2></li>
 </ol>
 </li>
 </ol>
@@ -1507,6 +1507,26 @@
 <li>原理图中添加差分对规则:在命名差分对网络时，必须保证网络名的前缀是一样的，后缀中用下划线带一个N和一个P字母即可。命名好之后，点击菜单Place->Directives->DifferentialPair命令，在差分对上放置两个差分图标</li>
 </ol>
 </li>
+</ol>
+
+
+<h2>ALtium中绘制自定义焊盘</h2>
+
+<ol>
+<li>在Top Overlay层绘制自定义焊盘的轮廓
+<img src="http://i.imgur.com/Jjnolr0.png" alt="绘制自定义焊盘的轮廓" /></li>
+<li>选中轮廓，Tool->Convert->Create Region from Selected Primitives
+<img src="http://i.imgur.com/tF5WMEs.png" alt="创建Region" /></li>
+<li>将创建的Region放置在Top Layer上
+<img src="http://i.imgur.com/5uMSDDr.png" alt="将创建的Region放置在Top Layer上" /></li>
+<li>复制刚才得到的Region两次，分别放置在Top Paste和Top overlay层
+<img src="http://i.imgur.com/OXxOcYs.png" alt="Top Paste和Top overlay层" /></li>
+<li>将Top Lay和Top paste，Top overlay层的图形重叠在一起，摆放到合适位置后，双击Top Layer的Region，打开Mask选项
+<img src="http://i.imgur.com/UuPNroi.png" alt="打开Mask扩展选项" /></li>
+<li>在自定义Region中间防止一个小焊盘，标上正确的Designator
+<img src="http://i.imgur.com/GmmOFit.png" alt="放置焊盘" /></li>
+<li>将新创建的封装库放到PCB文件中会出现警告信息，比如短路，需要在PCB界面中，使用design->netlist->configure physical nets来对这些无网络的元素进行处理
+<img src="http://i.imgur.com/XuST9Vf.png" alt="处理无网络的元素" /></li>
 </ol>
 
 ]]></content>

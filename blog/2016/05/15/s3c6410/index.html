@@ -430,7 +430,7 @@
 <li>ARMv6的MMU由协处理器CP15控制，其功能是：地址映射（VA->PA），内存访问权限控制</li>
 <li>虚拟地址到物理地址的转换过程：Micro TLB->Main TLB->Page Table Walk</li>
 <li>ARMv6的MMU进行地址映射时设计到两种页表，一级页表(first level page table)和二级页表(coarse page table)</li>
-<li>关于映射方式有两种：段映射和页映射。段映射只用到一级页表，页映射用到一级页表和二级页表</li>
+<li>关于映射方式有两种：段映射和页映射。段映射只用到一级页表，页映射用到一级页表和二级页表s</li>
 <li>关于映射粒度：段映射的映射粒度有两种，1M section和16M supersection；页映射的映射粒度也有两种：4K small page和64K large page</li>
 <li>硬件在做地址转换时，如何知道当前是什么映射方式以及映射粒度是多少呢？这些信息可以从页表的入口描述符中获得</li>
 <li>一级页表总共包含4096个转换描述符，因为是通过虚拟地址的31：20位寻址的，12位能够表示的数最大是4096</li>
@@ -445,7 +445,7 @@
 <li>命令使用：
 
 <ol>
-<li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x30008040 -d zImage uImage</h2></li>
+<li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x50008040 -d zImage uImage</h2></li>
 </ol>
 </li>
 </ol>
