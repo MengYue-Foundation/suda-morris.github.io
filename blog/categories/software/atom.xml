@@ -4,7 +4,7 @@
   <title><![CDATA[Category: software | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-06-08T20:04:34+08:00</updated>
+  <updated>2016-06-10T22:54:12+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -546,6 +546,12 @@ Exec=/home/lai/Software/eclipse/eclipse      --应用程序地址
 Terminal=false
 Categories=Development;IDE;Java;  
 </code></li>
+</ol>
+</li>
+<li>如何通过搜索的方式安装软件
+
+<ol>
+<li>例如：<code>sudo apt-cache search nfs-</code></li>
 </ol>
 </li>
 </ol>

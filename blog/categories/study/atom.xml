@@ -4,7 +4,7 @@
   <title><![CDATA[Category: study | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/study/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-06-08T20:04:34+08:00</updated>
+  <updated>2016-06-10T22:54:12+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -373,6 +373,100 @@
 
 <ol>
 <li><h2>mkimage -n &lsquo;my_kernel&rsquo; -A arm -O linux -T kernel -C none -a 0x50008000 -e 0x50008040 -d zImage uImage</h2></li>
+</ol>
+</li>
+</ol>
+
+
+<h2>交叉编译器工具链使用</h2>
+
+<ol>
+<li>readelf
+
+<ol>
+<li>在操作系统基础之上的可执行文件至少包括两个部分，一个是真正的可执行代码的集合，另一个是头信息（Windows下是PE头，Linux下是ELF头），专门给操作系统看的,里面包括首先要运行的程序的入口地址（通过修改该入口地址可以制作木马）</li>
+<li>arm-linux-readelf -h u-boot</li>
+</ol>
+</li>
+<li>size
+
+<ol>
+<li>读取可执行程序的大小，包括text，data，bss等等</li>
+<li>size u-boot</li>
+</ol>
+</li>
+<li>nm
+
+<ol>
+<li>查看可执行程序的符号列表（全局标签），T代表全局函数标签，t表示静态函数标签（被static修饰），D代表全局变量标签，d代表静态变量标签（被static修饰）</li>
+<li>nm u-boot</li>
+</ol>
+</li>
+<li>strip
+
+<ol>
+<li>剔除符号列表，能够把可执行程序变小</li>
+</ol>
+</li>
+<li>string
+
+<ol>
+<li>查看可执行程序中的常量字符串</li>
+<li>string u-boot</li>
+</ol>
+</li>
+<li>objdump
+
+<ol>
+<li>反汇编</li>
+<li>objdump -D u-boot</li>
+</ol>
+</li>
+<li>objcopy
+
+<ol>
+<li>将ELF头信息剔除，只保留可执行程序中的text，data，bss等段</li>
+</ol>
+</li>
+<li>addr2line</li>
+</ol>
+
+
+<h2>为什么内核加载到内存0x50008000处，即偏移0x8000？</h2>
+
+<ul>
+<li>Linux内核在内核管理中需要建立MMU表，这个表需要在内存中预留一段空间来保存</li>
+</ul>
+
+
+<h2>u-boot启动linux内核的条件</h2>
+
+<ol>
+<li>需要在uboot中配置好bootargs环境变量
+
+<ol>
+<li>root=启动根文件系统在哪个设备，如ram，nfs或者flash</li>
+<li>init=内核启动后第一个可执行文件init进程从哪里来</li>
+<li>console=内核启动时使用哪个设备作为控制台</li>
+</ol>
+</li>
+<li>文件系统的部署
+
+<ol>
+<li>ramdisk:内存磁盘类型的文件系统
+
+<ul>
+<li>root=/dev/ram initrd=0x21000000,8M init=/linuxrc console=ttySAC0,115200</li>
+<li>测试过程中，需要先将ramdisk的内容（如initrd.img.gz）放在内存的0x21000000</li>
+</ul>
+</li>
+<li>nfs
+
+<ul>
+<li>root=/dev/nfs init=/linuxrc console=ttySAC0,115200</li>
+<li></li>
+</ul>
+</li>
 </ol>
 </li>
 </ol>
