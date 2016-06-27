@@ -1,0 +1,319 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>optical-network - WenRis Blog</title>
+	<meta name="author" content="suda-morris">
+
+	
+	<meta name="description" content="引论 公共交换电话网络（PSTN），一旦连接建立，它将对终端用户提供固定带宽的稳定连接，通常是4kHz左右。在运营商的中心局将这个电路转换成64kb/s数字电路。PSTN是一种电路交换网络。电路交换的问题是在处理突发数据流的时候它的效率不高。
+快速业务恢复利用带宽冗余来实现， &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="WenRis Blog" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">WenRis Blog</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+	<li><a href="/blog/categories">Categories</a></li>
+	<li><a href="/aboutme">About</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:suda-morris.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/Morris1106com" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/suda-morris" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:suda-morris.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Optical-network</h2>
+	<div class="entry-content"><h2>引论</h2>
+
+<ol>
+<li>公共交换电话网络（PSTN），一旦连接建立，它将对终端用户提供固定带宽的稳定连接，通常是4kHz左右。在运营商的中心局将这个电路转换成64kb/s数字电路。PSTN是一种电路交换网络。电路交换的问题是在处理突发数据流的时候它的效率不高。</li>
+<li>快速业务恢复利用带宽冗余来实现，网络中的一半带宽作为冗余就是为了这一目的而预留的</li>
+<li>光纤是一种非常细的圆柱形玻璃波导，其中包括两个组成部分：内部的纤芯材料和外包层材料。光纤提供了比铜电缆高得多的带宽，并且不易受各种电子干扰及其他不良干扰的影响。</li>
+<li>光网络发展到现在可以分成两代。
+
+<ol>
+<li>第一代光网络
+
+<ol>
+<li>光基本上用来传输，只不过是提供容量而已。与同轴电缆相比，光纤具有更低的传输误码率和更高的传输容量。</li>
+<li>例子：SONET（同步光纤网络），SDH（同步数字体系）</li>
+</ol>
+</li>
+<li>第二代光网络
+
+<ol>
+<li>在光层中具有路由、交换及智能功能</li>
+<li>主要特点是，一旦光路建立，这类业务对经过该光路传输的实际数据是透明的</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>复用技术,可以提高传输容量
+
+<ol>
+<li>OTDM（光时分复用）。形式可以是固定的或者是统计的。</li>
+<li>WDM（波分复用）</li>
+</ol>
+</li>
+<li>波长路由光网络的关键网络单元是OLT（光线路终端）、OADM（光分/插复用器）和光交叉连接（OXC）节点
+
+<ol>
+<li>OLT能将多个波长复用到一芯光纤和将一芯光纤中的一组波长分离到不同的光纤</li>
+<li>OADM接收多波长信号，并选择其中部分波长下路，同时让其他波长直通。它还将一些本地波长有选择地加入到这些直通的波长中，共同组成输出信号。有波长转换功能</li>
+<li>OXC有大量的端口，并且能将波长从一个输入端口交换至另一个端口。有波长转换功能</li>
+</ol>
+</li>
+<li>网络的透明性优点
+
+<ol>
+<li>可以利用单一的基础设施来提供不同的业务</li>
+<li>虽然网络中采用的协议或比特率改变了，但基础设施是不会过时的。整个网络中配置的设备无须进行彻底的改个仍可支持新的协议或新的比特率</li>
+</ol>
+</li>
+<li>全光网络的数据从源节点到宿节点都是在光域传输，沿途不进行任何光电转换。这样的网络是完全透明的</li>
+<li>目前限制光分组交换的因素是：缺乏用于缓冲的光随机存储器</li>
+<li>光缓冲器是利用一定长度的光纤来制作，且只是一些简单的延迟线</li>
+<li>再生器：将光信号转换为电信号，再重发一个原始信号的最新副本作为新的光信号</li>
+<li>影响光网络发展的障碍与解决方案
+
+<ol>
+<li>模间色散：在多模光纤内脉冲能量通过不同的模式传输，而每个不同的模式具有不同的传输速度，因此不同模式到达光纤末端的时间略有不同，这就导致脉冲离散。这种由于不同模式的不同速度产生的特定的色散称为模间色散。
+
+<ol>
+<li>单模光纤有较小的纤芯直径，可以集中光信号的所有能量以单一模式在光纤中传输，有效地消除了模间色散</li>
+</ol>
+</li>
+<li>传输损耗
+
+<ol>
+<li>改变波段，1.55um比1.3um有更低的传输损耗</li>
+</ol>
+</li>
+<li>色度色散：光信号或脉冲的能量有一个有限的带宽，脉冲的不同频率分量以不同的速度传播，这种效应再一次在输出端导致脉冲离散。脉冲的频谱越宽，色散越严重，在光线中，该种色散取决于信号的波长
+
+<ol>
+<li>设计色散位移光纤，使得在1.55um波段具有零色散值</li>
+<li>使用窄光谱宽度的DFB（分布式反馈）激光器，DFB激光器是一种SLM（单纵模）激光器</li>
+</ol>
+</li>
+<li>FWM（四波混频）：三个不同波长的光信号在光纤中相互作用，产生了一个可能与这些光信号波长重叠的第四个光信号</li>
+</ol>
+</li>
+<li>EDFA（掺铒光纤放大器）主要包含了一条掺有稀土元素铒的光纤，通常是几米到几十米长
+
+<ol>
+<li>由泵浦源将光纤中的铒原子从基态跃迁到更高能级的激发态。输入信号中的光子又触发这些原子使之回到它的基态。在此过程中，每个原子发射出一个光子，因此输入信号光子出发了额外光子的发射，从而导致了光放大。由于铒元素的独有性质，铒原子态的能级差恰好与光纤1.5um低损耗波段一致。</li>
+<li>EDFA的一个主要优点是可以同时放大许多波长的信号这使得除了可以用提高传输比他率的方法外，还可以采用另外一种方式提高系统的容量，即波分复用（WDM）方法。</li>
+<li>由于EDFA的使用，信号不再是每个40~80km再生一次，由于色度色散引起的脉冲离散现象越来越严重
+
+<ol>
+<li>带外调制器的DFB激光器（使用外部器件使激光器的输出光接通或断开）</li>
+<li>开发色散补偿器</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>传输基础知识</h2>
+
+<ol>
+<li>光纤中的光速接近2X10<sup>8m</sup>/s</li>
+<li>光纤通信中使用的中心波长在0.8um、1.3um和1.55um左右（因为硅基光纤的三个低损耗窗口在红外波段的0.8um、1.3um和1.55um处）</li>
+<li>信道间距是WDM系统中两个波长之间或频率之间的间距。在波长1.55um时，0.8nm波长间距相应于100GHz的频率间距</li>
+<li>比特率与可用带宽之比称为频谱效率，光通信系统中常见的频谱效率越0.4bit/s/Hz</li>
+<li>现在WDM系统中主要使用1.55um波长区域的主要原因有两个：
+
+<ol>
+<li>在该波长区域光纤中的固有损耗是最低的</li>
+<li>在该波长区域有性能优良的光放大器</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>元器件</h2>
+
+<ol>
+<li>耦合器：用来在光网络中合束和分束信号
+
+<ol>
+<li>耦合器的耦合比可以做成与波长无关也可以做成与波长有关</li>
+<li>一个耦合器能将输入信号平均分配到两个输出端口，只要调节耦合长度。这样的耦合器称为3dB耦合器。对于3dB耦合器，虽然两个输出端口的电场具有同样的大小，但是他们之间存在π/2的相位移</li>
+</ol>
+</li>
+<li>隔离器：只允许一个方向的广播通过它传输，在另一个方向上阻止所有光波传输
+
+<ol>
+<li>被用于光放大器和激光器的输出处，防止反射波进入这些器件</li>
+<li>插入损耗：前向传输的损耗，其值应尽可能小</li>
+<li>隔离度：逆向传输损耗，其值应尽可能大</li>
+</ol>
+</li>
+<li>环形器：与隔离器类似，但是有多个端口
+
+<ol>
+<li>用于构建光上下路元件</li>
+</ol>
+</li>
+</ol>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-06-14T21:58:00+08:00" pubdate data-updated="true"></time></div>
+	<div class="tags">
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+	
+    <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+	<a class="jiathis_button_qzone"></a>
+	<a class="jiathis_button_tsina"></a>
+	<a class="jiathis_button_tqq"></a>
+	<a class="jiathis_button_weixin"></a>
+	<a class="jiathis_button_renren"></a>
+	<a class="jiathis_button_xiaoyou"></a>
+	<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="/blog/2016/06/14/optical-network" data-title="optical-network" data-url="http://suda-morris.github.io/blog/2016/06/14/optical-network/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"suda-morris"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2016
+
+    suda-morris
+
+Powered by Octopress-WenRis Group
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>

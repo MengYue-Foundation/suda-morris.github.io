@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-06-10T22:54:12+08:00</updated>
+  <updated>2016-06-27T21:52:42+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -104,6 +104,8 @@ gianfar_driver-objs := gianfar.o\
 <li>综上，zImage文件由arch/arm/boot/compressed目录下的head.S和misc.c文件（自解压程序）+内核真实代码文件组成</li>
 </ol>
 
+
+<h2>Linux内核体系结构</h2>
 ]]></content>
   </entry>
   

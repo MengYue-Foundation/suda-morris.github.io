@@ -4,7 +4,7 @@
   <title><![CDATA[Category: develop | WenRis Blog]]></title>
   <link href="http://suda-morris.github.io/blog/categories/develop/atom.xml" rel="self"/>
   <link href="http://suda-morris.github.io/"/>
-  <updated>2016-06-10T22:54:12+08:00</updated>
+  <updated>2016-06-27T21:52:42+08:00</updated>
   <id>http://suda-morris.github.io/</id>
   <author>
     <name><![CDATA[suda-morris]]></name>
@@ -636,6 +636,40 @@ int age = data.getInt("age");
 <span class='line-number'>242</span>
 <span class='line-number'>243</span>
 <span class='line-number'>244</span>
+<span class='line-number'>245</span>
+<span class='line-number'>246</span>
+<span class='line-number'>247</span>
+<span class='line-number'>248</span>
+<span class='line-number'>249</span>
+<span class='line-number'>250</span>
+<span class='line-number'>251</span>
+<span class='line-number'>252</span>
+<span class='line-number'>253</span>
+<span class='line-number'>254</span>
+<span class='line-number'>255</span>
+<span class='line-number'>256</span>
+<span class='line-number'>257</span>
+<span class='line-number'>258</span>
+<span class='line-number'>259</span>
+<span class='line-number'>260</span>
+<span class='line-number'>261</span>
+<span class='line-number'>262</span>
+<span class='line-number'>263</span>
+<span class='line-number'>264</span>
+<span class='line-number'>265</span>
+<span class='line-number'>266</span>
+<span class='line-number'>267</span>
+<span class='line-number'>268</span>
+<span class='line-number'>269</span>
+<span class='line-number'>270</span>
+<span class='line-number'>271</span>
+<span class='line-number'>272</span>
+<span class='line-number'>273</span>
+<span class='line-number'>274</span>
+<span class='line-number'>275</span>
+<span class='line-number'>276</span>
+<span class='line-number'>277</span>
+<span class='line-number'>278</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="k">for</span> <span class="n">SDHC</span> <span class="n">Card</span><span class="o">,</span><span class="n">total</span> <span class="n">sectors</span><span class="o">=</span><span class="mi">15523840</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
@@ -744,8 +778,12 @@ int age = data.getInt("age");
 </span><span class='line'>    <span class="o">*</span> <span class="n">mm</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span><span class="o">,</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">从地址address开始修改内存数据</span><span class="err">，</span><span class="n">执行mm命令后</span><span class="err">，</span><span class="n">输入新数据后回车</span><span class="err">，</span><span class="n">地址会自动增加</span><span class="err">，</span><span class="n">Ctrl</span><span class="o">+</span><span class="n">C退出</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">mw</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span> <span class="n">value</span> <span class="o">[</span><span class="n">count</span><span class="o">],</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">往开始地址为address的内存中填充count个数据</span><span class="err">，</span><span class="n">数据值为value</span><span class="err">。</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">cp</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">source</span> <span class="n">target</span> <span class="n">count</span><span class="o">,</span><span class="n">表示以字节</span><span class="err">、</span><span class="n">字或双字为单位</span><span class="err">，</span><span class="n">从原地址source的内存复制count个数据到目的地址target的内存</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nm</span><span class="o">[.</span><span class="na">b</span><span class="o">,.</span><span class="na">w</span><span class="o">,.</span><span class="na">l</span><span class="o">]</span> <span class="n">address</span><span class="err">，</span><span class="n">修改内存值</span><span class="o">,</span><span class="n">以一种交互式的方式</span><span class="err">，</span><span class="n">按q退出</span>
 </span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">常用的Nand</span> <span class="n">Flash操作命令只有一个</span><span class="err">，</span><span class="n">它根据不同的参数进行不同的操作</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">info</span><span class="err">，</span><span class="n">查看Nand</span> <span class="n">Flash信息</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">device</span> <span class="o">[</span><span class="n">dev</span><span class="o">]</span><span class="n">显示或者设置当前使用的Nand</span> <span class="n">Flash</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">bad显示Nand</span> <span class="n">Flash的坏块</span>
+</span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">scrub彻底擦除整块Nand</span> <span class="n">Flash中的数据</span><span class="err">，</span><span class="n">包括OOB</span><span class="err">。</span><span class="n">可以擦除软件坏块标志</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">erase</span> <span class="o">[</span><span class="n">clean</span><span class="o">]</span> <span class="o">[</span><span class="n">off</span> <span class="n">size</span><span class="o">],</span><span class="n">擦除Nand</span> <span class="n">Flash</span><span class="err">，</span><span class="n">加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记</span><span class="err">；</span><span class="n">off</span><span class="err">、</span><span class="n">size表示要擦除的开始偏移地址和长度</span><span class="err">，</span><span class="n">如果省略off和size表示要擦除整个Nand</span> <span class="n">Flash</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">read</span><span class="o">[.</span><span class="na">jffs2</span><span class="o">]</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="o">,</span><span class="n">从Nand</span> <span class="n">Flash偏移地址off处读出size个字节的数据</span><span class="err">，</span><span class="n">存放到开始地址为addr的内存中</span><span class="err">。</span><span class="n">是否加后缀</span><span class="o">.</span><span class="na">jffs的差别只是读操作时ECC校验方法不同</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">nand</span> <span class="n">write</span><span class="o">[.</span><span class="na">jffs2</span><span class="o">]</span> <span class="n">addr</span> <span class="n">off</span> <span class="n">size</span><span class="o">,</span><span class="n">把开始地址为addr的内存中的size个字节数据</span><span class="err">，</span><span class="n">写到Nand</span> <span class="n">Flash的偏移地址off处</span><span class="err">。</span><span class="n">是否加后缀</span><span class="o">.</span><span class="na">jffs的差别只是读操作时ECC校验方法不同</span>
@@ -756,7 +794,7 @@ int age = data.getInt("age");
 </span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">printenv</span><span class="err">`</span><span class="n">命令打印全部环境变量</span><span class="err">，“</span><span class="n">printenv</span> <span class="n">name1</span> <span class="n">name2</span> <span class="o">...</span><span class="err">”</span><span class="n">打印名字为name1</span><span class="o">,</span><span class="n">name2</span><span class="o">......</span><span class="na">的环境变量</span>
 </span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">setenv</span> <span class="n">name</span> <span class="n">value</span><span class="err">`</span><span class="n">设置名字为name的环境变量的值为value</span>
 </span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">setenv</span> <span class="n">name</span><span class="err">`</span><span class="n">删除名字为name的环境变量</span>
-</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">启动命令</span><span class="o">,</span><span class="n">不带参数的</span><span class="err">`</span><span class="n">boot</span><span class="err">`</span><span class="o">,</span><span class="err">`</span><span class="n">bootm</span><span class="err">`</span><span class="n">命令都是执行环境变量bootcmd所指定的命令</span>
+</span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">启动命令</span><span class="o">,</span><span class="n">不带参数的</span><span class="err">`</span><span class="n">boot</span><span class="err">`</span><span class="o">,</span><span class="err">`</span><span class="n">bootd</span><span class="err">`</span><span class="n">命令都是执行环境变量bootcmd所指定的命令</span><span class="err">。</span><span class="n">bootm命令专门用于启动在内存中的用u</span><span class="o">-</span><span class="n">boot的mkimage工具处理过的内核镜像</span>
 </span><span class='line'>    <span class="o">*</span> <span class="s">&quot;bootm [addr [arg ...]]&quot;</span><span class="n">命令启动存放在地址addr处的Uboot格式的映像文件</span><span class="err">（</span><span class="n">使用Uboot目录tools下的mkimage工具制作得到</span><span class="err">），</span><span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">表示参数</span><span class="err">，</span><span class="n">如果addr参数省略</span><span class="err">，</span><span class="n">映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">go</span> <span class="n">addr</span> <span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">与bootm命令类似</span><span class="err">，</span><span class="n">启动存放在地址addr处的二进制文件</span><span class="err">，</span><span class="o">[</span><span class="n">arg</span> <span class="o">...]</span><span class="n">表示参数</span>
 </span><span class='line'>    <span class="o">*</span> <span class="n">nboot</span> <span class="o">[[[</span><span class="n">loadAddr</span><span class="o">]</span> <span class="n">dev</span><span class="o">]</span> <span class="n">offset</span><span class="o">]</span><span class="n">命令将Nand</span> <span class="n">Flash设备dev上偏移地址off处的映像文件复制到内存loadAddr处</span><span class="err">，</span><span class="n">然后</span><span class="err">，</span><span class="n">如果环境变量autostart的值为yes</span><span class="err">，</span><span class="n">就启动这个映像</span><span class="err">，</span><span class="n">如果loadAddr参数省略</span><span class="err">，</span><span class="n">存放地址为配置文件中定义的宏CFG_LOAD_ADDR</span><span class="err">。</span><span class="n">如果dev参数省略</span><span class="err">，</span><span class="n">则它的取值为环境变量bootdevice的值</span><span class="err">，</span><span class="n">如果offset参数省略</span><span class="err">，</span><span class="n">则默认为0</span>
@@ -865,7 +903,7 @@ int age = data.getInt("age");
 </span><span class='line'><span class="mi">6</span><span class="o">.</span> <span class="n">将模板配置文件vsftpd</span><span class="o">.</span><span class="na">conf复制到开发板</span><span class="o">/</span><span class="n">etc目录</span><span class="err">，</span><span class="n">修改该配置文件</span><span class="err">，</span><span class="n">使有效配置如下</span><span class="err">：</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
 </span><span class='line'><span class="n">local_enable</span><span class="o">=</span><span class="n">YES</span>
 </span><span class='line'><span class="n">write_enable</span><span class="o">=</span><span class="n">YES</span>
 </span><span class='line'><span class="n">anon_upload_enable</span><span class="o">=</span><span class="n">NO</span>
@@ -880,54 +918,37 @@ int age = data.getInt("age");
 </span><span class='line'><span class="n">nopriv_user</span><span class="o">=</span><span class="n">ftp</span>
 </span><span class='line'><span class="n">ftpd_banner</span><span class="o">=</span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">WenRis</span> <span class="n">FTP</span> <span class="n">service</span>
 </span><span class='line'><span class="n">listen</span><span class="o">=</span><span class="n">YES</span>
-</span></code></pre></td></tr></table></div></figure>
-7. 由于vsftp源代码程序一定要使用一个目录/usr/share/empty,所以必须要预先创建它
-8. 修改/etc/inittab,使得vsftpd在开机时候自动启动：
-    * ::respawn:/usr/sbin/vsftpd</p>
-
-<h2>移植httpd服务器</h2>
-
-<ol>
-<li>增加用户www：<code>adduser -S -D -H www</code></li>
-<li>修改/etc/inittab文件，指名httpd的目录和运行账户：
-
-<ul>
-<li><code>::once:/usr/sbin/httpd -h /www -u www</code></li>
-</ul>
-</li>
-<li>httpd运行时会以普通用户www的身份访问/dev/null设备，因此需要在rcS脚本中修改/dev/null的权限：<code>chmod 666 /dev/null</code></li>
-<li>创建http服务器的主目录和主文件
-
-<ul>
-<li><code>mkdir /www</code></li>
-<li><code>echo "this is my first web site" &gt; /www/index.html</code></li>
-</ul>
-</li>
-</ol>
-
-
-<h2>移植boa网页服务器</h2>
-
-<ol>
-<li><a href="http://www.boa.org/">获取源码，并解压缩</a></li>
-<li><p>进入解压后的文件夹 内部的 src文件夹，对源文件进行如下修改：
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">由于arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="n">编译器版本过高</span><span class="err">，</span><span class="n">对语法的支持有一些改变</span><span class="err">，</span><span class="n">所以需要修改compat</span><span class="o">.</span><span class="na">h中的</span>
-</span><span class='line'>  <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="err">##</span><span class="o">-&gt;</span><span class="n">tm_gmtoff</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="mi">7</span><span class="o">.</span> <span class="n">由于vsftp源代码程序一定要使用一个目录</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">empty</span><span class="o">,</span><span class="n">所以必须要预先创建它</span>
+</span><span class='line'><span class="mi">8</span><span class="o">.</span> <span class="n">修改</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">inittab</span><span class="o">,</span><span class="n">使得vsftpd在开机时候自动启动</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="o">::</span><span class="nl">respawn:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">vsftpd</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="err">##</span><span class="n">移植httpd服务器</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="n">增加用户www</span><span class="err">：`</span><span class="n">adduser</span> <span class="o">-</span><span class="n">S</span> <span class="o">-</span><span class="n">D</span> <span class="o">-</span><span class="n">H</span> <span class="n">www</span><span class="err">`</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">修改</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">inittab文件</span><span class="err">，</span><span class="n">指名httpd的目录和运行账户</span><span class="err">：</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="o">::</span><span class="nl">once:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">httpd</span> <span class="o">-</span><span class="n">h</span> <span class="o">/</span><span class="n">www</span> <span class="o">-</span><span class="n">u</span> <span class="n">www</span><span class="err">`</span>
+</span><span class='line'><span class="mi">3</span><span class="o">.</span> <span class="n">httpd运行时会以普通用户www的身份访问</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null设备</span><span class="err">，</span><span class="n">因此需要在rcS脚本中修改</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null的权限</span><span class="err">：`</span><span class="n">chmod</span> <span class="mi">666</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="kc">null</span><span class="err">`</span>
+</span><span class='line'><span class="mi">4</span><span class="o">.</span> <span class="n">创建http服务器的主目录和主文件</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">mkdir</span> <span class="o">/</span><span class="n">www</span><span class="err">`</span>
+</span><span class='line'>    <span class="o">*</span> <span class="err">`</span><span class="n">echo</span> <span class="s">&quot;this is my first web site&quot;</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="na">html</span><span class="err">`</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">##</span><span class="n">移植boa网页服务器</span>
+</span><span class='line'><span class="mi">1</span><span class="o">.</span> <span class="o">[</span><span class="n">获取源码</span><span class="err">，</span><span class="n">并解压缩</span><span class="o">](</span><span class="nl">http:</span><span class="c1">//www.boa.org/)</span>
+</span><span class='line'><span class="mi">2</span><span class="o">.</span> <span class="n">进入解压后的文件夹</span> <span class="n">内部的</span> <span class="n">src文件夹</span><span class="err">，</span><span class="n">对源文件进行如下修改</span><span class="err">：</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">由于arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="n">编译器版本过高</span><span class="err">，</span><span class="n">对语法的支持有一些改变</span><span class="err">，</span><span class="n">所以需要修改compat</span><span class="o">.</span><span class="na">h中的</span>
+</span><span class='line'>     <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="err">##</span><span class="o">-&gt;</span><span class="n">tm_gmtoff</span>
 </span><span class='line'><span class="n">为</span><span class="err">：</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>   <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="o">-&gt;</span><span class="n">tm_gmtoff</span>
-</span><span class='line'><span class="n">不然在编译的时候会提示如下错误</span><span class="err">：</span>
-</span><span class='line'>  <span class="n">util</span><span class="o">.</span><span class="na">c</span><span class="o">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make:</span> <span class="o">[</span><span class="n">util</span><span class="o">.</span><span class="na">o</span><span class="o">]</span> <span class="n">Error1</span>
-</span></code></pre></td></tr></table></div></figure></p></li>
-</ol>
-
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="err">#</span><span class="n">define</span> <span class="nf">TIMEZONE_OFFSET</span><span class="o">(</span><span class="n">foo</span><span class="o">)</span> <span class="n">foo</span><span class="o">-&amp;</span><span class="n">gt</span><span class="o">;</span><span class="n">tm_gmtoff</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">不然在编译的时候会提示如下错误</span><span class="err">：</span>
+</span><span class='line'>    <span class="n">util</span><span class="o">.</span><span class="na">c</span><span class="o">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make:</span> <span class="o">[</span><span class="n">util</span><span class="o">.</span><span class="na">o</span><span class="o">]</span> <span class="n">Error1</span>
+</span></code></pre></td></tr></table></div></figure></p>
 
 <pre><code>将boa.c 文件225-227三行的文件注释掉
  if (setuid(0) != -1) {

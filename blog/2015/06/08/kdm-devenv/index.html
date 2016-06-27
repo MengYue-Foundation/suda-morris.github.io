@@ -322,12 +322,16 @@
 <li>mm[.b,.w,.l] address,表示以字节、字或双字为单位，从地址address开始修改内存数据，执行mm命令后，输入新数据后回车，地址会自动增加，Ctrl+C退出</li>
 <li>mw[.b,.w,.l] address value [count],表示以字节、字或双字为单位，往开始地址为address的内存中填充count个数据，数据值为value。</li>
 <li>cp[.b,.w,.l] source target count,表示以字节、字或双字为单位，从原地址source的内存复制count个数据到目的地址target的内存</li>
+<li>nm[.b,.w,.l] address，修改内存值,以一种交互式的方式，按q退出</li>
 </ul>
 </li>
 <li>常用的Nand Flash操作命令只有一个，它根据不同的参数进行不同的操作
 
 <ul>
 <li>nand info，查看Nand Flash信息</li>
+<li>nand device [dev]显示或者设置当前使用的Nand Flash</li>
+<li>nand bad显示Nand Flash的坏块</li>
+<li>nand scrub彻底擦除整块Nand Flash中的数据，包括OOB。可以擦除软件坏块标志</li>
 <li>nand erase [clean] [off size],擦除Nand Flash，加上clean时表示在每个块的第一个扇区的OOB区加写入清除标记；off、size表示要擦除的开始偏移地址和长度，如果省略off和size表示要擦除整个Nand Flash</li>
 <li>nand read[.jffs2] addr off size,从Nand Flash偏移地址off处读出size个字节的数据，存放到开始地址为addr的内存中。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
 <li>nand write[.jffs2] addr off size,把开始地址为addr的内存中的size个字节数据，写到Nand Flash的偏移地址off处。是否加后缀.jffs的差别只是读操作时ECC校验方法不同</li>
@@ -344,7 +348,7 @@
 <li><code>setenv name</code>删除名字为name的环境变量</li>
 </ul>
 </li>
-<li>启动命令,不带参数的<code>boot</code>,<code>bootm</code>命令都是执行环境变量bootcmd所指定的命令
+<li>启动命令,不带参数的<code>boot</code>,<code>bootd</code>命令都是执行环境变量bootcmd所指定的命令。bootm命令专门用于启动在内存中的用u-boot的mkimage工具处理过的内核镜像
 
 <ul>
 <li>&ldquo;bootm [addr [arg &hellip;]]"命令启动存放在地址addr处的Uboot格式的映像文件（使用Uboot目录tools下的mkimage工具制作得到），[arg &hellip;]表示参数，如果addr参数省略，映像文件所在地址为配置文件中定义的宏CFG_LOAD_ADDR</li>
@@ -530,7 +534,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -545,22 +549,21 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">anonymous_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">local_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">write_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">anon_upload_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">anon_mkdir_write_enable</span><span class="o">=</span><span class="n">NO</span>
-</span><span class='line'><span class="n">dirmessage_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">xferlog_enable</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">connect_from_port_20</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">xferlog_file</span><span class="o">=/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">vsftpd</span><span class="p">.</span><span class="n">log</span>
-</span><span class='line'><span class="n">xferlog_std_format</span><span class="o">=</span><span class="n">YES</span>
-</span><span class='line'><span class="n">idle_session_timeout</span><span class="o">=</span><span class="mi">600</span>
-</span><span class='line'><span class="n">data_connection_timeout</span><span class="o">=</span><span class="mi">120</span>
-</span><span class='line'><span class="n">nopriv_user</span><span class="o">=</span><span class="n">ftp</span>
-</span><span class='line'><span class="n">ftpd_banner</span><span class="o">=</span><span class="n">Welcome</span> <span class="n">to</span> <span class="n">WenRis</span> <span class="n">FTP</span> <span class="n">service</span>
-</span><span class='line'><span class="n">listen</span><span class="o">=</span><span class="n">YES</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>anonymous_enable=NO
+</span><span class='line'>local_enable=YES
+</span><span class='line'>write_enable=YES
+</span><span class='line'>anon_upload_enable=NO
+</span><span class='line'>anon_mkdir_write_enable=NO
+</span><span class='line'>dirmessage_enable=YES
+</span><span class='line'>xferlog_enable=YES
+</span><span class='line'>connect_from_port_20=YES
+</span><span class='line'>xferlog_file=/var/log/vsftpd.log
+</span><span class='line'>xferlog_std_format=YES
+</span><span class='line'>idle_session_timeout=600
+</span><span class='line'>data_connection_timeout=120
+</span><span class='line'>nopriv_user=ftp
+</span><span class='line'>ftpd_banner=Welcome to WenRis FTP service
+</span><span class='line'>listen=YES</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -603,26 +606,25 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">由于</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="err">编译器版本过高，对语法的支持有一些改变，所以需要修改</span><span class="n">compat</span><span class="p">.</span><span class="n">h</span><span class="err">中的</span>
-</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff</span>
-</span><span class='line'><span class="err">为：</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>由于arm-linux-gcc 编译器版本过高，对语法的支持有一些改变，所以需要修改compat.h中的
+</span><span class='line'>     #define TIMEZONE_OFFSET(foo) foo##-&gt;tm_gmtoff
+</span><span class='line'>为：
 </span><span class='line'>
-</span><span class='line'>     <span class="cp">#define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff</span>
-</span><span class='line'><span class="err">不然在编译的时候会提示如下错误：</span>
-</span><span class='line'>    <span class="n">util</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span> <span class="mi">100</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="n">pasting</span> <span class="err">“</span><span class="n">t</span><span class="err">”</span> <span class="n">and</span> <span class="err">“</span><span class="o">-&gt;</span><span class="err">”</span> <span class="n">does</span> <span class="n">not</span> <span class="n">give</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">preprocessing</span> <span class="n">token</span> <span class="nl">make</span><span class="p">:</span> <span class="p">[</span><span class="n">util</span><span class="p">.</span><span class="n">o</span><span class="p">]</span> <span class="n">Error1</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>     #define TIMEZONE_OFFSET(foo) foo-&gt;tm_gmtoff
+</span><span class='line'>不然在编译的时候会提示如下错误：
+</span><span class='line'>    util.c: 100: 1: pasting “t” and “-&gt;” does not give a valid preprocessing token make: [util.o] Error1</span></code></pre></td></tr></table></div></figure>
 
 
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -634,19 +636,18 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">将</span><span class="n">boa</span><span class="p">.</span><span class="n">c</span> <span class="err">文件</span><span class="mi">225</span><span class="o">-</span><span class="mi">227</span><span class="err">三行的文件注释掉</span>
-</span><span class='line'> <span class="k">if</span> <span class="p">(</span><span class="n">setuid</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>                        <span class="n">DIE</span><span class="p">(</span><span class="err">”</span><span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!</span><span class="err">”</span><span class="p">);</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'><span class="err">为</span>
-</span><span class='line'><span class="cm">/*</span>
-</span><span class='line'><span class="cm">         if (setuid(0) != -1) {</span>
-</span><span class='line'><span class="cm">                        DIE(”icky Linux kernel bug!”);</span>
-</span><span class='line'><span class="cm">                }</span>
-</span><span class='line'><span class="cm">*/</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>将boa.c 文件225-227三行的文件注释掉
+</span><span class='line'> if (setuid(0) != -1) {
+</span><span class='line'>                        DIE(”icky Linux kernel bug!”);
+</span><span class='line'>        }
+</span><span class='line'>为
+</span><span class='line'>/*
+</span><span class='line'>         if (setuid(0) != -1) {
+</span><span class='line'>                        DIE(”icky Linux kernel bug!”);
+</span><span class='line'>                }
+</span><span class='line'>*/
 </span><span class='line'>
-</span><span class='line'><span class="err">，否则，但以</span><span class="n">root</span><span class="err">权限启动</span><span class="n">boa</span><span class="err">服务器的时候，会出现以下错误：</span><span class="n">boa</span><span class="p">.</span><span class="nl">c</span><span class="p">:</span><span class="mi">226</span> <span class="o">-</span> <span class="n">icky</span> <span class="n">Linux</span> <span class="n">kernel</span> <span class="n">bug</span><span class="o">!:</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>，否则，但以root权限启动boa服务器的时候，会出现以下错误：boa.c:226 - icky Linux kernel bug!:</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -655,19 +656,18 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">更改</span><span class="n">Makefile</span><span class="err">的</span><span class="mi">31</span><span class="err">行和</span><span class="mi">32</span><span class="err">行：</span>
-</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">gcc</span>
-</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
-</span><span class='line'><span class="err">更改为</span>
-</span><span class='line'><span class="n">CC</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">CPP</span> <span class="o">=</span> <span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span> <span class="o">-</span><span class="n">E</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>更改Makefile的31行和32行：
+</span><span class='line'>CC = gcc 
+</span><span class='line'>CPP = gcc -E
+</span><span class='line'>更改为
+</span><span class='line'>CC = arm-linux-gcc
+</span><span class='line'>CPP = arm-linux-gcc -E</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -677,7 +677,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -707,37 +707,36 @@
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="err">修改</span><span class="mi">25</span><span class="err">行的</span><span class="n">port</span><span class="err">端口，用来设置服务器监听的端口：</span>
-</span><span class='line'><span class="cp"># Port: The port Boa runs on.  The default port for http servers is 80.</span>
-</span><span class='line'><span class="cp"># If it is less than 1024, the server must be started as root.</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>(1) 修改25行的port端口，用来设置服务器监听的端口：
+</span><span class='line'># Port: The port Boa runs on.  The default port for http servers is 80.
+</span><span class='line'># If it is less than 1024, the server must be started as root.
 </span><span class='line'>
-</span><span class='line'><span class="n">Port</span> <span class="mi">80</span>
-</span><span class='line'><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="err">注释</span><span class="mi">43</span><span class="err">行的监听</span><span class="n">IP</span><span class="err">地址：默认监听该主机上的所有</span><span class="n">IP</span><span class="err">地址</span>
-</span><span class='line'><span class="cp">#Listen 192.68.0.5</span>
-</span><span class='line'><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="err">修改</span><span class="mi">53</span><span class="err">、</span><span class="mi">54</span><span class="err">行的</span><span class="n">user</span><span class="err">和</span><span class="n">Group</span> <span class="err">启动的</span><span class="n">UID</span><span class="err">和</span><span class="n">GID</span><span class="err">，使其以</span><span class="n">root</span><span class="err">身份启动</span>
-</span><span class='line'><span class="cp">#  User: The name or UID the server should run as.</span>
-</span><span class='line'><span class="cp"># Group: The group name or GID the server should run as.</span>
+</span><span class='line'>Port 80
+</span><span class='line'>(2) 注释43行的监听IP地址：默认监听该主机上的所有IP地址
+</span><span class='line'>#Listen 192.68.0.5
+</span><span class='line'>(3) 修改53、54行的user和Group 启动的UID和GID，使其以root身份启动
+</span><span class='line'>#  User: The name or UID the server should run as.
+</span><span class='line'># Group: The group name or GID the server should run as.
 </span><span class='line'>
-</span><span class='line'><span class="n">User</span> <span class="n">root</span>
-</span><span class='line'><span class="n">Group</span> <span class="n">root</span>
-</span><span class='line'><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="err">修改</span><span class="mi">116</span><span class="err">行的</span><span class="n">DocumentRoot</span><span class="err">地址，即客户端要显示的</span><span class="n">HTML</span><span class="err">页面存放位置</span>
-</span><span class='line'><span class="cp"># DocumentRoot: The root directory of the HTML documents.</span>
-</span><span class='line'><span class="cp"># Comment out to disable server non user files.</span>
+</span><span class='line'>User root
+</span><span class='line'>Group root
+</span><span class='line'>(4) 修改116行的DocumentRoot地址，即客户端要显示的HTML页面存放位置
+</span><span class='line'># DocumentRoot: The root directory of the HTML documents.
+</span><span class='line'># Comment out to disable server non user files.
 </span><span class='line'>
-</span><span class='line'><span class="n">DocumentRoot</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span>
-</span><span class='line'><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="err">修改输入网页输入主机</span><span class="n">IP</span><span class="err">时要显示的页面：这里设为</span><span class="n">index</span><span class="p">.</span><span class="n">html</span>
-</span><span class='line'> <span class="cp"># DirectoryIndex: Name of the file to use as a pre-written HTML</span>
-</span><span class='line'><span class="cp"># directory index.  Please MAKE AND USE THESE FILES.  On the</span>
-</span><span class='line'><span class="cp"># fly creation of directory indexes can be _slow_.</span>
-</span><span class='line'><span class="cp"># Comment out to always use DirectoryMaker</span>
+</span><span class='line'>DocumentRoot /usr/local/boa
+</span><span class='line'>(5) 修改输入网页输入主机IP时要显示的页面：这里设为index.html
+</span><span class='line'> # DirectoryIndex: Name of the file to use as a pre-written HTML
+</span><span class='line'># directory index.  Please MAKE AND USE THESE FILES.  On the
+</span><span class='line'># fly creation of directory indexes can be _slow_.
+</span><span class='line'># Comment out to always use DirectoryMaker
 </span><span class='line'>
-</span><span class='line'><span class="n">DirectoryIndex</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
-</span><span class='line'><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="err">修改</span><span class="n">CGI</span><span class="err">程序存放的位置：以</span><span class="nl">http</span><span class="p">:</span><span class="c1">//IP/cgi-bin/cginame 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序</span>
-</span><span class='line'><span class="cp"># ScriptAlias: Maps a virtual path to a directory for serving scripts</span>
-</span><span class='line'><span class="cp"># Example: ScriptAlias /htbin/ /www/htbin/</span>
+</span><span class='line'>DirectoryIndex index.html
+</span><span class='line'>(6) 修改CGI程序存放的位置：以http://IP/cgi-bin/cginame 的方式运行cgi 程序时将在/usr/local/boa/cgi-bin 目录下寻找该程序
+</span><span class='line'># ScriptAlias: Maps a virtual path to a directory for serving scripts
+</span><span class='line'># Example: ScriptAlias /htbin/ /www/htbin/
 </span><span class='line'>
-</span><span class='line'><span class="n">ScriptAlias</span> <span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">boa</span><span class="o">/</span><span class="n">cgi</span><span class="o">-</span><span class="n">bin</span><span class="o">/</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>ScriptAlias /cgi-bin/ /usr/local/boa/cgi-bin/</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -771,19 +770,18 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
-</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
-</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
-</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
-</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export CC=arm-linux-gcc
+</span><span class='line'>export AR=arm-linux-ar
+</span><span class='line'>export LD=arm-linux-ld
+</span><span class='line'>export RANLIB=arm-linux-ranlib
+</span><span class='line'>export STRIP=arm-linux-strip
+</span><span class='line'>export CC_FOR_BUILD=gcc</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -802,19 +800,18 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">export</span> <span class="n">CC</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gcc</span>
-</span><span class='line'><span class="n">export</span> <span class="n">AR</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ar</span>
-</span><span class='line'><span class="n">export</span> <span class="n">LD</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ld</span>
-</span><span class='line'><span class="n">export</span> <span class="n">RANLIB</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">ranlib</span>
-</span><span class='line'><span class="n">export</span> <span class="n">STRIP</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span>
-</span><span class='line'><span class="n">export</span> <span class="n">CC_FOR_BUILD</span><span class="o">=</span><span class="n">gcc</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>export CC=arm-linux-gcc
+</span><span class='line'>export AR=arm-linux-ar
+</span><span class='line'>export LD=arm-linux-ld
+</span><span class='line'>export RANLIB=arm-linux-ranlib
+</span><span class='line'>export STRIP=arm-linux-strip
+</span><span class='line'>export CC_FOR_BUILD=gcc</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -850,7 +847,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -876,33 +873,32 @@
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">-</span><span class="n">path</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">php</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">etc</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">cli</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">fileinfo</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">debug</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">rpath</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">ftp</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="kr">inline</span><span class="o">-</span><span class="n">optimization</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">pdo</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">bcmath</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">calendar</span>
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sockets</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">wddx</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbstring</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">mbregex</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">sysvsem</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pear</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span><span class="n">system</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">xmlrpc</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">gettext</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">sqlite3</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">pdo</span><span class="o">-</span><span class="n">sqlite</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">sqlite</span><span class="o">-</span><span class="mf">3.8.10.2</span><span class="o">/</span><span class="n">result</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">libxml</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">libxml2</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">iconv</span><span class="o">-</span><span class="n">dir</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">iconv</span> \
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./configure --prefix=/opt/php-arm \
+</span><span class='line'>--with-config-file-path=/opt/php-arm/etc \
+</span><span class='line'>--host=arm-linux \
+</span><span class='line'>--disable-cli \
+</span><span class='line'>--disable-fileinfo \
+</span><span class='line'>--disable-debug \
+</span><span class='line'>--disable-rpath \
+</span><span class='line'>--enable-ftp \
+</span><span class='line'>--enable-inline-optimization \
+</span><span class='line'>--enable-pdo \
+</span><span class='line'>--enable-bcmath \
+</span><span class='line'>--enable-calendar 
+</span><span class='line'>--enable-sockets \
+</span><span class='line'>--enable-wddx \
+</span><span class='line'>--enable-mbstring \
+</span><span class='line'>--enable-mbregex \
+</span><span class='line'>--enable-sysvsem \
+</span><span class='line'>--with-pear \
+</span><span class='line'>--with-regex=system \
+</span><span class='line'>--with-xmlrpc \
+</span><span class='line'>--with-gettext \
+</span><span class='line'>--with-sqlite3 \
+</span><span class='line'>--with-pdo-sqlite=/embeded/WenRisOS/rootfs/sqlite-3.8.10.2/result \
+</span><span class='line'>--with-libxml-dir=/embeded/WenRisOS/rootfs/third-libs/libxml2 \
+</span><span class='line'>--with-zlib-dir=/embeded/WenRisOS/rootfs/third-libs/zlib \
+</span><span class='line'>--with-iconv-dir=/embeded/WenRisOS/rootfs/third-libs/iconv \</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -921,7 +917,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -929,15 +925,14 @@
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">lighttpd</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="k">static</span> \
-</span><span class='line'><span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">ipv6</span> \
-</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">bzip2</span> \
-</span><span class='line'><span class="o">--</span><span class="n">without</span><span class="o">-</span><span class="n">pcre</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>./configure --prefix=/opt/lighttpd-arm \
+</span><span class='line'>--host=arm-linux \
+</span><span class='line'>--enable-shared \
+</span><span class='line'>--disable-static \
+</span><span class='line'>--disable-ipv6 \
+</span><span class='line'>--without-bzip2 \
+</span><span class='line'>--without-pcre \
+</span><span class='line'>--with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib </span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -1047,7 +1042,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1059,19 +1054,18 @@
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">fastcgi</span><span class="p">.</span><span class="n">server</span> <span class="o">=</span> <span class="p">(</span>
-</span><span class='line'>  <span class="s">&quot;.php&quot;</span> <span class="o">=&gt;</span>
-</span><span class='line'>  <span class="p">(</span>
-</span><span class='line'>      <span class="s">&quot;localhost&quot;</span> <span class="o">=&gt;</span>
-</span><span class='line'>          <span class="p">(</span>
-</span><span class='line'>          <span class="s">&quot;socket&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/tmp/php-fastcgi.socket&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;bin-path&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;/opt/php-arm/bin/php-cgi&quot;</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;max-procs&quot;</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
-</span><span class='line'>          <span class="s">&quot;check-local&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;disable&quot;</span>
-</span><span class='line'>          <span class="p">)</span>
-</span><span class='line'>  <span class="p">)</span>
-</span><span class='line'><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>fastcgi.server = (
+</span><span class='line'>  ".php" =&gt;
+</span><span class='line'>  (
+</span><span class='line'>      "localhost" =&gt;
+</span><span class='line'>          (
+</span><span class='line'>          "socket" =&gt; "/tmp/php-fastcgi.socket",
+</span><span class='line'>          "bin-path" =&gt; "/opt/php-arm/bin/php-cgi",
+</span><span class='line'>          "max-procs" =&gt; 1,
+</span><span class='line'>          "check-local" =&gt; "disable"
+</span><span class='line'>          )
+</span><span class='line'>  )
+</span><span class='line'>)</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -1079,9 +1073,8 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="n">cgi</span><span class="p">.</span><span class="n">assign</span>         <span class="o">=</span> <span class="p">(</span><span class="s">&quot;.cgi&quot;</span> <span class="o">=&gt;</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cgi.assign       = (".cgi" =&gt; "")</span></code></pre></td></tr></table></div></figure>
 
 
 <p></p>
@@ -1114,7 +1107,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1124,17 +1117,16 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=</span><span class="err">$</span><span class="n">PWD</span><span class="o">/</span><span class="n">results</span> \
-</span><span class='line'><span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="n">arm</span><span class="o">-</span><span class="n">linux</span> \
-</span><span class='line'><span class="o">--</span><span class="n">with</span><span class="o">-</span><span class="n">zlib</span><span class="o">=/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">third</span><span class="o">-</span><span class="n">libs</span><span class="o">/</span><span class="n">zlib</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>\#!/bin/sh
+</span><span class='line'>./configure --prefix=$PWD/results \
+</span><span class='line'>--host=arm-linux \
+</span><span class='line'>--with-zlib=/embeded/WenRisOS/rootfs/third-libs/zlib
 </span><span class='line'>
-</span><span class='line'><span class="n">make</span>
-</span><span class='line'><span class="n">make</span> <span class="n">scp</span>
-</span><span class='line'><span class="n">make</span> <span class="n">install</span>
-</span><span class='line'><span class="n">cp</span> <span class="n">scp</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span>
-</span><span class='line'><span class="n">arm</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">strip</span> <span class="n">results</span><span class="o">/</span><span class="n">bin</span><span class="o">/*</span> <span class="n">results</span><span class="o">/</span><span class="n">sbin</span><span class="o">/*</span>
-</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>make 
+</span><span class='line'>make scp
+</span><span class='line'>make install
+</span><span class='line'>cp scp results/bin
+</span><span class='line'>arm-linux-strip results/bin/* results/sbin/*</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>
@@ -1170,7 +1162,7 @@
 </ol>
 
 
-<figure class='code'><figcaption><span>vsftpd.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -1222,59 +1214,58 @@
 <span class='line-number'>50</span>
 <span class='line-number'>51</span>
 <span class='line-number'>52</span>
-</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="err">\#</span><span class="o">!/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span>
-</span><span class='line'><span class="p">.</span><span class="o">/</span><span class="n">configure</span> <span class="o">-</span><span class="n">prefix</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">qt4</span><span class="mf">.8.5</span><span class="o">-</span><span class="n">arm</span> \
-</span><span class='line'><span class="o">-</span><span class="n">opensource</span> \
-</span><span class='line'><span class="o">-</span><span class="n">confirm</span><span class="o">-</span><span class="n">license</span> \
-</span><span class='line'><span class="o">-</span><span class="n">release</span> \
-</span><span class='line'><span class="o">-</span><span class="n">shared</span> \
-</span><span class='line'><span class="o">-</span><span class="n">embedded</span> <span class="n">arm</span> <span class="err">\</span>                         <span class="err">#选择</span><span class="n">Qt</span><span class="err">的嵌入式平台为</span><span class="n">arm</span><span class="err">平台</span>
-</span><span class='line'><span class="o">-</span><span class="n">xplatform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">arm</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
-</span><span class='line'><span class="o">-</span><span class="n">platform</span> <span class="n">qws</span><span class="o">/</span><span class="n">linux</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="n">g</span><span class="o">++</span> \
-</span><span class='line'><span class="o">-</span><span class="n">depths</span> <span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">32</span> \
-</span><span class='line'><span class="o">-</span><span class="n">optimized</span><span class="o">-</span><span class="n">qmake</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">sql</span><span class="o">-</span><span class="n">sqlite</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">zlib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">webkit</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">transformed</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libjpeg</span> <span class="err">\</span>                            <span class="err">#使</span><span class="n">Qt</span><span class="err">支持</span><span class="n">jpeg</span><span class="err">图片显示</span>
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libpng</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libtiff</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">libmng</span>  \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">freetype</span> \
-</span><span class='line'><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
-</span><span class='line'><span class="o">-</span><span class="n">host</span><span class="o">-</span><span class="n">little</span><span class="o">-</span><span class="n">endian</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">libs</span> \
-</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">tools</span> \
-</span><span class='line'><span class="o">-</span><span class="n">nomake</span> <span class="n">docs</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">examples</span> \
-</span><span class='line'><span class="o">-</span><span class="n">make</span> <span class="n">demos</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">kbd</span><span class="o">-</span><span class="n">linuxinput</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">qt3support</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">phonon</span><span class="o">-</span><span class="n">backend</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">gif</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">dbus</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">rpath</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">tslib</span> <span class="err">\</span>                      <span class="err">#使</span><span class="n">Qt</span><span class="err">支持触摸方式，需要额外指定</span><span class="n">tslib</span><span class="err">的路径</span>
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">pc</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mouse</span><span class="o">-</span><span class="n">linuxtp</span> \
-</span><span class='line'><span class="o">-</span><span class="n">qt</span><span class="o">-</span><span class="n">gfx</span><span class="o">-</span><span class="n">linuxfb</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">neon</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">nis</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">cups</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">openssl</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">fast</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">scripttools</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">mmx</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="mi">3</span><span class="n">dnow</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse</span> \
-</span><span class='line'><span class="o">-</span><span class="n">no</span><span class="o">-</span><span class="n">sse2</span> \
-</span><span class='line'><span class="o">-</span><span class="n">I</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">include</span> \
-</span><span class='line'><span class="o">-</span><span class="n">L</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">embeded</span><span class="o">/</span><span class="n">WenRisOS</span><span class="o">/</span><span class="n">rootfs</span><span class="o">/</span><span class="n">tslib</span><span class="o">/</span><span class="n">target</span><span class="o">-</span><span class="n">arm</span><span class="o">/</span><span class="n">lib</span> \
-</span><span class='line'><span class="o">-</span><span class="n">D__ARM_ARCH_5TEJ_</span>                      <span class="err">#选择处理器平台</span>
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>\#!/bin/sh
+</span><span class='line'>./configure -prefix /opt/qt4.8.5-arm \
+</span><span class='line'>-opensource \
+</span><span class='line'>-confirm-license \
+</span><span class='line'>-release \
+</span><span class='line'>-shared \
+</span><span class='line'>-embedded arm \                           #选择Qt的嵌入式平台为arm平台
+</span><span class='line'>-xplatform qws/linux-arm-g++ \
+</span><span class='line'>-platform qws/linux-x86-g++ \
+</span><span class='line'>-depths 4,8,16,18,24,32 \
+</span><span class='line'>-optimized-qmake \
+</span><span class='line'>-qt-sql-sqlite \
+</span><span class='line'>-qt-zlib \
+</span><span class='line'>-webkit \
+</span><span class='line'>-qt-gfx-transformed \
+</span><span class='line'>-qt-libjpeg \                         #使Qt支持jpeg图片显示
+</span><span class='line'>-qt-libpng \
+</span><span class='line'>-qt-libtiff \
+</span><span class='line'>-qt-libmng  \
+</span><span class='line'>-qt-freetype \
+</span><span class='line'>-little-endian \
+</span><span class='line'>-host-little-endian \
+</span><span class='line'>-make libs \
+</span><span class='line'>-nomake tools \
+</span><span class='line'>-nomake docs \
+</span><span class='line'>-make examples \
+</span><span class='line'>-make demos \
+</span><span class='line'>-qt-kbd-linuxinput \
+</span><span class='line'>-no-qt3support \
+</span><span class='line'>-no-phonon \
+</span><span class='line'>-no-phonon-backend \
+</span><span class='line'>-no-gif \
+</span><span class='line'>-no-dbus \
+</span><span class='line'>-no-rpath \
+</span><span class='line'>-qt-mouse-tslib \                     #使Qt支持触摸方式，需要额外指定tslib的路径
+</span><span class='line'>-qt-mouse-pc \
+</span><span class='line'>-no-mouse-linuxtp \
+</span><span class='line'>-qt-gfx-linuxfb \
+</span><span class='line'>-no-neon \
+</span><span class='line'>-no-nis \
+</span><span class='line'>-no-cups \
+</span><span class='line'>-no-openssl \
+</span><span class='line'>-no-fast \
+</span><span class='line'>-no-scripttools \
+</span><span class='line'>-no-mmx \
+</span><span class='line'>-no-3dnow \
+</span><span class='line'>-no-sse \
+</span><span class='line'>-no-sse2 \
+</span><span class='line'>-I /embeded/WenRisOS/rootfs/tslib/target-arm/include \
+</span><span class='line'>-L /embeded/WenRisOS/rootfs/tslib/target-arm/lib \
+</span><span class='line'>-R /embeded/WenRisOS/rootfs/tslib/target-arm/lib \
+</span><span class='line'>-D__ARM_ARCH_5TEJ_                        #选择处理器平台</span></code></pre></td></tr></table></div></figure>
 
 
 <ol>

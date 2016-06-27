@@ -7,8 +7,9 @@
 	<meta name="author" content="suda-morris">
 
 	
-	<meta name="description" content="S3C6410处理器概述 S3C6410是一个32位的RISC微处理器，采用了32位内部总线架构，内部总线由AXI（先进的可扩展接口）、AHB和APB总线组成
-包括许多硬件外设，如一个相机接口，TFT24位真彩色液晶显示控制器，系统管理器（电源管理等），4通道UART，32通道DMA，4通道定时器 &hellip;">
+	<meta name="description" content="总线 总线是计算机各部件之间传送数据、地址和控制信息的公共通道，按照相对于CPU的位置可以分为：片内总线和片外总线
+总线带宽=（总线宽度/8）*总线频率
+ARM系列的处理器按照AMBA（Advanced Microcontroller Bus Architecture）规范设计总线，包括AHB、 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -85,7 +86,116 @@
 
 	<div id="content" class="inner"><article class="post">
 	<h2 class="title">S3C6410</h2>
-	<div class="entry-content"><h2>S3C6410处理器概述</h2>
+	<div class="entry-content"><h2>总线</h2>
+
+<ol>
+<li>总线是计算机各部件之间传送数据、地址和控制信息的公共通道，按照相对于CPU的位置可以分为：片内总线和片外总线</li>
+<li>总线带宽=（总线宽度/8）*总线频率</li>
+<li>ARM系列的处理器按照AMBA（Advanced Microcontroller Bus Architecture）规范设计总线，包括AHB、ASB、APB</li>
+</ol>
+
+
+<h2>Cache</h2>
+
+<ol>
+<li>CPU在写Cache时，如果Cache与对应内存内容同步更新，则称为通写，如果只在写入Cache的内容移出时才更新对应内存内容，则称为回写</li>
+</ol>
+
+
+<h2>u-boot的编译配置</h2>
+
+<ol>
+<li>执行make smdk2410_config 将u-boot顶层目录下的mkconfig脚本生成配置文件include/config.mk，内容正是根据Makefile最开发板的配置生成的
+
+<ol>
+<li>ARCH=arm</li>
+<li>CPU=arm920t</li>
+<li>BOARD=smdk2410</li>
+<li>VENDOR=samsung</li>
+<li>SOC=s3c24x0</li>
+</ol>
+</li>
+<li>Makefile的编译选项和规则在顶层目录的config.mk文件中定义。各体系结构通用的规则直接在该文件中定义。通过ARCH、CPU、BOARD、SOC等变量为不同硬件平台定义不同选项。不同体系结构的规则分别包含在各自的lib_xxx目录下的config.mk文件中</li>
+</ol>
+
+
+<h2>删减u-boot文件</h2>
+
+<ol>
+<li>删除board目录下非samsung的目录
+
+<ul>
+<li>cd board/ &amp;&amp; rm -rf <code>ls | grep -v "samsung"</code></li>
+</ul>
+</li>
+<li>删除board/samsung目录下非smdk6400的目录
+
+<ul>
+<li>cd board/samsung/ &amp;&amp; rm -rf <code>ls | grep -v "smdk6400"</code></li>
+</ul>
+</li>
+<li>删除cpu目录下非arm920t的目录
+
+<ul>
+<li>cd cpu/ &amp;&amp; rm -rf <code>ls | grep -v "arm1176"</code></li>
+</ul>
+</li>
+<li>删除include目录中非arm架构和非generic的汇编头文件目录
+
+<ul>
+<li>cd include/ &amp;&amp; rm -rf <code>ls | grep "asm-" | egrep -v "arm|generic"</code></li>
+</ul>
+</li>
+<li>删除include/asm-arm目录中非s3c64xx架构的头文件目录
+
+<ul>
+<li>cd include/asm-arm/ &amp;&amp; rm -rf <code>ls | grep "arch-" | grep -v "s3c64xx"</code></li>
+</ul>
+</li>
+<li>删除include/configs目录下非smdk6400.h的目录和文件
+
+<ul>
+<li>cd include/configs/ &amp;&amp; rm -rf <code>ls | grep -v "smdk6400.h"</code></li>
+</ul>
+</li>
+<li>删除u-boot顶层目录下非arm架构和非generic的库目录
+
+<ul>
+<li>rm -rf <code>ls | grep "lib_" | egrep -v "arm|generic"</code></li>
+</ul>
+</li>
+</ol>
+
+
+<h2>建立suda6410配置</h2>
+
+<ol>
+<li>选择u-boot中原有的smdk6400作为suda6410的移植依据。修改顶层Makefile，检索到smdk2410_config目标所在行，添加suda6410_config目标规则
+<img src="http://i.imgur.com/gnd6FyP.png" alt="修改Makefile" /></li>
+<li>创建板级支持文件，将原来存放smdk6410板级相关初始化代码的文件夹复制并命名为suda6410对应功能的文件夹
+<img src="http://i.imgur.com/bXKnNmi.png" alt="创建板级支持文件" /></li>
+<li>修改board/samsung/suda6410/下的Makefile
+<img src="http://i.imgur.com/m3EwWzx.png" alt="修改board/samsung/suda6410/下的Makefile" /></li>
+<li>修改board/samsung/suda6410/下的config.mk，将原内容替换为如下代码。其中的TEXT_BASE指定最终u-boot镜像的链接基地址，LDSCRIPT则指定了连接器脚本的路径
+<img src="http://i.imgur.com/F53F0Qj.png" alt="board/samsung/suda6410/config.mk" /></li>
+<li>创建板级配置文件
+
+<ul>
+<li>cd include/configs/ &amp;&amp; cp smdk6400.h suda6410.h</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>u-boot的环境变量</h2>
+
+<ol>
+<li>bootdelay、baudrate、netmask、ethaddr、bootfile、bootargs、bootcmd、serverip、ipaddr、stdin、stdout、stderr</li>
+<li>如果在启动的时候看到u-boot打印出“Warning-bad CRC，using default environment”则说明u-boot没有在存放环境变量的固态存储器中找到有效的环境变量，只好使用编译时定义的默认环境变量。只要运行saveenv就可以把默认环境变量写入固态存储器，下次启动就不会有这个警告了。</li>
+</ol>
+
+
+<h2>S3C6410处理器概述</h2>
 
 <ol>
 <li>S3C6410是一个32位的RISC微处理器，采用了32位内部总线架构，内部总线由AXI（先进的可扩展接口）、AHB和APB总线组成</li>
@@ -533,15 +643,214 @@
 <li>测试过程中，需要先将ramdisk的内容（如initrd.img.gz）放在内存的0x21000000</li>
 </ul>
 </li>
+<li>如何将initrd.img.gz中的内容取出来？
+
+<ol>
+<li>gunzip initrd.img.gz</li>
+<li>sudo mount -t ext2 initrd.img ./swap/</li>
+<li>进入swap便能获得文件系统的具体内容</li>
+</ol>
+</li>
 <li>nfs
 
 <ul>
-<li>root=/dev/nfs init=/linuxrc console=ttySAC0,115200</li>
-<li></li>
+<li>root=/dev/nfs nfsroot=服务器IP地址:根文件系统目录的绝对路径 ip=开发板IP地址 init=/linuxrc console=ttySAC0,115200</li>
 </ul>
 </li>
 </ol>
 </li>
+</ol>
+
+
+<h2>Linux系统下查看启动参数</h2>
+
+<ul>
+<li>cat /proc/cmdline</li>
+</ul>
+
+
+<h2>根文件系统制作</h2>
+
+<ol>
+<li>bin dev etc lib proc usr var这些都是必需的，其他的都是可选的</li>
+<li>创建终端会话设备console
+
+<ol>
+<li>sudo mknod console c 5 1</li>
+</ol>
+</li>
+<li>查看busybox的链接依赖库
+
+<ol>
+<li>arm-linux-readelf -d busybox | grep NEEDED</li>
+<li>一般需要的依赖是libc.so.6和libm.so.6</li>
+<li>此外还需要链接库加载器ld-linux.so.3</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>busybox启动控制过程</h2>
+
+<ol>
+<li>init->inittab->/etc/init.d/rcS->/etc/init.d/S(0-9)(0-9)*->application</li>
+</ol>
+
+
+<h2>嵌入式常用的工具命令</h2>
+
+<ol>
+<li>设备驱动管理
+
+<ul>
+<li>fdisk fsck hwclock mkdosfs insmod rmmod lsmod mknod modprobe lsusb mdev mount unmount</li>
+</ul>
+</li>
+<li>文本编辑处理
+
+<ul>
+<li>mkdir mkfifo ln mv cp touch rm unlink awk cat cut find vi sed wc tar grep head tail less more xargs od stat</li>
+</ul>
+</li>
+<li>网络信息配置
+
+<ul>
+<li>udhcpc udhcpd route netstat ping ifconfig</li>
+</ul>
+</li>
+<li>系统信息管理
+
+<ul>
+<li>chmode clear date dd df echo free ipcrm ipcs ls ps pwd top uptime kill killall reboot sleep sysctl usleep</li>
+</ul>
+</li>
+</ol>
+
+
+<h2>fstab配置文件</h2>
+
+<ol>
+<li>fstab是文件系统启动后默认要挂载的文件系统</li>
+<li><code>proc        /proc   proc    defaults    0   0</code>一行配置由6个字段组成
+
+<ol>
+<li>第一个字段表示设备名称</li>
+<li>第二个字段表示挂载点</li>
+<li>第三个字段表示文件系统类型</li>
+<li>第四个字段表示挂载选项</li>
+<li>第五个字段表示备份检查，0不检查</li>
+<li>第六个字段表示文件系统完整性检查，0不检查</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>常用嵌入式文件系统</h2>
+
+<ol>
+<li>基于存储设备的文件系统
+
+<ol>
+<li>内存文件系统
+
+<ol>
+<li>tmpfs</li>
+<li>ramdisk</li>
+</ol>
+</li>
+<li>Flash文件系统
+
+<ol>
+<li>cramfs</li>
+<li>squashfs</li>
+<li>jffs/jffs2</li>
+<li>yaffs/yaffs2</li>
+<li>ubifs</li>
+</ol>
+</li>
+<li>扩展SD卡文件系统
+
+<ol>
+<li>FAT32</li>
+<li>ext2/ext3</li>
+</ol>
+</li>
+<li>网络文件系统
+
+<ol>
+<li>NFS</li>
+<li>Samba</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>基于逻辑的虚拟文件系统
+
+<ol>
+<li>进程文件系统
+
+<ol>
+<li>procfs</li>
+</ol>
+</li>
+<li>设备文件系统
+
+<ol>
+<li>devfs（老版本内核使用）</li>
+<li>sysfs</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>Nand Flash硬件特性（以K9K8G08为例）</h2>
+
+<ol>
+<li>该芯片由两个K9F4G08芯片（chip）组成，每个chip包含了4个层（plane），每层1024块（block），每块64页（page），每页（2K+64）字节</li>
+<li>由于Nand Flash的工艺不能保证其存储单元在其生命周期中保持性能的可靠，因此，在其生产及使用过程中会产生坏块。
+
+<ol>
+<li>坏块的特征是：编程/擦除这个块时，会产生编程或擦除错误，并反映到状态寄存器相应位上</li>
+<li>Nand Flash出错时，一般不会造成整个快或者页不能读取或全部出错，而是整个页中只有一个或者几个位出错。一般使用一种比较专用的校验-ECC</li>
+<li>典型的ECC算法如Hanming码，能纠正单比特错误和检测双比特错误，而且计算速度很快，但对1比特以上的错误无法纠正，对2比特以上的错误不能保证检测。利用ECC校验需要额外的空间来存放ECC校验码</li>
+<li>Nand Flash中每一个页的主数据区后都有一个称为空闲区域或者冗余区域的存储空间，在Linux驱动中，习惯称为OOB（Out Of Band）区。OOB区用来存放主数据区数据的校验值（ECC校验码），当然，除了存放ECC校验码，该区域还被用作其他用途。比如：标记是否是坏块，存储ECC数据，存储一些和文件系统相关的数据，如yaffs文件系统会在oob中，存放很多和自己文件系统相关的信息。</li>
+</ol>
+</li>
+<li>Nand Flash以8个I/O端口多路复用的方式进行寻址。Nand Flash操作是通过向I/O端口发送相应的命令序列完成的。有的命令仅仅需要一个总线周期，如芯片复位命令、状态读写命令。其他的命令，如页的读写和块的擦除，则需要两个总线周期：一个周期用于装载，另一个周期用于执行。在页读写时，需要在相应请求命令发出后，再发出5个地址周期（2列地址和3行地址）进行寻址。在块擦除时，仅需要发出3个行地址周期。
+
+<ol>
+<li>列地址就是页内地址，由于K9K8G08页大小为2K+64字节，因此有效列地址总共12位，即A0~A11</li>
+<li>行地址对应页的编号，用于确定具体那一页</li>
+</ol>
+</li>
+<li>Nand Flash的寻址单位是页，读写以页为单位，擦除以块为单位。</li>
+<li>按照页大小不同，Nand Flash可以分为大页设备和小页设备，大页设备典型大小2048字节，小页设备典型页大小为512字节。对于大页设备，通过8位I/O通常需要5个地址周期寻址，小页设备则只需要4个周期。</li>
+</ol>
+
+
+<h2>MTD设备概述</h2>
+
+<ol>
+<li>MTD（Memory Technology Device）是介于<strong>原始闪存设备</strong>与上层应用之间的一个抽象层，为不同类型的闪存设备提供统一的操作接口，以供上层使用。MTD设备通常包括NAND、OneNAND、NOR、AG-AND、ECC&rsquo;d NOR等</li>
+<li>MTD设备具备一些独特的硬件特性，例如，MTD设备由擦除块构成，擦除快能够被写入，但是要想再次写入就必须重新擦除</li>
+<li>MTD子系统不处理块设备，例如，MMC、eMMC、SD、CompactFlash等都不属于MTD，这些设备虽然多数内存存储单元都是用Nand Flash，但是他们并不是原始的闪存设备，而是通过集成在芯片内部的FTL（Flash Translation layer），使其具备块设备的特征，因此这些设备属于块设备系统，而不是MTD</li>
+<li>闪存设备能够分成若干MTD分区，每一个MTD分区由一片连续的擦除块构成，因此MTD分区是建立在闪存的物理层上的。</li>
+</ol>
+
+
+<h2>Nand Flash控制器</h2>
+
+<ol>
+<li>在上电或系统复位之后，Nand Flash控制器自动加载4KB的启动代码。加载完成后，启动代码将在Stepping Stone中被执行。在自动导入期间，ECC是未被选中状态，因此，前8K的Nand Flash绝对不能有位错误</li>
+</ol>
+
+
+<h2>USB概述</h2>
+
+<ol>
+<li>Mini/Micro USB接口5根连接线中的4号引脚【ID】，用于区分是USB主控端（主机）还是USB设备端（从机）。当该引脚接地时表示是主控端，悬空时表示是设备端</li>
 </ol>
 
 </div>
