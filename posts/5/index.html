@@ -1387,6 +1387,81 @@
 
 <h2>Linux内核体系结构</h2>
 
+<ol>
+<li>内核和用户空间的应用程序使用不同的保护地址空间。每个用户空间的进程都使用自己的虚拟地址空间，内核则占用单独的地址空间，一般情况下，应用程序无法直接访问内核空间地址。因此，应用程序想访问内核必须通过某种特殊的方式从用户空间切换到内核空间。这个特殊的方法称为：系统调用</li>
+<li>考虑到频繁的系统调用会影响操作系统的性能（切换开销、硬件损耗等），标准C库GNU C Library（glibc）提供了新的连接内核的接口，这些接口同样通过系统调用访问内核，不过通常都带有缓冲区，将数次操作合并为一次，以有效减少系统调用的次数</li>
+<li>综上，Linux内核可以分为3层：
+
+<ol>
+<li>最上面一层是系统调用接口，它实现了一些基本功能，如read和write。</li>
+<li>系统调用接口之下是体系架构无关的内核，这部分内核对于Linux支持的所有处理器体系结构是通用的。</li>
+<li>其下是体系架构相关的部分，通常称为BSP。</li>
+</ol>
+</li>
+</ol>
+
+
+<h1>内核头文件命名规则</h1>
+
+<ol>
+<li><code>#include &lt;asm/xxx.h&gt;</code>：CPU相关的头文件</li>
+<li><code>#include &lt;linux/xxx.h&gt;</code>：平台无关的头文件</li>
+<li><code>#include &lt;plat/xxx.h&gt;</code>：芯片公司相关的头文件</li>
+<li><code>#include &lt;mach/xxx.h&gt;</code>：开发板相关的头文件</li>
+</ol>
+
+
+<h2>内核组件</h2>
+
+<ol>
+<li>Linux内核主要由系统调用（SCI），进程管理（PM），内存管理（MM），虚拟文件系统（VFS），网络协议栈（NET），CPU体系结构和设备驱动（DD）等7个组件组成
+
+<ol>
+<li>SCI层提供了某些机制执行从用户空间到内核的函数调用。这些接口依赖于体系结构。</li>
+<li>进程管理的重点是进程的执行。在内核中这些进程称为线程，代表了单独的处理器虚拟化（线程代码、数据、堆栈和CPU寄存器）。在用户空间，通常使用进程这个术语，不过Linux实现并没有区分这两个概念（进程和线程）。内核通过SCI提供了一个应用程序编程接口来创建一个新进程（fork、exec、kill、exit），并在它们之间进行通信和同步</li>
+<li>内核管理的另外一个重要资源是内存，为了提高效率，内存按照内存页的方式进行管理，页大通常是4KB。Linux内存管理主要负责内存的分配和释放，以及物理地址到虚拟地址的映射等</li>
+<li>虚拟文件系统是Linux内核中非常有用的一个组件，因为它为文件系统提供了一个通用的接口抽象。VFS在SCI和内核支持的文件系统之间提供了一个交换层。在VFS上面，是对诸如open、close、read和write之类的系统调用函数的一个通用抽象。在VFS下面是对文件系统的抽象，它定义了上层函数的实现方式。文件系统层之下是缓冲区缓存，它为文件系统层提供了一个通用函数集，这个缓存层通过将数据保留一段时间，优化对物理设备的访问。缓冲区缓存之下是设备驱动程序，它实现了特定物理设备的接口。</li>
+<li>网络协议栈在设计上采用分层思想，从上到下分为系统调用接口、协议无关接口层、网络协议层、设备无关接口层和设备驱动层。其中协议无关层就是socket层，提供了一组通用函数来支持各种不同协议。</li>
+</ol>
+</li>
+</ol>
+
+
+<h2>字符设备驱动</h2>
+
+<ol>
+<li>设备号
+
+<ol>
+<li>内核使用dev_t来描述设备号，其实质是unsigned int32位整数，其中高12位是主设备号，低20位是次设备号</li>
+<li>int register_chrdev_region(dev_t from,unsigned count,const char* name);调用该函数向内核注册设备号</li>
+</ol>
+</li>
+<li>设备信息的描述</li>
+</ol>
+
+
+<figure class='code'><figcaption><span>cdev</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='C'><span class='line'><span class="k">struct</span> <span class="n">cdev</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">struct</span> <span class="n">kobject</span> <span class="n">kobj</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">struct</span> <span class="n">module</span> <span class="o">*</span><span class="n">owner</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">const</span> <span class="k">struct</span> <span class="n">file_operations</span> <span class="o">*</span><span class="n">ops</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">struct</span> <span class="n">list_head</span> <span class="n">list</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">dev_t</span> <span class="n">dev</span><span class="p">;</span>
+</span><span class='line'>  <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 		
 		
 	</div>
